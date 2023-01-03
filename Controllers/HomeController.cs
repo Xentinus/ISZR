@@ -23,16 +23,6 @@ namespace ISZR.Controllers
             return View();
         }
 
-        public IActionResult Version()
-        {
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            return View();
-        }
-
         public IActionResult FAQ()
         {
             return View();
