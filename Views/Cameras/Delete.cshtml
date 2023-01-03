@@ -1,0 +1,62 @@
+﻿@model ISZR.Models.Camera
+
+@{
+    ViewData["Title"] = "Intézeti kamera törlése";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Intézeti kamera törlése</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">Biztos, hogy törölni szeretnéd a következő intézeti kamerát?</h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Kamera megnevezése</label>
+                                <p>@Html.DisplayFor(model => model.Name)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Kamera típusa</label>
+                                <p>@Html.DisplayFor(model => model.Type)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+
+                            <div class="form-group">
+                                <label>Szektor megnevezése</label>
+                                <p>@Html.DisplayFor(model => model.Sector)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Intézeti kamera törlése" class="btn btn-danger" />
+                        <a asp-action="Edit" asp-route-id="@Model?.Id"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
+                        <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

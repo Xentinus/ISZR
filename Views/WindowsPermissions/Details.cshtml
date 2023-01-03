@@ -1,0 +1,56 @@
+﻿@model ISZR.Models.WindowsPermission
+
+@{
+    ViewData["Title"] = "Windows jogosultság részletei";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Windows jogosultság részletei</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Jogosultsághoz tartozó adatok megtekintése</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Jogosultsági csoport megnevezése</label>
+                                <p>@Html.DisplayFor(model => model.Name)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Jogosultsági csoport leírása</label>
+                                <p>@Html.DisplayFor(model => model.Description)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Hozzá tartozó Active Directory jogosultságok</label>
+                                <p>@Html.DisplayFor(model => model.Permission)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a asp-action="Edit" asp-route-id="@Model?.Id"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
+                    <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
