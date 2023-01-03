@@ -1,64 +1,108 @@
 ﻿@using System.DirectoryServices.AccountManagement;
 @{
-	ViewData["Title"] = "Irányítópult";
-	//var context = new PrincipalContext(ContextType.Domain);
-	//var userData = UserPrincipal.FindByIdentity(context, User.Identity?.Name); @userData.Name
+    ViewData["Title"] = "Irányítópult";
+    //var context = new PrincipalContext(ContextType.Domain);
+    //var userData = UserPrincipal.FindByIdentity(context, User.Identity?.Name); @userData.Name
 }
 
 <div class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1 class="m-0">Irányítópult</h1>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Irányítópult</h1>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="container-fluid">
-	<!-- Welcome user -->
-	<div class="row">
-		<div class="col-12">
-			<div class="card card-widget widget-user">
-				<div class="widget-user-header bg-info">
-					<h3 class="widget-user-username">Üdvözöllek újra itt!</h3>
-					<h5 class="widget-user-desc">@User.Identity?.Name</h5>
-				</div>
-				<div class="widget-user-image">
-					<img class="img-circle elevation-2" src="~/img/avatar.png" alt="User Avatar">
-				</div>
-				<div class="card-footer">
-					<div class="row">
-						<div class="col-md-3 col-sm-12 border-right">
-							<div class="description-block">
-								<h5 class="description-header">0</h5>
-								<span class="description-text">IGÉNYLÉSEIM</span>
-							</div>
-						</div>
-						<div class="col-md-3 col-sm-12 border-right">
-							<div class="description-block">
-								<h5 class="description-header">0</h5>
-								<span class="description-text">LEZÁRT</span>
-							</div>
-						</div>
-						<div class="col-md-3 col-sm-12 border-right">
-							<div class="description-block">
-								<h5 class="description-header">0</h5>
-								<span class="description-text">JOVÁHAGYOTT</span>
-							</div>
-						</div>
-						<div class="col-md-3 col-sm-12">
-							<div class="description-block">
-								<h5 class="description-header">0</h5>
-								<span class="description-text">FOLYAMATBAN LÉVŐ</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-widget widget-user">
+                <div class="widget-user-header bg-info">
+                    <h3 class="widget-user-username">Üdvözöllek újra itt!</h3>
+                    <h5 class="widget-user-desc">@User.Identity?.Name</h5>
+                </div>
+                <div class="widget-user-image">
+                    <img class="img-circle elevation-2" src="~/img/avatar.png" alt="User Avatar">
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-12 border-right">
+                            <div class="description-block">
+                                <h5 class="description-header">0</h5>
+                                <span class="description-text text-uppercase">Igényléseim</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12 border-right">
+                            <div class="description-block">
+                                <h5 class="description-header">0</h5>
+                                <span class="description-text text-uppercase">Lezárt</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12 border-right">
+                            <div class="description-block">
+                                <h5 class="description-header">0</h5>
+                                <span class="description-text text-uppercase">Jováhagyott</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <div class="description-block">
+                                <h5 class="description-header">0</h5>
+                                <span class="description-text text-uppercase">Folyamatban lévő</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<!-- Informations about class requests -->
-	<partial name="_ClassRequests" />
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div>
+                    <h4>Az osztályod igényléseivel kapcsolatos összesítés</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-info"><i class="fas fa-book"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Igénylések összesen</span>
+                    <span class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-info"><i class="fas fa-file-contract"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Lezárt igénylések</span>
+                    <span class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-success"><i class="fas fa-user-check"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Jováhagyott igénylések</span>
+                    <span class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-warning"><i class="fas fa-user-edit"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Folyamatban lévő igénylések</span>
+                    <span class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -18,11 +18,6 @@ namespace ISZR.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         public IActionResult FAQ()
         {
             return View();
