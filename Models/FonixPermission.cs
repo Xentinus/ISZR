@@ -52,6 +52,6 @@ namespace ISZR.Models
         /// A jogosultság archiválva lett e
         /// </summary>
         [Display(Name = "Archivált")]
-        public bool? Archived { get; set; } = false;
+        public bool Archived { get; set; } = false;
     }
 }

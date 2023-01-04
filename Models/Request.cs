@@ -50,7 +50,7 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Kinek a részére")]
         [Required]
-        public List<string>? ToWho { get; set; }
+        public List<User>? ToWho { get; set; }
 
         /// <summary>
         /// Az igénylés leírása
