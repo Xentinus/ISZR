@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ISZR.Models
 {
@@ -10,55 +11,85 @@ namespace ISZR.Models
         /// <summary>
         /// A felhasználó azonosítója ISZR-en belül
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
         /// A BV-ben használt felhasználóneve
         /// </summary>
-
-        [Required(ErrorMessage = "Kérlek írd le a felhasználónevet!")]
-        [MinLength(3, ErrorMessage = "A felhasználóné nem lehet kevesebb mint 3 karakter!")]
+        [Display(Name = "Felhasználónév")]
+        [Required(ErrorMessage = "A felhasználónév megadása kötelező!")]
+        [MinLength(3, ErrorMessage = "A felhasználónév nem lehet kevesebb mint 3 karakter")]
         [MaxLength(32, ErrorMessage = "A felhasználónév nem lehet nagyobb mint 32 karakter")]
-        public string? Username { get; set; }
+        public string? Username { get; set; } = string.Empty;
 
         /// <summary>
         /// A név amely megjelenik a szolgálati jegyeket
         /// </summary>
-        [Required(ErrorMessage = "Kérlek írd le azt a nevet ami a szolgálati jegyeken megjelenjen!")]
+        [Display(Name = "Név")]
+        [Required(ErrorMessage = "A név megadása kötelező!")]
         [MinLength(4, ErrorMessage = "A megjeleníthető név nem lehet kevesebb mint 4 karakter")]
         [MaxLength(32, ErrorMessage = "A megjeleníthető név nem lehet nagyobb mint 32 karakter")]
-        public string? DisplayName { get; set; }
+        public string? DisplayName { get; set; } = string.Empty;
 
         /// <summary>
         /// Felhasználó emailes elérhetősége
         /// </summary>
+        [Display(Name = "E-mail cím")]
+        [Required(ErrorMessage = "Az e-mail cím megadása kötelező!")]
+        [EmailAddress(ErrorMessage = "A mezőbe beírt cím nem e-mail cím!")]
         public string? Email { get; set; } = string.Empty;
 
         /// <summary>
         /// Felhasználó telefonos elérhetősége
         /// </summary>
+        [Display(Name = "NTG elérhetőség")]
+        [Required(ErrorMessage = "Az NTG elérhetőség megadása kötelező!")]
+        [MinLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet kevesebb mint 7 karakter")]
+        [MaxLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet nagyobb mint 7 karakter")]
         public string? Phone { get; set; } = string.Empty;
 
         /// <summary>
         /// Rendfokozat
         /// </summary>
-        [Required(ErrorMessage = "Kérlek válaszd ki a rendfokozatot!")]
-        public string? Rank { get; set; }
+        [Display(Name = "Rendfokozat")]
+        [Required(ErrorMessage = "A rendfokozat kiválasztása kötelező!")]
+        public string? Rank { get; set; } = string.Empty;
 
         /// <summary>
-        /// Osztály vagy alosztály azonosítója
+        /// Iroda elhelyezkedése
         /// </summary>
-        [Required(ErrorMessage = "Kérlek válaszd ki az osztályt!")]
-        public int ClassId { get; set; }
+        [Display(Name = "Iroda elhelyezkedése")]
+        [Required(ErrorMessage = "Az iroda elhelyezkedésének megadása kötelező!")]
+        [MinLength(5, ErrorMessage = "Az iroda elhelyezkedése nem lehet kevesebb mint 5 karakter")]
+        [MaxLength(48, ErrorMessage = "Az iroda elhelyezkedése nem lehet nagyobb mint 48 karakter")]
+        public string? Location { get; set; } = string.Empty;
 
         /// <summary>
-        /// A felhasználó admin e
+        /// Administrátor vagy sima felhasználó
         /// </summary>
+        [Display(Name = "Adminisztrátor a felhasználó?")]
         public bool Administrator { get; } = false;
 
         /// <summary>
         /// Felhasználó utolsó bejelentkezésének ideje
         /// </summary>
+        [Display(Name = "Utolsó bejelentkezés")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime LastLogin { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// Felhasználó beosztása
+        /// </summary>
+        [Display(Name = "Felhasználó beosztása")]
+        [Required(ErrorMessage = "A beosztás megadása kötelező!")]
+        public virtual Position? Position { get; set; }
+
+        /// <summary>
+        /// Felhasználó igénylései
+        /// </summary>
+        [Display(Name = "Felhasználó igénylései")]
+        public virtual ICollection<Request>? Requests { get; set; }
     }
 }

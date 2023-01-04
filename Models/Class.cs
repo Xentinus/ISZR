@@ -10,25 +10,44 @@ namespace ISZR.Models
         /// <summary>
         /// Az osztály azonosítója ISZR-en belül
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
         /// Az osztály neve
         /// </summary>
-        [Required(ErrorMessage = "Kérlek adj nevet az osztálynak!")]
-        [MinLength(3, ErrorMessage = "Az osztály nevének legalább 3 karakter hosszúnak kell lennie!")]
-        public string? Name { get; set; }
+        [Display(Name = "Osztály megnevezése")]
+        [Required(ErrorMessage = "Az osztály nevének megadása kötelező!")]
+        [MinLength(3, ErrorMessage = "Az osztály neve nem lehet kevesebb mint 3 karakter")]
+        [MaxLength(64, ErrorMessage = "Az osztály neve nem lehet nagyobb mint 64 karakter")]
+        public string? Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Az osztályt vezető neve
         /// </summary>
-        [Required(ErrorMessage = "Kérlek nevezd meg az osztály vezetőjét!")]
-        [MinLength(3, ErrorMessage = "Az osztályvezető neve legalább 3 karakter hosszúnak kell lennie")]
-        public string? LeaderName { get; set; }
+        [Display(Name = "Osztályvezető neve")]
+        [Required(ErrorMessage = "Az osztályvezető nevének megadása kötelező!")]
+        [MinLength(4, ErrorMessage = "Az osztályvezető neve nem lehet kevesebb mint 4 karakter")]
+        [MaxLength(64, ErrorMessage = "Az osztályvezető neve nem lehet nagyobb mint 64 karakter")]
+        public string? LeaderName { get; set; } = string.Empty;
 
         /// <summary>
         /// Az osztályt vezető rendfokozata
         /// </summary>
-        public string? LeaderRank { get; set; }
+        [Display(Name = "Osztályvezető rendfokozata")]
+        [Required(ErrorMessage = "Az osztályvezető rendfokozatának kiválasztása kötelező!")]
+        public string? LeaderRank { get; set; } = string.Empty;
+
+        // Relationships
+
+        /// <summary>
+        /// Osztályhoz hozzátartozó felhasználók
+        /// </summary>
+        public List<User>? Users { get; set; }
+
+        /// <summary>
+        /// Osztályhoz hozzátartozó igénylések
+        /// </summary>
+        public List<Request>? Requests { get; set; }
     }
 }

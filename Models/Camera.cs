@@ -10,25 +10,32 @@ namespace ISZR.Models
         /// <summary>
         /// Kamera azonosítója
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
         /// Kamera neve
         /// </summary>
-        [Required(ErrorMessage = "Kérlek adj nevet a kamerának!")]
-        [MinLength(2, ErrorMessage = "A kamera nevének legalább 2 karakter hosszúnak kell lennie!")]
-        public string? Name { get; set; }
+        [Display(Name = "Kamera megnevezése")]
+        [Required(ErrorMessage = "A kamera nevének megadása kötelező!")]
+        [MinLength(2, ErrorMessage = "A kamera neve nem lehet kevesebb mint 2 karakter")]
+        [MaxLength(48, ErrorMessage = "A kamera neve nem lehet nagyobb mint 48 karakter")]
+        public string? Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Kamera típusa
         /// </summary>
-        public string? Type { get; set; }
+        [Display(Name = "Kamera típusa")]
+        [Required(ErrorMessage = "A kamera típusának kiválasztása kötelező!")]
+        public string? Type { get; set; } = string.Empty;
 
         /// <summary>
-        /// Kamera elhelyezkedése
+        /// Kamera szektora
         /// </summary>
-        [Required(ErrorMessage = "Kérlek írd le a kamera elhelyezkedését!")]
-        [MinLength(2, ErrorMessage = "A kamera szektor nevének legalább 2 karakter hosszúnak kell lennie!")]
-        public string? Sector { get; set; }
+        [Display(Name = "Kamera szektora")]
+        [Required(ErrorMessage = "A kamera szektorának megadása kötelező!")]
+        [MinLength(2, ErrorMessage = "A kamera szektora nem lehet kevesebb mint 2 karakter")]
+        [MaxLength(48, ErrorMessage = "A kamera szektora nem lehet nagyobb mint 48 karakter")]
+        public string? Sector { get; set; } = string.Empty;
     }
 }

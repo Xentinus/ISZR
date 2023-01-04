@@ -1,81 +1,102 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ISZR.Models
 {
-	/// <summary>
-	/// Az igénylés státuszai
-	/// </summary>
-	public enum requestStatus
-	{
-		Végrehajtva,
-		Elutasítva,
-		Folyamatban
-	}
+    /// <summary>
+    /// Az igénylés státuszai
+    /// </summary>
+    public enum requestStatus
+    {
+        Végrehajtva,
+        Elutasítva,
+        Folyamatban
+    }
 
-	/// <summary>
-	/// Igénylések
-	/// </summary>
-	public class Request
-	{
-		/// <summary>
-		/// Az igénylés azonosító száma
-		/// </summary>
-		public int Id { get; set; }
+    /// <summary>
+    /// Igénylések
+    /// </summary>
+    public class Request
+    {
+        /// <summary>
+        /// Az igénylés azonosító száma
+        /// </summary>
+        [Key]
+        public int Id { get; set; }
 
-		/// <summary>
-		/// Igénylő felhasználói azonosítója
-		/// </summary>
-		public int? AuthorId { get; set; }
+        /// <summary>
+        /// Igénylő felhasználó
+        /// </summary>
+        [Display(Name = "Igénylő személy")]
+        [Required]
+        public virtual User? Author { get; set; }
 
-		/// <summary>
-		/// Az osztály azonosítója ahova kérvényezve lett az igénylés
-		/// </summary>
-		public int? ClassId { get; set; }
+        /// <summary>
+        /// Igénylő osztály
+        /// </summary>
+        [Display(Name = "Igénylő osztály")]
+        [Required]
+        public virtual Class? Class { get; set; }
 
-		/// <summary>
-		/// Az igénylés típusa
-		/// </summary>
-		public string? Type { get; set; }
+        /// <summary>
+        /// Az igénylés típusa
+        /// </summary>
+        [Display(Name = "Igénylés típusa")]
+        [Required]
+        public string? Type { get; set; } = string.Empty;
 
-		/// <summary>
-		/// Típuson bellüli típus (pl új felhasználó, többletjogosultság)
-		/// </summary>
-		public string? TypeOfType { get; set; }
+        /// <summary>
+        /// Személyek akiknek az igénylés zajlik
+        /// </summary>
+        [Display(Name = "Kinek a részére")]
+        [Required]
+        public List<string>? ToWho { get; set; }
 
-		/// <summary>
-		/// Személyek vagy csoportok akiknek az igénylés zajlik
-		/// </summary>
-		public string? ToWho { get; set; }
+        /// <summary>
+        /// Az igénylés leírása
+        /// </summary>
+        [Display(Name = "Igénylés leírása")]
+        [Required]
+        public string? Description { get; set; } = string.Empty;
 
-		/// <summary>
-		/// Az igénylés leírása
-		/// </summary>
-		public string? Description { get; set; }
+        /// <summary>
+        /// Igényelt főnix 3 jogosultságok
+        /// </summary>
+        [Display(Name = "Igényelt főnix 3 jogosultságok")]
+        public List<FonixPermission>? FonixPermissions { get; set; }
 
-		/// <summary>
-		/// Az igénylés feladásának ideje
-		/// </summary>
-		public DateTime StartedDate { get; set; } = DateTime.Now;
+        /// <summary>
+        /// Igényeld windows jogosultságok
+        /// </summary>
+        [Display(Name = "Igényelt windows jogosultságok")]
+        public List<WindowsPermission>? WindowsPermissions { get; set; }
 
-		/// <summary>
-		/// Az igénylés befejezézésnek időpontja
-		/// </summary>
-		public DateTime FinishedDate { get; set; }
+        /// <summary>
+        /// Az igénylés feladásának ideje
+        /// </summary>
+        [Display(Name = "Igénylés feladásának ideje")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime StartedDate { get; set; } = DateTime.Now;
 
-		/// <summary>
-		/// Az igénylés státusza
-		/// </summary>
-		public requestStatus Status { get; set; } = (requestStatus)2;
+        /// <summary>
+        /// Az igénylés befejezézésnek időpontja
+        /// </summary>
+        [Display(Name = "Igénylés befejezésének időpontja")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime FinishedDate { get; set; }
 
-		/// <summary>
-		/// Amennyiben az igénylés el lett utasíva, annak magyarázata
-		/// </summary>
-		public string? StatusDesc { get; set; }
+        /// <summary>
+        /// Az igénylés státusza
+        /// </summary>
+        [Display(Name = "Igénylés státusza")]
+        public requestStatus Status { get; set; } = (requestStatus)2;
 
-		/// <summary>
-		/// Igénylést elvégző személy azonosítója
-		/// </summary>
-		public string? StatusAuthorId { get; set; }
-	}
+        /// <summary>
+        /// Amennyiben az igénylés el lett utasíva, annak magyarázata
+        /// </summary>
+        [Display(Name = "Lezárás magyarázata")]
+        public string? StatusDesc { get; set; } = string.Empty;
+    }
 }

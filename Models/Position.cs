@@ -10,13 +10,16 @@ namespace ISZR.Models
         /// <summary>
         /// Beosztás azonosítója
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
         /// Beosztás megnevezése
         /// </summary>
-        [Required(ErrorMessage = "Kérlek adj nevet a beosztásnak!")]
-        [MinLength(3, ErrorMessage = "A beosztásnak legalább 3 karakter hosszúnak kell lennie!")]
-        public string? Name { get; set; }
+        [Display(Name = "Beosztás megnevezése")]
+        [Required(ErrorMessage = "A beosztás megnevezése kötelező!")]
+        [MinLength(3, ErrorMessage = "A beosztás neve nem lehet kevesebb mint 3 karakter")]
+        [MaxLength(48, ErrorMessage = "A beosztás neve nem lehet nagyobb mint 48 karakter")]
+        public string? Name { get; set; } = string.Empty;
     }
 }
