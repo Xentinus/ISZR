@@ -11,7 +11,7 @@ namespace ISZR.Models
         /// Kamera azonosítója
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public int CameraId { get; set; }
 
         /// <summary>
         /// Kamera neve

@@ -11,7 +11,7 @@ namespace ISZR.Models
         /// Beosztás azonosítója
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public int PositionId { get; set; }
 
         /// <summary>
         /// Beosztás megnevezése
@@ -21,5 +21,10 @@ namespace ISZR.Models
         [MinLength(3, ErrorMessage = "A beosztás neve nem lehet kevesebb mint 3 karakter")]
         [MaxLength(48, ErrorMessage = "A beosztás neve nem lehet nagyobb mint 48 karakter")]
         public string? Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Beosztáshoz hozzátartozó felhasználók (OneToMany)
+        /// </summary>
+        public virtual ICollection<User>? Users { get; set; }
     }
 }

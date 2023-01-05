@@ -11,7 +11,7 @@ namespace ISZR.Models
         /// Az osztály azonosítója ISZR-en belül
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public int ClassId { get; set; }
 
         /// <summary>
         /// Az osztály neve
@@ -38,16 +38,9 @@ namespace ISZR.Models
         [Required(ErrorMessage = "Az osztályvezető rendfokozatának kiválasztása kötelező!")]
         public string? LeaderRank { get; set; } = string.Empty;
 
-        // Relationships
-
         /// <summary>
-        /// Osztályhoz hozzátartozó felhasználók
+        /// Osztályhoz hozzátartozó felhasználók (OneToMany)
         /// </summary>
-        public List<User>? Users { get; set; }
-
-        /// <summary>
-        /// Osztályhoz hozzátartozó igénylések
-        /// </summary>
-        public List<Request>? Requests { get; set; }
+        public virtual ICollection<User>? Users { get; set; }
     }
 }

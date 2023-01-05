@@ -12,7 +12,7 @@ namespace ISZR.Models
         /// A felhasználó azonosítója ISZR-en belül
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         /// <summary>
         /// A BV-ben használt felhasználóneve
@@ -80,10 +80,21 @@ namespace ISZR.Models
         public DateTime LastLogin { get; set; } = DateTime.Now;
 
         /// <summary>
+        /// Felhasználóhoz osztálya
+        /// </summary>
+        [Display(Name = "Felhasználó osztálya")]
+        [Required(ErrorMessage = "Az osztály kiválasztása kötelező!")]
+        public Nullable<int> ClassId { get; set; }
+
+        public virtual Class? Class { get; set; }
+
+        /// <summary>
         /// Felhasználó beosztása
         /// </summary>
         [Display(Name = "Felhasználó beosztása")]
         [Required(ErrorMessage = "A beosztás megadása kötelező!")]
+        public Nullable<int> PositionId { get; set; }
+
         public virtual Position? Position { get; set; }
 
         /// <summary>

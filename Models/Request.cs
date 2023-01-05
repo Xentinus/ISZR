@@ -22,13 +22,15 @@ namespace ISZR.Models
         /// Az igénylés azonosító száma
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public int RequestId { get; set; }
 
         /// <summary>
         /// Igénylő felhasználó
         /// </summary>
         [Display(Name = "Igénylő személy")]
         [Required]
+        public Nullable<int> UserId { get; set; }
+
         public virtual User? Author { get; set; }
 
         /// <summary>
@@ -36,6 +38,8 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Igénylő osztály")]
         [Required]
+        public Nullable<int> ClassId { get; set; }
+
         public virtual Class? Class { get; set; }
 
         /// <summary>

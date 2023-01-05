@@ -11,7 +11,7 @@ namespace ISZR.Models
         /// Jogosultság azonosítója
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public int FonixPermissionId { get; set; }
 
         /// <summary>
         /// Jogosultság neve
