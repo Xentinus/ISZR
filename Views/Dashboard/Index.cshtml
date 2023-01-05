@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Irányítópult";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Irányítópult</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-4">
+            <div class="card card-widget widget-user">
+                <div class="widget-user-header bg-info">
+                    <h3 class="widget-user-username">@ViewBag.CurrentUser.DisplayName</h3>
+                    <h5 class="widget-user-desc">@ViewBag.CurrentUser.Position.Name</h5>
+                </div>
+                <div class="widget-user-image">
+                    <img class="img-circle elevation-2" src="~/img/avatar.png" alt="Profilkép">
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="card-body">
+                            <strong><i class="fas fa-users mr-1"></i> Osztály</strong>
+                            <p class="text-muted">@ViewBag.CurrentUser.Class.Name</p>
+                            <hr>
+                            <strong><i class="fas fa-envelope mr-1"></i> E-mail cím elérhetőség</strong>
+                            <p class="text-muted">@ViewBag.CurrentUser.Email</p>
+                            <hr>
+                            <strong><i class="fas fa-phone mr-1"></i> NTG elérhetőség</strong>
+                            <p class="text-muted">@ViewBag.CurrentUser.Phone</p>
+                            <hr>
+                            <strong><i class="fas fa-history mr-1"></i> Utolsó bejelentkezés</strong>
+                            <p class="text-muted">@ViewBag.CurrentUser.LastLogin</p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-header bg-info">
+                    <h5 class="card-title">Teljesítményed az osztályhoz képest</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="progress-group">
+                                Igényléseid
+                                <span class="float-right"><b>160</b>/200</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-info" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-group">
+                                Jováhagyott igényléseid
+                                <span class="float-right"><b>310</b>/400</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-success" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-group">
+                                Elutasított igényléseid
+                                <span class="float-right"><b>250</b>/500</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-danger" style="width: 50%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-group">
+                                Folyamatban lévő igényléseid
+                                <span class="float-right"><b>250</b>/500</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-warning" style="width: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

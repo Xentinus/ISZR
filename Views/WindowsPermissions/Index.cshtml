@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ISZR.Models.WindowsPermission>
+
+@{
+    ViewData["Title"] = "Windows jogosultságok karbantartása";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Windows jogosultságok karbantartása</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új windows jogosultság hozzáadása" class="btn btn-info" /></a></h3>
+                </div>
+
+                <div class="card-body p-0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Azonosító</th>
+                                <th>Jogosultsági csoport neve</th>
+                                <th>Hozzá tartozó Active Directory jogosultságok</th>
+                                <th>Archivált?</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.WindowsPermissionId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Permission)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Archived)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@item.WindowsPermissionId"><input type="button" value="Részletek" class="btn btn-info" /></a>
+                                        <a asp-action="Edit" asp-route-id="@item.WindowsPermissionId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
+                                        <a asp-action="Delete" asp-route-id="@item.WindowsPermissionId"><input type="button" value="Törlés" class="btn btn-danger" /></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

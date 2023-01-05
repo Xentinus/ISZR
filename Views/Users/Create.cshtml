@@ -1,0 +1,173 @@
+﻿@model ISZR.Models.User
+
+@{
+    ViewData["Title"] = "Felhasználó hozzáadása";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="callout callout-info">
+                    <h5><i class="fas fa-info"></i> Üdvözöllek az ISZR rendszerében!</h5>
+                    Az alkalmazás teljes használata előtt be kell állítani a veled kapcsolatos adatokat. Az itt beállított adatok a késöbbiekben módosíthatóak!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Első bejelentkezés során kért adatok</h3>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div class="row">
+                            <div class="col-12">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="m-2">Személyes adatok</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Név</label>
+                                    <span asp-validation-for="DisplayName" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Rendfokozat</label>
+                                    <span asp-validation-for="Rank" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-medal"></i></span>
+                                        </div>
+                                        <select asp-for="Rank" class="form-control">
+                                            <option>Munkavállaló</option>
+                                            <option>Rendvédelmi-alkalmazott</option>
+                                            <option>Őrmester</option>
+                                            <option>Törzsörmester</option>
+                                            <option>Főtörzsörmester</option>
+                                            <option>Zászlós</option>
+                                            <option>Törzszászlós</option>
+                                            <option>Főtörzszászlós</option>
+                                            <option>Hadnagy</option>
+                                            <option>Főhadnagy</option>
+                                            <option>Százados</option>
+                                            <option>Őrnagy</option>
+                                            <option>Alezredes</option>
+                                            <option>Ezredes</option>
+                                            <option>Dandártábornok</option>
+                                            <option>Vezérőrnagy</option>
+                                            <option>Altábornagy</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Osztály</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                        </div>
+                                        <select asp-for="ClassId" class="form-control" asp-items="ViewBag.ClassId"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Beosztás</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
+                                        </div>
+                                        <select asp-for="PositionId" class="form-control" asp-items="ViewBag.PositionId"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="m-2">Elérhetőség</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>E-mail cím</label>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        </div>
+                                        <input type="email" asp-for="Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>NTG elérhetőség</label>
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Phone" class="form-control" placeholder="1061234" spellcheck="true">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Iroda elhelyezkedése</label>
+                                    <span asp-validation-for="Location" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-map"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Location" class="form-control" placeholder="Hol található az iroda?" spellcheck="true">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" value="Bejelentkezés" class="btn btn-info" />
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.select2bs4').select2({
+        theme: 'bootstrap4'
+    })
+
+    //Date and time picker
+    $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

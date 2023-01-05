@@ -80,7 +80,7 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Igénylés feladásának ideje")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy.MMMM dd - HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime StartedDate { get; set; } = DateTime.Now;
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Igénylés befejezésének időpontja")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy.MMMM dd - HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime FinishedDate { get; set; }
 
         /// <summary>

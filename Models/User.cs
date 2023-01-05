@@ -18,9 +18,6 @@ namespace ISZR.Models
         /// A BV-ben használt felhasználóneve
         /// </summary>
         [Display(Name = "Felhasználónév")]
-        [Required(ErrorMessage = "A felhasználónév megadása kötelező!")]
-        [MinLength(3, ErrorMessage = "A felhasználónév nem lehet kevesebb mint 3 karakter")]
-        [MaxLength(32, ErrorMessage = "A felhasználónév nem lehet nagyobb mint 32 karakter")]
         public string? Username { get; set; } = string.Empty;
 
         /// <summary>
@@ -76,7 +73,7 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Utolsó bejelentkezés")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = true)]
         public DateTime LastLogin { get; set; } = DateTime.Now;
 
         /// <summary>
@@ -98,9 +95,8 @@ namespace ISZR.Models
         public virtual Position? Position { get; set; }
 
         /// <summary>
-        /// Felhasználó igénylései
+        /// A felhasználó bejelentkezhet e a weboldalra
         /// </summary>
-        [Display(Name = "Felhasználó igénylései")]
-        public virtual ICollection<Request>? Requests { get; set; }
+        public bool EnableLogin { get; set; } = true;
     }
 }
