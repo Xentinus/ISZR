@@ -26,17 +26,14 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="card-body">
+                            <strong><i class="fas fa-medal mr-1"></i> Rendfokozat</strong>
+                            <p class="text-muted">@ViewBag.CurrentUser.Rank</p>
+                            <hr>
                             <strong><i class="fas fa-users mr-1"></i> Osztály</strong>
                             <p class="text-muted">@ViewBag.CurrentUser.Class.Name</p>
                             <hr>
-                            <strong><i class="fas fa-envelope mr-1"></i> E-mail cím elérhetőség</strong>
-                            <p class="text-muted">@ViewBag.CurrentUser.Email</p>
-                            <hr>
-                            <strong><i class="fas fa-phone mr-1"></i> NTG elérhetőség</strong>
-                            <p class="text-muted">@ViewBag.CurrentUser.Phone</p>
-                            <hr>
                             <strong><i class="fas fa-history mr-1"></i> Utolsó bejelentkezés</strong>
-                            <p class="text-muted">@ViewBag.CurrentUser.LastLogin</p>
+                            <p class="text-muted">@ViewBag.CurrentUser.LastLogin.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")</p>
                             <hr>
                         </div>
                     </div>
