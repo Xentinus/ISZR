@@ -34,6 +34,7 @@ namespace ISZR.Controllers
             }
             else
             {
+                ViewBag.CurrentUser = user;
                 user.LastLogin = DateTime.Now;
                 try
                 {
@@ -45,8 +46,6 @@ namespace ISZR.Controllers
                     throw;
                 }
             }
-
-            ViewBag.CurrentUser = user;
 
             return View();
         }
