@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ISZR.Data;
 using ISZR.Models;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json.Linq;
 
 namespace ISZR.Controllers
 {
@@ -34,9 +36,9 @@ namespace ISZR.Controllers
             {
                 if (user.EnableLogin)
                 {
+                    // Update Last login time
                     try
                     {
-                        ViewBag.LastLogin = user.LastLogin;
                         user.LastLogin = DateTime.Now;
                         _context.Update(user);
                         await _context.SaveChangesAsync();
@@ -45,16 +47,16 @@ namespace ISZR.Controllers
                     {
                         throw;
                     }
-                    finally
-                    {
-                        ViewBag.CurrentUser = user;
-                    }
+
+                    // Redirect to Dashboard
                     return RedirectToAction("Index", "Dashboard");
                 }
 
+                // Access Denied
                 return NotFound();
             }
 
+            // Display registration page
             ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name");
             ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name");
             return View();

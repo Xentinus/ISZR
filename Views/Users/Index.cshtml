@@ -19,7 +19,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új windows jogosultság hozzáadása" class="btn btn-info" /></a></h3>
+                    <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új felhsználó hozzáadása" class="btn btn-info" /></a></h3>
                 </div>
 
                 <div class="card-body p-0">
@@ -30,7 +30,6 @@
                                 <th>Felhasználónév</th>
                                 <th>Név</th>
                                 <th>Osztály</th>
-                                <th>Bejelentkezhet?</th>
                                 <th>Utolsó bejelentkezés</th>
                                 <th></th>
                             </tr>
@@ -50,9 +49,6 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Class.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.EnableLogin)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.LastLogin)
