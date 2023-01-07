@@ -23,22 +23,6 @@ namespace ISZR.Models
         public string? Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// Az osztályt vezető neve
-        /// </summary>
-        [Display(Name = "Osztályvezető neve")]
-        [Required(ErrorMessage = "Az osztályvezető nevének megadása kötelező!")]
-        [MinLength(4, ErrorMessage = "Az osztályvezető neve nem lehet kevesebb mint 4 karakter")]
-        [MaxLength(64, ErrorMessage = "Az osztályvezető neve nem lehet nagyobb mint 64 karakter")]
-        public string? LeaderName { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Az osztályt vezető rendfokozata
-        /// </summary>
-        [Display(Name = "Osztályvezető rendfokozata")]
-        [Required(ErrorMessage = "Az osztályvezető rendfokozatának kiválasztása kötelező!")]
-        public string? LeaderRank { get; set; } = string.Empty;
-
-        /// <summary>
         /// Osztályhoz hozzátartozó felhasználók (OneToMany)
         /// </summary>
         public virtual ICollection<User>? Users { get; set; }

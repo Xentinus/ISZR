@@ -28,25 +28,7 @@ namespace ISZR.Controllers
                 .Include(u => u.Position)
                 .FirstOrDefaultAsync(m => m.Username == activeUsername);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                ViewBag.CurrentUser = user;
-                user.LastLogin = DateTime.Now;
-                try
-                {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    throw;
-                }
-            }
-
+            ViewBag.CurrentUser = user;
             return View();
         }
     }

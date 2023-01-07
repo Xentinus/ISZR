@@ -36,22 +36,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Osztályvezető neve</label>
-                                <p>@Html.DisplayFor(model => model.LeaderName)</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Osztályvezető rendfokozata</label>
-                                <p>@Html.DisplayFor(model => model.LeaderRank)</p>
-                                </div>
-                            </div>
-                        </div>
                     <a asp-action="Edit" asp-route-id="@Model?.ClassId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
                         <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
                 </div>

@@ -54,7 +54,7 @@ namespace ISZR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClassId,Name,LeaderName,LeaderRank")] Class @class)
+        public async Task<IActionResult> Create([Bind("ClassId,Name")] Class @class)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace ISZR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClassId,Name,LeaderName,LeaderRank")] Class @class)
+        public async Task<IActionResult> Edit(int id, [Bind("ClassId,Name")] Class @class)
         {
             if (id != @class.ClassId)
             {

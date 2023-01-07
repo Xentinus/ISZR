@@ -1,32 +1,30 @@
 ﻿@model ISZR.Models.User
 
 @{
-    ViewData["Title"] = "Felhasználó hozzáadása";
+    Layout = "~/Views/Shared/_FullPageLayout.cshtml";
+    ViewData["Title"] = "Üdvözöllek!";
 }
 
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="callout callout-info">
-                    <h5><i class="fas fa-info"></i> Üdvözöllek az ISZR rendszerében!</h5>
-                    Az alkalmazás teljes használata előtt be kell állítani a veled kapcsolatos adatokat. Az itt beállított adatok a késöbbiekben módosíthatóak!
+<div class="card card-outline card-info">
+    <div class="card-header text-center">
+        <h1>Üdvözöllek az új <span class="text-info font-weight-bold">ISZR</span>-ben!</h1>
+    </div>
+    <div class="card-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-info"></i> Fontos!</h5>
+                        <div>Az alkalmazás használatba vétele előtt szükséges minden felhasználónak egy felhasználói profilt létrehoznia.</div>
+                        <div>A felhasználói profilban beállítottak alapján fog a program elektronikus igényléseket készíteni, illetve személy/osztály igényléseket megjeleníteni.</div>
+                        <div class="font-weight-bold">Az itt beállított adatok a későbbiekben módosíthatóak!</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3 class="card-title">Első bejelentkezés során kért adatok</h3>
-                </div>
-
-                <div class="card-body">
-                    <form asp-action="Create">
+            <div class="row">
+                <div class="col-12">
+                    <form asp-action="Index">
                         <div class="row">
                             <div class="col-12">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -38,7 +36,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Név</label>
                                     <span asp-validation-for="DisplayName" class="text-danger"></span>
@@ -50,7 +48,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Rendfokozat</label>
                                     <span asp-validation-for="Rank" class="text-danger"></span>
@@ -80,7 +78,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Osztály</label>
                                     <div class="input-group mb-3">
@@ -91,7 +89,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Beosztás</label>
                                     <div class="input-group mb-3">
@@ -109,7 +107,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>E-mail cím</label>
                                     <span asp-validation-for="Email" class="text-danger"></span>
@@ -121,7 +119,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>NTG elérhetőség</label>
                                     <span asp-validation-for="Phone" class="text-danger"></span>
@@ -148,10 +146,9 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" value="Bejelentkezés" class="btn btn-info" />
+                        <input type="submit" value="Belépés az új ISZR-be!" class="btn btn-info" />
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
