@@ -34,26 +34,20 @@ namespace ISZR.Controllers
 
             if (user != null)
             {
-                if (user.EnableLogin)
+                // Update Last login time
+                try
                 {
-                    // Update Last login time
-                    try
-                    {
-                        user.LastLogin = DateTime.Now;
-                        _context.Update(user);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        throw;
-                    }
-
-                    // Redirect to Dashboard
-                    return RedirectToAction("Index", "Dashboard");
+                    user.LastLogin = DateTime.Now;
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
                 }
 
-                // Access Denied
-                return NotFound();
+                // Redirect to Dashboard
+                return RedirectToAction("Index", "Dashboard");
             }
 
             // Display registration page

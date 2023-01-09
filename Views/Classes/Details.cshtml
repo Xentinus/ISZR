@@ -23,21 +23,21 @@
                 </div>
 
                 <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Osztály megnevezése</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Osztály megnevezése</label>
                                 <p>@Html.DisplayFor(model => model.Name)</p>
-                                </div>
                             </div>
                         </div>
+                    </div>
                     <a asp-action="Edit" asp-route-id="@Model?.ClassId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
-                        <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+                    <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
                 </div>
 
             </div>

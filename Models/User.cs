@@ -73,7 +73,7 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Utolsó bejelentkezés")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
         public DateTime LastLogin { get; set; } = DateTime.Now;
 
         /// <summary>
@@ -93,10 +93,5 @@ namespace ISZR.Models
         public Nullable<int> PositionId { get; set; }
 
         public virtual Position? Position { get; set; }
-
-        /// <summary>
-        /// A felhasználó bejelentkezhet e a weboldalra
-        /// </summary>
-        public bool EnableLogin { get; set; } = true;
     }
 }

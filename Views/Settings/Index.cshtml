@@ -1,17 +1,14 @@
 ﻿@model ISZR.Models.User
 
 @{
-    ViewData["Title"] = "Felhasználó hozzáadása";
+    ViewData["Title"] = "Felhasználói beállítások";
 }
 
 <div class="content-header">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="callout callout-info">
-                    <h5><i class="fas fa-info"></i> Üdvözöllek az ISZR rendszerében!</h5>
-                    Az alkalmazás teljes használata előtt be kell állítani a veled kapcsolatos adatokat. Az itt beállított adatok a késöbbiekben módosíthatóak!
-                </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Felhasználó beállítások</h1>
             </div>
         </div>
     </div>
@@ -22,23 +19,25 @@
         <div class="col-12">
             <div class="card card-info">
                 <div class="card-header">
-                    <h3 class="card-title">Első bejelentkezés során kért adatok</h3>
+                    <h3 class="card-title">Felhasználóhoz tartozó adatok szerkesztése</h3>
                 </div>
-
                 <div class="card-body">
-                    <form asp-action="Create">
+                    <form asp-action="Edit">
                         <div class="row">
                             <div class="col-12">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             </div>
                         </div>
+                        <input type="hidden" asp-for="UserId" />
+                        <input type="hidden" asp-for="Username" />
+                        <input type="hidden" asp-for="LastLogin" />
                         <div class="row">
                             <div class="col-12">
                                 <h4 class="m-2">Személyes adatok</h4>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Név</label>
                                     <span asp-validation-for="DisplayName" class="text-danger"></span>
@@ -50,7 +49,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Rendfokozat</label>
                                     <span asp-validation-for="Rank" class="text-danger"></span>
@@ -80,7 +79,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Osztály</label>
                                     <div class="input-group mb-3">
@@ -91,7 +90,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Beosztás</label>
                                     <div class="input-group mb-3">
@@ -109,7 +108,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>E-mail cím</label>
                                     <span asp-validation-for="Email" class="text-danger"></span>
@@ -121,7 +120,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>NTG elérhetőség</label>
                                     <span asp-validation-for="Phone" class="text-danger"></span>
@@ -148,7 +147,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" value="Bejelentkezés" class="btn btn-info" />
+                        <input type="submit" value="Felhasználói beállítások mentése" class="btn btn-info" />
                     </form>
                 </div>
 
