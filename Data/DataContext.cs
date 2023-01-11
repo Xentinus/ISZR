@@ -25,5 +25,7 @@ namespace ISZR.Data
         public DbSet<ISZR.Models.Position> Position { get; set; }
 
         public DbSet<ISZR.Models.WindowsPermission> WindowsPermission { get; set; }
+
+        public DbSet<ISZR.Models.Group> Group { get; set; }
     }
 }

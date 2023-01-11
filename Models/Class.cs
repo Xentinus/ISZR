@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ISZR.Models
 {
@@ -23,8 +25,19 @@ namespace ISZR.Models
         public string? Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// Osztályhoz hozzátartozó felhasználók (OneToMany)
+        /// Osztályhoz hozzátartozó felhasználók
         /// </summary>
         public virtual ICollection<User>? Users { get; set; }
+
+        /// <summary>
+        /// Osztályhoz hozzátartozó csoportok
+        /// </summary>
+        public virtual ICollection<Group>? Groups { get; set; }
+
+        public Class()
+        {
+            Users = new Collection<User>();
+            Groups = new Collection<Group>();
+        }
     }
 }

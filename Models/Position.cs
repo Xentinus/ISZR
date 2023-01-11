@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ISZR.Models
 {
@@ -26,5 +27,10 @@ namespace ISZR.Models
         /// Beosztáshoz hozzátartozó felhasználók (OneToMany)
         /// </summary>
         public virtual ICollection<User>? Users { get; set; }
+
+        public Position()
+        {
+            Users = new Collection<User>();
+        }
     }
 }

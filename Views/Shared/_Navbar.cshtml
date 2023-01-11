@@ -20,7 +20,7 @@
             </a>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
+            <a class="nav-link bg-info" data-toggle="dropdown" aria-expanded="true">
                 <i class="fas fa-toolbox"></i>
                 <span>Karbantartások</span>
             </a>
@@ -28,12 +28,16 @@
                 <div class="dropdown-divider"></div>
                 <span class="dropdown-item dropdown-header bg-info">ISZR karbantartások</span>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">
-                    <i class="fas fa-user mr-2"></i> Felhasználók
-                </a>
-                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" asp-area="" asp-controller="Classes" asp-action="Index">
                     <i class="fas fa-users mr-2"></i> Osztályok
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" asp-area="" asp-controller="Groups" asp-action="Index">
+                    <i class="fas fa-user-friends mr-2"></i> Csoportok
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">
+                    <i class="fas fa-user mr-2"></i> Felhasználók
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" asp-area="" asp-controller="Positions" asp-action="Index">

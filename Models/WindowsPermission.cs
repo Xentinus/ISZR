@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ISZR.Models
 {
@@ -43,5 +44,15 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Archivált")]
         public bool Archived { get; set; } = false;
+
+        /// <summary>
+        /// Jogosultsághoz hozzátartozó csoportok
+        /// </summary>
+        public ICollection<GroupPermissions> Groups { get; set; }
+
+        public WindowsPermission()
+        {
+            Groups = new Collection<GroupPermissions>();
+        }
     }
 }
