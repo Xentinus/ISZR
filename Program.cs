@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.Negotiate;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Data;
+﻿global using ISZR.Data;
+global using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Negotiate;
 
 var builder = WebApplication.CreateBuilder(args);
 

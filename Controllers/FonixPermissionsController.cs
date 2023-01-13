@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Data;
-using ISZR.Models;
 
 namespace ISZR.Controllers
 {
@@ -22,18 +15,18 @@ namespace ISZR.Controllers
         // GET: FonixPermissions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FonixPermission.ToListAsync());
+            return View(await _context.FonixPermissions.ToListAsync());
         }
 
         // GET: FonixPermissions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.FonixPermission == null)
+            if (id == null || _context.FonixPermissions == null)
             {
                 return NotFound();
             }
 
-            var fonixPermission = await _context.FonixPermission
+            var fonixPermission = await _context.FonixPermissions
                 .FirstOrDefaultAsync(m => m.FonixPermissionId == id);
             if (fonixPermission == null)
             {
@@ -68,12 +61,12 @@ namespace ISZR.Controllers
         // GET: FonixPermissions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.FonixPermission == null)
+            if (id == null || _context.FonixPermissions == null)
             {
                 return NotFound();
             }
 
-            var fonixPermission = await _context.FonixPermission.FindAsync(id);
+            var fonixPermission = await _context.FonixPermissions.FindAsync(id);
             if (fonixPermission == null)
             {
                 return NotFound();
@@ -119,12 +112,12 @@ namespace ISZR.Controllers
         // GET: FonixPermissions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.FonixPermission == null)
+            if (id == null || _context.FonixPermissions == null)
             {
                 return NotFound();
             }
 
-            var fonixPermission = await _context.FonixPermission
+            var fonixPermission = await _context.FonixPermissions
                 .FirstOrDefaultAsync(m => m.FonixPermissionId == id);
             if (fonixPermission == null)
             {
@@ -139,14 +132,14 @@ namespace ISZR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.FonixPermission == null)
+            if (_context.FonixPermissions == null)
             {
                 return Problem("Entity set 'DataContext.FonixPermission'  is null.");
             }
-            var fonixPermission = await _context.FonixPermission.FindAsync(id);
+            var fonixPermission = await _context.FonixPermissions.FindAsync(id);
             if (fonixPermission != null)
             {
-                _context.FonixPermission.Remove(fonixPermission);
+                _context.FonixPermissions.Remove(fonixPermission);
             }
 
             await _context.SaveChangesAsync();
@@ -155,7 +148,7 @@ namespace ISZR.Controllers
 
         private bool FonixPermissionExists(int id)
         {
-            return _context.FonixPermission.Any(e => e.FonixPermissionId == id);
+            return _context.FonixPermissions.Any(e => e.FonixPermissionId == id);
         }
     }
 }

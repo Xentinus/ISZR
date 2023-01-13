@@ -1,8 +1,6 @@
-﻿using ISZR.Data;
-using ISZR.Models;
+﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace ISZR.Controllers
 {
@@ -20,7 +18,7 @@ namespace ISZR.Controllers
         {
             string? activeUsername = User.Identity?.Name;
 
-            var user = await _context.User
+            var user = await _context.Users
                 .Include(u => u.Class)
                 .Include(u => u.Position)
                 .FirstOrDefaultAsync(m => m.Username == activeUsername);
@@ -65,7 +63,7 @@ namespace ISZR.Controllers
 
         private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.UserId == id);
+            return _context.Users.Any(e => e.UserId == id);
         }
     }
 }

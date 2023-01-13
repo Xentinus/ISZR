@@ -17,7 +17,7 @@ namespace ISZR.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -46,7 +46,7 @@ namespace ISZR.Migrations
 
                     b.HasKey("CameraId");
 
-                    b.ToTable("Camera");
+                    b.ToTable("Cameras");
                 });
 
             modelBuilder.Entity("ISZR.Models.Class", b =>
@@ -64,7 +64,7 @@ namespace ISZR.Migrations
 
                     b.HasKey("ClassId");
 
-                    b.ToTable("Class");
+                    b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("ISZR.Models.FonixPermission", b =>
@@ -75,11 +75,11 @@ namespace ISZR.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FonixPermissionId"), 1L, 1);
 
-                    b.Property<bool>("Archived")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("CountryView")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -88,64 +88,25 @@ namespace ISZR.Migrations
                     b.Property<bool>("Edit")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("ModifyDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("View")
                         .HasColumnType("bit");
 
                     b.HasKey("FonixPermissionId");
 
-                    b.ToTable("FonixPermission");
-                });
+                    b.HasIndex("UserId");
 
-            modelBuilder.Entity("ISZR.Models.Group", b =>
-                {
-                    b.Property<int>("GroupId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupId"), 1L, 1);
-
-                    b.Property<int?>("ClassId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(48)
-                        .HasColumnType("nvarchar(48)");
-
-                    b.HasKey("GroupId");
-
-                    b.HasIndex("ClassId");
-
-                    b.ToTable("Group");
-                });
-
-            modelBuilder.Entity("ISZR.Models.GroupPermissions", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("WindowsPermissionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("WindowsPermissionId");
-
-                    b.ToTable("GroupPermissions");
+                    b.ToTable("FonixPermissions");
                 });
 
             modelBuilder.Entity("ISZR.Models.Position", b =>
@@ -163,7 +124,49 @@ namespace ISZR.Migrations
 
                     b.HasKey("PositionId");
 
-                    b.ToTable("Position");
+                    b.ToTable("Positions");
+                });
+
+            modelBuilder.Entity("ISZR.Models.Request", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"), 1L, 1);
+
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestedPermissions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ResolveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RequestId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ClassId");
+
+                    b.ToTable("Request");
                 });
 
             modelBuilder.Entity("ISZR.Models.User", b =>
@@ -217,7 +220,7 @@ namespace ISZR.Migrations
 
                     b.HasIndex("PositionId");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ISZR.Models.WindowsPermission", b =>
@@ -228,12 +231,15 @@ namespace ISZR.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WindowsPermissionId"), 1L, 1);
 
-                    b.Property<bool>("Archived")
-                        .HasColumnType("bit");
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifyDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -244,35 +250,38 @@ namespace ISZR.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("WindowsPermissionId");
 
-                    b.ToTable("WindowsPermission");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WindowsPermissions");
                 });
 
-            modelBuilder.Entity("ISZR.Models.Group", b =>
+            modelBuilder.Entity("ISZR.Models.FonixPermission", b =>
                 {
+                    b.HasOne("ISZR.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ISZR.Models.Request", b =>
+                {
+                    b.HasOne("ISZR.Models.User", "Author")
+                        .WithMany("Requests")
+                        .HasForeignKey("AuthorId");
+
                     b.HasOne("ISZR.Models.Class", "Class")
-                        .WithMany("Groups")
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Requests")
+                        .HasForeignKey("ClassId");
+
+                    b.Navigation("Author");
 
                     b.Navigation("Class");
-                });
-
-            modelBuilder.Entity("ISZR.Models.GroupPermissions", b =>
-                {
-                    b.HasOne("ISZR.Models.Group", "Group")
-                        .WithMany("Permissions")
-                        .HasForeignKey("GroupId");
-
-                    b.HasOne("ISZR.Models.WindowsPermission", "WindowsPermission")
-                        .WithMany("Groups")
-                        .HasForeignKey("WindowsPermissionId");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("WindowsPermission");
                 });
 
             modelBuilder.Entity("ISZR.Models.User", b =>
@@ -294,16 +303,20 @@ namespace ISZR.Migrations
                     b.Navigation("Position");
                 });
 
-            modelBuilder.Entity("ISZR.Models.Class", b =>
+            modelBuilder.Entity("ISZR.Models.WindowsPermission", b =>
                 {
-                    b.Navigation("Groups");
+                    b.HasOne("ISZR.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Users");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ISZR.Models.Group", b =>
+            modelBuilder.Entity("ISZR.Models.Class", b =>
                 {
-                    b.Navigation("Permissions");
+                    b.Navigation("Requests");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ISZR.Models.Position", b =>
@@ -311,9 +324,9 @@ namespace ISZR.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("ISZR.Models.WindowsPermission", b =>
+            modelBuilder.Entity("ISZR.Models.User", b =>
                 {
-                    b.Navigation("Groups");
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

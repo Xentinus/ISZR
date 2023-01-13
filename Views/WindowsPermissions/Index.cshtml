@@ -29,7 +29,6 @@
                                 <th>Azonosító</th>
                                 <th>Jogosultsági csoport neve</th>
                                 <th>Hozzá tartozó Active Directory jogosultságok</th>
-                                <th>Archivált?</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -45,9 +44,6 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Permission)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Archived)
                                     </td>
                                     <td>
                                         <a asp-action="Details" asp-route-id="@item.WindowsPermissionId"><input type="button" value="Részletek" class="btn btn-info" /></a>

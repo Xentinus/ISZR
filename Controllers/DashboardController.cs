@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Data;
-using ISZR.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ISZR.Controllers
 {
@@ -25,7 +17,7 @@ namespace ISZR.Controllers
             string? activeUsername = User.Identity?.Name;
 
             // looking for user data
-            var user = await _context.User
+            var user = await _context.Users
                 .Include(u => u.Class)
                 .Include(u => u.Position)
                 .FirstOrDefaultAsync(m => m.Username == activeUsername);

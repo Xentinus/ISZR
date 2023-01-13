@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Data;
-using ISZR.Models;
 
 namespace ISZR.Controllers
 {
@@ -22,18 +15,18 @@ namespace ISZR.Controllers
         // GET: Cameras
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Camera.ToListAsync());
+            return View(await _context.Cameras.ToListAsync());
         }
 
         // GET: Cameras/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Camera == null)
+            if (id == null || _context.Cameras == null)
             {
                 return NotFound();
             }
 
-            var camera = await _context.Camera
+            var camera = await _context.Cameras
                 .FirstOrDefaultAsync(m => m.CameraId == id);
             if (camera == null)
             {
@@ -68,12 +61,12 @@ namespace ISZR.Controllers
         // GET: Cameras/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Camera == null)
+            if (id == null || _context.Cameras == null)
             {
                 return NotFound();
             }
 
-            var camera = await _context.Camera.FindAsync(id);
+            var camera = await _context.Cameras.FindAsync(id);
             if (camera == null)
             {
                 return NotFound();
@@ -119,12 +112,12 @@ namespace ISZR.Controllers
         // GET: Cameras/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Camera == null)
+            if (id == null || _context.Cameras == null)
             {
                 return NotFound();
             }
 
-            var camera = await _context.Camera
+            var camera = await _context.Cameras
                 .FirstOrDefaultAsync(m => m.CameraId == id);
             if (camera == null)
             {
@@ -139,14 +132,14 @@ namespace ISZR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Camera == null)
+            if (_context.Cameras == null)
             {
                 return Problem("Entity set 'DataContext.Camera'  is null.");
             }
-            var camera = await _context.Camera.FindAsync(id);
+            var camera = await _context.Cameras.FindAsync(id);
             if (camera != null)
             {
-                _context.Camera.Remove(camera);
+                _context.Cameras.Remove(camera);
             }
 
             await _context.SaveChangesAsync();
@@ -155,7 +148,7 @@ namespace ISZR.Controllers
 
         private bool CameraExists(int id)
         {
-            return _context.Camera.Any(e => e.CameraId == id);
+            return _context.Cameras.Any(e => e.CameraId == id);
         }
     }
 }

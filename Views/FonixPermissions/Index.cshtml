@@ -28,7 +28,6 @@
                             <tr>
                                 <th>Azonosító</th>
                                 <th>Jogosultság neve</th>
-                                <th>Archivált?</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -41,9 +40,6 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Archived)
                                     </td>
                                     <td>
                                         <a asp-action="Details" asp-route-id="@item.FonixPermissionId"><input type="button" value="Részletek" class="btn btn-info" /></a>

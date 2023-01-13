@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Data;
-using ISZR.Models;
 
 namespace ISZR.Controllers
 {
@@ -22,23 +15,23 @@ namespace ISZR.Controllers
         // GET: Classes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Class.ToListAsync());
+            return View(await _context.Classes.ToListAsync());
         }
 
         // GET: Classes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Class == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Classes == null) return NotFound();
 
-            var @class = await _context.Class
+            var @class = await _context.Classes
                 .FirstOrDefaultAsync(m => m.ClassId == id);
-            if (@class == null)
-            {
-                return NotFound();
-            }
+
+            if (@class == null) return NotFound();
+
+            ///
+            //@class.Users = await _context.User
+            //   .Where(u => u.ClassId == id)
+            //  .ToListAsync();
 
             return View(@class);
         }
@@ -68,12 +61,12 @@ namespace ISZR.Controllers
         // GET: Classes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Class == null)
+            if (id == null || _context.Classes == null)
             {
                 return NotFound();
             }
 
-            var @class = await _context.Class.FindAsync(id);
+            var @class = await _context.Classes.FindAsync(id);
             if (@class == null)
             {
                 return NotFound();
@@ -119,12 +112,12 @@ namespace ISZR.Controllers
         // GET: Classes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Class == null)
+            if (id == null || _context.Classes == null)
             {
                 return NotFound();
             }
 
-            var @class = await _context.Class
+            var @class = await _context.Classes
                 .FirstOrDefaultAsync(m => m.ClassId == id);
             if (@class == null)
             {
@@ -139,14 +132,14 @@ namespace ISZR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Class == null)
+            if (_context.Classes == null)
             {
                 return Problem("Entity set 'DataContext.Class'  is null.");
             }
-            var @class = await _context.Class.FindAsync(id);
+            var @class = await _context.Classes.FindAsync(id);
             if (@class != null)
             {
-                _context.Class.Remove(@class);
+                _context.Classes.Remove(@class);
             }
 
             await _context.SaveChangesAsync();
@@ -155,7 +148,7 @@ namespace ISZR.Controllers
 
         private bool ClassExists(int id)
         {
-            return _context.Class.Any(e => e.ClassId == id);
+            return _context.Classes.Any(e => e.ClassId == id);
         }
     }
 }

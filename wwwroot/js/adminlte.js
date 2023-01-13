@@ -154,7 +154,6 @@
    * ====================================================
    */
 
-
   $__default["default"](document).on('click', SELECTOR_DATA_REFRESH, function (event) {
     if (event) {
       event.preventDefault();
@@ -371,7 +370,6 @@
    * ====================================================
    */
 
-
   $__default["default"](document).on('click', SELECTOR_DATA_COLLAPSE, function (event) {
     if (event) {
       event.preventDefault();
@@ -461,7 +459,6 @@
       this._config = config;
     } // Public
 
-
     var _proto = ControlSidebar.prototype;
 
     _proto.collapse = function collapse() {
@@ -498,7 +495,6 @@
       if (toggle) {
         $__default["default"](SELECTOR_CONTROL_SIDEBAR).hide();
       } // Collapse the control sidebar
-
 
       if (this._config.controlsidebarSlide) {
         $html.addClass(CLASS_NAME_CONTROL_SIDEBAR_ANIMATE);
@@ -700,7 +696,6 @@
    * ====================================================
    */
 
-
   $__default["default"](document).on('click', SELECTOR_DATA_TOGGLE$4, function (event) {
     event.preventDefault();
 
@@ -780,7 +775,6 @@
    * ====================================================
    */
 
-
   $__default["default"](document).on('click', SELECTOR_DATA_TOGGLE$3, function (event) {
     if (event) {
       event.preventDefault();
@@ -833,7 +827,6 @@
       this._config = config;
       this._element = element;
     } // Public
-
 
     var _proto = Dropdown.prototype;
 
@@ -910,7 +903,6 @@
    * ====================================================
    */
 
-
   $__default["default"](SELECTOR_DROPDOWN_MENU + " " + SELECTOR_DROPDOWN_TOGGLE).on('click', function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -972,7 +964,6 @@
       this._options = options;
       this._element = element;
     } // Public
-
 
     var _proto = ExpandableTable.prototype;
 
@@ -1043,7 +1034,6 @@
     * ====================================================
     */
 
-
   $__default["default"](SELECTOR_TABLE).ready(function () {
     ExpandableTable._jQueryInterface.call($__default["default"](this), 'init');
   });
@@ -1094,7 +1084,6 @@
       this.element = _element;
       this.options = $__default["default"].extend({}, Default$8, _options);
     } // Public
-
 
     var _proto = Fullscreen.prototype;
 
@@ -1160,7 +1149,6 @@
     * Data API
     * ====================================================
     */
-
 
   $__default["default"](document).on('click', SELECTOR_DATA_WIDGET$2, function () {
     Fullscreen._jQueryInterface.call($__default["default"](this), 'toggle');
@@ -1251,7 +1239,6 @@
 
       this._init();
     } // Public
-
 
     var _proto = IFrame.prototype;
 
@@ -1659,7 +1646,6 @@
    * ====================================================
    */
 
-
   $__default["default"](window).on('load', function () {
     IFrame._jQueryInterface.call($__default["default"](SELECTOR_DATA_TOGGLE$1));
   });
@@ -1725,7 +1711,6 @@
       this._config = config;
       this._element = element;
     } // Public
-
 
     var _proto = Layout.prototype;
 
@@ -1906,7 +1891,6 @@
    * ====================================================
    */
 
-
   $__default["default"](window).on('load', function () {
     Layout._jQueryInterface.call($__default["default"]('body'));
   });
@@ -1976,7 +1960,6 @@
 
       this._init();
     } // Public
-
 
     var _proto = PushMenu.prototype;
 
@@ -2127,7 +2110,6 @@
    * ====================================================
    */
 
-
   $__default["default"](document).on('click', SELECTOR_TOGGLE_BUTTON$1, function (event) {
     event.preventDefault();
     var button = event.currentTarget;
@@ -2205,7 +2187,6 @@
       this.options = $__default["default"].extend({}, Default$4, _options);
       this.items = [];
     } // Public
-
 
     var _proto = SidebarSearch.prototype;
 
@@ -2388,7 +2369,6 @@
    * ====================================================
    */
 
-
   $__default["default"](document).on('click', SELECTOR_SEARCH_BUTTON, function (event) {
     event.preventDefault();
 
@@ -2483,7 +2463,6 @@
       this._config = $__default["default"].extend({}, Default$3, _options);
     } // Public
 
-
     var _proto = NavbarSearch.prototype;
 
     _proto.open = function open() {
@@ -2533,7 +2512,6 @@
    * Data API
    * ====================================================
    */
-
 
   $__default["default"](document).on('click', SELECTOR_TOGGLE_BUTTON, function (event) {
     event.preventDefault();
@@ -2618,7 +2596,6 @@
 
       $__default["default"]('body').trigger($__default["default"].Event(EVENT_INIT));
     } // Public
-
 
     var _proto = Toasts.prototype;
 
@@ -2751,7 +2728,6 @@
    * ====================================================
    */
 
-
   $__default["default"].fn[NAME$2] = Toasts._jQueryInterface;
   $__default["default"].fn[NAME$2].Constructor = Toasts;
 
@@ -2796,7 +2772,6 @@
 
       this._init();
     } // Public
-
 
     var _proto = TodoList.prototype;
 
@@ -2857,7 +2832,6 @@
    * ====================================================
    */
 
-
   $__default["default"](window).on('load', function () {
     TodoList._jQueryInterface.call($__default["default"](SELECTOR_DATA_TOGGLE));
   });
@@ -2917,7 +2891,6 @@
       this._config = config;
       this._element = element;
     } // Public
-
 
     var _proto = Treeview.prototype;
 
@@ -3028,7 +3001,6 @@
    * ====================================================
    */
 
-
   $__default["default"](window).on(EVENT_LOAD_DATA_API, function () {
     $__default["default"](SELECTOR_DATA_WIDGET).each(function () {
       Treeview._jQueryInterface.call($__default["default"](this), 'init');
@@ -3064,6 +3036,5 @@
   exports.Treeview = Treeview;
 
   Object.defineProperty(exports, '__esModule', { value: true });
-
 }));
 //# sourceMappingURL=adminlte.js.map

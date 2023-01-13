@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ISZR.Models
 {
@@ -93,5 +93,15 @@ namespace ISZR.Models
         public Nullable<int> PositionId { get; set; }
 
         public virtual Position? Position { get; set; }
+
+        /// <summary>
+        /// Felhasználóhoz hozzátartozó igénylések
+        /// </summary>
+        public virtual ICollection<Request> Requests { get; set; }
+
+        public User()
+        {
+            Requests = new Collection<Request>();
+        }
     }
 }

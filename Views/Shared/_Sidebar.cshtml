@@ -21,19 +21,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-check-circle"></i>
-                        <p>
-                            Lezárt igénylések
-                            <span class="right badge badge-danger">ÚJ</span>
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Index">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>
-                            Folyamatban lévő igénylések
+                            Igénylések
                             <span class="right badge badge-danger">ÚJ</span>
                         </p>
                     </a>

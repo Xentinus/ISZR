@@ -25,7 +25,6 @@
                                 <th>Azonosító</th>
                                 <th>Felhasználónév</th>
                                 <th>Név</th>
-                                <th>Osztály</th>
                                 <th>Utolsó bejelentkezés</th>
                                 <th></th>
                             </tr>
@@ -42,9 +41,6 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.DisplayName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Class.Name)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.LastLogin)

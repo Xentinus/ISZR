@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Data;
-using ISZR.Models;
 
 namespace ISZR.Controllers
 {
@@ -22,18 +15,18 @@ namespace ISZR.Controllers
         // GET: WindowsPermissions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.WindowsPermission.ToListAsync());
+            return View(await _context.WindowsPermissions.ToListAsync());
         }
 
         // GET: WindowsPermissions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.WindowsPermission == null)
+            if (id == null || _context.WindowsPermissions == null)
             {
                 return NotFound();
             }
 
-            var windowsPermission = await _context.WindowsPermission
+            var windowsPermission = await _context.WindowsPermissions
                 .FirstOrDefaultAsync(m => m.WindowsPermissionId == id);
             if (windowsPermission == null)
             {
@@ -68,12 +61,12 @@ namespace ISZR.Controllers
         // GET: WindowsPermissions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.WindowsPermission == null)
+            if (id == null || _context.WindowsPermissions == null)
             {
                 return NotFound();
             }
 
-            var windowsPermission = await _context.WindowsPermission.FindAsync(id);
+            var windowsPermission = await _context.WindowsPermissions.FindAsync(id);
             if (windowsPermission == null)
             {
                 return NotFound();
@@ -119,12 +112,12 @@ namespace ISZR.Controllers
         // GET: WindowsPermissions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.WindowsPermission == null)
+            if (id == null || _context.WindowsPermissions == null)
             {
                 return NotFound();
             }
 
-            var windowsPermission = await _context.WindowsPermission
+            var windowsPermission = await _context.WindowsPermissions
                 .FirstOrDefaultAsync(m => m.WindowsPermissionId == id);
             if (windowsPermission == null)
             {
@@ -139,14 +132,14 @@ namespace ISZR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.WindowsPermission == null)
+            if (_context.WindowsPermissions == null)
             {
                 return Problem("Entity set 'DataContext.WindowsPermission'  is null.");
             }
-            var windowsPermission = await _context.WindowsPermission.FindAsync(id);
+            var windowsPermission = await _context.WindowsPermissions.FindAsync(id);
             if (windowsPermission != null)
             {
-                _context.WindowsPermission.Remove(windowsPermission);
+                _context.WindowsPermissions.Remove(windowsPermission);
             }
 
             await _context.SaveChangesAsync();
@@ -155,7 +148,7 @@ namespace ISZR.Controllers
 
         private bool WindowsPermissionExists(int id)
         {
-            return _context.WindowsPermission.Any(e => e.WindowsPermissionId == id);
+            return _context.WindowsPermissions.Any(e => e.WindowsPermissionId == id);
         }
     }
 }

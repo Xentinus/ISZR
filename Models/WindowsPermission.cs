@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ISZR.Models
 {
@@ -40,19 +39,27 @@ namespace ISZR.Models
         public string? Permission { get; set; } = string.Empty;
 
         /// <summary>
-        /// A jogosultság archiválva lett e
+        /// Jogosultság készítésének időpontja
         /// </summary>
-        [Display(Name = "Archivált")]
-        public bool Archived { get; set; } = false;
+        [Display(Name = "Jogosultság készítésének időpontja")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
+        public DateTime CreationDate { get; set; } = DateTime.Now;
 
         /// <summary>
-        /// Jogosultsághoz hozzátartozó csoportok
+        /// Utoljára szerkesztette
         /// </summary>
-        public ICollection<GroupPermissions> Groups { get; set; }
+        [Display(Name = "Utoljára szerkesztette")]
+        public Nullable<int> UserId { get; set; }
 
-        public WindowsPermission()
-        {
-            Groups = new Collection<GroupPermissions>();
-        }
+        public virtual User? User { get; set; }
+
+        /// <summary>
+        /// Jogosultság utolsó szerkesztésének ideje
+        /// </summary>
+        [Display(Name = "Jogosultság utolsó szerkesztésének ideje")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
+        public DateTime ModifyDate { get; set; } = DateTime.Now;
     }
 }

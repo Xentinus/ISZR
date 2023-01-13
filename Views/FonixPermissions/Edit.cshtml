@@ -84,18 +84,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label for="edit">Archivált?</label>
-                                    <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                        <input asp-for="Archived" type="checkbox" class="custom-control-input" id="edit">
-                                        <label class="custom-control-label" for="edit"></label>
-                                    </div>
-                                    <span asp-validation-for="Archived" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
                         <input type="submit" value="Mentés" class="btn btn-warning" />
                         <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
                     </form>
@@ -107,5 +95,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

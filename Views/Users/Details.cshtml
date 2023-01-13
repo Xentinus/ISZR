@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Felhasználó részletei";
+    string? className = Model?.Class != null ? Model?.Class.Name : "";
+    string? positionName = Model?.Position != null ? Model?.Position.Name : "";
 }
 
 <div class="content-header">
@@ -79,7 +81,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-users"></i></span>
                                     </div>
-                                    <input type="text" value="@Model?.Class.Name" class="form-control" disabled>
+                                    <input type="text" value="@className" class="form-control" disabled>
                                 </div>
                             </div>
                         </div>
@@ -90,7 +92,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
                                     </div>
-                                    <input type="text" value="@Model?.Position.Name" class="form-control" disabled>
+                                    <input type="text" value="@positionName" class="form-control" disabled>
                                 </div>
                             </div>
                         </div>

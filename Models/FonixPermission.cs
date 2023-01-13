@@ -49,9 +49,27 @@ namespace ISZR.Models
         public bool Edit { get; set; } = true;
 
         /// <summary>
-        /// A jogosultság archiválva lett e
+        /// Jogosultság készítésének időpontja
         /// </summary>
-        [Display(Name = "Archivált")]
-        public bool Archived { get; set; } = false;
+        [Display(Name = "Jogosultság készítésének időpontja")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
+        public DateTime CreationDate { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// Utoljára szerkesztette
+        /// </summary>
+        [Display(Name = "Utoljára szerkesztette")]
+        public Nullable<int> UserId { get; set; }
+
+        public virtual User? User { get; set; }
+
+        /// <summary>
+        /// Jogosultság utolsó szerkesztésének ideje
+        /// </summary>
+        [Display(Name = "Jogosultság utolsó szerkesztésének ideje")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
+        public DateTime ModifyDate { get; set; } = DateTime.Now;
     }
 }

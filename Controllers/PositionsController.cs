@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Data;
-using ISZR.Models;
 
 namespace ISZR.Controllers
 {
@@ -22,18 +15,18 @@ namespace ISZR.Controllers
         // GET: Positions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Position.ToListAsync());
+            return View(await _context.Positions.ToListAsync());
         }
 
         // GET: Positions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Position == null)
+            if (id == null || _context.Positions == null)
             {
                 return NotFound();
             }
 
-            var position = await _context.Position
+            var position = await _context.Positions
                 .FirstOrDefaultAsync(m => m.PositionId == id);
             if (position == null)
             {
@@ -68,12 +61,12 @@ namespace ISZR.Controllers
         // GET: Positions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Position == null)
+            if (id == null || _context.Positions == null)
             {
                 return NotFound();
             }
 
-            var position = await _context.Position.FindAsync(id);
+            var position = await _context.Positions.FindAsync(id);
             if (position == null)
             {
                 return NotFound();
@@ -119,12 +112,12 @@ namespace ISZR.Controllers
         // GET: Positions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Position == null)
+            if (id == null || _context.Positions == null)
             {
                 return NotFound();
             }
 
-            var position = await _context.Position
+            var position = await _context.Positions
                 .FirstOrDefaultAsync(m => m.PositionId == id);
             if (position == null)
             {
@@ -139,14 +132,14 @@ namespace ISZR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Position == null)
+            if (_context.Positions == null)
             {
                 return Problem("Entity set 'DataContext.Position'  is null.");
             }
-            var position = await _context.Position.FindAsync(id);
+            var position = await _context.Positions.FindAsync(id);
             if (position != null)
             {
-                _context.Position.Remove(position);
+                _context.Positions.Remove(position);
             }
 
             await _context.SaveChangesAsync();
@@ -155,7 +148,7 @@ namespace ISZR.Controllers
 
         private bool PositionExists(int id)
         {
-            return _context.Position.Any(e => e.PositionId == id);
+            return _context.Positions.Any(e => e.PositionId == id);
         }
     }
 }
