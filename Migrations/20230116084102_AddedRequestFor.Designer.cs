@@ -4,6 +4,7 @@ using ISZR.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISZR.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230116084102_AddedRequestFor")]
+    partial class AddedRequestFor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,9 +58,6 @@ namespace ISZR.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassId"), 1L, 1);
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -120,9 +119,6 @@ namespace ISZR.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PositionId"), 1L, 1);
 
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(48)
@@ -141,6 +137,9 @@ namespace ISZR.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"), 1L, 1);
 
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ClassId")
                         .HasColumnType("int");
 
@@ -150,11 +149,9 @@ namespace ISZR.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RequestAuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RequestForId")
-                        .HasColumnType("int");
+                    b.Property<string>("RequestFor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RequestedPermissions")
                         .HasColumnType("nvarchar(max)");
@@ -170,11 +167,9 @@ namespace ISZR.Migrations
 
                     b.HasKey("RequestId");
 
+                    b.HasIndex("AuthorId");
+
                     b.HasIndex("ClassId");
-
-                    b.HasIndex("RequestAuthorId");
-
-                    b.HasIndex("RequestForId");
 
                     b.ToTable("Request");
                 });
@@ -200,12 +195,6 @@ namespace ISZR.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("LastLogin")
                         .HasColumnType("datetime2");
 
@@ -213,9 +202,6 @@ namespace ISZR.Migrations
                         .IsRequired()
                         .HasMaxLength(48)
                         .HasColumnType("nvarchar(48)");
-
-                    b.Property<int>("LogonCount")
-                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -290,23 +276,17 @@ namespace ISZR.Migrations
 
             modelBuilder.Entity("ISZR.Models.Request", b =>
                 {
+                    b.HasOne("ISZR.Models.User", "Author")
+                        .WithMany("Requests")
+                        .HasForeignKey("AuthorId");
+
                     b.HasOne("ISZR.Models.Class", "Class")
                         .WithMany("Requests")
                         .HasForeignKey("ClassId");
 
-                    b.HasOne("ISZR.Models.User", "RequestAuthor")
-                        .WithMany("RequestAuthor")
-                        .HasForeignKey("RequestAuthorId");
-
-                    b.HasOne("ISZR.Models.User", "RequestFor")
-                        .WithMany("RequestFor")
-                        .HasForeignKey("RequestForId");
+                    b.Navigation("Author");
 
                     b.Navigation("Class");
-
-                    b.Navigation("RequestAuthor");
-
-                    b.Navigation("RequestFor");
                 });
 
             modelBuilder.Entity("ISZR.Models.User", b =>
@@ -351,9 +331,7 @@ namespace ISZR.Migrations
 
             modelBuilder.Entity("ISZR.Models.User", b =>
                 {
-                    b.Navigation("RequestAuthor");
-
-                    b.Navigation("RequestFor");
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

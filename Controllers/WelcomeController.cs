@@ -1,6 +1,7 @@
 ﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace ISZR.Controllers
 {
@@ -23,12 +24,13 @@ namespace ISZR.Controllers
                 .Include(u => u.Position)
                 .FirstOrDefaultAsync(m => m.Username == activeUsername);
 
-            if (user != null)
+            if (user != null && user.LogonCount > 0)
             {
                 // Update Last login time
                 try
                 {
                     user.LastLogin = DateTime.Now;
+                    user.LogonCount++;
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
@@ -44,6 +46,11 @@ namespace ISZR.Controllers
             // Display registration page
             ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name");
             ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name");
+
+            // Return full form if user exists
+            if (user?.LogonCount == 0) return View(user);
+
+            // Return empty form
             return View();
         }
 
@@ -54,13 +61,35 @@ namespace ISZR.Controllers
         {
             if (ModelState.IsValid)
             {
-                user.Username = User.Identity?.Name;
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                string? activeUsername = User.Identity?.Name;
+
+                var existsUser = await _context.Users
+                    .Include(u => u.Class)
+                    .Include(u => u.Position)
+                    .FirstOrDefaultAsync(m => m.Username == activeUsername);
+
+                if (existsUser == null)
+                {
+                    user.Username = User.Identity?.Name;
+                    user.LogonCount = 1;
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    existsUser.LogonCount = 1;
+                    _context.Update(existsUser);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+
+            // Display registration page
             ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name", user.ClassId);
             ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name", user.PositionId);
+
+            // Return full form
             return View(user);
         }
     }

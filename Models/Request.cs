@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ISZR.Models
 {
@@ -29,7 +30,6 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Igénylés leírása")]
         [DataType(DataType.MultilineText)]
-        [Required(ErrorMessage = "Az igénylés leírása kötelező!")]
         public string? Description { get; set; } = string.Empty;
 
         /// <summary>
@@ -43,18 +43,19 @@ namespace ISZR.Models
         /// Igénylés készítésének időpontja
         /// </summary>
         [Display(Name = "Igénylés készítésének időpontja")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}")]
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Igénylést feladó felhasználó
         /// </summary>
         [Display(Name = "Igénylést feladó felhasználó")]
-        public Nullable<int> AuthorId { get; set; }
+        public Nullable<int> RequestAuthorId { get; set; }
 
         [Display(Name = "Igénylést feladó felhasználó")]
-        public virtual User? Author { get; set; }
+        [ForeignKey("RequestAuthorId")]
+        public virtual User? RequestAuthor { get; set; }
 
         /// <summary>
         /// Igényléshez hozzátartozó osztály
@@ -66,11 +67,21 @@ namespace ISZR.Models
         public virtual Class? Class { get; set; }
 
         /// <summary>
+        /// Személy aki számára az igénylés zajlik
+        /// </summary>
+        [Display(Name = "Személy aki számára az igénylés zajlik")]
+        public Nullable<int> RequestForId { get; set; }
+
+        [Display(Name = "Személy aki számára az igénylés zajlik")]
+        [ForeignKey("RequestForId")]
+        public virtual User? RequestFor { get; set; }
+
+        /// <summary>
         /// Igénylés elintézésének ideje
         /// </summary>
         [Display(Name = "Igénylés elintézésének ideje")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}")]
         public DateTime ResolveDate { get; set; }
     }
 }

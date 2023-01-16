@@ -24,8 +24,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control"></textarea>
+                <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestedPermissions" class="control-label"></label>
+                <textarea asp-for="RequestedPermissions" class="form-control"></textarea>
+                <span asp-validation-for="RequestedPermissions" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CreationDate" class="control-label"></label>
@@ -33,12 +38,16 @@
                 <span asp-validation-for="CreationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AuthorId" class="control-label"></label>
-                <select asp-for="AuthorId" class ="form-control" asp-items="ViewBag.AuthorId"></select>
+                <label asp-for="RequestAuthorId" class="control-label"></label>
+                <select asp-for="RequestAuthorId" class ="form-control" asp-items="ViewBag.RequestAuthorId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ClassId" class="control-label"></label>
                 <select asp-for="ClassId" class ="form-control" asp-items="ViewBag.ClassId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestForId" class="control-label"></label>
+                <select asp-for="RequestForId" class ="form-control" asp-items="ViewBag.RequestForId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ResolveDate" class="control-label"></label>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ISZR.Models
 {
@@ -8,6 +9,12 @@ namespace ISZR.Models
     /// </summary>
     public class User
     {
+        public User()
+        {
+            RequestAuthor = new HashSet<Request>();
+            RequestFor = new HashSet<Request>();
+        }
+
         /// <summary>
         /// A felhasználó azonosítója ISZR-en belül
         /// </summary>
@@ -28,6 +35,12 @@ namespace ISZR.Models
         [MinLength(4, ErrorMessage = "A megjeleníthető név nem lehet kevesebb mint 4 karakter")]
         [MaxLength(32, ErrorMessage = "A megjeleníthető név nem lehet nagyobb mint 32 karakter")]
         public string? DisplayName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Archiválva lett e a felhasználó
+        /// </summary>
+        [Display(Name = "Archiválva lett e")]
+        public bool IsArchived { get; set; } = false;
 
         /// <summary>
         /// Felhasználó emailes elérhetősége
@@ -66,15 +79,21 @@ namespace ISZR.Models
         /// Administrátor vagy sima felhasználó
         /// </summary>
         [Display(Name = "Adminisztrátor a felhasználó?")]
-        public bool Administrator { get; } = false;
+        public bool IsAdmin { get; set; } = false;
 
         /// <summary>
         /// Felhasználó utolsó bejelentkezésének ideje
         /// </summary>
         [Display(Name = "Utolsó bejelentkezés")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}")]
         public DateTime LastLogin { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// Felhasználó bejelentkezésének mennyisége
+        /// </summary>
+        [Display(Name = "Bejelentkezések mennyisége")]
+        public int LogonCount { get; set; } = 0;
 
         /// <summary>
         /// Felhasználóhoz osztálya
@@ -95,13 +114,15 @@ namespace ISZR.Models
         public virtual Position? Position { get; set; }
 
         /// <summary>
-        /// Felhasználóhoz hozzátartozó igénylések
+        /// Felhasználó által igényelt igénylések
         /// </summary>
-        public virtual ICollection<Request> Requests { get; set; }
+        [InverseProperty("RequestAuthor")]
+        public virtual ICollection<Request> RequestAuthor { get; set; }
 
-        public User()
-        {
-            Requests = new Collection<Request>();
-        }
+        /// <summary>
+        /// Felhasználónak kért igénylések
+        /// </summary>
+        [InverseProperty("RequestFor")]
+        public virtual ICollection<Request> RequestFor { get; set; }
     }
 }

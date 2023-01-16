@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ISZR.Models
 {
@@ -53,7 +54,7 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Jogosultság készítésének időpontja")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}")]
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
         /// <summary>
@@ -62,6 +63,8 @@ namespace ISZR.Models
         [Display(Name = "Utoljára szerkesztette")]
         public Nullable<int> UserId { get; set; }
 
+        [Display(Name = "Utoljára szerkesztette")]
+        [ForeignKey("UserId")]
         public virtual User? User { get; set; }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Jogosultság utolsó szerkesztésének ideje")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}")]
         public DateTime ModifyDate { get; set; } = DateTime.Now;
     }
 }

@@ -30,22 +30,34 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RequestedPermissions)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RequestedPermissions)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CreationDate)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CreationDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Author)
+            @Html.DisplayNameFor(model => model.RequestAuthor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Author.DisplayName)
+            @Html.DisplayFor(model => model.RequestAuthor.DisplayName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Class)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Class.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RequestFor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RequestFor.DisplayName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ResolveDate)

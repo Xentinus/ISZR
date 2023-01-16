@@ -22,6 +22,6 @@ namespace ISZR.Data
 
         public DbSet<WindowsPermission> WindowsPermissions { get; set; } = default!;
 
-        public DbSet<ISZR.Models.Request> Request { get; set; }
+        public DbSet<Request> Request { get; set; } = default!;
     }
 }

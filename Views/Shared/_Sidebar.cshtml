@@ -13,7 +13,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header"><b>Statisztika</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Dashboard" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Dashboard" ? "active" : "")" asp-area="" asp-controller="Dashboard" asp-action="Index">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Irányítópult
@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Index">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>
                             Igénylések

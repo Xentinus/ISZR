@@ -1,6 +1,12 @@
-﻿using ISZR.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using ISZR.Data;
+using ISZR.Models;
 
 namespace ISZR.Controllers
 {
@@ -16,35 +22,31 @@ namespace ISZR.Controllers
         // GET: Requests
         public async Task<IActionResult> Index()
         {
-            var dataContext = _context.Request.Include(r => r.Author).Include(r => r.Class);
+            var dataContext = _context.Request.Include(r => r.Class).Include(r => r.RequestAuthor).Include(r => r.RequestFor);
             return View(await dataContext.ToListAsync());
         }
 
         // GET: Requests/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Request == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Request == null) return NotFound();
 
             var request = await _context.Request
-                .Include(r => r.Author)
                 .Include(r => r.Class)
+                .Include(r => r.RequestAuthor)
+                .Include(r => r.RequestFor)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
-            if (request == null)
-            {
-                return NotFound();
-            }
 
+            if (request == null) return NotFound();
             return View(request);
         }
 
         // GET: Requests/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "DisplayName");
             ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name");
+            ViewData["RequestAuthorId"] = new SelectList(_context.Users, "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users, "UserId", "DisplayName");
             return View();
         }
 
@@ -53,7 +55,7 @@ namespace ISZR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestId,Type,Status,Description,CreationDate,AuthorId,ClassId,ResolveDate")] Request request)
+        public async Task<IActionResult> Create([Bind("RequestId,Type,Status,Description,RequestedPermissions,CreationDate,RequestAuthorId,ClassId,RequestForId,ResolveDate")] Request request)
         {
             if (ModelState.IsValid)
             {
@@ -61,8 +63,9 @@ namespace ISZR.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "DisplayName", request.AuthorId);
             ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", request.ClassId);
+            ViewData["RequestAuthorId"] = new SelectList(_context.Users, "UserId", "DisplayName", request.RequestAuthorId);
+            ViewData["RequestForId"] = new SelectList(_context.Users, "UserId", "DisplayName", request.RequestForId);
             return View(request);
         }
 
@@ -79,8 +82,9 @@ namespace ISZR.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "DisplayName", request.AuthorId);
             ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", request.ClassId);
+            ViewData["RequestAuthorId"] = new SelectList(_context.Users, "UserId", "DisplayName", request.RequestAuthorId);
+            ViewData["RequestForId"] = new SelectList(_context.Users, "UserId", "DisplayName", request.RequestForId);
             return View(request);
         }
 
@@ -89,7 +93,7 @@ namespace ISZR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RequestId,Type,Status,Description,CreationDate,AuthorId,ClassId,ResolveDate")] Request request)
+        public async Task<IActionResult> Edit(int id, [Bind("RequestId,Type,Status,Description,RequestedPermissions,CreationDate,RequestAuthorId,ClassId,RequestForId,ResolveDate")] Request request)
         {
             if (id != request.RequestId)
             {
@@ -116,8 +120,9 @@ namespace ISZR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "DisplayName", request.AuthorId);
             ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", request.ClassId);
+            ViewData["RequestAuthorId"] = new SelectList(_context.Users, "UserId", "DisplayName", request.RequestAuthorId);
+            ViewData["RequestForId"] = new SelectList(_context.Users, "UserId", "DisplayName", request.RequestForId);
             return View(request);
         }
 
@@ -130,8 +135,9 @@ namespace ISZR.Controllers
             }
 
             var request = await _context.Request
-                .Include(r => r.Author)
                 .Include(r => r.Class)
+                .Include(r => r.RequestAuthor)
+                .Include(r => r.RequestFor)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (request == null)
             {
