@@ -1,87 +1,94 @@
-﻿using ISZR.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using ISZR.Data;
+using ISZR.Models;
 
 namespace ISZR.Controllers
 {
-    public class FonixPermissionsController : Controller
+    public class PermissionsController : Controller
     {
         private readonly DataContext _context;
 
-        public FonixPermissionsController(DataContext context)
+        public PermissionsController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: FonixPermissions
+        // GET: Permissions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FonixPermissions.ToListAsync());
+            return View(await _context.Permissions.ToListAsync());
         }
 
-        // GET: FonixPermissions/Details/5
+        // GET: Permissions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.FonixPermissions == null)
+            if (id == null || _context.Permissions == null)
             {
                 return NotFound();
             }
 
-            var fonixPermission = await _context.FonixPermissions
-                .FirstOrDefaultAsync(m => m.FonixPermissionId == id);
-            if (fonixPermission == null)
+            var permission = await _context.Permissions
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (permission == null)
             {
                 return NotFound();
             }
 
-            return View(fonixPermission);
+            return View(permission);
         }
 
-        // GET: FonixPermissions/Create
+        // GET: Permissions/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: FonixPermissions/Create
+        // POST: Permissions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FonixPermissionId,Name,Description,CountryView,View,Edit,Archived")] FonixPermission fonixPermission)
+        public async Task<IActionResult> Create([Bind("Id,Type,Institute,Name,Description,ActiveDirectoryPermissions,IsArchived")] Permission permission)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(fonixPermission);
+                _context.Add(permission);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(fonixPermission);
+            return View(permission);
         }
 
-        // GET: FonixPermissions/Edit/5
+        // GET: Permissions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.FonixPermissions == null)
+            if (id == null || _context.Permissions == null)
             {
                 return NotFound();
             }
 
-            var fonixPermission = await _context.FonixPermissions.FindAsync(id);
-            if (fonixPermission == null)
+            var permission = await _context.Permissions.FindAsync(id);
+            if (permission == null)
             {
                 return NotFound();
             }
-            return View(fonixPermission);
+            return View(permission);
         }
 
-        // POST: FonixPermissions/Edit/5
+        // POST: Permissions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FonixPermissionId,Name,Description,CountryView,View,Edit,Archived")] FonixPermission fonixPermission)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Institute,Name,Description,ActiveDirectoryPermissions,IsArchived")] Permission permission)
         {
-            if (id != fonixPermission.FonixPermissionId)
+            if (id != permission.Id)
             {
                 return NotFound();
             }
@@ -90,12 +97,12 @@ namespace ISZR.Controllers
             {
                 try
                 {
-                    _context.Update(fonixPermission);
+                    _context.Update(permission);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FonixPermissionExists(fonixPermission.FonixPermissionId))
+                    if (!PermissionExists(permission.Id))
                     {
                         return NotFound();
                     }
@@ -106,49 +113,49 @@ namespace ISZR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(fonixPermission);
+            return View(permission);
         }
 
-        // GET: FonixPermissions/Delete/5
+        // GET: Permissions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.FonixPermissions == null)
+            if (id == null || _context.Permissions == null)
             {
                 return NotFound();
             }
 
-            var fonixPermission = await _context.FonixPermissions
-                .FirstOrDefaultAsync(m => m.FonixPermissionId == id);
-            if (fonixPermission == null)
+            var permission = await _context.Permissions
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (permission == null)
             {
                 return NotFound();
             }
 
-            return View(fonixPermission);
+            return View(permission);
         }
 
-        // POST: FonixPermissions/Delete/5
+        // POST: Permissions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.FonixPermissions == null)
+            if (_context.Permissions == null)
             {
-                return Problem("Entity set 'DataContext.FonixPermission'  is null.");
+                return Problem("Entity set 'DataContext.Permission'  is null.");
             }
-            var fonixPermission = await _context.FonixPermissions.FindAsync(id);
-            if (fonixPermission != null)
+            var permission = await _context.Permissions.FindAsync(id);
+            if (permission != null)
             {
-                _context.FonixPermissions.Remove(fonixPermission);
+                _context.Permissions.Remove(permission);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FonixPermissionExists(int id)
+        private bool PermissionExists(int id)
         {
-            return _context.FonixPermissions.Any(e => e.FonixPermissionId == id);
+            return _context.Permissions.Any(e => e.Id == id);
         }
     }
 }

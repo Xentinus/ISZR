@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Data;
-using ISZR.Models;
 
 namespace ISZR.Controllers
 {
@@ -22,16 +16,16 @@ namespace ISZR.Controllers
         // GET: Requests
         public async Task<IActionResult> Index()
         {
-            var dataContext = _context.Request.Include(r => r.Class).Include(r => r.RequestAuthor).Include(r => r.RequestFor);
+            var dataContext = _context.Requests.Include(r => r.Class).Include(r => r.RequestAuthor).Include(r => r.RequestFor);
             return View(await dataContext.ToListAsync());
         }
 
         // GET: Requests/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Request == null) return NotFound();
+            if (id == null || _context.Requests == null) return NotFound();
 
-            var request = await _context.Request
+            var request = await _context.Requests
                 .Include(r => r.Class)
                 .Include(r => r.RequestAuthor)
                 .Include(r => r.RequestFor)
@@ -72,12 +66,12 @@ namespace ISZR.Controllers
         // GET: Requests/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Request == null)
+            if (id == null || _context.Requests == null)
             {
                 return NotFound();
             }
 
-            var request = await _context.Request.FindAsync(id);
+            var request = await _context.Requests.FindAsync(id);
             if (request == null)
             {
                 return NotFound();
@@ -129,12 +123,12 @@ namespace ISZR.Controllers
         // GET: Requests/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Request == null)
+            if (id == null || _context.Requests == null)
             {
                 return NotFound();
             }
 
-            var request = await _context.Request
+            var request = await _context.Requests
                 .Include(r => r.Class)
                 .Include(r => r.RequestAuthor)
                 .Include(r => r.RequestFor)
@@ -152,14 +146,14 @@ namespace ISZR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Request == null)
+            if (_context.Requests == null)
             {
                 return Problem("Entity set 'DataContext.Request'  is null.");
             }
-            var request = await _context.Request.FindAsync(id);
+            var request = await _context.Requests.FindAsync(id);
             if (request != null)
             {
-                _context.Request.Remove(request);
+                _context.Requests.Remove(request);
             }
 
             await _context.SaveChangesAsync();
@@ -168,7 +162,7 @@ namespace ISZR.Controllers
 
         private bool RequestExists(int id)
         {
-            return _context.Request.Any(e => e.RequestId == id);
+            return _context.Requests.Any(e => e.RequestId == id);
         }
     }
 }

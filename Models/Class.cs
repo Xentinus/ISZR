@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ISZR.Models
 {
@@ -27,7 +26,7 @@ namespace ISZR.Models
         [Required(ErrorMessage = "Az osztály nevének megadása kötelező!")]
         [MinLength(3, ErrorMessage = "Az osztály neve nem lehet kevesebb mint 3 karakter")]
         [MaxLength(64, ErrorMessage = "Az osztály neve nem lehet nagyobb mint 64 karakter")]
-        public string? Name { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Archiválva lett e az osztály

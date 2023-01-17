@@ -16,12 +16,10 @@ namespace ISZR.Data
 
         public DbSet<Class> Classes { get; set; } = default!;
 
-        public DbSet<FonixPermission> FonixPermissions { get; set; } = default!;
-
         public DbSet<Position> Positions { get; set; } = default!;
 
-        public DbSet<WindowsPermission> WindowsPermissions { get; set; } = default!;
+        public DbSet<Request> Requests { get; set; } = default!;
 
-        public DbSet<Request> Request { get; set; } = default!;
+        public DbSet<Permission> Permissions { get; set; } = default!;
     }
 }

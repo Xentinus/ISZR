@@ -17,8 +17,8 @@
         <div class="col-12 col-lg-4">
             <div class="card card-widget widget-user">
                 <div class="widget-user-header bg-info">
-                    <h3 class="widget-user-username">@ViewBag.CurrentUser.DisplayName</h3>
-                    <h5 class="widget-user-desc">@ViewBag.CurrentUser.Position.Name</h5>
+                    <h3 class="widget-user-username">@Model?.DisplayName</h3>
+                    <h5 class="widget-user-desc">@Model?.Position.Name</h5>
                 </div>
                 <div class="widget-user-image">
                     <img class="img-circle elevation-2" src="~/img/avatar.png" alt="Profilkép">
@@ -27,13 +27,13 @@
                     <div class="row">
                         <div class="card-body">
                             <strong><i class="fas fa-medal mr-1"></i> Rendfokozat</strong>
-                            <p class="text-muted">@ViewBag.CurrentUser.Rank</p>
+                            <p class="text-muted">@Model?.Rank</p>
                             <hr>
                             <strong><i class="fas fa-users mr-1"></i> Osztály</strong>
-                            <p class="text-muted">@ViewBag.CurrentUser.Class.Name</p>
+                            <p class="text-muted">@Model?.Class.Name</p>
                             <hr>
                             <strong><i class="fas fa-history mr-1"></i> Bejelentkezés időpontja</strong>
-                            <p class="text-muted">@ViewBag.CurrentUser.LastLogin.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")</p>
+                            <p class="text-muted">@Model?.LastLogin.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")</p>
                             <hr>
                         </div>
                     </div>
@@ -53,28 +53,28 @@
                                 Igényléseid
                                 <span class="float-right"><b>0</b>/0</span>
                                 <div class="progress progress-sm">
-                                    <div class="progress-bar bg-info" style="width: 0%"></div>
+                                    <div class="progress-bar bg-info" style="width: 100%"></div>
                                 </div>
                             </div>
                             <div class="progress-group">
                                 Jováhagyott igényléseid
                                 <span class="float-right"><b>0</b>/0</span>
                                 <div class="progress progress-sm">
-                                    <div class="progress-bar bg-success" style="width: 0%"></div>
+                                    <div class="progress-bar bg-success" style="width: 100%"></div>
                                 </div>
                             </div>
                             <div class="progress-group">
                                 Elutasított igényléseid
                                 <span class="float-right"><b>0</b>/0</span>
                                 <div class="progress progress-sm">
-                                    <div class="progress-bar bg-danger" style="width: 0%"></div>
+                                    <div class="progress-bar bg-danger" style="width: 100%"></div>
                                 </div>
                             </div>
                             <div class="progress-group">
                                 Folyamatban lévő igényléseid
                                 <span class="float-right"><b>0</b>/0</span>
                                 <div class="progress progress-sm">
-                                    <div class="progress-bar bg-warning" style="width: 0%"></div>
+                                    <div class="progress-bar bg-warning" style="width: 100%"></div>
                                 </div>
                             </div>
                         </div>

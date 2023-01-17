@@ -17,27 +17,27 @@ namespace ISZR.Models
         /// Igénylés típusa
         /// </summary>
         [Display(Name = "Igénylés típusa")]
-        public string? Type { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
 
         /// <summary>
         /// Igénylés státusza
         /// </summary>
         [Display(Name = "Igénylés státusza")]
-        public string? Status { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
 
         /// <summary>
         /// Igénylés leírása
         /// </summary>
         [Display(Name = "Igénylés leírása")]
         [DataType(DataType.MultilineText)]
-        public string? Description { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// Igényelt jogosultságok
         /// </summary>
         [Display(Name = "Igényelt jogosultságok")]
         [DataType(DataType.MultilineText)]
-        public string? RequestedPermissions { get; set; } = string.Empty;
+        public string RequestedPermissions { get; set; } = string.Empty;
 
         /// <summary>
         /// Igénylés készítésének időpontja

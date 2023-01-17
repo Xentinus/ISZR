@@ -1,7 +1,6 @@
 ﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Security.Claims;
 
 namespace ISZR.Controllers
 {
@@ -17,20 +16,23 @@ namespace ISZR.Controllers
         // GET: Welcome/Index
         public async Task<IActionResult> Index()
         {
+            // Get username from pc
             string? activeUsername = User.Identity?.Name;
 
-            var user = await _context.Users
-                .Include(u => u.Class)
-                .Include(u => u.Position)
-                .FirstOrDefaultAsync(m => m.Username == activeUsername);
+            // Looking for user
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Username == activeUsername);
 
+            // Checking user exits and first login
             if (user != null && user.LogonCount > 0)
             {
-                // Update Last login time
                 try
                 {
+                    // Update Last login time
                     user.LastLogin = DateTime.Now;
+                    // Update login count
                     user.LogonCount++;
+
+                    // Update user
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
@@ -40,14 +42,14 @@ namespace ISZR.Controllers
                 }
 
                 // Redirect to Dashboard
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Dashboard", "Home");
             }
 
             // Display registration page
             ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name");
             ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name");
 
-            // Return full form if user exists
+            // Return full form if user exists (first login)
             if (user?.LogonCount == 0) return View(user);
 
             // Return empty form
@@ -61,35 +63,49 @@ namespace ISZR.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Get username from pc
                 string? activeUsername = User.Identity?.Name;
 
-                var existsUser = await _context.Users
+                // Looking for user
+                var foundUser = await _context.Users
                     .Include(u => u.Class)
                     .Include(u => u.Position)
                     .FirstOrDefaultAsync(m => m.Username == activeUsername);
 
-                if (existsUser == null)
+                if (foundUser == null)
                 {
-                    user.Username = User.Identity?.Name;
-                    user.LogonCount = 1;
+                    user.Username = activeUsername;
+
+                    // Add login count
+                    user.LogonCount++;
+
+                    // Update user
                     _context.Add(user);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    existsUser.DisplayName = user.DisplayName;
-                    existsUser.Rank = user.Rank;
-                    existsUser.ClassId = user.ClassId;
-                    existsUser.PositionId = user.PositionId;
-                    existsUser.Phone = user.Phone;
-                    existsUser.Email = user.Email;
-                    existsUser.Location = user.Location;
-                    existsUser.LogonCount = 1;
-                    _context.Update(existsUser);
+                    // Update Pre created user informations with new one
+                    foundUser.DisplayName = user.DisplayName;
+                    foundUser.Rank = user.Rank;
+                    foundUser.Class = user.Class;
+                    foundUser.ClassId = user.ClassId;
+                    foundUser.Position = user.Position;
+                    foundUser.PositionId = user.PositionId;
+                    foundUser.Phone = user.Phone;
+                    foundUser.Email = user.Email;
+                    foundUser.Location = user.Location;
+
+                    // Add login count
+                    foundUser.LogonCount++;
+
+                    // Update user
+                    _context.Update(foundUser);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
                 }
+
+                // Redirect to Dashboard
+                return RedirectToAction("Dashboard", "Home");
             }
 
             // Display registration page

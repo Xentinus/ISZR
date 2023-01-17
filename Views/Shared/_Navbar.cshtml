@@ -14,7 +14,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-area="" asp-controller="Settings" asp-action="Index">
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Settings">
                 <i class="fas fa-user-cog"></i>
                 <span>Felhasználói profil</span>
             </a>
@@ -42,12 +42,8 @@
                 <div class="dropdown-divider"></div>
                 <span class="dropdown-item dropdown-header bg-info">Informatikai karbantartások</span>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" asp-area="" asp-controller="WindowsPermissions" asp-action="Index">
-                    <i class="fab fa-windows mr-2"></i> Windows jogosultságok
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" asp-controller="FonixPermissions" asp-action="Index">
-                    <i class="fas fa-dove mr-2"></i> Főnix 3 jogosultságok
+                <a class="dropdown-item" asp-area="" asp-controller="Permissions" asp-action="Index">
+                    <i class="fab fa-windows mr-2"></i> Jogosultságok
                 </a>
                 <div class="dropdown-divider"></div>
                 <span class="dropdown-item dropdown-header bg-info">Biztonságtechnikai karbantartások</span>
