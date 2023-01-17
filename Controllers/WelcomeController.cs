@@ -78,6 +78,13 @@ namespace ISZR.Controllers
                 }
                 else
                 {
+                    existsUser.DisplayName = user.DisplayName;
+                    existsUser.Rank = user.Rank;
+                    existsUser.ClassId = user.ClassId;
+                    existsUser.PositionId = user.PositionId;
+                    existsUser.Phone = user.Phone;
+                    existsUser.Email = user.Email;
+                    existsUser.Location = user.Location;
                     existsUser.LogonCount = 1;
                     _context.Update(existsUser);
                     await _context.SaveChangesAsync();
