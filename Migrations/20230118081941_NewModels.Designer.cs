@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISZR.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230117140911_RemovedFonixAndWindowsPermissions")]
-    partial class RemovedFonixAndWindowsPermissions
+    [Migration("20230118081941_NewModels")]
+    partial class NewModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,13 +34,13 @@ namespace ISZR.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(48)
-                        .HasColumnType("nvarchar(48)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Sector")
                         .IsRequired()
-                        .HasMaxLength(48)
-                        .HasColumnType("nvarchar(48)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -70,6 +70,43 @@ namespace ISZR.Migrations
                     b.HasKey("ClassId");
 
                     b.ToTable("Classes");
+                });
+
+            modelBuilder.Entity("ISZR.Models.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ActiveDirectoryPermissions")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Institute")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("ISZR.Models.Position", b =>
@@ -108,6 +145,7 @@ namespace ISZR.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RequestAuthorId")
@@ -117,15 +155,18 @@ namespace ISZR.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("RequestedPermissions")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ResolveDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RequestId");
@@ -136,7 +177,7 @@ namespace ISZR.Migrations
 
                     b.HasIndex("RequestForId");
 
-                    b.ToTable("Request");
+                    b.ToTable("Requests");
                 });
 
             modelBuilder.Entity("ISZR.Models.User", b =>
@@ -191,6 +232,7 @@ namespace ISZR.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");

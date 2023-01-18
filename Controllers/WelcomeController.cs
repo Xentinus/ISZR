@@ -18,6 +18,7 @@ namespace ISZR.Controllers
         {
             // Get username from pc
             string? activeUsername = User.Identity?.Name;
+            if (activeUsername == null) return NotFound();
 
             // Looking for user
             var user = await _context.Users.FirstOrDefaultAsync(m => m.Username == activeUsername);
@@ -65,6 +66,7 @@ namespace ISZR.Controllers
             {
                 // Get username from pc
                 string? activeUsername = User.Identity?.Name;
+                if (activeUsername == null) return NotFound();
 
                 // Looking for user
                 var foundUser = await _context.Users

@@ -34,7 +34,6 @@
                         <strong>Ügyintéző adatai</strong>
                         <address>
                             @Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank<br>
-                            @Model?.RequestAuthor?.Class?.Name<br>
                             <i class="fas fa-envelope"></i> @Model?.RequestAuthor?.Email<br>
                             <i class="fas fa-phone-square-alt"></i> @Model?.RequestAuthor?.Phone
                         </address>
@@ -44,7 +43,6 @@
                         <strong>Kinek a számra</strong>
                         <address>
                             @Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank<br>
-                            @Model?.RequestFor?.Class?.Name<br>
                             <i class="fas fa-envelope"></i> @Model?.RequestFor?.Email<br>
                             <i class="fas fa-phone-square-alt"></i> @Model?.RequestFor?.Phone
                         </address>
@@ -52,9 +50,28 @@
 
                     <div class="col-lg-6 invoice-col">
                         <b>Igénylés típusa: </b> @Model?.Type<br />
-                        <b>Igénylés létrehozásának ideje:</b> @Model?.CreationDate<br>
-                        <b>Igénylés lezárásának ideje:</b> @Model?.ResolveDate<br>
-                        <b>Státusz:</b> <span class="badge badge-warning">@Model?.Status</span>
+                        <b>Létrehozásának ideje:</b> @Model?.CreationDate<br>
+                        <b>Lezárásának ideje:</b> @Model?.ResolveDate<br>
+                        @{
+                            switch (Model?.Status)
+                            {
+                                case "Elutasítva":
+                                    {
+                                        <b>Státusz:</b> <span class="badge badge-danger"><i class="icon fas fa-ban"></i> @Model?.Status</span>
+                                        break;
+                                    }
+                                case "Végrehajtva":
+                                    {
+                                        <b>Státusz:</b> <span class="badge badge-success"><i class="fas fa-check"></i> @Model?.Status</span>
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        <b>Státusz:</b> <span class="badge badge-warning"><i class="fas fa-comment-dots"></i> @Model?.Status</span>
+                                        break;
+                                    }
+                            }
+                        }
                     </div>
 
                 </div>
@@ -65,26 +82,34 @@
                         Jogosultság kiadása <strong>@Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank</strong> részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <div class="alert alert-info alert-dismissible">
-                            <h5><i class="icon fab fa-windows"></i> Igényelt jogosultságok</h5>
-                            @Model?.RequestedPermissions
+                @{
+                    if (Model?.RequestedPermissions != "")
+                    {
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-info alert-dismissible">
+                                    <h5><i class="icon fab fa-windows"></i> Igényelt jogosultságok</h5>
+                                    @Model?.RequestedPermissions
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
+                    }
+                }
                 <div class="row no-print">
                     <div class="col-12">
                         <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
                         <a class="btn btn-default"><i class="fas fa-print"></i> Nyomtatás</a>
-                        <button type="button" class="btn btn-danger float-right">
-                            <i class="fas fa-times-circle"></i> Elutasítva
-                        </button>
-                        <button type="button" class="btn btn-success float-right" style="margin-right: 5px;">
-                            <i class="fas fa-check-circle"></i> Végrehajtva
-                        </button>
+                        @{
+                            if (Model?.Status == "Folyamatban")
+                            {
+                                <button type="button" class="btn btn-danger float-right">
+                                    <i class="fas fa-times-circle"></i> Elutasítva
+                                </button>
+                                <button type="button" class="btn btn-success float-right" style="margin-right: 5px;">
+                                    <i class="fas fa-check-circle"></i> Végrehajtva
+                                </button>
+                            }
+                        }
                     </div>
                 </div>
             </div>

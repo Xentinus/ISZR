@@ -36,27 +36,6 @@ namespace ISZR.Models
         public string DisplayName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Archiválva
-        /// </summary>
-        [Display(Name = "Archiválva")]
-        public bool IsArchived { get; set; } = false;
-
-        /// <summary>
-        /// Felhasználó emailes elérhetősége
-        /// </summary>
-        [Display(Name = "E-mail cím")]
-        [EmailAddress(ErrorMessage = "A mezőbe beírt cím nem e-mail cím!")]
-        public string Email { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Felhasználó telefonos elérhetősége
-        /// </summary>
-        [Display(Name = "NTG elérhetőség")]
-        [MinLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet kevesebb mint 7 karakter")]
-        [MaxLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet nagyobb mint 7 karakter")]
-        public string Phone { get; set; } = string.Empty;
-
-        /// <summary>
         /// Rendfokozat
         /// </summary>
         [Display(Name = "Rendfokozat")]
@@ -73,10 +52,19 @@ namespace ISZR.Models
         public string Location { get; set; } = string.Empty;
 
         /// <summary>
-        /// Administrátor vagy sima felhasználó
+        /// Felhasználó emailes elérhetősége
         /// </summary>
-        [Display(Name = "Adminisztrátor a felhasználó?")]
-        public bool IsAdmin { get; set; } = false;
+        [Display(Name = "E-mail cím")]
+        [EmailAddress(ErrorMessage = "A mezőbe beírt cím nem e-mail cím!")]
+        public string Email { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Felhasználó telefonos elérhetősége
+        /// </summary>
+        [Display(Name = "NTG elérhetőség")]
+        [MinLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet kevesebb mint 7 karakter")]
+        [MaxLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet nagyobb mint 7 karakter")]
+        public string Phone { get; set; } = string.Empty;
 
         /// <summary>
         /// Felhasználó utolsó bejelentkezésének ideje
@@ -109,6 +97,18 @@ namespace ISZR.Models
         public Nullable<int> PositionId { get; set; }
 
         public virtual Position? Position { get; set; }
+
+        /// <summary>
+        /// Administrátor vagy sima felhasználó
+        /// </summary>
+        [Display(Name = "Adminisztrátor a felhasználó?")]
+        public bool IsAdmin { get; set; } = false;
+
+        /// <summary>
+        /// Archiválva
+        /// </summary>
+        [Display(Name = "Archiválva")]
+        public bool IsArchived { get; set; } = false;
 
         /// <summary>
         /// Felhasználó által igényelt igénylések

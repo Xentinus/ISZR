@@ -47,7 +47,26 @@
                                         @Html.DisplayFor(modelItem => item.Type)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Status)
+                                        @{
+                                            switch (item.Status)
+                                            {
+                                                case "Elutasítva":
+                                                    {
+                                                        <span class="badge badge-danger"><i class="icon fas fa-ban"></i> @item.Status</span>
+                                                        break;
+                                                    }
+                                                case "Végrehajtva":
+                                                    {
+                                                        <span class="badge badge-success"><i class="fas fa-check"></i> @item.Status</span>
+                                                        break;
+                                                    }
+                                                default:
+                                                    {
+                                                       <span class="badge badge-warning"><i class="fas fa-comment-dots"></i> @item.Status</span>
+                                                        break;
+                                                    }
+                                            }
+                                        }
                                     </td>
                                     <td>
                                         <a asp-action="Details" asp-route-id="@item.RequestId"><input type="button" value="Részletek" class="btn btn-info" /></a>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ISZR.Migrations
 {
-    public partial class AddedControllers : Migration
+    public partial class NewModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,9 +15,9 @@ namespace ISZR.Migrations
                 {
                     CameraId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(48)", maxLength: 48, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Sector = table.Column<string>(type: "nvarchar(48)", maxLength: 48, nullable: false)
+                    Sector = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,11 +30,30 @@ namespace ISZR.Migrations
                 {
                     ClassId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Classes", x => x.ClassId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Institute = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ActiveDirectoryPermissions = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -43,7 +62,8 @@ namespace ISZR.Migrations
                 {
                     PositionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(48)", maxLength: 48, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(48)", maxLength: 48, nullable: false),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,13 +76,16 @@ namespace ISZR.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
                     Rank = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(48)", maxLength: 48, nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LogonCount = table.Column<int>(type: "int", nullable: false),
                     ClassId = table.Column<int>(type: "int", nullable: false),
                     PositionId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -84,97 +107,55 @@ namespace ISZR.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FonixPermissions",
-                columns: table => new
-                {
-                    FonixPermissionId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CountryView = table.Column<bool>(type: "bit", nullable: false),
-                    View = table.Column<bool>(type: "bit", nullable: false),
-                    Edit = table.Column<bool>(type: "bit", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    ModifyDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FonixPermissions", x => x.FonixPermissionId);
-                    table.ForeignKey(
-                        name: "FK_FonixPermissions_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Request",
+                name: "Requests",
                 columns: table => new
                 {
                     RequestId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RequestedPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RequestedPermissions = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AuthorId = table.Column<int>(type: "int", nullable: true),
+                    RequestAuthorId = table.Column<int>(type: "int", nullable: true),
                     ClassId = table.Column<int>(type: "int", nullable: true),
+                    RequestForId = table.Column<int>(type: "int", nullable: true),
                     ResolveDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Request", x => x.RequestId);
+                    table.PrimaryKey("PK_Requests", x => x.RequestId);
                     table.ForeignKey(
-                        name: "FK_Request_Classes_ClassId",
+                        name: "FK_Requests_Classes_ClassId",
                         column: x => x.ClassId,
                         principalTable: "Classes",
                         principalColumn: "ClassId");
                     table.ForeignKey(
-                        name: "FK_Request_Users_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_Requests_Users_RequestAuthorId",
+                        column: x => x.RequestAuthorId,
                         principalTable: "Users",
                         principalColumn: "UserId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WindowsPermissions",
-                columns: table => new
-                {
-                    WindowsPermissionId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Permission = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    ModifyDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WindowsPermissions", x => x.WindowsPermissionId);
                     table.ForeignKey(
-                        name: "FK_WindowsPermissions_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Requests_Users_RequestForId",
+                        column: x => x.RequestForId,
                         principalTable: "Users",
                         principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FonixPermissions_UserId",
-                table: "FonixPermissions",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Request_AuthorId",
-                table: "Request",
-                column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Request_ClassId",
-                table: "Request",
+                name: "IX_Requests_ClassId",
+                table: "Requests",
                 column: "ClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_RequestAuthorId",
+                table: "Requests",
+                column: "RequestAuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_RequestForId",
+                table: "Requests",
+                column: "RequestForId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_ClassId",
@@ -185,11 +166,6 @@ namespace ISZR.Migrations
                 name: "IX_Users_PositionId",
                 table: "Users",
                 column: "PositionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WindowsPermissions_UserId",
-                table: "WindowsPermissions",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -198,13 +174,10 @@ namespace ISZR.Migrations
                 name: "Cameras");
 
             migrationBuilder.DropTable(
-                name: "FonixPermissions");
+                name: "Permissions");
 
             migrationBuilder.DropTable(
-                name: "Request");
-
-            migrationBuilder.DropTable(
-                name: "WindowsPermissions");
+                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "Users");
