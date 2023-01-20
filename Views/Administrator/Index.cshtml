@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<ISZR.Models.Request>
 
 @{
-    ViewData["Title"] = "Igénylések";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "ISZR Karbantartása";
 }
 
 <div class="content-header">
@@ -15,6 +16,44 @@
 </div>
 
 <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-tasks"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Igénylések összesen</span>
+                    <span class="info-box-number">@ViewBag.AllRequest</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Végrehajtva</span>
+                    <span class="info-box-number">@ViewBag.AllDoneRequest</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-comment-dots"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Folyamatban</span>
+                    <span class="info-box-number">@ViewBag.AllInProgressRequest</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-ban"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Elutasítva</span>
+                    <span class="info-box-number">@ViewBag.AllDeniedRequest</span>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="card">

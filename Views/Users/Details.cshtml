@@ -1,6 +1,7 @@
 ﻿@model ISZR.Models.User
 
 @{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Felhasználó részletei";
     string? className = Model?.Class != null ? Model?.Class.Name : "";
     string? positionName = Model?.Position != null ? Model?.Position.Name : "";
