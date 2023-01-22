@@ -20,6 +20,12 @@ namespace ISZR.Controllers
             return View(await dataContext.ToListAsync());
         }
 
+        // GET: WindowsForOneUser
+        public IActionResult WindowsForOneUser()
+        {
+            return View();
+        }
+
         // GET: Requests/Details/5
         public async Task<IActionResult> Details(int? id)
         {

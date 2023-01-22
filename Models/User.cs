@@ -99,12 +99,6 @@ namespace ISZR.Models
         public virtual Position? Position { get; set; }
 
         /// <summary>
-        /// Administrátor vagy sima felhasználó
-        /// </summary>
-        [Display(Name = "Adminisztrátor a felhasználó?")]
-        public bool IsAdmin { get; set; } = false;
-
-        /// <summary>
         /// Archiválva
         /// </summary>
         [Display(Name = "Archiválva")]
