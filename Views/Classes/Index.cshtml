@@ -17,6 +17,35 @@
 
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-4 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Osztály összesen</span>
+                    <span class="info-box-number">@ViewBag.All</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Aktív osztályok</span>
+                    <span class="info-box-number">@ViewBag.Active</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-archive"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Archivált osztályok</span>
+                    <span class="info-box-number">@ViewBag.Archived</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header bg-info">
@@ -42,7 +71,7 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Name)
                                     </td>
-                                    <td>
+                                    <td class="float-right">
                                         <a asp-action="Details" asp-route-id="@item.ClassId"><input type="button" value="Részletek" class="btn btn-info" /></a>
                                         <a asp-action="Edit" asp-route-id="@item.ClassId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
                                         <a asp-action="Delete" asp-route-id="@item.ClassId"><input type="button" value="Törlés" class="btn btn-danger" /></a>

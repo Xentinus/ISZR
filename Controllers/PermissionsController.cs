@@ -22,6 +22,12 @@ namespace ISZR.Controllers
         // GET: Permissions
         public async Task<IActionResult> Index()
         {
+            // Dashboard informations
+            ViewBag.All = _context.Permissions.Count();
+            ViewBag.Windows = _context.Permissions.Where(r => r.Type == "Windows").Count();
+            ViewBag.Intranet = _context.Permissions.Where(r => r.Type == "Intranet").Count();
+            ViewBag.FONIX = _context.Permissions.Where(r => r.Type == "Főnix 2" || r.Type == "Főnix 3").Count();
+
             return View(await _context.Permissions.ToListAsync());
         }
 
@@ -34,7 +40,7 @@ namespace ISZR.Controllers
             }
 
             var permission = await _context.Permissions
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.PermissionId == id);
             if (permission == null)
             {
                 return NotFound();
@@ -54,7 +60,7 @@ namespace ISZR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type,Institute,Name,Description,ActiveDirectoryPermissions,IsArchived")] Permission permission)
+        public async Task<IActionResult> Create([Bind("Id,Name,Type,Description,ActiveDirectoryPermissions")] Permission permission)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +92,9 @@ namespace ISZR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Institute,Name,Description,ActiveDirectoryPermissions,IsArchived")] Permission permission)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Description,ActiveDirectoryPermissions")] Permission permission)
         {
-            if (id != permission.Id)
+            if (id != permission.PermissionId)
             {
                 return NotFound();
             }
@@ -102,7 +108,7 @@ namespace ISZR.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PermissionExists(permission.Id))
+                    if (!PermissionExists(permission.PermissionId))
                     {
                         return NotFound();
                     }
@@ -125,7 +131,7 @@ namespace ISZR.Controllers
             }
 
             var permission = await _context.Permissions
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.PermissionId == id);
             if (permission == null)
             {
                 return NotFound();
@@ -155,7 +161,7 @@ namespace ISZR.Controllers
 
         private bool PermissionExists(int id)
         {
-            return _context.Permissions.Any(e => e.Id == id);
+            return _context.Permissions.Any(e => e.PermissionId == id);
         }
     }
 }

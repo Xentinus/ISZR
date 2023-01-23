@@ -16,6 +16,11 @@ namespace ISZR.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            // Dashboard informations
+            ViewBag.All = _context.Users.Count();
+            ViewBag.Active = _context.Users.Where(u => u.IsArchived == false).Count();
+            ViewBag.Archived = ViewBag.All - ViewBag.Active;
+
             var dataContext = _context.Users.Include(u => u.Class).Include(u => u.Position);
             return View(await dataContext.ToListAsync());
         }
@@ -63,7 +68,7 @@ namespace ISZR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,Username,DisplayName,Email,Phone,Rank,Location,LastLogin,ClassId,PositionId")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,Username,DisplayName,Email,Phone,Rank,Location,LastLogin,LogonCount,ClassId,PositionId")] User user)
         {
             if (id != user.UserId) return NotFound();
 

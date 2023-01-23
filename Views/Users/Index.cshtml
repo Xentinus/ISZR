@@ -17,15 +17,45 @@
 
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-4 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-user"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Felhasználó összesen</span>
+                    <span class="info-box-number">@ViewBag.All</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Aktív felhasználók</span>
+                    <span class="info-box-number">@ViewBag.Active</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-archive"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Archivált felhasználók</span>
+                    <span class="info-box-number">@ViewBag.Archived</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body p-0">
                     <table class="table table-striped">
                         <thead class="bg-info">
                             <tr>
-                                <th>Azonosító</th>
                                 <th>Felhasználónév</th>
                                 <th>Név</th>
+                                <th>Osztály</th>
+                                <th>Beosztás</th>
                                 <th>Utolsó bejelentkezés</th>
                                 <th></th>
                             </tr>
@@ -35,18 +65,25 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.UserId)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Username)
+                                        @Html.DisplayFor(modelItem => item.Username)<br>
+                                        @if (item.IsArchived)
+                                        {
+                                            <span class="text-danger font-weight-bold">Felhasználó archiválva!</span>
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.DisplayName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.LastLogin)
+                                        @Html.DisplayFor(modelItem => item.Class.Name)
                                     </td>
                                     <td>
+                                        @Html.DisplayFor(modelItem => item.Position.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LastLogin)
+                                    </td>
+                                    <td class="float-right">
                                         <a asp-action="Details" asp-route-id="@item.UserId"><input type="button" value="Részletek" class="btn btn-info" /></a>
                                         <a asp-action="Edit" asp-route-id="@item.UserId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
                                     </td>

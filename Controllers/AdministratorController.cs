@@ -23,11 +23,11 @@ namespace ISZR.Controllers
             // Regex for username
             if (!Regex.IsMatch(activeUsername, @"^XENTINUS-LAPTOP") || Regex.IsMatch(activeUsername, @"\.admin$")) return Forbid();
 
-            // Request informations
-            ViewBag.AllRequest = _context.Requests.Count();
-            ViewBag.AllInProgressRequest = _context.Requests.Where(r => r.Status == "Folyamatban").Count();
-            ViewBag.AllDoneRequest = _context.Requests.Where(r => r.Status == "Végrehajtva").Count();
-            ViewBag.AllDeniedRequest = _context.Requests.Where(r => r.Status == "Elutasítva").Count();
+            // Dashboard informations
+            ViewBag.All = _context.Requests.Count();
+            ViewBag.InProgress = _context.Requests.Where(r => r.Status == "Folyamatban").Count();
+            ViewBag.Done = _context.Requests.Where(r => r.Status == "Végrehajtva").Count();
+            ViewBag.Denied = _context.Requests.Where(r => r.Status == "Elutasítva").Count();
 
             // Return Requests
             var dataContext = _context.Requests.Include(r => r.Class).Include(r => r.RequestAuthor).Include(r => r.RequestFor);
@@ -43,6 +43,8 @@ namespace ISZR.Controllers
                 .Include(r => r.Class)
                 .Include(r => r.RequestAuthor)
                 .Include(r => r.RequestFor)
+                .Include(r => r.RequestAuthor.Class)
+                .Include(r => r.RequestAuthor.Position)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
 
             if (request == null) return NotFound();

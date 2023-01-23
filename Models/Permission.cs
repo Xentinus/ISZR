@@ -10,7 +10,7 @@ namespace ISZR.Models
         /// <summary>
         /// Jogosultság azonosítója
         /// </summary>
-        public int Id { get; set; }
+        public int PermissionId { get; set; }
 
         /// <summary>
         /// Jogosultság típusa
@@ -19,14 +19,6 @@ namespace ISZR.Models
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "A típus kiválasztása kötelező!")]
         public string Type { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Jogosultság intézete
-        /// </summary>
-        [Display(Name = "Intézet")]
-        [DataType(DataType.Text)]
-        [Required(ErrorMessage = "Az intézet kiválasztása kötelező!")]
-        public string Institute { get; set; } = string.Empty;
 
         /// <summary>
         /// Jogosultság neve
@@ -54,11 +46,5 @@ namespace ISZR.Models
         [DataType(DataType.MultilineText)]
         [MinLength(6, ErrorMessage = "Legalább egy darab jogosultságot írj be! Előtag szükséges!")]
         public string ActiveDirectoryPermissions { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Archiválva
-        /// </summary>
-        [Display(Name = "Archiválva")]
-        public bool IsArchived { get; set; } = false;
     }
 }

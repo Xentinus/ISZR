@@ -16,6 +16,9 @@ namespace ISZR.Controllers
         // GET: Requests
         public async Task<IActionResult> Index()
         {
+            // Dashboard informations
+            ViewBag.All = _context.Requests.Count();
+
             var dataContext = _context.Requests.Include(r => r.Class).Include(r => r.RequestAuthor).Include(r => r.RequestFor);
             return View(await dataContext.ToListAsync());
         }

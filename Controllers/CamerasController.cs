@@ -15,6 +15,9 @@ namespace ISZR.Controllers
         // GET: Cameras
         public async Task<IActionResult> Index()
         {
+            // Dashboard informations
+            ViewBag.All = _context.Cameras.Count();
+
             return View(await _context.Cameras.ToListAsync());
         }
 

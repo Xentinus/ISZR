@@ -15,6 +15,11 @@ namespace ISZR.Controllers
         // GET: Classes
         public async Task<IActionResult> Index()
         {
+            // Dashboard informations
+            ViewBag.All = _context.Classes.Count();
+            ViewBag.Active = _context.Classes.Where(c => c.IsArchived == false).Count();
+            ViewBag.Archived = ViewBag.All - ViewBag.Active;
+
             return View(await _context.Classes.ToListAsync());
         }
 
