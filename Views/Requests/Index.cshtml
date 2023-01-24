@@ -4,17 +4,45 @@
     ViewData["Title"] = "Igénylések";
 }
 
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Igénylések</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3 col-sm-6 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-tasks"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Igénylés összesen</span>
+                    <span class="info-box-number">@ViewBag.All</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-comment-dots"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Folyamatban</span>
+                    <span class="info-box-number">@ViewBag.InProgress</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Végrehajtva</span>
+                    <span class="info-box-number">@ViewBag.Done</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-ban"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Elutasítva</span>
+                    <span class="info-box-number">@ViewBag.Denied</span>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -22,7 +50,8 @@
                     <table class="table table-striped">
                         <thead class="bg-info">
                             <tr>
-                                <th>Igénylés azonosítója</th>
+                                <th>Igénylési azonosító</th>
+                                <th>Létrehozásának ideje</th>
                                 <th>Igénylő személy</th>
                                 <th>Kinek a számára</th>
                                 <th>Igénylés típusa</th>
@@ -35,21 +64,56 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RequestId)
+                                        ISZR <span class="text-info font-weight-bold">#@Html.DisplayFor(modelItem => item.RequestId)</span>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RequestAuthor.DisplayName)
+                                        @Html.DisplayFor(modelItem => item.CreationDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RequestFor.DisplayName)
+                                        @{
+                                            if (item.RequestAuthor == null)
+                                            {
+                                                <span class="text-danger font-weight-bold">Törölt felhasználó</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@item.RequestAuthor.DisplayName</span>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            if (item.RequestFor == null)
+                                            {
+                                                <span class="text-danger font-weight-bold">Törölt felhasználó</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@item.RequestFor.DisplayName</span>
+                                            }
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Type)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Status)
+                                        @{
+                                            if (item.Status == "Végrehajtva")
+                                            {
+                                                <span class="text-success font-weight-bold"><i class="fas fa-check"></i> Végrehajtva</span>
+                                            }
+                                            else if (item.Status == "Elutasítva")
+                                            {
+                                                <span class="text-danger font-weight-bold"><i class="fas fa-ban"></i> Elutasítva</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-info font-weight-bold"><i class="fas fa-comment-dots"></i> Folyamatban</span>
+                                            }
+
+                                        }
                                     </td>
-                                    <td>
+                                    <td class="float-right">
                                         <a asp-action="Details" asp-route-id="@item.RequestId"><input type="button" value="Részletek" class="btn btn-info" /></a>
                                     </td>
                                 </tr>

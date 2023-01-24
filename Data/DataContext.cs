@@ -1,5 +1,4 @@
 ﻿using ISZR.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace ISZR.Data
 {

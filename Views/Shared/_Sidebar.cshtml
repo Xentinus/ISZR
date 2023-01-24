@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" || ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Index">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>
                             Igénylések
@@ -31,96 +31,36 @@
                 </li>
                 <li class="nav-header"><b>Informatikával kapcsolatos</b></li>
                 <li class="nav-item">
-                    <a class="nav-link">
-                        <i class="nav-icon fab fa-windows"></i>
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Permissions" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Permissions">
+                        <i class="nav-icon fas fa-address-card"></i>
                         <p>
-                            Windows jogosultság
-                            <i class="fas fa-angle-left right"></i>
+                            Jogosultság igénylése
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Requests" asp-action="WindowsForOneUser" class="nav-link">
-                                <i class="fas fa-user nav-icon"></i>
-                                <p>Windows jogosultság igénylése egy személy számára</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-users nav-icon"></i>
-                                <p>Windows jogosultság igénylése több személy számára</p>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-dove"></i>
-                        <p>
-                            Főnix 3 jogosultság
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-user nav-icon"></i>
-                                <p>Főnix 3 jogosultság igénylése egy személy számára</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-users nav-icon"></i>
-                                <p>Főnix 3 jogosultság igénylése több személy számára</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Email" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Email">
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>
-                            E-mail cím
-                            <i class="fas fa-angle-left right"></i>
+                            E-mail cím igénylése
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-user nav-icon"></i>
-                                <p>E-mail cím igénylése egy személy számára</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-users nav-icon"></i>
-                                <p>E-mail cím igénylése több személy számára</p>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Phone" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Phone">
                         <i class="nav-icon fas fa-phone-square-alt"></i>
                         <p>
-                            Telefonáláshoz PIN kód
-                            <i class="fas fa-angle-left right"></i>
+                            Telefonáláshoz PIN kód igénylése
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-user nav-icon"></i>
-                                <p>PIN kód igénylése egy személy számára</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-users nav-icon"></i>
-                                <p>PIN kód igénylése több személy számára</p>
-                            </a>
-                        </li>
-                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Parking" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Parking">
+                        <i class="nav-icon fas fa-parking"></i>
+                        <p>
+                            Parkolási engedély igénylése
+                        </p>
+                    </a>
                 </li>
                 <li class="nav-header"><b>Biztonságtechnikával kapcsolatos</b></li>
                 <li class="nav-item">

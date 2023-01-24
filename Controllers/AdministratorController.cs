@@ -1,6 +1,4 @@
-﻿using ISZR.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
 namespace ISZR.Controllers
@@ -30,7 +28,7 @@ namespace ISZR.Controllers
             ViewBag.Denied = _context.Requests.Where(r => r.Status == "Elutasítva").Count();
 
             // Return Requests
-            var dataContext = _context.Requests.Include(r => r.Class).Include(r => r.RequestAuthor).Include(r => r.RequestFor);
+            var dataContext = _context.Requests.Include(r => r.RequestAuthor).Include(r => r.RequestFor);
             return View(await dataContext.ToListAsync());
         }
 
@@ -40,11 +38,12 @@ namespace ISZR.Controllers
             if (id == null || _context.Requests == null) return NotFound();
 
             var request = await _context.Requests
-                .Include(r => r.Class)
                 .Include(r => r.RequestAuthor)
                 .Include(r => r.RequestFor)
                 .Include(r => r.RequestAuthor.Class)
                 .Include(r => r.RequestAuthor.Position)
+                .Include(r => r.RequestFor.Class)
+                .Include(r => r.RequestFor.Position)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
 
             if (request == null) return NotFound();

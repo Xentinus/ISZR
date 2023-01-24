@@ -1,0 +1,117 @@
+﻿@model ISZR.Models.Request
+
+@{
+    ViewData["Title"] = "Jogosultság igénylése";
+}
+
+<link rel="stylesheet" href="~/plugins/bs-stepper/css/bs-stepper.css">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-default">
+                <div class="card-header bg-info">
+                    <h3 class="card-title">Jogosultság igénylése</h3>
+                </div>
+                <div class="card-body p-0">
+                    <form>
+                        <div class="bs-stepper linear">
+                            <div class="bs-stepper-header" role="tablist">
+                                <div class="step active" data-target="#request-type">
+                                    <button type="button" class="step-trigger" role="tab" aria-controls="request-type" id="request-type-trigger" aria-selected="true">
+                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-user"></i></span>
+                                        <span class="bs-stepper-label">Igénylés típusa</span>
+                                    </button>
+                                </div>
+                                <div class="line"></div>
+                                <div class="step" data-target="#request-information">
+                                    <button type="button" class="step-trigger" role="tab" aria-controls="request-information" id="request-information-trigger" aria-selected="false" disabled="disabled">
+                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-key"></i></span>
+                                        <span class="bs-stepper-label">Igénylés leírása</span>
+                                    </button>
+                                </div>
+                                <div class="line"></div>
+                                <div class="step" data-target="#permissions">
+                                    <button type="button" class="step-trigger" role="tab" aria-controls="permissions" id="permissions-trigger" aria-selected="false" disabled="disabled">
+                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-key"></i></span>
+                                        <span class="bs-stepper-label">Kivánt jogosultságok kiválasztása</span>
+                                    </button>
+                                </div>
+                                <div class="line"></div>
+                                <div class="step" data-target="#summary">
+                                    <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
+                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-list"></i></span>
+                                        <span class="bs-stepper-label">Összesítés</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bs-stepper-content">
+                                <!-- PAGE 1 -->
+                                <div id="request-type" class="content active dstepper-block" role="tabpanel" aria-labelledby="request-type-trigger">
+                                    <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+                                </div>
+                                <!-- PAGE 2 -->
+                                <div id="request-information" class="content" role="tabpanel" aria-labelledby="request-information-trigger">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">Kiválasztott típus: </label>
+                                    </div>
+                                    <a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
+                                    <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+                                </div>
+                                <!-- PAGE 3 -->
+                                <div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">File input</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="exampleInputFile">
+                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-warning" onclick="stepper.previous()">Elöző</button>
+                                    <button class="btn btn-info" onclick="stepper.next()">Tovább</button>
+                                </div>
+                                <!-- PAGE 4 -->
+                                <div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">File input</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="exampleInputFile">
+                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-warning" onclick="stepper.previous()">Elöző</button>
+                                    <button type="submit" class="btn btn-info">Igénylés létrehozása</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/plugins/bs-stepper/js/bs-stepper.js"></script>
+
+<script>
+    // BS-Stepper Init
+    document.addEventListener('DOMContentLoaded', function () {
+        window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+    })
+
+    function NewUser() {
+        alert("New user");
+        stepper.next()
+    }
+</script>

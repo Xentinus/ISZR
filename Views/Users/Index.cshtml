@@ -75,10 +75,16 @@
                                         @Html.DisplayFor(modelItem => item.DisplayName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Class.Name)
+                                        @if (item.Class != null)
+                                        {
+                                            <span>@item.Class.Name</span>
+                                        }
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Position.Name)
+                                        @if (item.Position != null)
+                                        {
+                                            <span>@item.Position.Name</span>
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.LastLogin)

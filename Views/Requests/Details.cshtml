@@ -1,18 +1,8 @@
 ﻿@model ISZR.Models.Request
 
 @{
-    ViewData["Title"] = "Igénylés részletei";
+    ViewData["Title"] = $"#{Model?.RequestId} számú igénylés részletei";
 }
-
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Igénylés részletei</h1>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="container-fluid">
     <div class="row">

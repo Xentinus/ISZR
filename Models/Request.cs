@@ -58,15 +58,6 @@ namespace ISZR.Models
         public virtual User? RequestAuthor { get; set; }
 
         /// <summary>
-        /// Igényléshez hozzátartozó osztály
-        /// </summary>
-        [Display(Name = "Igényléshez hozzátartozó osztály")]
-        public Nullable<int> ClassId { get; set; }
-
-        [Display(Name = "Igényléshez hozzátartozó osztály")]
-        public virtual Class? Class { get; set; }
-
-        /// <summary>
         /// Személy aki számára az igénylés zajlik
         /// </summary>
         [Display(Name = "Személy aki számára az igénylés zajlik")]

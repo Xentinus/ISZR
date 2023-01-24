@@ -29,6 +29,17 @@
         <!-- Main content -->
         <div class="content-wrapper">
             <div class="content">
+
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0">@ViewData["Title"]</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 @RenderBody()
             </div>
         </div>
@@ -41,7 +52,6 @@
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/plugins/bs-stepper/js/bs-stepper.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/js/adminlte.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
