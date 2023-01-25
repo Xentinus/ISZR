@@ -25,14 +25,34 @@ namespace ISZR.Controllers
             ViewBag.Done = _context.Requests.Where(r => r.Status == "Végrehajtva").Count();
             ViewBag.Denied = _context.Requests.Where(r => r.Status == "Elutasítva").Count();
 
-            var dataContext = _context.Requests.Include(r => r.RequestAuthor).Include(r => r.RequestFor);
+            var dataContext = _context.Requests.Include(r => r.RequestAuthor).Include(r => r.RequestFor).OrderByDescending(r => r.RequestId);
             return View(await dataContext.ToListAsync());
         }
 
-        // GET: Permissions
-        public IActionResult Permissions()
+        // GET: Meglévő felhasználó részére többletjogosultság
+        public IActionResult UserNeedPermissions()
         {
-            ViewData["RequestForId"] = new SelectList(_context.Users, "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            return View();
+        }
+
+        // POST: Meglévő felhasználó részére többletjogosultság
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UserNeedPermissions([Bind("RequestId,Type,Status,Description,RequestedPermissions,RequestAuthorId,RequestForId")] Request request)
+        {
+            if (ModelState.IsValid)
+            {
+                request.RequestAuthorId = await RequestAuthorId();
+                request.CreationDate = DateTime.Now;
+                request.Type = "Meglévő felhasználó részére többletjogosultság";
+                request.Status = "Folyamatban";
+                request.Description = "Kérem engedélyezni a felhasználó részére többletjogosultság kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
+                _context.Add(request);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { @id = request.RequestId });
+            }
+            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
             return View();
         }
 
@@ -44,6 +64,10 @@ namespace ISZR.Controllers
             var request = await _context.Requests
                 .Include(r => r.RequestAuthor)
                 .Include(r => r.RequestFor)
+                .Include(r => r.RequestAuthor.Class)
+                .Include(r => r.RequestAuthor.Position)
+                .Include(r => r.RequestFor.Class)
+                .Include(r => r.RequestFor.Position)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
 
             if (request == null) return NotFound();
@@ -175,6 +199,24 @@ namespace ISZR.Controllers
         private bool RequestExists(int id)
         {
             return _context.Requests.Any(e => e.RequestId == id);
+        }
+
+        private async Task<int> RequestAuthorId()
+        {
+            // Get username from pc
+            string? activeUsername = User.Identity?.Name;
+            if (activeUsername == null) return -1;
+
+            // Looking for user
+            var foundUser = await _context.Users
+                .Include(u => u.Class)
+                .Include(u => u.Position)
+                .FirstOrDefaultAsync(m => m.Username == activeUsername);
+
+            if (foundUser == null) return -1;
+
+            // Return user id
+            return foundUser.UserId;
         }
     }
 }

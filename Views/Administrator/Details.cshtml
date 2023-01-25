@@ -2,18 +2,8 @@
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Igénylés részletei";
+    ViewData["Title"] = $"#{Model?.RequestId} számú igénylés részletei";
 }
-
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Igénylés részletei</h1>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="container-fluid">
     <div class="row">
@@ -54,7 +44,12 @@
                     <div class="col-lg-4 invoice-col">
                         <b>Igénylés típusa: </b> @Model?.Type<br />
                         <b>Létrehozásának ideje:</b> @Model?.CreationDate<br>
-                        <b>Lezárásának ideje:</b> @Model?.ResolveDate<br>
+                        @if (Model?.ResolveDate != new DateTime())
+                        {
+                            <b>Lezárásának ideje:</b> @Model?.ResolveDate
+
+                            <br>
+                        }
                         @{
                             switch (Model?.Status)
                             {

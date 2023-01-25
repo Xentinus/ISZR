@@ -31,12 +31,33 @@
                 </li>
                 <li class="nav-header"><b>Informatikával kapcsolatos</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Permissions" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Permissions">
+                    <a href="#" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "UserNeedPermissions" ? "active" : "")">
                         <i class="nav-icon fas fa-address-card"></i>
                         <p>
                             Jogosultság igénylése
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-user-plus nav-icon"></i>
+                                <p>Új felhasználó részére jogosultság</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Requests" asp-action="UserNeedPermissions">
+                                <i class="fas fa-user-edit nav-icon"></i>
+                                <p>Meglévő felhasználó részére többletjogosultság</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-people-arrows nav-icon"></i>
+                                <p>Meglévő felhasználó új beosztásának jogosultságai</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Email" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Email">

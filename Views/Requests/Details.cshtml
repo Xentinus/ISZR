@@ -24,6 +24,7 @@
                         <strong>Ügyintéző adatai</strong>
                         <address>
                             @Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank<br>
+                            @Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
                             <i class="fas fa-envelope"></i> @Model?.RequestAuthor?.Email<br>
                             <i class="fas fa-phone-square-alt"></i> @Model?.RequestAuthor?.Phone
                         </address>
@@ -33,6 +34,7 @@
                         <strong>Kinek a számra</strong>
                         <address>
                             @Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank<br>
+                            @Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
                             <i class="fas fa-envelope"></i> @Model?.RequestFor?.Email<br>
                             <i class="fas fa-phone-square-alt"></i> @Model?.RequestFor?.Phone
                         </address>
@@ -41,7 +43,12 @@
                     <div class="col-lg-6 invoice-col">
                         <b>Igénylés típusa: </b> @Model?.Type<br />
                         <b>Létrehozásának ideje:</b> @Model?.CreationDate<br>
-                        <b>Lezárásának ideje:</b> @Model?.ResolveDate<br>
+                        @if (Model?.ResolveDate != new DateTime())
+                        {
+                            <b>Lezárásának ideje:</b> @Model?.ResolveDate
+
+                            <br>
+                        }
                         @{
                             switch (Model?.Status)
                             {
@@ -69,9 +76,10 @@
 
                 <div class="row">
                     <div class="col-12 mb-3">
-                        Jogosultság kiadása <strong>@Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank</strong> részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.
+                        @Model?.Description
                     </div>
                 </div>
+
                 @{
                     if (Model?.RequestedPermissions != "")
                     {
