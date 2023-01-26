@@ -86,13 +86,56 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="alert alert-info alert-dismissible">
-                                    <h5><i class="icon fab fa-windows"></i> Igényelt jogosultságok</h5>
+                                    <h5><i class="icon fab fa-windows"></i> Igényelt Windows jogosultságok</h5>
                                     @Model?.RequestedPermissions
                                 </div>
                             </div>
                         </div>
                     }
                 }
+
+                @{
+                    if (Model?.RequestedPermissions != "")
+                    {
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-success alert-dismissible">
+                                    <h5><i class="icon far fa-window-maximize"></i> Igényelt Intranet jogosultságok</h5>
+                                    @Model?.RequestedPermissions
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+                @{
+                    if (Model?.RequestedPermissions != "")
+                    {
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-warning alert-dismissible">
+                                    <h5><i class="icon fas fa-dove"></i> Igényelt Főnix 2 jogosultságok</h5>
+                                    @Model?.RequestedPermissions
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+                @{
+                    if (Model?.RequestedPermissions != "")
+                    {
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-danger alert-dismissible">
+                                    <h5><i class="icon fas fa-dove"></i> Igényelt Főnix 3 jogosultságok</h5>
+                                    @Model?.RequestedPermissions
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
                 <div class="row no-print">
                     <div class="col-12">
                         <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>

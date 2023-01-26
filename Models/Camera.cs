@@ -37,5 +37,20 @@ namespace ISZR.Models
         [MinLength(2, ErrorMessage = "A kamera helyszíne nem lehet kevesebb mint 2 karakter")]
         [MaxLength(64, ErrorMessage = "A kamera helyszíne nem lehet nagyobb mint 64 karakter")]
         public string Sector { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Kamera intézete
+        /// </summary>
+        [Display(Name = "Kamera intézete")]
+        [Required(ErrorMessage = "A kamera intézetének kiválasztása kötelező!")]
+        [MinLength(2, ErrorMessage = "A kamera helyszíne nem lehet kevesebb mint 2 karakter")]
+        [MaxLength(64, ErrorMessage = "A kamera helyszíne nem lehet nagyobb mint 64 karakter")]
+        public string Institution { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Archiválva
+        /// </summary>
+        [Display(Name = "Archiválva")]
+        public bool IsArchived { get; set; } = false;
     }
 }

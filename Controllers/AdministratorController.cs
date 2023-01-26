@@ -28,7 +28,7 @@ namespace ISZR.Controllers
             ViewBag.Denied = _context.Requests.Where(r => r.Status == "Elutasítva").Count();
 
             // Return Requests
-            var dataContext = _context.Requests.Include(r => r.RequestAuthor).Include(r => r.RequestFor);
+            var dataContext = _context.Requests.Include(r => r.RequestAuthor).Include(r => r.RequestFor).OrderByDescending(r => r.RequestId);
             return View(await dataContext.ToListAsync());
         }
 

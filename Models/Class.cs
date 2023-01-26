@@ -29,9 +29,9 @@ namespace ISZR.Models
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// Archiválva lett e az osztály
+        /// Archiválva
         /// </summary>
-        [Display(Name = "Archiválva lett e")]
+        [Display(Name = "Archiválva")]
         public bool IsArchived { get; set; } = false;
 
         /// <summary>
