@@ -36,6 +36,7 @@ namespace ISZR.Models
         /// <summary>
         /// Beosztáshoz hozzátartozó felhasználók
         /// </summary>
+        [Display(Name = "Beosztáshoz hozzátartozó felhasználók")]
         public virtual ICollection<User> Users { get; set; }
     }
 }

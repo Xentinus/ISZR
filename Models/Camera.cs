@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ISZR.Models
 {
@@ -42,10 +44,13 @@ namespace ISZR.Models
         /// Kamera intézete
         /// </summary>
         [Display(Name = "Kamera intézete")]
-        [Required(ErrorMessage = "A kamera intézetének kiválasztása kötelező!")]
-        [MinLength(2, ErrorMessage = "A kamera helyszíne nem lehet kevesebb mint 2 karakter")]
-        [MaxLength(64, ErrorMessage = "A kamera helyszíne nem lehet nagyobb mint 64 karakter")]
-        public string Institution { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Az intézet kiválasztása kötelező!")]
+        [DefaultValue(null)]
+        public Nullable<int> InstitutionId { get; set; }
+
+        [Display(Name = "Kamera intézete")]
+        [ForeignKey("AgglomerationId")]
+        public virtual Institution? Institution { get; set; }
 
         /// <summary>
         /// Archiválva

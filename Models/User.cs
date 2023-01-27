@@ -87,6 +87,7 @@ namespace ISZR.Models
         [Required(ErrorMessage = "Az osztály kiválasztása kötelező!")]
         public Nullable<int> ClassId { get; set; }
 
+        [Display(Name = "Felhasználó osztálya")]
         public virtual Class? Class { get; set; }
 
         /// <summary>
@@ -96,6 +97,7 @@ namespace ISZR.Models
         [Required(ErrorMessage = "A beosztás megadása kötelező!")]
         public Nullable<int> PositionId { get; set; }
 
+        [Display(Name = "Felhasználó beosztása")]
         public virtual Position? Position { get; set; }
 
         /// <summary>
@@ -107,12 +109,14 @@ namespace ISZR.Models
         /// <summary>
         /// Felhasználó által igényelt igénylések
         /// </summary>
+        [Display(Name = "Felhasználó által igényelt igénylések")]
         [InverseProperty("RequestAuthor")]
         public virtual ICollection<Request> RequestAuthor { get; set; }
 
         /// <summary>
         /// Felhasználónak kért igénylések
         /// </summary>
+        [Display(Name = "Felhasználónak kért igénylések")]
         [InverseProperty("RequestFor")]
         public virtual ICollection<Request> RequestFor { get; set; }
     }
