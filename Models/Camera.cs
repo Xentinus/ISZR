@@ -41,18 +41,6 @@ namespace ISZR.Models
         public string Sector { get; set; } = string.Empty;
 
         /// <summary>
-        /// Kamera intézete
-        /// </summary>
-        [Display(Name = "Kamera intézete")]
-        [Required(ErrorMessage = "Az intézet kiválasztása kötelező!")]
-        [DefaultValue(null)]
-        public Nullable<int> InstitutionId { get; set; }
-
-        [Display(Name = "Kamera intézete")]
-        [ForeignKey("AgglomerationId")]
-        public virtual Institution? Institution { get; set; }
-
-        /// <summary>
         /// Archiválva
         /// </summary>
         [Display(Name = "Archiválva")]
