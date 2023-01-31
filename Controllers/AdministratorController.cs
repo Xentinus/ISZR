@@ -19,7 +19,7 @@ namespace ISZR.Controllers
             if (activeUsername == null) return Forbid();
 
             // Regex for username and development env
-            if (!Regex.IsMatch(activeUsername, @"^XENTINUS-") || Regex.IsMatch(activeUsername, @"\.admin$")) return Forbid();
+            if (!Regex.IsMatch(activeUsername, @"^(XENTINUS-|.*\.admin)$")) return Forbid();
 
             // Dashboard informations
             ViewBag.All = _context.Requests.Count();

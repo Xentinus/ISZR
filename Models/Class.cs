@@ -7,12 +7,6 @@ namespace ISZR.Models
     /// </summary>
     public class Class
     {
-        public Class()
-        {
-            Users = new HashSet<User>();
-            Requests = new HashSet<Request>();
-        }
-
         /// <summary>
         /// Az osztály azonosítója ISZR-en belül
         /// </summary>
@@ -29,19 +23,14 @@ namespace ISZR.Models
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
+        /// Osztályhoz hozzátartozó felhasználók
+        /// </summary>
+        public virtual List<User>? Users { get; set; }
+
+        /// <summary>
         /// Archiválva
         /// </summary>
         [Display(Name = "Archiválva")]
         public bool IsArchived { get; set; } = false;
-
-        /// <summary>
-        /// Osztályhoz hozzátartozó felhasználók
-        /// </summary>
-        public virtual ICollection<User> Users { get; set; }
-
-        /// <summary>
-        /// Osztályhoz hozzátartozó igénylések
-        /// </summary>
-        public virtual ICollection<Request> Requests { get; set; }
     }
 }

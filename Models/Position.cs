@@ -7,11 +7,6 @@ namespace ISZR.Models
     /// </summary>
     public class Position
     {
-        public Position()
-        {
-            Users = new HashSet<User>();
-        }
-
         /// <summary>
         /// Beosztás azonosítója
         /// </summary>
@@ -28,15 +23,15 @@ namespace ISZR.Models
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
+        /// Beosztáshoz hozzátartozó felhasználók
+        /// </summary>
+        [Display(Name = "Beosztáshoz hozzátartozó felhasználók")]
+        public virtual List<User>? Users { get; set; }
+
+        /// <summary>
         /// Archiválva
         /// </summary>
         [Display(Name = "Archiválva")]
         public bool IsArchived { get; set; } = false;
-
-        /// <summary>
-        /// Beosztáshoz hozzátartozó felhasználók
-        /// </summary>
-        [Display(Name = "Beosztáshoz hozzátartozó felhasználók")]
-        public virtual ICollection<User> Users { get; set; }
     }
 }

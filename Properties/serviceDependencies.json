@@ -1,12 +1,9 @@
 {
   "dependencies": {
-    "mssql1": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:ISZRContext"
-    },
     "mssql2": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:DataContext"
+      "connectionId": "ConnectionStrings:DataContext",
+      "dynamicId": null
     }
   }
 }

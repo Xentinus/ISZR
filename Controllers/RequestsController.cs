@@ -30,7 +30,7 @@ namespace ISZR.Controllers
         }
 
         // GET: Meglévő felhasználó részére többletjogosultság
-        public IActionResult UserNeedPermissions()
+        public IActionResult Tobbletjogosultsag()
         {
             ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
             return View();
@@ -39,7 +39,7 @@ namespace ISZR.Controllers
         // POST: Meglévő felhasználó részére többletjogosultság
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserNeedPermissions([Bind("RequestId,Type,Status,Description,RequestedPermissions,RequestAuthorId,RequestForId")] Request request)
+        public async Task<IActionResult> Tobbletjogosultsag([Bind("RequestId,Type,Status,Description,RequestedPermissions,RequestAuthorId,RequestForId")] Request request)
         {
             if (ModelState.IsValid)
             {

@@ -1,76 +1,69 @@
 ﻿@{
-    ViewData["Title"] = "Irányítópult";
+	ViewData["Title"] = "Irányítópult";
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-lg-4">
-            <div class="card card-widget widget-user">
-                <div class="widget-user-header bg-info">
-                    <h3 class="widget-user-username">@Model?.DisplayName</h3>
-                    <h5 class="widget-user-desc">@Model?.Position.Name</h5>
-                </div>
-                <div class="widget-user-image">
-                    <img class="img-circle elevation-2" src="~/img/avatar.png" alt="Profilkép">
-                </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="card-body">
-                            <strong><i class="fas fa-medal mr-1"></i> Rendfokozat</strong>
-                            <p class="text-muted">@Model?.Rank</p>
-                            <hr>
-                            <strong><i class="fas fa-users mr-1"></i> Osztály</strong>
-                            <p class="text-muted">@Model?.Class.Name</p>
-                            <hr>
-                            <strong><i class="fas fa-history mr-1"></i> Bejelentkezés időpontja</strong>
-                            <p class="text-muted">@Model?.LastLogin.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")</p>
-                            <hr>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-8">
-            <div class="card">
-                <div class="card-header bg-info">
-                    <h5 class="card-title">Teljesítményed az osztályhoz képest</h5>
-                </div>
+	<div class="row">
+		<div class="col-12 col-lg-4">
+			<div class="card card-widget widget-user">
+				<div class="widget-user-header bg-info">
+					<h3 class="widget-user-username">@Model?.DisplayName</h3>
+					<h5 class="widget-user-desc">@Model?.Position.Name</h5>
+				</div>
+				<div class="widget-user-image">
+					<img class="img-circle elevation-2" src="~/img/avatar.png" alt="Profilkép">
+				</div>
+				<div class="card-footer">
+					<div class="row">
+						<div class="card-body">
+							<strong><i class="fas fa-medal mr-1"></i> Rendfokozat</strong>
+							<p class="text-muted">@Model?.Rank</p>
+							<hr>
+							<strong><i class="fas fa-users mr-1"></i> Osztály</strong>
+							<p class="text-muted">@Model?.Class.Name</p>
+							<hr>
+							<strong><i class="fas fa-history mr-1"></i> Bejelentkezés időpontja</strong>
+							<p class="text-muted">@Model?.LastLogin.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")</p>
+							<hr>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-lg-8">
+			<div class="card">
+				<div class="card-header bg-info">
+					<h5 class="card-title">Igényléseid eloszlása</h5>
+				</div>
 
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="progress-group">
-                                Igényléseid
-                                <span class="float-right"><b>0</b>/0</span>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-info" style="width: 100%"></div>
-                                </div>
-                            </div>
-                            <div class="progress-group">
-                                Jováhagyott igényléseid
-                                <span class="float-right"><b>0</b>/0</span>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-success" style="width: 100%"></div>
-                                </div>
-                            </div>
-                            <div class="progress-group">
-                                Elutasított igényléseid
-                                <span class="float-right"><b>0</b>/0</span>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-danger" style="width: 100%"></div>
-                                </div>
-                            </div>
-                            <div class="progress-group">
-                                Folyamatban lévő igényléseid
-                                <span class="float-right"><b>0</b>/0</span>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-warning" style="width: 100%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12">
+							<div class="progress-group">
+								Jováhagyott igényléseid
+								<span class="float-right"><b>@ViewBag.Done</b>/@ViewBag.All</span>
+								<div class="progress progress-sm">
+									<div class="progress-bar bg-success" style="width: 20%"></div>
+								</div>
+							</div>
+							<div class="progress-group">
+								Folyamatban lévő igényléseid
+								<span class="float-right"><b>@ViewBag.InProgress</b>/@ViewBag.All</span>
+								<div class="progress progress-sm">
+									<div class="progress-bar bg-warning" style="width: 40%"></div>
+								</div>
+							</div>
+							<div class="progress-group">
+								Elutasított igényléseid
+								<span class="float-right"><b>@ViewBag.Denied</b>/@ViewBag.All</span>
+								<div class="progress progress-sm">
+									<div class="progress-bar bg-danger" style="width: 60%"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

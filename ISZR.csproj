@@ -4,9 +4,11 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>606be00c-df75-4a9d-b524-cb969a401680</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="EfCore.SchemaCompare" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.12" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.13" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.13" />
@@ -18,5 +20,7 @@
 		<PackageReference Include="System.DirectoryServices" Version="6.0.0" />
 		<PackageReference Include="System.DirectoryServices.AccountManagement" Version="6.0.0" />
 	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -8,12 +8,6 @@ namespace ISZR.Models
     /// </summary>
     public class User
     {
-        public User()
-        {
-            RequestAuthor = new HashSet<Request>();
-            RequestFor = new HashSet<Request>();
-        }
-
         /// <summary>
         /// A felhasználó azonosítója ISZR-en belül
         /// </summary>
@@ -111,13 +105,13 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Felhasználó által igényelt igénylések")]
         [InverseProperty("RequestAuthor")]
-        public virtual ICollection<Request> RequestAuthor { get; set; }
+        public virtual List<Request>? RequestAuthor { get; set; }
 
         /// <summary>
         /// Felhasználónak kért igénylések
         /// </summary>
         [Display(Name = "Felhasználónak kért igénylések")]
         [InverseProperty("RequestFor")]
-        public virtual ICollection<Request> RequestFor { get; set; }
+        public virtual List<Request>? RequestFor { get; set; }
     }
 }

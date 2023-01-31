@@ -50,7 +50,7 @@ namespace ISZR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CameraId,Name,Type,Sector")] Camera camera)
+        public async Task<IActionResult> Create([Bind("CameraId,Name,Type,Location")] Camera camera)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace ISZR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CameraId,Name,Type,Sector")] Camera camera)
+        public async Task<IActionResult> Edit(int id, [Bind("CameraId,Name,Type,Location")] Camera camera)
         {
             if (id != camera.CameraId)
             {

@@ -38,7 +38,7 @@ namespace ISZR.Models
         [Required(ErrorMessage = "A kamera helyszínének megadása kötelező!")]
         [MinLength(2, ErrorMessage = "A kamera helyszíne nem lehet kevesebb mint 2 karakter")]
         [MaxLength(64, ErrorMessage = "A kamera helyszíne nem lehet nagyobb mint 64 karakter")]
-        public string Sector { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
 
         /// <summary>
         /// Archiválva

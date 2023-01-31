@@ -43,10 +43,10 @@
 
                     <div class="col-lg-6 invoice-col">
                         <b>Igénylés típusa: </b> @Model?.Type<br />
-                        <b>Létrehozásának ideje:</b> @Model?.CreationDate<br>
+                        <b>Létrehozásának ideje:</b> @Model?.CreationDate.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")<br>
                         @if (Model?.ResolveDate != new DateTime())
                         {
-                            <b>Lezárásának ideje:</b> @Model?.ResolveDate
+                            <b>Lezárásának ideje:</b> @Model?.ResolveDate.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")
 
                             <br>
                         }

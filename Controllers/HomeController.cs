@@ -17,23 +17,23 @@ namespace ISZR.Controllers
         // GET: Home/Dashboard
         public async Task<IActionResult> Dashboard()
         {
-            // get username
+            // Get login username
             string? activeUsername = User.Identity?.Name;
 
-            // looking for user data
+            // Looking for logged in user in database
             var user = await _context.Users
                 .Include(u => u.Class)
                 .Include(u => u.Position)
                 .FirstOrDefaultAsync(m => m.Username == activeUsername);
 
-            // user not exist
+            // User not exists in database redirect to registration
             if (user == null) return RedirectToAction("Index", "Welcome");
 
-            // save user data
-            ViewBag.CurrentUser = user;
-
-            ViewBag.AllRequest = _context.Requests.Count();
-            ViewBag.AllRequestUser = _context.Requests.Where(r => r.RequestAuthor == user).Count();
+            // User Requests Dashboard
+            ViewBag.All = _context.Requests.Where(r => r.RequestAuthorId == user.UserId).Count();
+            ViewBag.InProgress = _context.Requests.Where(r => r.Status == "Folyamatban" && r.RequestAuthorId == user.UserId).Count();
+            ViewBag.Done = _context.Requests.Where(r => r.Status == "Végrehajtva" && r.RequestAuthorId == user.UserId).Count();
+            ViewBag.Denied = _context.Requests.Where(r => r.Status == "Elutasítva" && r.RequestAuthorId == user.UserId).Count();
 
             // return page
             return View(user);
@@ -60,7 +60,7 @@ namespace ISZR.Controllers
         // POST: Settings/Index
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Settings([Bind("UserId,Username,DisplayName,Email,Phone,Rank,Location,LastLogin,ClassId,PositionId")] User user)
+        public async Task<IActionResult> Settings([Bind("UserId,Username,DisplayName,Email,Phone,Rank,Location,LastLogin,LogonCount,ClassId,PositionId")] User user)
         {
             if (ModelState.IsValid)
             {
