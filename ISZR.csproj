@@ -5,6 +5,37 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>606be00c-df75-4a9d-b524-cb969a401680</UserSecretsId>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<SignAssembly>False</SignAssembly>
+		<Version></Version>
+		<AssemblyVersion>23.2.2.30</AssemblyVersion>
+		<FileVersion>23.2.2.30</FileVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DebugType>portable</DebugType>
+	  <ShouldCreateLogs>False</ShouldCreateLogs>
+	  <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
+	  <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+	  <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+	  <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+	  <UpdatePackageVersion>False</UpdatePackageVersion>
+	  <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+	  <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+	  <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DebugType>portable</DebugType>
+	  <ShouldCreateLogs>False</ShouldCreateLogs>
+	  <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
+	  <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+	  <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+	  <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+	  <UpdatePackageVersion>False</UpdatePackageVersion>
+	  <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+	  <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+	  <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
 	</PropertyGroup>
 
 	<ItemGroup>

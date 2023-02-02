@@ -4,8 +4,6 @@
 	ViewData["Title"] = "Meglévő felhasználó részére többletjogosultság";
 }
 
-<link rel="stylesheet" href="~/plugins/bs-stepper/css/bs-stepper.min.css">
-
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
@@ -46,14 +44,6 @@
 							<div class="bs-stepper-content">
 								<div id="request-info" class="content active dstepper-block" role="tabpanel" aria-labelledby="request-info-trigger">
 									<div class="row">
-										<div class="col-12">
-											<div class="alert alert-info alert-dismissible">
-												<h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-												Minden igénylés előtt kérlek ellenőrízd, hogy a felhasználó részére nem e létezik már az adott igénylés.
-											</div>
-										</div>
-									</div>
-									<div class="row">
 										<div class="col-12 col-md-6">
 											<div class="form-group">
 												<label>Személy aki részére az igénylés zajlik</label>
@@ -61,18 +51,47 @@
 													<div class="input-group-prepend">
 														<span class="input-group-text"><i class="fas fa-user"></i></span>
 													</div>
-													<select asp-for="RequestForId" class="form-control" asp-items="ViewBag.RequestForId" onchange="userChange()">
-														<option disabled selected>Felhasználó kiválasztása...</option>
+													<select asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4">
 													</select>
 												</div>
 											</div>
 										</div>
+										<div class="col-12 col-md-6">
+											<div class="alert alert-info alert-dismissible">
+												<h5><i class="icon fas fa-info"></i> Figyelem!</h5>
+												Amennyiben a felhasználó nem található a listában, kérem küldjön e-mailt az informatikai csoportnak!
+											</div>
+										</div>
 									</div>
 
-									<a id="firstPageNext" class="btn btn-info none" onclick="stepper.next()">Tovább</a>
+									<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
 								</div>
 								<div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
 									<div class="row">
+										<div class="col-12">
+											<div class="form-group">
+												<label>Igényelhető Windows jogosultságok</label>
+												<div class="input-group mb-3">
+													<div class="input-group-prepend">
+														<span class="input-group-text"><i class="fas fa-key"></i></span>
+													</div>
+													<select name="Windows" asp-items="ViewBag.Windows" class="form-control select2bs4 selectPermissions" multiple="multiple">
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label>Igényelhető Főnix3 jogosultságok</label>
+												<div class="input-group mb-3">
+													<div class="input-group-prepend">
+														<span class="input-group-text"><i class="fas fa-key"></i></span>
+													</div>
+													<select name="Fonix3" asp-items="ViewBag.Fonix3" class="form-control select2bs4 selectPermissions" multiple="multiple">
+													</select>
+												</div>
+											</div>
+										</div>
 									</div>
 									<a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
 									<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
@@ -90,8 +109,6 @@
 		</div>
 	</div>
 </div>
-
-<script src="~/plugins/bs-stepper/js/bs-stepper.min.js"></script>
 
 <script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function () {

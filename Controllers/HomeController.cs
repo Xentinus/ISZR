@@ -84,7 +84,7 @@ namespace ISZR.Controllers
             }
             ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name", user.ClassId);
             ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name", user.PositionId);
-            return RedirectToAction(nameof(Dashboard));
+            return View(user);
         }
 
         public IActionResult FAQ()

@@ -32,19 +32,26 @@ namespace ISZR.Models
         [DataType(DataType.MultilineText)]
         public string Description { get; set; } = string.Empty;
 
-        /// <summary>
-        /// Igényelt jogosultságok
-        /// </summary>
-        [Display(Name = "Igényelt jogosultságok")]
-        [DataType(DataType.MultilineText)]
-        public string RequestedPermissions { get; set; } = string.Empty;
+		/// <summary>
+		/// Igényelt Windows jogosultságok
+		/// </summary>
+		[Display(Name = "Windows jogosultságok")]
+		[DataType(DataType.MultilineText)]
+		public string WindowsPermissions { get; set; } = string.Empty;
+
+		/// <summary>
+		/// Igényelt Főnix 3 jogosultságok
+		/// </summary>
+		[Display(Name = "Főnix 3 jogosultságok")]
+		[DataType(DataType.MultilineText)]
+		public string FonixPermissions { get; set; } = string.Empty;
 
         /// <summary>
         /// Igénylés készítésének időpontja
         /// </summary>
         [Display(Name = "Igénylés készítésének időpontja")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. HH:mm}")]
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
         /// <summary>
@@ -72,7 +79,7 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Igénylés elintézésének ideje")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. HH:mm}")]
         public DateTime ResolveDate { get; set; }
-    }
+	}
 }

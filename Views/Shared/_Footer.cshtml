@@ -1,7 +1,10 @@
 ﻿<footer class="main-footer font-weight-normal">
-    &copy; 2021-@DateTime.Now.Year. Minden jog fenntartva. <a class="text-info font-weight-bold" href="https://github.com/Xentinus"> <i class="fab fa-github"></i> Béla Kellner</a>
+	&copy; 2021-@DateTime.Now.Year. Minden jog fenntartva. <a class="text-info font-weight-bold" href="https://github.com/Xentinus"> <i class="fab fa-github"></i> Béla Kellner</a>
 
-    <div class="float-right d-none d-sm-inline">
-        Informatikai Szolgálati jegy Rendszer <span class="text-info font-weight-bold"> v2.0.0 <i class="fas fa-code-branch"></i></span>
-    </div>
+	<div class="float-right d-none d-sm-inline">
+		Informatikai Szolgálati jegy Rendszer <span class="text-info font-weight-bold">
+			@System.Reflection.Assembly.GetExecutingAssembly().GetName().Version
+			<i class="fas fa-code-branch"></i>
+		</span>
+	</div>
 </footer>

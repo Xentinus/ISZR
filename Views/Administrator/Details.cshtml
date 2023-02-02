@@ -1,117 +1,162 @@
 ﻿@model ISZR.Models.Request
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = $"#{Model?.RequestId} számú igénylés részletei";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = $"#{Model?.RequestId} számú igénylés részletei";
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="invoice p-3 mb-3">
+	<div class="row">
+		<div class="col-12">
+			<div class="invoice p-3 mb-3">
 
-                <div class="row">
-                    <div class="col-12">
-                        <h4>
-                            <i class="fas fa-paperclip"></i> Digitális Szolgálati jegy
-                            <small class="float-right">ISZR <span class="text-info font-weight-bold">#@Model?.RequestId</span></small>
-                        </h4>
-                    </div>
+				<div class="row">
+					<div class="col-12">
+						<h4>
+							<i class="fas fa-paperclip"></i> Digitális Szolgálati jegy
+							<small class="float-right">ISZR <span class="text-info font-weight-bold">#@Model?.RequestId</span></small>
+						</h4>
+					</div>
 
-                </div>
+				</div>
 
-                <div class="row invoice-info mb-2">
-                    <div class="col-lg-3 invoice-col">
-                        <strong>Ügyintéző adatai</strong>
-                        <address>
-                            @Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank<br>
-                            @Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
-                            <i class="fas fa-envelope"></i> @Model?.RequestAuthor?.Email<br>
-                            <i class="fas fa-phone-square-alt"></i> @Model?.RequestAuthor?.Phone
-                        </address>
-                    </div>
+				<div class="row invoice-info mb-2">
+					<div class="col-lg-4 invoice-col">
+						@if (Model?.RequestAuthor != null)
+						{
+							<strong>Ügyintéző adatai</strong>
+							<address>
+								@Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank<br>
+								@Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
+								<i class="fab fa-windows"></i> @Model?.RequestAuthor?.Username<br />
+								<i class="fas fa-envelope"></i> @Model?.RequestAuthor?.Email<br>
+								<i class="fas fa-phone-square-alt"></i> @Model?.RequestAuthor?.Phone
+							</address>
+						}
+					</div>
 
-                    <div class="col-lg-3 invoice-col">
-                        <strong>Kinek a számra</strong>
-                        <address>
-                            @Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank<br>
-                            @Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
-                            <i class="fas fa-envelope"></i> @Model?.RequestFor?.Email<br>
-                            <i class="fas fa-phone-square-alt"></i> @Model?.RequestFor?.Phone
-                        </address>
-                    </div>
+					<div class="col-lg-4 invoice-col">
+						@if (Model?.RequestFor != null)
+						{
+							<strong>Kinek a számra</strong>
+							<address>
+								@Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank<br>
+								@Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
+								<i class="fab fa-windows"></i> @Model?.RequestFor?.Username<br />
+								<i class="fas fa-envelope"></i> @Model?.RequestFor?.Email<br>
+								<i class="fas fa-phone-square-alt"></i> @Model?.RequestFor?.Phone
+							</address>
+						}
+					</div>
 
-                    <div class="col-lg-6 invoice-col">
-                        <b>Igénylés típusa: </b> @Model?.Type<br />
-                        <b>Létrehozásának ideje:</b> @Model?.CreationDate.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")<br>
-                        @if (Model?.ResolveDate != new DateTime())
-                        {
-                            <b>Lezárásának ideje:</b> @Model?.ResolveDate.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")
+					<div class="col-lg-4 invoice-col">
+						<b>Igénylés típusa: </b> @Model?.Type<br />
+						<b>Létrehozásának ideje:</b> @Model?.CreationDate.ToString("yyyy. MMMM dd. HH:mm")<br>
+						@if (Model?.ResolveDate != new DateTime())
+						{
+							<b>Lezárásának ideje:</b> @Model?.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")
 
-                            <br>
-                        }
-                        @{
-                            switch (Model?.Status)
-                            {
-                                case "Elutasítva":
-                                    {
-                                        <b>Státusz:</b> <span class="badge badge-danger"><i class="icon fas fa-ban"></i> @Model?.Status</span>
-                                        break;
-                                    }
-                                case "Végrehajtva":
-                                    {
-                                        <b>Státusz:</b> <span class="badge badge-success"><i class="icon fas fa-check"></i> @Model?.Status</span>
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        <b>Státusz:</b> <span class="badge badge-warning"><i class="icon fas fa-comment-dots"></i> @Model?.Status</span>
-                                        break;
-                                    }
-                            }
-                        }
-                    </div>
+							<br>
+						}
+						@{
+							switch (Model?.Status)
+							{
+								case "Elutasítva":
+									{
+										<b>Státusz:</b> <span class="badge badge-danger"><i class="icon fas fa-ban"></i> @Model?.Status</span>
+										break;
+									}
+								case "Végrehajtva":
+									{
+										<b>Státusz:</b> <span class="badge badge-success"><i class="icon fas fa-check"></i> @Model?.Status</span>
+										break;
+									}
+								default:
+									{
+										<b>Státusz:</b> <span class="badge badge-warning"><i class="icon fas fa-comment-dots"></i> @Model?.Status</span>
+										break;
+									}
+							}
+						}
+					</div>
 
-                </div>
+				</div>
 
 
-                <div class="row">
-                    <div class="col-12 mb-3">
-                        Jogosultság kiadása <strong>@Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank</strong> részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.
-                    </div>
-                </div>
-                @{
-                    if (Model?.RequestedPermissions != "")
-                    {
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="alert alert-info alert-dismissible">
-                                    <h5><i class="icon fab fa-windows"></i> Igényelt jogosultságok</h5>
-                                    @Model?.RequestedPermissions
-                                </div>
-                            </div>
-                        </div>
-                    }
-                }
-                <div class="row no-print">
-                    <div class="col-12">
-                        <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
-                        <a class="btn btn-default"><i class="fas fa-print"></i> Nyomtatás</a>
-                        @{
-                            if (Model?.Status == "Folyamatban")
-                            {
-                                <button type="button" class="btn btn-danger float-right">
-                                    <i class="fas fa-times-circle"></i> Elutasítva
-                                </button>
-                                <button type="button" class="btn btn-success float-right" style="margin-right: 5px;">
-                                    <i class="fas fa-check-circle"></i> Végrehajtva
-                                </button>
-                            }
-                        }
-                    </div>
-                </div>
-            </div>
+				<div class="row">
+					<div class="col-12 mb-3">
+						@Model?.Description
+					</div>
+				</div>
 
-        </div>
-    </div>
+				@{
+					if (Model?.WindowsPermissions != "")
+					{
+						<div class="row">
+							<div class="col-12">
+								<div class="alert alert-info alert-dismissible">
+									<h5><i class="icon fa fa-key"></i> Windows jogosultságok</h5>
+									@Model?.WindowsPermissions
+								</div>
+							</div>
+						</div>
+					}
+				}
+
+				@{
+					if (Model?.FonixPermissions != "")
+					{
+						<div class="row">
+							<div class="col-12">
+								<div class="alert alert-warning alert-dismissible">
+									<h5><i class="fas fa-dove"></i> Főnix 3 jogosultságok</h5>
+									@Model?.FonixPermissions
+								</div>
+							</div>
+						</div>
+					}
+				}
+
+				<div class="row no-print">
+					<div class="col-12">
+						<a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+
+						@if (Model?.Status != "Elutasítva")
+						{
+							<form style="display: inline;" asp-action="Details">
+								<input hidden name="id" value="@Model?.RequestId">
+								<input hidden name="status" value="Elutasítva">
+								<button type="submit" class="btn btn-danger float-right ml-1">
+									<i class="fas fa-times-circle"></i> Elutasítva
+								</button>
+							</form>
+						}
+
+						@if (Model?.Status != "Folyamatban")
+						{
+							<form style="display: inline;" asp-action="Details">
+								<input hidden name="id" value="@Model?.RequestId">
+								<input hidden name="status" value="Folyamatban">
+								<button type="submit" class="btn btn-warning float-right ml-1">
+									<i class="fas fa-comment-dots"></i> Folyamatban
+								</button>
+							</form>
+						}
+
+						@if (Model?.Status != "Végrehajtva")
+						{
+							<form style="display: inline;" asp-action="Details">
+								<input hidden name="id" value="@Model?.RequestId">
+								<input hidden name="status" value="Végrehajtva">
+								<button type="submit" class="btn btn-success float-right ml-1">
+									<i class="fas fa-check-circle"></i> Végrehajtva
+								</button>
+							</form>
+						}
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 </div>

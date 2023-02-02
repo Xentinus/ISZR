@@ -65,7 +65,7 @@ namespace ISZR.Models
         /// </summary>
         [Display(Name = "Utolsó bejelentkezés")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. dddd, HH óra mm perc}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. HH:mm}")]
         public DateTime LastLogin { get; set; } = DateTime.Now;
 
         /// <summary>

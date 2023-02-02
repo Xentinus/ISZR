@@ -3,7 +3,7 @@
 <aside class="main-sidebar elevation-4 sidebar-dark-info">
     <!-- ISZR -->
     <a class="brand-link" asp-area="" asp-controller="Home" asp-action="Dashboard">
-        <img src="~/img/ISZR.png" alt="ISZR" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="~/img/ISZR.png" alt="ISZR" class="brand-image elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">ISZR</span>
     </a>
 
@@ -28,7 +28,7 @@
                 </li>
                 <li class="nav-header"><b>Informatikával kapcsolatos</b></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "UserNeedPermissions" ? "active" : "")">
+                    <a href="#" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Tobbletjogosultsag" ? "active" : "")">
                         <i class="nav-icon fas fa-address-card"></i>
                         <p>Jogosultság igénylése <i class="fas fa-angle-left right"></i></p>
                     </a>
@@ -114,6 +114,12 @@
                     </ul>
                 </li>
                 <li class="nav-header"><b>Egyebek</b></li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "FAQ" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="FAQ">
+                        <i class="nav-icon fas fa-key"></i>
+                        <p>Jogosultsági magyarázat</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "FAQ" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="FAQ">
                         <i class="nav-icon fas fa-question-circle"></i>

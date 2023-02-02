@@ -4,6 +4,7 @@ using ISZR.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISZR.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230201122125_AddedRequestPermissions")]
+    partial class AddedRequestPermissions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,6 +91,9 @@ namespace ISZR.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -139,10 +144,6 @@ namespace ISZR.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FonixPermissions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("RequestAuthorId")
                         .HasColumnType("int");
 
@@ -160,10 +161,6 @@ namespace ISZR.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("WindowsPermissions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("RequestId");
 
                     b.HasIndex("RequestAuthorId");
@@ -171,6 +168,21 @@ namespace ISZR.Migrations
                     b.HasIndex("RequestForId");
 
                     b.ToTable("Requests");
+                });
+
+            modelBuilder.Entity("ISZR.Models.RequestPermission", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequestId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("RequestPermission");
                 });
 
             modelBuilder.Entity("ISZR.Models.User", b =>
@@ -249,6 +261,25 @@ namespace ISZR.Migrations
                     b.Navigation("RequestFor");
                 });
 
+            modelBuilder.Entity("ISZR.Models.RequestPermission", b =>
+                {
+                    b.HasOne("ISZR.Models.Permission", "Permission")
+                        .WithMany("RequestPermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ISZR.Models.Request", "Request")
+                        .WithMany("RequestPermissions")
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Request");
+                });
+
             modelBuilder.Entity("ISZR.Models.User", b =>
                 {
                     b.HasOne("ISZR.Models.Class", "Class")
@@ -273,9 +304,19 @@ namespace ISZR.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("ISZR.Models.Permission", b =>
+                {
+                    b.Navigation("RequestPermissions");
+                });
+
             modelBuilder.Entity("ISZR.Models.Position", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ISZR.Models.Request", b =>
+                {
+                    b.Navigation("RequestPermissions");
                 });
 
             modelBuilder.Entity("ISZR.Models.User", b =>

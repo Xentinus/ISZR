@@ -57,7 +57,7 @@
                             <tr>
                                 <th>Azonosító</th>
                                 <th>Jogosultság neve</th>
-                                <th>Jogosultság típusa</th>
+                                <th>Jogosultság leírása</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -69,10 +69,18 @@
                                         @Html.DisplayFor(modelItem => item.PermissionId)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
+                                        @Html.DisplayFor(modelItem => item.Name)<br>
+                                        @if (item.Type == "Windows")
+                                        {
+                                            <span class="text-info font-weight-bold">Windows jogosultság</span>
+                                        }
+                                        @if (item.Type == "Főnix 3")
+                                        {
+                                            <span class="text-warning font-weight-bold">Főnix 3 jogosultság</span>
+                                        }
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Type)
+                                        @Html.DisplayFor(modelItem => item.Description)
                                     </td>
                                     <td class="float-right">
                                         <a asp-action="Details" asp-route-id="@item.PermissionId"><input type="button" value="Részletek" class="btn btn-info" /></a>

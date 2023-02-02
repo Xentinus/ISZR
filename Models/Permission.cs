@@ -46,11 +46,5 @@ namespace ISZR.Models
         [DataType(DataType.MultilineText)]
         [MinLength(6, ErrorMessage = "Legalább egy darab jogosultságot írj be! Előtag szükséges!")]
         public string ActiveDirectoryPermissions { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Archiválva
-        /// </summary>
-        [Display(Name = "Archiválva")]
-        public bool IsArchived { get; set; } = false;
     }
 }

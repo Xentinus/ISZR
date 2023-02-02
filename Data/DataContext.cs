@@ -20,5 +20,5 @@ namespace ISZR.Data
         public DbSet<Request> Requests { get; set; } = default!;
 
         public DbSet<Permission> Permissions { get; set; } = default!;
-    }
+	}
 }
