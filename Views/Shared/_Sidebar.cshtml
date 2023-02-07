@@ -13,7 +13,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header"><b>Statisztika</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Dashboard">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")" asp-controller="Home" asp-action="Dashboard">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Irányítópult
@@ -21,14 +21,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" || ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" || ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")" asp-controller="Requests" asp-action="Index" asp-route-status="Folyamatban">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>Igénylések</p>
                     </a>
                 </li>
                 <li class="nav-header"><b>Informatikával kapcsolatos</b></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Tobbletjogosultsag" ? "active" : "")">
+                    <a href="#" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "UserAdditionalAccess" ? "active" : "")">
                         <i class="nav-icon fas fa-address-card"></i>
                         <p>Jogosultság igénylése <i class="fas fa-angle-left right"></i></p>
                     </a>
@@ -40,7 +40,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Requests" asp-action="Tobbletjogosultsag">
+                            <a class="nav-link" asp-area="" asp-controller="Requests" asp-action="UserAdditionalAccess">
                                 <i class="fas fa-user-edit nav-icon"></i>
                                 <p>Meglévő felhasználó részére többletjogosultság</p>
                             </a>
@@ -54,19 +54,19 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Email" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Email">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Email" ? "active" : "")" asp-controller="Requests" asp-action="Email">
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>E-mail cím igénylése</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Phone" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Phone">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Phone" ? "active" : "")" asp-controller="Requests" asp-action="Phone">
                         <i class="nav-icon fas fa-phone-square-alt"></i>
                         <p>Telefonáláshoz PIN kód igénylése</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Parking" ? "active" : "")" asp-area="" asp-controller="Requests" asp-action="Parking">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Parking" ? "active" : "")" asp-controller="Requests" asp-action="Parking">
                         <i class="nav-icon fas fa-parking"></i>
                         <p>Parkolási engedély igénylése</p>
                     </a>
@@ -115,13 +115,13 @@
                 </li>
                 <li class="nav-header"><b>Egyebek</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "FAQ" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="FAQ">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Home" asp-action="Permissions">
                         <i class="nav-icon fas fa-key"></i>
                         <p>Jogosultsági magyarázat</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "FAQ" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="FAQ">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "FAQ" ? "active" : "")" asp-controller="Home" asp-action="FAQ">
                         <i class="nav-icon fas fa-question-circle"></i>
                         <p>GYIK</p>
                     </a>

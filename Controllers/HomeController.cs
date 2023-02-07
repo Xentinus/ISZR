@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 
 namespace ISZR.Controllers
 {
@@ -92,7 +93,36 @@ namespace ISZR.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        // GET: Permissions
+		public async Task<IActionResult> Permissions(string name, string type)
+		{
+			var dataContext = _context.Permissions
+				.OrderByDescending(r => r.Name)
+                .AsQueryable();
+
+            // Név szűrése
+            if (name != null && name != "")
+            {
+				dataContext = dataContext.Where(r => r.Name.Contains(name));
+			}
+
+            // Típus szűrése
+            if (type != null && type != "Mind")
+            {
+				if (type == "Windows jogosultság")
+				{
+					dataContext = dataContext.Where(r => r.Type == "Windows");
+				}
+				else
+				{
+					dataContext = dataContext.Where(r => r.Type == "Főnix 3");
+				}
+			}
+
+			return View(await dataContext.ToListAsync());;
+		}
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

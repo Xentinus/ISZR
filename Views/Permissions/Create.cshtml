@@ -1,92 +1,81 @@
 ﻿@model ISZR.Models.Permission
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Új jogosultság hozzáadása";
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3 class="card-title">Jogosultsághoz tartozó adatok beállítása</h3>
-                </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-info">
+				<div class="card-header">
+					<h3 class="card-title">Jogosultsághoz tartozó adatok beállítása</h3>
+				</div>
 
-                <div class="card-body">
-                    <form asp-action="Create">
-                        <div class="row">
-                            <div class="col-12">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Jogosultság megnevezése</label>
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
-                                        </div>
-                                        <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultság megnevezése" spellcheck="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Jogosultság típusa</label>
-                                    <span asp-validation-for="Type" class="text-danger"></span>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
-                                        </div>
-                                        <select asp-for="Type" class="form-control select2bs4">
-                                            <option>Windows</option>
-                                            <option>Főnix 3</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Jogosultság leírása</label>
-                                    <span asp-validation-for="Description" class="text-danger"></span>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
-                                        </div>
-                                        <input type="text" asp-for="Description" class="form-control" placeholder="Jogosultság leírása" spellcheck="true">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Active Directory jogosultságok megnevezése</label>
-                                    <span asp-validation-for="ActiveDirectoryPermissions" class="text-danger"></span>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-database"></i></span>
-                                        </div>
-                                        <input type="text" asp-for="ActiveDirectoryPermissions" class="form-control" placeholder="Legalább egy darab Active Directory jogosultsági csoport név" spellcheck="false">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="submit" value="Jogosultság létrehozása" class="btn btn-info" />
-                        <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-danger" /></a>
-                    </form>
-                </div>
+				<div class="card-body">
+					<form asp-action="Create">
+						<div class="row">
+							<div class="col-12">
+								<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+							</div>
+						</div>
+						@Html.HiddenFor(model => model.Type, new { @Value = ViewData["type"] })
+						<div class="row">
+							<div class="col-12">
+								<div class="form-group">
+									<label>Jogosultság megnevezése</label>
+									<span asp-validation-for="Name" class="text-danger"></span>
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-key"></i></span>
+										</div>
+										<input type="text" asp-for="Name" class="form-control" placeholder="Jogosultság megnevezése" spellcheck="true">
+									</div>
+								</div>
+							</div>
+							<div class="col-12">
+								<div class="form-group">
+									<label>Jogosultság leírása</label>
+									<span asp-validation-for="Description" class="text-danger"></span>
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+										</div>
+										<input type="text" asp-for="Description" class="form-control" placeholder="Jogosultság leírása" spellcheck="true">
+									</div>
+								</div>
+							</div>
+						</div>
+						@if (ViewData["type"]?.ToString() == "Windows")
+						{
+							<div class="row">
+								<div class="col-12">
+									<div class="form-group">
+										<label>Active Directory jogosultságok megnevezése</label>
+										<span asp-validation-for="ActiveDirectoryPermissions" class="text-danger"></span>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"><i class="fas fa-database"></i></span>
+											</div>
+											<input type="text" asp-for="ActiveDirectoryPermissions" class="form-control" placeholder="Legalább egy darab Active Directory jogosultság megnevezése" spellcheck="false">
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+						<input type="submit" value="Jogosultság létrehozása" class="btn btn-info" />
+						<a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-danger" /></a>
+					</form>
+				</div>
 
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

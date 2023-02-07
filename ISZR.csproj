@@ -8,8 +8,8 @@
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<SignAssembly>False</SignAssembly>
 		<Version></Version>
-		<AssemblyVersion>23.2.2.30</AssemblyVersion>
-		<FileVersion>23.2.2.30</FileVersion>
+		<AssemblyVersion>23.2.7.15</AssemblyVersion>
+		<FileVersion>23.2.7.15</FileVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
