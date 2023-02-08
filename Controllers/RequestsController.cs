@@ -169,16 +169,19 @@ namespace ISZR.Controllers
 		// POST: Meglévő felhasználó részére parkolási engedély igénylése
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Parking([Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+		public async Task<IActionResult> Parking(string brand, string modell, string licensePlate, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
 		{
+			if (brand == null || modell == null || licensePlate == null) return Forbid();
+
 			if (ModelState.IsValid)
 			{
 				request.RequestAuthorId = await RequestAuthorId();
 				request.CreationDate = DateTime.Now;
-				request.Type = "Meglévő felhasználó részére telefonos PIN kód igénylése";
+				request.Type = "Meglévő felhasználó részére parkolási engedély igénylése";
 				request.Status = "Folyamatban";
 
-				request.Description = "Kérem engedélyezni telefonos PIN kód kiadását a felhasználó részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
+				request.Description = $"Kérem engedélyezni a felhasználó részére, az alábbi jármű parkolási engedélyének kiállítását.<br /><br />" +
+					$"<dl>\r\n<dt><i class=\"fas fa-car\"></i> Jármű típusa</dt>\r\n<dd>{brand} {modell}</dd>\r\n<dt><i class=\"fas fa-parking\"></i> Jármű rendszáma</dt>\r\n<dd>{licensePlate}</dd>\r\n</dl>";
 				_context.Add(request);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
