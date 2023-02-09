@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using ISZR.Components;
 
 namespace ISZR.Controllers
 {
@@ -18,12 +19,8 @@ namespace ISZR.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			// Get username from PC
-			string? activeUsername = User.Identity?.Name;
-			if (activeUsername == null) return Forbid();
-
-			// Regex for username and development env
-			if (!Regex.IsMatch(activeUsername, @"^(XENTINUS-|.*\.admin)$")) return Forbid();
+			// Admin jogosultság ellenőrzése
+			if (!Security.IsAdmin()) return Forbid();
 
 			// Dashboard informations
 			ViewBag.All = _context.Requests.Count();
