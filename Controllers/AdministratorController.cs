@@ -1,4 +1,5 @@
 ﻿using ISZR.Models;
+using ISZR.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,12 +19,8 @@ namespace ISZR.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			// Get username from PC
-			string? activeUsername = User.Identity?.Name;
-			if (activeUsername == null) return Forbid();
-
-			// Regex for username and development env
-			if (!Regex.IsMatch(activeUsername, @"^(XENTINUS-|.*\.admin)$")) return Forbid();
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
 
 			// Dashboard informations
 			ViewBag.All = _context.Requests.Count();
@@ -39,6 +36,9 @@ namespace ISZR.Controllers
 		// GET: Administrator/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
 			if (id == null || _context.Requests == null) return NotFound();
 
 			var request = await _context.Requests

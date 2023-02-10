@@ -1,82 +1,86 @@
-﻿@model IEnumerable<ISZR.Models.Request>
+﻿@using ISZR.Components;
+@model IEnumerable<ISZR.Models.Request>
 
 @{
 	ViewData["Title"] = "Igénylések";
 }
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-12">
-			<form asp-controller="Requests" asp-action="Index" method="get">
-				<div class="card">
-					<div class="card-header bg-info">
-						<h3 class="card-title">Igénylések szűrése</h3>
-						<div class="card-tools">
-							<button type="button" class="btn btn-tool text-white" data-card-widget="collapse">
-								<i class="fas fa-minus"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col-xl-4 col-lg-6 col-12">
-								<div class="form-group">
-									<label>Státusz alapján</label>
-									<div class="input-group mb-3">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fas fa-tag"></i></span>
-										</div>
-										<select name="status" class="form-control select2bs4">
-											<option>Mind</option>
-											<option>Folyamatban</option>
-											<option>Végrehajtva</option>
-											<option>Elutasítva</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="col-xl-4 col-lg-6 col-12">
-								<div class="form-group">
-									<label>Típus alapján</label>
-									<div class="input-group mb-3">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fas fa-paperclip"></i></span>
-										</div>
-										<select name="type" class="form-control select2bs4">
-											<option>Mind</option>
-											<option>Új felhasználó részére jogosultság igénylés</option>
-											<option>Meglévő felhasználó részére többletjogosultság</option>
-											<option>Meglévő felhasználó új beosztásának jogosultságai</option>
-											<option>Meglévő felhasználó részére e-mail cím igénylése</option>
-											<option>Meglévő felhasználó részére telefonos PIN kód igénylése</option>
-											<option>Meglévő felhasználó részére parkolási engedély igénylése</option>
-											<option>Kamerafelvétel lementése</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="col-xl-4 col-lg-6 col-12">
-								<div class="form-group">
-									<label>Kinek a számára alapján</label>
-									<div class="input-group mb-3">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fas fa-user"></i></span>
-										</div>
-										<select name="requestFor" class="form-control select2bs4" asp-items="ViewBag.RequestForId">
-											<option>Mind</option>
-										</select>
-									</div>
-								</div>
+	@if (Account.IsUgyintezo())
+	{
+		<div class="row">
+			<div class="col-12">
+				<form asp-controller="Requests" asp-action="Index" method="get">
+					<div class="card">
+						<div class="card-header bg-info">
+							<h3 class="card-title">Igénylések szűrése</h3>
+							<div class="card-tools">
+								<button type="button" class="btn btn-tool text-white" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
 							</div>
 						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-xl-4 col-lg-6 col-12">
+									<div class="form-group">
+										<label>Státusz alapján</label>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"><i class="fas fa-tag"></i></span>
+											</div>
+											<select name="status" class="form-control select2bs4">
+												<option>Mind</option>
+												<option>Folyamatban</option>
+												<option>Végrehajtva</option>
+												<option>Elutasítva</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-4 col-lg-6 col-12">
+									<div class="form-group">
+										<label>Típus alapján</label>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"><i class="fas fa-paperclip"></i></span>
+											</div>
+											<select name="type" class="form-control select2bs4">
+												<option>Mind</option>
+												<option>Új felhasználó részére jogosultság igénylés</option>
+												<option>Meglévő felhasználó részére többletjogosultság</option>
+												<option>Meglévő felhasználó új beosztásának jogosultságai</option>
+												<option>Meglévő felhasználó részére e-mail cím igénylése</option>
+												<option>Meglévő felhasználó részére telefonos PIN kód igénylése</option>
+												<option>Meglévő felhasználó részére parkolási engedély igénylése</option>
+												<option>Kamerafelvétel lementése</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-4 col-lg-6 col-12">
+									<div class="form-group">
+										<label>Kinek a számára alapján</label>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"><i class="fas fa-user"></i></span>
+											</div>
+											<select name="requestFor" class="form-control select2bs4" asp-items="ViewBag.RequestForId">
+												<option>Mind</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+							<button type="submit" alt="Megjelenített igénylések szűrése" class="btn btn-info">Szűrés</button>
+						</div>
 					</div>
-					<div class="card-footer">
-						<button type="submit" alt="Megjelenített igénylések szűrése" class="btn btn-info">Szűrés</button>
-					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
-	</div>
+	}
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
@@ -166,6 +170,7 @@
 					</table>
 				</div>
 			</div>
+			<span class="float-right text-muted">Maximális megjeleníthető igénylések száma 50.</span>
 		</div>
 	</div>
 </div>

@@ -1,5 +1,6 @@
 ﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
+using ISZR.Components;
 
 namespace ISZR.Controllers
 {
@@ -15,8 +16,11 @@ namespace ISZR.Controllers
         // GET: Positions
         public async Task<IActionResult> Index()
         {
-            // Dashboard informations
-            ViewBag.All = _context.Positions.Count();
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			// Dashboard informations
+			ViewBag.All = _context.Positions.Count();
             ViewBag.Active = _context.Positions.Where(c => c.IsArchived == false).Count();
             ViewBag.Archived = ViewBag.All - ViewBag.Active;
 
@@ -26,7 +30,10 @@ namespace ISZR.Controllers
         // GET: Positions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Positions == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Positions == null)
             {
                 return NotFound();
             }
@@ -44,7 +51,10 @@ namespace ISZR.Controllers
         // GET: Positions/Create
         public IActionResult Create()
         {
-            return View();
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			return View();
         }
 
         // POST: Positions/Create
@@ -66,7 +76,10 @@ namespace ISZR.Controllers
         // GET: Positions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Positions == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Positions == null)
             {
                 return NotFound();
             }
@@ -117,7 +130,10 @@ namespace ISZR.Controllers
         // GET: Positions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Positions == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Positions == null)
             {
                 return NotFound();
             }

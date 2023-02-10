@@ -1,5 +1,6 @@
 ﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
+using ISZR.Components;
 
 namespace ISZR.Controllers
 {
@@ -15,8 +16,11 @@ namespace ISZR.Controllers
         // GET: Cameras
         public async Task<IActionResult> Index()
         {
-            // Dashboard informations
-            ViewBag.All = _context.Cameras.Count();
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			// Dashboard informations
+			ViewBag.All = _context.Cameras.Count();
 
             return View(await _context.Cameras.ToListAsync());
         }
@@ -24,7 +28,10 @@ namespace ISZR.Controllers
         // GET: Cameras/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Cameras == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Cameras == null)
             {
                 return NotFound();
             }
@@ -42,7 +49,9 @@ namespace ISZR.Controllers
         // GET: Cameras/Create
         public IActionResult Create()
         {
-            return View();
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+			return View();
         }
 
         // POST: Cameras/Create
@@ -64,7 +73,10 @@ namespace ISZR.Controllers
         // GET: Cameras/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Cameras == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Cameras == null)
             {
                 return NotFound();
             }
@@ -115,7 +127,10 @@ namespace ISZR.Controllers
         // GET: Cameras/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Cameras == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Cameras == null)
             {
                 return NotFound();
             }
