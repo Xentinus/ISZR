@@ -1,10 +1,10 @@
 ﻿using ISZR.Models;
+using ISZR.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
-using ISZR.Components;
 
 namespace ISZR.Controllers
 {
@@ -20,7 +20,7 @@ namespace ISZR.Controllers
 		public async Task<IActionResult> Index()
 		{
 			// Admin jogosultság ellenőrzése
-			if (!Security.IsAdmin()) return Forbid();
+			if (!Account.IsAdmin()) return Forbid();
 
 			// Dashboard informations
 			ViewBag.All = _context.Requests.Count();
@@ -36,6 +36,9 @@ namespace ISZR.Controllers
 		// GET: Administrator/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
 			if (id == null || _context.Requests == null) return NotFound();
 
 			var request = await _context.Requests

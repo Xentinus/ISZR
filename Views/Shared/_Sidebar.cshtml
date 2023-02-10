@@ -1,132 +1,144 @@
-﻿@using System.DirectoryServices.AccountManagement;
+﻿@using ISZR.Components;
+@using System.DirectoryServices.AccountManagement;
 
 <aside class="main-sidebar elevation-4 sidebar-dark-info">
-    <!-- ISZR -->
-    <a class="brand-link" asp-area="" asp-controller="Home" asp-action="Dashboard">
-        <img src="~/img/ISZR.png" alt="ISZR" class="brand-image elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">ISZR</span>
-    </a>
+	<!-- ISZR -->
+	<a class="brand-link" asp-area="" asp-controller="Home" asp-action="Dashboard">
+		<img src="~/img/ISZR.png" alt="ISZR" class="brand-image elevation-3" style="opacity: .8">
+		<span class="brand-text font-weight-light">ISZR</span>
+	</a>
 
-    <div class="sidebar">
-        <!-- Sidebar menu -->
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-header"><b>Statisztika</b></li>
-                <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")" asp-controller="Home" asp-action="Dashboard">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Irányítópult
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" || ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")" asp-controller="Requests" asp-action="Index" asp-route-status="Folyamatban">
-                        <i class="nav-icon fas fa-tasks"></i>
-                        <p>Igénylések</p>
-                    </a>
-                </li>
-                <li class="nav-header"><b>Informatikával kapcsolatos</b></li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "UserAdditionalAccess" ? "active" : "")">
-                        <i class="nav-icon fas fa-address-card"></i>
-                        <p>Jogosultság igénylése <i class="fas fa-angle-left right"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-user-plus nav-icon"></i>
-                                <p>Új felhasználó részére jogosultság</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Requests" asp-action="UserAdditionalAccess">
-                                <i class="fas fa-user-edit nav-icon"></i>
-                                <p>Meglévő felhasználó részére többletjogosultság</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-people-arrows nav-icon"></i>
-                                <p>Meglévő felhasználó új beosztásának jogosultságai</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Email" ? "active" : "")" asp-controller="Requests" asp-action="Email">
-                        <i class="nav-icon fas fa-envelope"></i>
-                        <p>E-mail cím igénylése</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Phone" ? "active" : "")" asp-controller="Requests" asp-action="Phone">
-                        <i class="nav-icon fas fa-phone-square-alt"></i>
-                        <p>Telefonáláshoz PIN kód igénylése</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Parking" ? "active" : "")" asp-controller="Requests" asp-action="Parking">
-                        <i class="nav-icon fas fa-parking"></i>
-                        <p>Parkolási engedély igénylése</p>
-                    </a>
-                </li>
-                <li class="nav-header"><b>Biztonságtechnikával kapcsolatos</b></li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-address-card"></i>
-                        <p>Jogosultság igénylése<i class="fas fa-angle-left right"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-user-plus"></i>
-                                <p>HikCentral felhasználó igénylése meglévő felhasználó részére</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-user-edit nav-icon"></i>
-                                <p>HikCentral jogosultság igénylése meglévő felhasználó részéere</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-video"></i>
-                        <p>Kamerafelvétel<i class="fas fa-angle-left right"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-history nav-icon"></i>
-                                <p>Kamerafelvétel lementése időpontok alapján</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-tags nav-icon"></i>
-                                <p>Kamerafelvétel lementése címkék alapján</p>
-                                <span class="right badge badge-danger">ÚJ</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-header"><b>Egyebek</b></li>
-                <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Home" asp-action="Permissions">
-                        <i class="nav-icon fas fa-key"></i>
-                        <p>Jogosultsági magyarázat</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "FAQ" ? "active" : "")" asp-controller="Home" asp-action="FAQ">
-                        <i class="nav-icon fas fa-question-circle"></i>
-                        <p>GYIK</p>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+	<div class="sidebar">
+		<!-- Sidebar menu -->
+		<nav class="mt-2">
+			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+				<li class="nav-header"><b>Statisztika</b></li>
+				<li class="nav-item">
+					<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")" asp-controller="Home" asp-action="Dashboard">
+						<i class="nav-icon fas fa-tachometer-alt"></i>
+						<p>
+							Irányítópult
+						</p>
+					</a>
+				</li>
+				@if (Account.IsUgyintezo())
+				{
+					<li class="nav-item">
+						<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" || ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")" asp-controller="Requests" asp-action="Index" asp-route-status="Folyamatban">
+							<i class="nav-icon fas fa-tasks"></i>
+							<p>Igénylések</p>
+						</a>
+					</li>
+					<li class="nav-header"><b>Informatikával kapcsolatos</b></li>
+					<li class="nav-item">
+						<a href="#" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "UserAdditionalAccess" ? "active" : "")">
+							<i class="nav-icon fas fa-address-card"></i>
+							<p>Jogosultság igénylése <i class="fas fa-angle-left right"></i></p>
+						</a>
+						<ul class="nav nav-treeview">
+							<li class="nav-item">
+								<a href="#" class="nav-link">
+									<i class="fas fa-user-plus nav-icon"></i>
+									<p>Új felhasználó részére jogosultság</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Requests" asp-action="UserAdditionalAccess">
+									<i class="fas fa-user-edit nav-icon"></i>
+									<p>Meglévő felhasználó részére többletjogosultság</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="#" class="nav-link">
+									<i class="fas fa-people-arrows nav-icon"></i>
+									<p>Meglévő felhasználó új beosztásának jogosultságai</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Email" ? "active" : "")" asp-controller="Requests" asp-action="Email">
+							<i class="nav-icon fas fa-envelope"></i>
+							<p>E-mail cím igénylése</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Phone" ? "active" : "")" asp-controller="Requests" asp-action="Phone">
+							<i class="nav-icon fas fa-phone-square-alt"></i>
+							<p>Telefonáláshoz PIN kód igénylése</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Parking" ? "active" : "")" asp-controller="Requests" asp-action="Parking">
+							<i class="nav-icon fas fa-parking"></i>
+							<p>Parkolási engedély igénylése</p>
+						</a>
+					</li>
+					<li class="nav-header"><b>Biztonságtechnikával kapcsolatos</b></li>
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="nav-icon fas fa-address-card"></i>
+							<p>Jogosultság igénylése<i class="fas fa-angle-left right"></i></p>
+						</a>
+						<ul class="nav nav-treeview">
+							<li class="nav-item">
+								<a href="#" class="nav-link">
+									<i class="fas fa-user-plus"></i>
+									<p>HikCentral felhasználó igénylése meglévő felhasználó részére</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="#" class="nav-link">
+									<i class="fas fa-user-edit nav-icon"></i>
+									<p>HikCentral jogosultság igénylése meglévő felhasználó részéere</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="nav-icon fas fa-video"></i>
+							<p>Kamerafelvétel<i class="fas fa-angle-left right"></i></p>
+						</a>
+						<ul class="nav nav-treeview">
+							<li class="nav-item">
+								<a href="#" class="nav-link">
+									<i class="fas fa-history nav-icon"></i>
+									<p>Kamerafelvétel lementése időpontok alapján</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="#" class="nav-link">
+									<i class="fas fa-tags nav-icon"></i>
+									<p>Kamerafelvétel lementése címkék alapján</p>
+									<span class="right badge badge-danger">ÚJ</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+				} else
+				{
+					<li class="nav-item">
+						<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" || ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")" asp-controller="Requests" asp-action="Index">
+							<i class="nav-icon fas fa-tasks"></i>
+							<p>Igénylések</p>
+						</a>
+					</li>
+				}
+				<li class="nav-header"><b>Egyebek</b></li>
+				<li class="nav-item">
+					<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Home" asp-action="Permissions">
+						<i class="nav-icon fas fa-key"></i>
+						<p>Jogosultsági magyarázat</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "FAQ" ? "active" : "")" asp-controller="Home" asp-action="FAQ">
+						<i class="nav-icon fas fa-question-circle"></i>
+						<p>GYIK</p>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
 </aside>

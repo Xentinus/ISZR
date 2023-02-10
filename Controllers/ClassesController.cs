@@ -1,5 +1,6 @@
 ﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
+using ISZR.Components;
 
 namespace ISZR.Controllers
 {
@@ -15,8 +16,11 @@ namespace ISZR.Controllers
         // GET: Classes
         public async Task<IActionResult> Index()
         {
-            // Dashboard informations
-            ViewBag.All = _context.Classes.Count();
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			// Dashboard informations
+			ViewBag.All = _context.Classes.Count();
             ViewBag.Active = _context.Classes.Where(c => c.IsArchived == false).Count();
             ViewBag.Archived = ViewBag.All - ViewBag.Active;
 
@@ -26,7 +30,10 @@ namespace ISZR.Controllers
         // GET: Classes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Classes == null) return NotFound();
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Classes == null) return NotFound();
 
             var @class = await _context.Classes
                 .FirstOrDefaultAsync(m => m.ClassId == id);
@@ -44,7 +51,10 @@ namespace ISZR.Controllers
         // GET: Classes/Create
         public IActionResult Create()
         {
-            return View();
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			return View();
         }
 
         // POST: Classes/Create
@@ -66,7 +76,10 @@ namespace ISZR.Controllers
         // GET: Classes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Classes == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Classes == null)
             {
                 return NotFound();
             }
@@ -117,7 +130,10 @@ namespace ISZR.Controllers
         // GET: Classes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Classes == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Classes == null)
             {
                 return NotFound();
             }

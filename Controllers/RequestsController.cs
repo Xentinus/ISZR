@@ -1,4 +1,5 @@
 ﻿using ISZR.Models;
+using ISZR.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -16,38 +17,68 @@ namespace ISZR.Controllers
 		// GET: Requests
 		public async Task<IActionResult> Index(string status, string type, int requestFor)
 		{
+			// Az ISZR-ben nem megtalálható személyek kizására
+			if (!await Account.IsUserExists(_context)) return Forbid();
+
 			var dataContext = _context.Requests
 				.Include(r => r.RequestAuthor)
 				.Include(r => r.RequestFor)
 				.OrderByDescending(r => r.RequestId)
 				.AsQueryable();
 
-			if (status != null && status != "Mind")
+			// Amennyiben semmilyen érték nem létezik (vendég felhasználóknak, saját igénylések megtekintése)
+			if (status == null && type == null && requestFor == 0)
 			{
-				dataContext = dataContext.Where(r => r.Status == status);
-				ViewBag.status = status;
+				int userId = await Account.GetUserId(_context);
+				dataContext = dataContext.Where(r => r.RequestForId == userId);
 			}
-			if (type != null && type != "Mind")
+			else
 			{
-				dataContext = dataContext.Where(r => r.Type == type);
-				ViewBag.type = type;
-			}
-			if (requestFor != 0 && requestFor.ToString() != "Mind")
-			{
-				dataContext = dataContext.Where(r => r.RequestForId == requestFor);
-				ViewBag.requestForId = requestFor;
+				// Szűrés csak ügyintézők számára engedélyezett
+				if (!Account.IsUgyintezo()) return Forbid();
+
+				// Státusz alapú szürés
+				if (status != null && status != "Mind")
+				{
+					dataContext = dataContext.Where(r => r.Status == status);
+					ViewBag.status = status;
+				}
+
+				// Típus alapú szürés
+				if (type != null && type != "Mind")
+				{
+					dataContext = dataContext.Where(r => r.Type == type);
+					ViewBag.type = type;
+				}
+
+				// Személy alapú szürés
+				if (requestFor != 0 && requestFor.ToString() != "Mind")
+				{
+					dataContext = dataContext.Where(r => r.RequestForId == requestFor);
+					ViewBag.requestForId = requestFor;
+				}
 			}
 
+			// Maximális megengedett lista értéke 50
+			dataContext = dataContext.Take(50);
 
+			// Felhasználó alapú szűréshez lista
 			ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+			// Az oldal megjelenítése az igénylésekkel
 			return View(await dataContext.ToListAsync());
 		}
 
 		// GET: Requests/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
+			// Az ISZR-ben nem megtalálható személyek kizására
+			if (!await Account.IsUserExists(_context)) return Forbid();
+
+			// Amennyiben nem adtak meg azonosítót, az oldal megjelenítésének elutasítása
 			if (id == null || _context.Requests == null) return NotFound();
 
+			// Adott azonosítójú kérelem kikeresése
 			var request = await _context.Requests
 				.Include(r => r.RequestAuthor)
 				.Include(r => r.RequestFor)
@@ -57,16 +88,28 @@ namespace ISZR.Controllers
 				.Include(r => r.RequestFor.Position)
 				.FirstOrDefaultAsync(m => m.RequestId == id);
 
+			// Amennyiben a kért kérelem nem létezik, az oldal megjelenítésének elutasítása
 			if (request == null) return NotFound();
+
+			// Oldal megjelenítése a kért igényléssel
 			return View(request);
 		}
 
 		// GET: Meglévő felhasználó részére többletjogosultság
-		public IActionResult UserAdditionalAccess()
+		public async Task<IActionResult> UserAdditionalAccess()
 		{
+			// Az ISZR-ben nem megtalálható személyek kizására
+			if (!await Account.IsUserExists(_context)) return Forbid();
+
+			// Az oldalt csak ügyintézők tekinthetik meg
+			if (!Account.IsUgyintezo()) return Forbid();
+
+			// Lista elemek betöltése
 			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 			ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows").OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
 			ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3").OrderBy(p => p.Name), "Name", "Name");
+
+			// Oldal megjelenítése
 			return View();
 		}
 
@@ -75,38 +118,62 @@ namespace ISZR.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> UserAdditionalAccess(string[] windowsPermissions, string[] fonix3Permissions, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
 		{
+			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
 			{
+				// Igénylést létrehozó személy azonosítója
 				request.RequestAuthorId = await RequestAuthorId();
+
+				// Igénylés létrehozásának dátuma
 				request.CreationDate = DateTime.Now;
+
+				// Igénylés típusa
 				request.Type = "Meglévő felhasználó részére többletjogosultság";
+
+				// Alapértelmezett státusz
 				request.Status = "Folyamatban";
 
-				// Windows jogosultságok hozzáadása
+				// Igénylés leírása
+				request.Description = "Kérem engedélyezni a felhasználó részére többletjogosultság kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
+
+				// Windows jogosultságok Active-Directory értékeinek sorrendbe helyezése
 				foreach (string permission in windowsPermissions)
 				{
 					request.WindowsPermissions += permission[permission.Length - 1] == ';' ? $"{permission} " : $"{permission}; ";
 				}
 
-				// Főnix 3 jogosultságok hozzáadása
+				// Főnix 3 jogosultságok neveinek sorrendbe helyezése
 				foreach (string permission in fonix3Permissions)
 				{
 					request.FonixPermissions += $"{permission}; ";
 				}
 
-				request.Description = "Kérem engedélyezni a felhasználó részére többletjogosultság kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
+				// Igénylés hozzáadása a rendszerhez
 				_context.Add(request);
 				await _context.SaveChangesAsync();
+
+				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
 			}
+
+			// Amennyiben nem jók az értékek az oldal újratöltése
 			ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 			return View();
 		}
 
 		// GET: Meglévő felhasználó részére e-mail cím igénylése
-		public IActionResult Email()
+		public async Task<IActionResult> Email()
 		{
+			// Az ISZR-ben nem megtalálható személyek kizására
+			if (!await Account.IsUserExists(_context)) return Forbid();
+
+			// Az oldalt csak ügyintézők tekinthetik meg
+			if (!Account.IsUgyintezo()) return Forbid();
+
+			// Lista elemek betöltése
 			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+			// Az oldal megjelenítése
 			return View();
 		}
 
@@ -115,26 +182,50 @@ namespace ISZR.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Email([Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
 		{
+			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
 			{
+				// Igénylést létrehozó személy azonosítója
 				request.RequestAuthorId = await RequestAuthorId();
+
+				// Igénylés létrehozásának dátuma
 				request.CreationDate = DateTime.Now;
+
+				// Igénylés típusa
 				request.Type = "Meglévő felhasználó részére e-mail cím igénylése";
+
+				// Alapértelmezett státusz
 				request.Status = "Folyamatban";
 
+				// Igénylés leírása
 				request.Description = "Kérem engedélyezni a felhasználó részére e-mail cím elkészítését, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
+
+				// Igénylés hozzáadása a rendszerhez
 				_context.Add(request);
 				await _context.SaveChangesAsync();
+
+				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
 			}
+
+			// Amennyiben nem jók az értékek az oldal újratöltése
 			ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 			return View();
 		}
 
 		// GET: Meglévő felhasználó részére telefonos PIN kód igénylése
-		public IActionResult Phone()
+		public async Task<IActionResult> Phone()
 		{
+			// Az ISZR-ben nem megtalálható személyek kizására
+			if (!await Account.IsUserExists(_context)) return Forbid();
+
+			// Az oldalt csak ügyintézők tekinthetik meg
+			if (!Account.IsUgyintezo()) return Forbid();
+
+			// Lista elemek betöltése
 			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+			// Az oldal megjelenítése
 			return View();
 		}
 
@@ -160,9 +251,18 @@ namespace ISZR.Controllers
 		}
 
 		// GET: Meglévő felhasználó részére parkolási engedély igénylése
-		public IActionResult Parking()
+		public async Task<IActionResult> Parking()
 		{
+			// Az ISZR-ben nem megtalálható személyek kizására
+			if (!await Account.IsUserExists(_context)) return Forbid();
+
+			// Az oldalt csak ügyintézők tekinthetik meg
+			if (!Account.IsUgyintezo()) return Forbid();
+
+			// Lista elemek betöltése
 			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+			// Az oldal megjelenítése
 			return View();
 		}
 

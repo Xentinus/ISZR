@@ -1,5 +1,6 @@
 ﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
+using ISZR.Components;
 
 namespace ISZR.Controllers
 {
@@ -15,6 +16,9 @@ namespace ISZR.Controllers
 		// GET: Permissions
 		public async Task<IActionResult> Index()
 		{
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
 			// Dashboard informations
 			ViewBag.Permissions = _context.Permissions.Count();
 			ViewBag.WindowsPermissions = _context.Permissions.Where(r => r.Type == "Windows").Count();
@@ -26,6 +30,9 @@ namespace ISZR.Controllers
 		// GET: Permissions/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
 			if (id == null || _context.Permissions == null)
 			{
 				return NotFound();
@@ -44,6 +51,9 @@ namespace ISZR.Controllers
 		// GET: Permissions/Create
 		public IActionResult Create(string? type)
 		{
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
 			if (type == null) return NotFound();
 			ViewData["type"] = type;
 			return View();
@@ -68,6 +78,9 @@ namespace ISZR.Controllers
 		// GET: Permissions/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
 			if (id == null || _context.Permissions == null) return NotFound();
 			var permission = await _context.Permissions.FindAsync(id);
 			if (permission == null) return NotFound();
@@ -112,6 +125,9 @@ namespace ISZR.Controllers
 		// GET: Permissions/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
 			if (id == null || _context.Permissions == null)
 			{
 				return NotFound();

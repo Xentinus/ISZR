@@ -1,6 +1,7 @@
 ﻿using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ISZR.Components;
 
 namespace ISZR.Controllers
 {
@@ -16,8 +17,11 @@ namespace ISZR.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            // Dashboard informations
-            ViewBag.All = _context.Users.Count();
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			// Dashboard informations
+			ViewBag.All = _context.Users.Count();
             ViewBag.Active = _context.Users.Where(u => u.IsArchived == false).Count();
             ViewBag.Archived = ViewBag.All - ViewBag.Active;
 
@@ -28,7 +32,10 @@ namespace ISZR.Controllers
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Users == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
@@ -48,7 +55,10 @@ namespace ISZR.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Users == null)
+			// Admin jogosultság ellenőrzése
+			if (!Account.IsAdmin()) return Forbid();
+
+			if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
