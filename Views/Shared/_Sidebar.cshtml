@@ -37,19 +37,19 @@
 						</a>
 						<ul class="nav nav-treeview">
 							<li class="nav-item">
-								<a href="#" class="nav-link">
+								<a class="nav-link">
 									<i class="fas fa-user-plus nav-icon"></i>
 									<p>Új felhasználó részére jogosultság</p>
 								</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" asp-area="" asp-controller="Requests" asp-action="UserAdditionalAccess">
+								<a class="nav-link" asp-controller="Requests" asp-action="UserAdditionalAccess">
 									<i class="fas fa-user-edit nav-icon"></i>
 									<p>Meglévő felhasználó részére többletjogosultság</p>
 								</a>
 							</li>
 							<li class="nav-item">
-								<a href="#" class="nav-link">
+								<a class="nav-link">
 									<i class="fas fa-people-arrows nav-icon"></i>
 									<p>Meglévő felhasználó új beosztásának jogosultságai</p>
 								</a>
@@ -76,39 +76,25 @@
 					</li>
 					<li class="nav-header"><b>Biztonságtechnikával kapcsolatos</b></li>
 					<li class="nav-item">
-						<a href="#" class="nav-link">
-							<i class="nav-icon fas fa-address-card"></i>
-							<p>Jogosultság igénylése<i class="fas fa-angle-left right"></i></p>
+						<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "HikcentralPermission" ? "active" : "")" asp-controller="Requests" asp-action="HikcentralPermission">
+							<i class="nav-icon fas fa-shield-alt"></i>
+							<p>HikCentral jogosultság igénylése</p>
 						</a>
-						<ul class="nav nav-treeview">
-							<li class="nav-item">
-								<a href="#" class="nav-link">
-									<i class="fas fa-user-plus"></i>
-									<p>HikCentral felhasználó igénylése meglévő felhasználó részére</p>
-								</a>
-							</li>
-							<li class="nav-item">
-								<a href="#" class="nav-link">
-									<i class="fas fa-user-edit nav-icon"></i>
-									<p>HikCentral jogosultság igénylése meglévő felhasználó részéere</p>
-								</a>
-							</li>
-						</ul>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link">
+						<a href="#" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ( ViewContext.RouteData.Values["Action"]?.ToString() == "RecordsByTime" || ViewContext.RouteData.Values["Action"]?.ToString() == "RecordsByTags" ) ? "active" : "")">
 							<i class="nav-icon fas fa-video"></i>
 							<p>Kamerafelvétel<i class="fas fa-angle-left right"></i></p>
 						</a>
 						<ul class="nav nav-treeview">
 							<li class="nav-item">
-								<a href="#" class="nav-link">
+								<a class="nav-link" asp-controller="Requests" asp-action="RecordsByTime">
 									<i class="fas fa-history nav-icon"></i>
 									<p>Kamerafelvétel lementése időpontok alapján</p>
 								</a>
 							</li>
 							<li class="nav-item">
-								<a href="#" class="nav-link">
+								<a class="nav-link" asp-controller="Requests" asp-action="RecordsByTags">
 									<i class="fas fa-tags nav-icon"></i>
 									<p>Kamerafelvétel lementése címkék alapján</p>
 									<span class="right badge badge-danger">ÚJ</span>

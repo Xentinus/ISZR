@@ -26,24 +26,44 @@
 					</div>
 				</div>
 				<div class="row invoice-info mb-2">
-					<div class="col-lg-4 col-md-6 invoice-col">
-						<strong>Igénylést intéző</strong>
-						<address>
-							@Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank.ToLower()<br>
-							@Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
-							<i class="fas fa-envelope"></i> @Model?.RequestAuthor?.Email<br>
-							<i class="fas fa-phone-square-alt"></i> @Model?.RequestAuthor?.Phone
-						</address>
-					</div>
-					<div class="col-lg-4 col-md-6 invoice-col">
-						<strong>Kinek a számra</strong>
-						<address>
-							@Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank.ToLower()<br>
-							@Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
-							<i class="fas fa-envelope"></i> @Model?.RequestFor?.Email<br>
-							<i class="fas fa-phone-square-alt"></i> @Model?.RequestFor?.Phone
-						</address>
-					</div>
+					@if (Model?.RequestAuthor != null)
+					{
+						<div class="col-lg-4 col-md-6 invoice-col">
+							<strong>Igénylést intéző</strong>
+							<address>
+								@Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank.ToLower()<br>
+								@Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
+								@if (Model?.RequestAuthor?.Email != string.Empty)
+								{
+									<i class="fas fa-envelope"></i> @Model?.RequestAuthor?.Email
+									<br>
+								}
+								@if (Model?.RequestAuthor?.Phone != string.Empty)
+								{
+									<i class="fas fa-phone-square-alt"></i> @Model?.RequestAuthor?.Phone
+								}
+							</address>
+						</div>
+					}
+					@if (Model?.RequestFor != null)
+					{
+						<div class="col-lg-4 col-md-6 invoice-col">
+							<strong>Kinek a számra</strong>
+							<address>
+								@Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank.ToLower()<br>
+								@Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
+								@if (Model?.RequestFor?.Email != string.Empty)
+								{
+									<i class="fas fa-envelope"></i> @Model?.RequestFor?.Email
+									<br>
+								}
+								@if (Model?.RequestFor?.Phone != string.Empty)
+								{
+									<i class="fas fa-phone-square-alt"></i> @Model?.RequestFor?.Phone
+								}
+							</address>
+						</div>
+					}
 					<div class="col-lg-4 col-12 invoice-col d-print-none">
 						<b>Igénylés típusa: </b> @Model?.Type<br />
 						<b>Létrehozásának ideje:</b> @Model?.CreationDate.ToString("yyyy. MMMM dd. HH:mm")<br>

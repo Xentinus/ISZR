@@ -2,6 +2,7 @@
 using ISZR.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing.Drawing2D;
 
 namespace ISZR.Controllers
 {
@@ -286,6 +287,117 @@ namespace ISZR.Controllers
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
 			}
+			ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+			return View();
+		}
+
+		// GET: HikCentral jogosultság igénylése meglévő felhasználó részére
+		public async Task<IActionResult> HikcentralPermission()
+		{
+			// Az ISZR-ben nem megtalálható személyek kizására
+			if (!await Account.IsUserExists(_context)) return Forbid();
+
+			// Az oldalt csak ügyintézők tekinthetik meg
+			if (!Account.IsUgyintezo()) return Forbid();
+
+			// Lista elemek betöltése
+			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+			// Az oldal megjelenítése
+			return View();
+		}
+
+		// POST: HikCentral jogosultság igénylése meglévő felhasználó részére
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> HikcentralPermission(string permissionType, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+		{
+			// Megadott értékek ellenőrzése
+			if (ModelState.IsValid)
+			{
+				// Igénylést létrehozó személy azonosítója
+				request.RequestAuthorId = await RequestAuthorId();
+
+				// Igénylés létrehozásának dátuma
+				request.CreationDate = DateTime.Now;
+
+				// Igénylés típusa
+				request.Type = "HikCentral jogosultság igénylése meglévő felhasználó részére";
+
+				// Alapértelmezett státusz
+				request.Status = "Folyamatban";
+
+				// Igénylés leírása
+				request.Description = $"Kérem engedélyezni a felhasználó részére {permissionType.ToLower()} típusú jogosultságot bíztosítani a Hikcentral programon belül, a kamerarendszer használatához.";
+
+				// Igénylés hozzáadása a rendszerhez
+				_context.Add(request);
+				await _context.SaveChangesAsync();
+
+				// Igénylés megnyítása
+				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
+			}
+
+			// Amennyiben nem jók az értékek az oldal újratöltése
+			ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+			return View();
+		}
+
+		// GET: Kamerafelvétel lementése címkék alapján
+		public async Task<IActionResult> RecordsByTags()
+		{
+			// Az ISZR-ben nem megtalálható személyek kizására
+			if (!await Account.IsUserExists(_context)) return Forbid();
+
+			// Az oldalt csak ügyintézők tekinthetik meg
+			if (!Account.IsUgyintezo()) return Forbid();
+
+			ViewData["Cameras"] = new MultiSelectList(_context.Cameras.OrderBy(p => p.Name), "Name", "Name");
+
+			// Az oldal megjelenítése
+			return View();
+		}
+
+		// POST: Kamerafelvétel lementése címkék alapján
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> RecordsByTags(string inputWhy, string inputTags, string[] selectedCameras, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+		{
+			// Megadott értékek ellenőrzése
+			if (ModelState.IsValid)
+			{
+				// Igénylést létrehozó személy azonosítója
+				request.RequestAuthorId = await RequestAuthorId();
+				request.RequestForId = request.RequestAuthorId;
+
+				// Igénylés létrehozásának dátuma
+				request.CreationDate = DateTime.Now;
+
+				// Igénylés típusa
+				request.Type = "Kamerafelvétel lementése";
+
+				// Alapértelmezett státusz
+				request.Status = "Folyamatban";
+
+				string cameras = "";
+				// Kamerák sorrendbe helyezése
+				foreach (string camera in selectedCameras)
+				{
+					cameras += $", {camera}";
+				}
+
+				// Igénylés leírása
+				request.Description = $"Kérem engedélyezni a kamerarendszerben rögzített adatok külső adattárolón történő tárolását, illetve felhasználását megkeresés alapján Bűnügyi vagy Felügyeleti szerv részére.<br /><br />" +
+					$"<dl>\r\n<dt><i class=\"far fa-eye\"></i> Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n<dt><i class=\"fas fa-tags\"></i> Címkék megnevezése</dt>\r\n<dd>{inputTags}</dd>\r\n<dt><i class=\"fas fa-video\"></i> Megcímkézett kamerák</dt>\r\n<dd>{cameras}</dd>\r\n</dl>";
+				// Igénylés hozzáadása a rendszerhez
+				_context.Add(request);
+				await _context.SaveChangesAsync();
+
+				// Igénylés megnyítása
+				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
+			}
+
+			// Amennyiben nem jók az értékek az oldal újratöltése
 			ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 			return View();
 		}
