@@ -49,14 +49,16 @@ namespace ISZR.Models
         /// Felhasználó emailes elérhetősége
         /// </summary>
         [Display(Name = "E-mail cím")]
-        [EmailAddress(ErrorMessage = "A mezőbe beírt cím nem e-mail cím!")]
+		[Required(AllowEmptyStrings = true)]
+		[EmailAddress(ErrorMessage = "A mezőbe beírt cím nem e-mail cím!")]
         public string Email { get; set; } = string.Empty;
 
         /// <summary>
         /// Felhasználó telefonos elérhetősége
         /// </summary>
         [Display(Name = "NTG elérhetőség")]
-        [MinLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet kevesebb mint 7 karakter")]
+		[Required(AllowEmptyStrings = true)]
+		[MinLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet kevesebb mint 7 karakter")]
         [MaxLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet nagyobb mint 7 karakter")]
         public string Phone { get; set; } = string.Empty;
 
