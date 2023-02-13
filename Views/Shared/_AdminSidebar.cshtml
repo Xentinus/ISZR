@@ -2,9 +2,9 @@
 
 <aside class="main-sidebar elevation-4 sidebar-dark-info">
     <!-- ISZR -->
-    <a class="brand-link" asp-area="" asp-controller="Administrator" asp-action="Index">
-        <img src="~/img/ISZR.png" alt="ISZR" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">ISZR KARBANTARTÁS</span>
+    <a class="brand-link" asp-controller="Administrator" asp-action="Dashboard">
+        <img src="~/img/ISZR.svg" alt="ISZR Logo" class="brand-image">
+        <span class="brand-text">ISZR ADMIN</span>
     </a>
 
     <div class="sidebar">
@@ -13,40 +13,40 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header"><b>Igénylések</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Administrator" ? "active" : "")" asp-area="" asp-controller="Administrator" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Administrator" ? "active" : "")" asp-controller="Administrator" asp-action="Index">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>Igénylések</p>
                     </a>
                 </li>
                 <li class="nav-header"><b>Személyi karbantartások</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Classes" ? "active" : "")" asp-area="" asp-controller="Classes" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Classes" ? "active" : "")" asp-controller="Classes" asp-action="Index">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Osztályok</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Positions" ? "active" : "")" asp-area="" asp-controller="Positions" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Positions" ? "active" : "")" asp-controller="Positions" asp-action="Index">
                         <i class="nav-icon fas fa-people-arrows"></i>
                         <p>Beosztások</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" ? "active" : "")" asp-area="" asp-controller="Users" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" ? "active" : "")" asp-controller="Users" asp-action="Index">
                         <i class="nav-icon fas fa-user"></i>
                         <p>Felhasználók</p>
                     </a>
                 </li>
                 <li class="nav-header"><b>Informtikai karbantartások</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" ? "active" : "")" asp-area="" asp-controller="Permissions" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Permissions" asp-action="Index">
                         <i class="nav-icon fas fa-user-tag"></i>
                         <p>Jogosultságok</p>
                     </a>
                 </li>
                 <li class="nav-header"><b>Biztonságtechnikai karbantartások</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cameras" ? "active" : "")" asp-area="" asp-controller="Cameras" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cameras" ? "active" : "")" asp-controller="Cameras" asp-action="Index">
                         <i class="nav-icon fas fa-video"></i>
                         <p>Intézeti kamerák</p>
                     </a>

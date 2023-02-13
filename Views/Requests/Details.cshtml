@@ -13,8 +13,7 @@
 						<img src="~/img/cimer.png" alt="Címer" height="100em">
 					</div>
 					<div class="col-12 font-weight-bold text-center mt-2 mb-2">
-						<h5 class="mb-0">BÜNTETÉS-VÉGREHAJTÁS</h5>
-						<h5 class="mb-0">GAZDASÁGI ELLÁTÓ INTÉZET</h5>
+						<h4 class="mb-0">BÜNTETÉS-VÉGREHAJTÁS GAZDASÁGI ELLÁTÓ INTÉZETE</h4>
 						<h5>I. AGGLOMERÁCIÓ</h5>
 					</div>
 				</div>
@@ -88,9 +87,15 @@
 					if (Model?.WindowsPermissions != "")
 					{
 						<div class="row">
-							<div class="col-12">
+							<div class="col-12 d-none d-print-block">
+								<dl>
+									<dt><i class="fab fa-windows"></i> Windows jogosultságok</dt>
+									<dd>@Model?.WindowsPermissions</dd>
+								</dl>
+							</div>
+							<div class="col-12 d-print-none">
 								<div class="alert alert-info alert-dismissible">
-									<h5><i class="icon fa fa-key"></i> Windows jogosultságok</h5>
+									<h5><i class="icon fab fa-windows"></i> Windows jogosultságok</h5>
 									@Model?.WindowsPermissions
 								</div>
 							</div>
@@ -101,7 +106,13 @@
 					if (Model?.FonixPermissions != "")
 					{
 						<div class="row">
-							<div class="col-12">
+							<div class="col-12 d-none d-print-block">
+								<dl>
+									<dt><i class="fas fa-dove"></i> Főnix 3 jogosultságok</dt>
+									<dd>@Model?.FonixPermissions</dd>
+								</dl>
+							</div>
+							<div class="col-12 d-print-none">
 								<div class="alert alert-warning alert-dismissible">
 									<h5><i class="icon fas fa-dove"></i> Főnix 3 jogosultságok</h5>
 									@Model?.FonixPermissions

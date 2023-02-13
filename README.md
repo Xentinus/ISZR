@@ -1,33 +1,19 @@
 ﻿<p align="center">
-  <img src=".github/Splash.png">
+  <img src=".github/ISZR_Long_Trans.png">
 </p>
 
 # Informatikai Szolgálati jegy Rendszer
 
-Az **ISZR** egy ASP.NET MVC-el készült web alkalmazás amely segítsévégel a felhasználók jogosultságokat igényelhetnek, illetve kamerafelvételek lementését kérhetik a helyi Informatikai osztálytól.
+Röviden **ISZR**, egy **C# nyelven** készült **ASP.NET MVC keretrendszerű web alkalmazás** amely segítsévégel a felhasználók jogosultságokat, kamerafelvételek lementéseket igényelhetnek a helyi Informatikai csoporttól.
 
-> Az alkalmazás egy **fix** tartományi rendszerhez készült, így azon kivüli használata nem 100%-os. (pl. Administrátori felület)
+A web alkalmazás célja, hogy a felhasználók egyszerűen, könnyedén igényelhessenek és az igénylések folyamatát is követni tudják.
 
 ## Jellemzők
 
 - Reszponzív felület
-- Administrátori felület csak ".admin" végződésű admin felhasználóknak
 - Regisztráció mentes, Intranet elven műkődik
 - Első bejelentkezéskor a felhasználó beállítja elérhetőségeit és már használható is
-- Igénylések státuszait a felhasználók követni tudják
-- Az adatbázis segítségével egyszerűen lehet elvenni és hozzáadni jogosultságokat
-- Egyszerübb (copy-paste) technikával hozzáadható az elfogadott jogosultság a felhasználó részére
-
-## Egyszerű- barátságos környezet
-
-![ISZR jogosultság hozzáadás](.github/windows.png)
-
-Minden felület színes illetve könnyen érthető ikonokkal van ellátva.
-
-## Igénylések
-
-![ISZR jogosultságok igénylései](.github/igenylesek.png)
-
-A felhasználók követni tudják a maguk illetve mások által kért igényléseket.
-
-> Minden igénylést csak az **adminisztrátorok tudnak** jováhagyni illetve elutasítani.
+- Igénylések státuszait a felhasználók és ügyintézők követni tudják (felhasználók csak sajátjukat)
+- Külön adminisztrativ felület rendszer karbantartóknak
+- Az adatbázis segítségével egyszerűen lehet elvenni és hozzáadni jogosultságokat a rendszerhez
+- Az elfogadott jogosultság a felhasználó részére könnyebben hozzáadható (az igénylő lapon csak a szükséges jogosultsági megnevezés szerepel)
