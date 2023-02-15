@@ -1,6 +1,5 @@
 ﻿using System.Security.Principal;
 using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace ISZR.Components
 {

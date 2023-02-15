@@ -1,9 +1,7 @@
-﻿using ISZR.Models;
-using ISZR.Components;
+﻿using ISZR.Components;
+using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Drawing.Drawing2D;
-using System.Linq;
 
 namespace ISZR.Controllers
 {
