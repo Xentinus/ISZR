@@ -53,6 +53,7 @@
 												<option>Meglévő felhasználó részére e-mail cím igénylése</option>
 												<option>Meglévő felhasználó részére telefonos PIN kód igénylése</option>
 												<option>Meglévő felhasználó részére parkolási engedély igénylése</option>
+												<option>HikCentral jogosultság igénylése meglévő felhasználó részére</option>
 												<option>Kamerafelvétel lementése</option>
 											</select>
 										</div>
@@ -135,27 +136,15 @@
 										}
 									</td>
 									<td class="d-none d-md-table-cell">
-										@{
-											if (item.RequestAuthor == null)
-											{
-												<span class="text-danger font-weight-bold">Törölt felhasználó</span>
-											}
-											else
-											{
-												<span>@item.RequestAuthor.DisplayName</span>
-											}
+										@if (item.RequestAuthor != null)
+										{
+											<span>@item.RequestAuthor.DisplayName</span>
 										}
 									</td>
 									<td>
-										@{
-											if (item.RequestFor == null)
-											{
-												<span class="text-danger font-weight-bold">Törölt felhasználó</span>
-											}
-											else
-											{
-												<span>@item.RequestFor.DisplayName</span>
-											}
+										@if (item.RequestFor != null)
+										{
+											<span>@item.RequestFor.DisplayName</span>
 										}
 									</td>
 									<td>

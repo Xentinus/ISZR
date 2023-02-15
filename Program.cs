@@ -26,7 +26,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 var app = builder.Build();
 
 // Only Show Development Error View when Env is Dev
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
 	app.UseExceptionHandler("/Home/Error");
 	app.UseHsts();
