@@ -47,19 +47,30 @@
 										<div class="col-12">
 											<div class="alert alert-info alert-dismissible">
 												<h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-												Hikcentrálban a felvételeket átlagosan 30 napig tároljuk. Ez alól a bástyafalon elhelyezett kamerák a kivételek, amelyek külterületre néznek. Ilyen kameráknál a felvételt fixen 3 napig tároljuk. (törvény szerint ennyi a maximum)
+												A bástyafalon elhelyezett kamerák amelyek külterületre néznek, 3 napig rögzítenek felvételeket. Minden más kamera amely nem külterületre néz, körülbelül 1 hónapig rögzít.
 											</div>
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-12">
+										<div class="col-12 col-md-6">
+											<div class="form-group">
+												<label>Esemény dátuma</label>
+												<div class="input-group mb-3">
+													<div class="input-group-prepend">
+														<span class="input-group-text"><i class="fas fa-calendar"></i></span>
+													</div>
+													<input id="inputDate" name="inputDate" type="date" min="@DateTime.Now.AddMonths(-1).AddDays(-14).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" required="required" />
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-md-6">
 											<div class="form-group">
 												<label>Kamerafelvétel lementésének oka</label>
 												<div class="input-group mb-3">
 													<div class="input-group-prepend">
 														<span class="input-group-text"><i class="far fa-eye"></i></span>
 													</div>
-													<input id="inputWhy" name="inputWhy" type="text" class="form-control" required/>
+													<input id="inputWhy" name="inputWhy" type="text" class="form-control" required="required" />
 												</div>
 											</div>
 										</div>
@@ -79,7 +90,7 @@
 													<div class="input-group-prepend">
 														<span class="input-group-text"><i class="fas fa-tags"></i></span>
 													</div>
-													<input id="inputTags" name="inputTags" type="text" class="form-control" required/>
+													<input id="inputTags" name="inputTags" type="text" class="form-control" required />
 												</div>
 											</div>
 										</div>
@@ -114,6 +125,7 @@
 											<a class="btn btn-info" onclick="summary()">Tovább</a>
 											<script>
 												function summary() {
+													document.getElementById("summaryDate").innerHTML = $('#inputDate').val();
 													document.getElementById("summaryWhy").innerHTML = $('#inputWhy').val();
 													document.getElementById("summaryTags").innerHTML = $('#inputTags').val();
 													document.getElementById("summaryCameras").innerHTML = $('#selectedCameras option:selected').toArray().map(item => item.text).join(", ");
@@ -133,6 +145,8 @@
 													<dd class="col-sm-8">Kamerafelvétel lementése</dd>
 													<dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
 													<dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
+													<dt class="col-sm-4"><i class="fas fa-calendar"></i> Esemény dátuma</dt>
+													<dd id="summaryDate" class="col-sm-8"></dd>
 													<dt class="col-sm-4"><i class="far fa-eye"></i> Lementésének oka</dt>
 													<dd id="summaryWhy" class="col-sm-8"></dd>
 													<dt class="col-sm-4"><i class="fas fa-tags"></i> Címkék megnevezése</dt>

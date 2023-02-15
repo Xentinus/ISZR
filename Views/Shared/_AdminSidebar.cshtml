@@ -2,22 +2,15 @@
 
 <aside class="main-sidebar elevation-4 sidebar-dark-info">
     <!-- ISZR -->
-    <a class="brand-link" asp-controller="Administrator" asp-action="Dashboard">
+    <a class="brand-link" asp-controller="Users" asp-action="Index">
         <img src="~/img/ISZR.svg" alt="ISZR Logo" class="brand-image">
-        <span class="brand-text">ISZR ADMIN</span>
+        <span class="brand-text">ISZR KARBANTARTÁS</span>
     </a>
 
     <div class="sidebar">
         <!-- Sidebar menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-header"><b>Igénylések</b></li>
-                <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Administrator" ? "active" : "")" asp-controller="Administrator" asp-action="Index">
-                        <i class="nav-icon fas fa-tasks"></i>
-                        <p>Igénylések</p>
-                    </a>
-                </li>
                 <li class="nav-header"><b>Személyi karbantartások</b></li>
                 <li class="nav-item">
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Classes" ? "active" : "")" asp-controller="Classes" asp-action="Index">

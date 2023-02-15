@@ -1,4 +1,5 @@
-﻿@model ISZR.Models.Request
+﻿@using ISZR.Components;
+@model ISZR.Models.Request
 
 @{
 	ViewData["Title"] = $"#{Model?.RequestId} számú igénylés részletei";
@@ -159,8 +160,43 @@
 				</div>
 				<div class="row d-print-none">
 					<div class="col-12">
-						<a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+						<a href='javascript:history.go(-1)'><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
 						<a class="btn btn-default" onclick="window.print()"><i class="fas fa-print"></i> Nyomtatás</a>
+						@if (Account.IsAdmin())
+						{
+							if (Model?.Status != "Elutasítva")
+							{
+								<form style="display: inline;" asp-action="Details">
+									<input hidden name="id" value="@Model?.RequestId">
+									<input hidden name="status" value="Elutasítva">
+									<button type="submit" class="btn btn-danger float-right ml-1">
+										<i class="fas fa-times-circle"></i> Igénylés elutasítása
+									</button>
+								</form>
+							}
+
+							if (Model?.Status != "Folyamatban")
+							{
+								<form style="display: inline;" asp-action="Details">
+									<input hidden name="id" value="@Model?.RequestId">
+									<input hidden name="status" value="Folyamatban">
+									<button type="submit" class="btn btn-warning float-right ml-1">
+										<i class="fas fa-comment-dots"></i> Folyamatba helyezés
+									</button>
+								</form>
+							}
+
+							if (Model?.Status != "Végrehajtva")
+							{
+								<form style="display: inline;" asp-action="Details">
+									<input hidden name="id" value="@Model?.RequestId">
+									<input hidden name="status" value="Végrehajtva">
+									<button type="submit" class="btn btn-success float-right ml-1">
+										<i class="fas fa-check-circle"></i> Igénylés végrehajtása
+									</button>
+								</form>
+							}
+						}
 					</div>
 				</div>
 			</div>
