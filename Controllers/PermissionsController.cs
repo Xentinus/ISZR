@@ -1,6 +1,6 @@
-﻿using ISZR.Models;
+﻿using ISZR.Components;
+using ISZR.Models;
 using Microsoft.AspNetCore.Mvc;
-using ISZR.Components;
 
 namespace ISZR.Controllers
 {
