@@ -1,0 +1,82 @@
+﻿@model ISZR.Web.Models.Permission
+
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Jogosultság szerkesztése";
+}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-warning">
+				<div class="card-header">
+					<h3 class="card-title">Jogosultsághoz tartozó adatok beállítása</h3>
+				</div>
+
+				<div class="card-body">
+					<form asp-action="Edit">
+						<div class="row">
+							<div class="col-12">
+								<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+							</div>
+						</div>
+						<input type="hidden" asp-for="PermissionId" />
+						<input type="hidden" asp-for="Type" />
+						<div class="row">
+							<div class="col-12">
+								<div class="form-group">
+									<label>Jogosultság megnevezése</label>
+									<span asp-validation-for="Name" class="text-danger"></span>
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-key"></i></span>
+										</div>
+										<input type="text" asp-for="Name" class="form-control" placeholder="Jogosultság megnevezése" spellcheck="true">
+									</div>
+								</div>
+							</div>
+							<div class="col-12">
+								<div class="form-group">
+									<label>Jogosultság leírása</label>
+									<span asp-validation-for="Description" class="text-danger"></span>
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+										</div>
+										<input type="text" asp-for="Description" class="form-control" placeholder="Jogosultság leírása" spellcheck="true">
+									</div>
+								</div>
+							</div>
+						</div>
+						@if (Model?.Type == "Windows")
+						{
+							<div class="row">
+								<div class="col-12">
+									<div class="form-group">
+										<label>Active Directory jogosultságok megnevezése</label>
+										<span asp-validation-for="ActiveDirectoryPermissions" class="text-danger"></span>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"><i class="fas fa-database"></i></span>
+											</div>
+											<input type="text" asp-for="ActiveDirectoryPermissions" class="form-control" placeholder="Legalább egy darab Active Directory jogosultsági csoport név" spellcheck="false">
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+						<input asp-route-id="@Model?.PermissionId" type="submit" value="Jogosultság szerkesztése" class="btn btn-warning" />
+						<a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

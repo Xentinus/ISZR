@@ -1,0 +1,150 @@
+﻿@model ISZR.Web.Models.User
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Felhasználó részletei";
+    string? className = Model?.Class != null ? Model?.Class.Name : "";
+    string? positionName = Model?.Position != null ? Model?.Position.Name : "";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Felhasználóhoz adatok megtekintése</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="m-2">Személyes adatok</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Felhasználónév</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-desktop"></i></span>
+                                    </div>
+                                    <input type="text" value="@Model?.Username" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label>Utolsó bejelentkezés ideje</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-history"></i></span>
+                                    </div>
+                                    <input type="text" value="@Model?.LastLogin.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label>Bejelentkezések mennyisége</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-history"></i></span>
+                                    </div>
+                                    <input type="text" value="@Model?.LogonCount" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Név</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input type="text" value="@Model?.DisplayName" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Rendfokozat</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-medal"></i></span>
+                                    </div>
+                                    <input type="text" value="@Model?.Rank" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Osztály</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                    </div>
+                                    <input type="text" value="@className" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Beosztás</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
+                                    </div>
+                                    <input type="text" value="@positionName" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="m-2">Elérhetőség</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>E-mail cím</label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    </div>
+                                    <input type="email" value="@Model?.Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>NTG elérhetőég</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" value="@Model?.Phone" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Iroda elhelyezkedése</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-map"></i></span>
+                                    </div>
+                                    <input type="text" value="@Model?.Location" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a asp-action="Edit" asp-route-id="@Model?.UserId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
+                    <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
