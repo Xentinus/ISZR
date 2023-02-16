@@ -1,0 +1,165 @@
+﻿@using ISZR.Web.Components;
+@model IEnumerable<ISZR.Web.Models.Request>
+
+@{
+	ViewData["Title"] = "Igénylések";
+}
+
+<div class="container-fluid">
+	@if (Account.IsUgyintezo())
+	{
+		<div class="row">
+			<div class="col-12">
+				<form asp-controller="Requests" asp-action="Index" method="get">
+					<div class="card">
+						<div class="card-header bg-info">
+							<h3 class="card-title">Igénylések szűrése</h3>
+							<div class="card-tools">
+								<button type="button" class="btn btn-tool text-white" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-xl-4 col-lg-6 col-12">
+									<div class="form-group">
+										<label>Státusz alapján</label>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"><i class="fas fa-tag"></i></span>
+											</div>
+											<select name="status" class="form-control select2bs4">
+												<option>Mind</option>
+												<option>Folyamatban</option>
+												<option>Végrehajtva</option>
+												<option>Elutasítva</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-4 col-lg-6 col-12">
+									<div class="form-group">
+										<label>Típus alapján</label>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"><i class="fas fa-paperclip"></i></span>
+											</div>
+											<select name="type" class="form-control select2bs4">
+												<option>Mind</option>
+												<option>Új felhasználó részére jogosultság igénylés</option>
+												<option>Meglévő felhasználó részére többletjogosultság</option>
+												<option>Meglévő felhasználó új beosztásának jogosultságai</option>
+												<option>Meglévő felhasználó részére e-mail cím igénylése</option>
+												<option>Meglévő felhasználó részére telefonos PIN kód igénylése</option>
+												<option>Meglévő felhasználó részére parkolási engedély igénylése</option>
+												<option>HikCentral jogosultság igénylése meglévő felhasználó részére</option>
+												<option>Kamerafelvétel lementése</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-4 col-lg-6 col-12">
+									<div class="form-group">
+										<label>Kinek a számára alapján</label>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"><i class="fas fa-user"></i></span>
+											</div>
+											<select name="requestFor" class="form-control select2bs4" asp-items="ViewBag.RequestForId">
+												<option>Mind</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+							<button type="submit" alt="Megjelenített igénylések szűrése" class="btn btn-info">Szűrés</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	}
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body p-0">
+					<table class="table table-striped">
+						<thead class="bg-info">
+							<tr>
+								<th>Igénylési azonosító</th>
+								<th class="d-none d-xl-table-cell">Létrehozásának és lezárásának ideje</th>
+								<th class="d-none d-md-table-cell">Igénylést intéző</th>
+								<th>Kinek a számára</th>
+								<th>Igénylés típusa</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										ISZR <span class="text-info font-weight-bold">#@Html.DisplayFor(modelItem => item.RequestId)</span><br />
+										@{
+											if (item.Status == "Végrehajtva")
+											{
+												<span class="text-success font-weight-bold"><i class="fas fa-check"></i> Végrehajtva</span>
+											}
+											else if (item.Status == "Elutasítva")
+											{
+												<span class="text-danger font-weight-bold"><i class="fas fa-ban"></i> Elutasítva</span>
+											}
+											else
+											{
+												<span class="text-info font-weight-bold"><i class="fas fa-comment-dots"></i> Folyamatban</span>
+											}
+
+										}
+									</td>
+									<td class="d-none d-xl-table-cell">
+										@Html.DisplayFor(modelItem => item.CreationDate)
+										@if (item.ResolveDate != new DateTime())
+										{
+											if (item.Status == "Végrehajtva")
+											{
+												<br />
+												<span class="text-success font-weight-bold">@item.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+											}
+											else if (item.Status == "Elutasítva")
+											{
+												<br />
+												<span class="text-danger font-weight-bold">@item.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+											}
+										}
+									</td>
+									<td class="d-none d-md-table-cell">
+										@if (item.RequestAuthor != null)
+										{
+											<span>@item.RequestAuthor.DisplayName</span>
+										}
+									</td>
+									<td>
+										@if (item.RequestFor != null)
+										{
+											<span>@item.RequestFor.DisplayName</span>
+										}
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.Type)
+									</td>
+									<td class="float-right">
+										<a asp-action="Details" asp-route-id="@item.RequestId"><input type="button" value="Részletek" class="btn btn-info" /></a>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<span class="float-right text-muted">Maximálisan 50 igénylés jeleníthető meg.</span>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<ISZR.Web.Models.Permission>
+
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Jogosultságok karbantartása";
+}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-3 col-sm-6 col-12">
+			<div class="info-box mb-3">
+				<span class="info-box-icon bg-info elevation-1"><i class="fas fa-key"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Jogosultság összesen</span>
+					<span class="info-box-number">@ViewBag.Permissions</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-12">
+			<div class="info-box mb-3">
+				<span class="info-box-icon bg-info elevation-1"><i class="fab fa-windows"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Windows</span>
+					<span class="info-box-number">@ViewBag.WindowsPermissions</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-12">
+			<div class="info-box mb-3">
+				<span class="info-box-icon bg-info elevation-1"><i class="fas fa-dove"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Főnix 3</span>
+					<span class="info-box-number">@ViewBag.Fonix3Permissions</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header bg-info">
+					<h3 class="card-title"><a asp-action="Create" asp-route-type="Windows" class="btn btn-light mr-1"><i class="fab fa-windows"></i> Windows jogosultság hozzáadása</a></h3>
+					<h3 class="card-title"><a asp-action="Create" asp-route-type="Főnix 3" class="btn btn-light mr-1"><i class="fas fa-dove"></i> Főnix 3 jogosultság hozzáadása</a></h3>
+				</div>
+
+				<div class="card-body p-0">
+					<table class="table table-striped">
+						<thead class="bg-info">
+							<tr>
+								<th>Azonosító</th>
+								<th>Jogosultság neve</th>
+								<th>Jogosultság leírása</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										@Html.DisplayFor(modelItem => item.PermissionId)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.Name)<br />
+										@if (item.Type == "Windows")
+										{
+											<span class="text-info font-weight-bold"><i class="fab fa-windows"></i> Windows jogosultság</span>
+										}
+										@if (item.Type == "Főnix 3")
+										{
+											<span class="text-warning font-weight-bold"><i class="fas fa-dove"></i> Főnix 3 jogosultság</span>
+										}
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.Description)
+									</td>
+									<td class="float-right">
+										<a asp-action="Details" asp-route-id="@item.PermissionId"><input type="button" value="Részletek" class="btn btn-info" /></a>
+										<a asp-action="Edit" asp-route-id="@item.PermissionId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
+										<a asp-action="Delete" asp-route-id="@item.PermissionId"><input type="button" value="Törlés" class="btn btn-danger" /></a>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

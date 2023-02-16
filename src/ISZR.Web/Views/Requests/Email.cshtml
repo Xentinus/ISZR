@@ -1,0 +1,138 @@
+﻿@model ISZR.Web.Models.Request
+
+@{
+	ViewData["Title"] = "Meglévő felhasználó részére e-mail cím igénylése";
+}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card card-default">
+				<div class="card-header bg-info">
+					<h3 class="card-title">Igénylés menete</h3>
+				</div>
+				<div class="card-body p-0">
+					<form asp-action="Email">
+						<div class="row">
+							<div class="col-12">
+								<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+							</div>
+						</div>
+						<div class="bs-stepper linear">
+							<div class="bs-stepper-header" role="tablist">
+								<div class="step active" data-target="#informations">
+									<button type="button" class="step-trigger" role="tab" aria-controls="informations" id="informations-trigger" aria-selected="true">
+										<span class="bs-stepper-circle bg-info"><i class="fas fa-exclamation"></i></span>
+										<span class="bs-stepper-label">Tájékoztatás</span>
+									</button>
+								</div>
+								<div class="line"></div>
+								<div class="step" data-target="#request-info">
+									<button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="false" disabled="disabled">
+										<span class="bs-stepper-circle bg-info"><i class="fas fa-male"></i></span>
+										<span class="bs-stepper-label">Felhasználó kiválasztás</span>
+									</button>
+								</div>
+								<div class="line"></div>
+								<div class="step" data-target="#summary">
+									<button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
+										<span class="bs-stepper-circle bg-info"><i class="fas fa-list"></i></span>
+										<span class="bs-stepper-label">Összesítés</span>
+									</button>
+								</div>
+							</div>
+							<div class="bs-stepper-content">
+								<div id="informations" class="content active dstepper-block" role="tabpanel" aria-labelledby="informations-trigger">
+									<div class="row">
+										<div class="col-12">
+											<div class="alert alert-info alert-dismissible">
+												<h5><i class="icon fas fa-exclamation-triangle"></i> Tájékoztatás!</h5>
+												E-mail cím igényléseket csoportosan összeállítva igényeljük meg a GEI-től minden hónap elején.
+												<hr />
+												Csak meglévő felhasználók részére igényelhető E-mail cím!
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+											<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+										</div>
+									</div>
+								</div>
+								<div id="request-info" class="content" role="tabpanel" aria-labelledby="request-info-trigger">
+									<div class="row">
+										<div class="col-12 col-md-6">
+											<div class="form-group">
+												<label>Személy aki részére az igénylés zajlik</label>
+												<div class="input-group mb-3">
+													<div class="input-group-prepend">
+														<span class="input-group-text"><i class="fas fa-user"></i></span>
+													</div>
+													<select id="selectedUser" asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4">
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-md-6">
+											<div class="alert alert-info alert-dismissible">
+												<h5><i class="icon fas fa-info"></i> Figyelem!</h5>
+												Amennyiben a felhasználó nem található a listában, kérem küldjön e-mailt az informatikai csoportnak!
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+											<a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
+											<a class="btn btn-info" onclick="summary()">Tovább</a>
+											<script>
+												function summary() {
+													document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
+													stepper.next();
+												}
+											</script>
+										</div>
+									</div>
+								</div>
+								<div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
+									<div class="row">
+										<div class="col-12">
+											<div class="alert alert-light alert-dismissible">
+												<h5><i class="icon fas fa-exclamation-triangle"></i> Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+												<dl class="row">
+													<dt class="col-sm-4"><i class="fas fa-user"></i> Kinek a részére</dt>
+													<dd id="summaryUser" class="col-sm-8"></dd>
+													<dt class="col-sm-4"><i class="fas fa-tag"></i> Igénylés típusa</dt>
+													<dd class="col-sm-8">Meglévő felhasználó részére e-mail cím igénylése</dd>
+													<dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
+													<dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
+												</dl>
+											</div>
+										</div>
+									</div>
+									<div class="custom-control custom-checkbox mb-3">
+										<input type="checkbox" class="custom-control-input" id="acceptRequest" required>
+										<label class="custom-control-label" for="acceptRequest">Az összefoglalót elolvastam és minden információ helyesen lett megadva.</label>
+										<div class="invalid-feedback">Az adatok helyességének ellenőrzése nélkül nem készülhet el az igénylés.</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+											<a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
+											<button type="submit" class="btn btn-info">Igénylés létrehozása</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function () {
+		window.stepper = new Stepper(document.querySelector('.bs-stepper'));
+	});
+</script>
