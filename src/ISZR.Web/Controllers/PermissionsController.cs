@@ -16,6 +16,9 @@ namespace ISZR.Web.Controllers
 		// GET: Permissions
 		public async Task<IActionResult> Index()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
@@ -30,6 +33,9 @@ namespace ISZR.Web.Controllers
 		// GET: Permissions/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
@@ -51,6 +57,9 @@ namespace ISZR.Web.Controllers
 		// GET: Permissions/Create
 		public IActionResult Create(string? type)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
@@ -78,6 +87,9 @@ namespace ISZR.Web.Controllers
 		// GET: Permissions/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
@@ -125,6 +137,9 @@ namespace ISZR.Web.Controllers
 		// GET: Permissions/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 

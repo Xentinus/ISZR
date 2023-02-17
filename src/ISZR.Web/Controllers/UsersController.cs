@@ -17,6 +17,9 @@ namespace ISZR.Web.Controllers
 		// GET: Users
 		public async Task<IActionResult> Index()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
@@ -32,6 +35,9 @@ namespace ISZR.Web.Controllers
 		// GET: Users/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
@@ -55,6 +61,9 @@ namespace ISZR.Web.Controllers
 		// GET: Users/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 

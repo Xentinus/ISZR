@@ -15,7 +15,7 @@ namespace ISZR.Web.Components
 			// groupName nem lehet null értékű
 			if (groupName == null) return false;
 
-			groupName = $"^.*{groupName}.*$";
+			groupName = $"^.*{groupName}$";
 
 			// Windows felhasználó információinak megszerzése
 			WindowsIdentity identity = WindowsIdentity.GetCurrent();
@@ -39,7 +39,7 @@ namespace ISZR.Web.Components
 		}
 
 		/// <summary>
-		/// XXXX-ISZR-Ugyintezo Active-Directory jogosultságának meglétének ellenőrzése
+		/// XXXX-ISZR-Ugyintezo Active-Directory jogosultság meglétének ellenőrzése
 		/// </summary>
 		/// <returns>Felhasználó rendelkezik e a jogosultsággal (igaz/hamis)</returns>
 		public static bool IsUgyintezo()
@@ -48,13 +48,21 @@ namespace ISZR.Web.Components
 		}
 
 		/// <summary>
-		/// XXXX-ISZR-Admin Active-Directory jogosultságának meglétének ellenőrzése
+		/// XXXX-ISZR-Admin Active-Directory jogosultság meglétének ellenőrzése
 		/// </summary>
 		/// <returns>Felhasználó rendelkezik e a jogosultsággal (igaz/hamis)</returns>
 		public static bool IsAdmin()
 		{
-			// return checkgroup
 			return CheckGroup("ISZR-Admin");
+		}
+
+		/// <summary>
+		/// XXXX-ISZR Active-Directory jogosultság meglétének ellenőrzése
+		/// </summary>
+		/// <returns>Felhasználó rendelkezik e a jogosultsággal (igaz/hamis)</returns>
+		public static bool IsUser()
+		{
+			return CheckGroup("ISZR");
 		}
 
 		/// <summary>
