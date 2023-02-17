@@ -1,4 +1,5 @@
 ﻿using ISZR.Web.Models;
+using ISZR.Web.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -16,6 +17,9 @@ namespace ISZR.Web.Controllers
 		// GET: Welcome/Index
 		public async Task<IActionResult> Index()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Get username from pc
 			string? activeUsername = User.Identity?.Name;
 			if (activeUsername == null) return NotFound();

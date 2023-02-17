@@ -17,6 +17,9 @@ namespace ISZR.Web.Controllers
 		// GET: Requests
 		public async Task<IActionResult> Index(string status, string type, int requestFor)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Az ISZR-ben nem megtalálható személyek kizására
 			if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -72,6 +75,9 @@ namespace ISZR.Web.Controllers
 		// GET: Requests/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Az ISZR-ben nem megtalálható személyek kizására
 			if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -146,6 +152,9 @@ namespace ISZR.Web.Controllers
 		// GET: Meglévő felhasználó részére többletjogosultság
 		public async Task<IActionResult> UserAdditionalAccess()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Az ISZR-ben nem megtalálható személyek kizására
 			if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -212,6 +221,9 @@ namespace ISZR.Web.Controllers
 		// GET: Meglévő felhasználó részére e-mail cím igénylése
 		public async Task<IActionResult> Email()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Az ISZR-ben nem megtalálható személyek kizására
 			if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -264,6 +276,9 @@ namespace ISZR.Web.Controllers
 		// GET: Meglévő felhasználó részére telefonos PIN kód igénylése
 		public async Task<IActionResult> Phone()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Az ISZR-ben nem megtalálható személyek kizására
 			if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -301,6 +316,9 @@ namespace ISZR.Web.Controllers
 		// GET: Meglévő felhasználó részére parkolási engedély igénylése
 		public async Task<IActionResult> Parking()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Az ISZR-ben nem megtalálható személyek kizására
 			if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -341,6 +359,9 @@ namespace ISZR.Web.Controllers
 		// GET: HikCentral jogosultság igénylése meglévő felhasználó részére
 		public async Task<IActionResult> HikcentralPermission()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Az ISZR-ben nem megtalálható személyek kizására
 			if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -393,6 +414,9 @@ namespace ISZR.Web.Controllers
 		// GET: Kamerafelvétel lementése címkék alapján
 		public async Task<IActionResult> RecordsByTags()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Az ISZR-ben nem megtalálható személyek kizására
 			if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -449,6 +473,9 @@ namespace ISZR.Web.Controllers
 		// GET: Kamerafelvétel lementése címkék alapján
 		public async Task<IActionResult> RecordsByTime()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Az ISZR-ben nem megtalálható személyek kizására
 			if (!await Account.IsUserExists(_context)) return Forbid();
 

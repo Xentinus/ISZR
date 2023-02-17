@@ -1,4 +1,5 @@
 ﻿using ISZR.Web.Models;
+using ISZR.Web.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
@@ -17,6 +18,9 @@ namespace ISZR.Web.Controllers
 		// GET: Home/Dashboard
 		public async Task<IActionResult> Dashboard()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Get login username
 			string? activeUsername = User.Identity?.Name;
 
@@ -29,11 +33,14 @@ namespace ISZR.Web.Controllers
 			// User not exists in database redirect to registration
 			if (user == null) return RedirectToAction("Index", "Welcome");
 
-			// User Requests Dashboard
-			ViewBag.All = _context.Requests.Where(r => r.RequestAuthorId == user.UserId).Count();
-			ViewBag.InProgress = _context.Requests.Where(r => r.Status == "Folyamatban" && r.RequestAuthorId == user.UserId).Count();
-			ViewBag.Done = _context.Requests.Where(r => r.Status == "Végrehajtva" && r.RequestAuthorId == user.UserId).Count();
-			ViewBag.Denied = _context.Requests.Where(r => r.Status == "Elutasítva" && r.RequestAuthorId == user.UserId).Count();
+			// Az ügyintéző által kért igénylések
+			if (Account.IsUgyintezo())
+			{
+				ViewBag.AllRequests = _context.Requests.Where(r => r.RequestAuthorId == user.UserId).Count();
+				ViewBag.InProgressRequests = _context.Requests.Where(r => r.Status == "Folyamatban" && r.RequestAuthorId == user.UserId).Count();
+				ViewBag.DoneRequests = _context.Requests.Where(r => r.Status == "Végrehajtva" && r.RequestAuthorId == user.UserId).Count();
+				ViewBag.DeniedRequests = _context.Requests.Where(r => r.Status == "Elutasítva" && r.RequestAuthorId == user.UserId).Count();
+			}
 
 			// return page
 			return View(user);
@@ -42,6 +49,9 @@ namespace ISZR.Web.Controllers
 		// GET: Home/Settings
 		public async Task<IActionResult> Settings()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			string? activeUsername = User.Identity?.Name;
 
 			var user = await _context.Users
@@ -89,12 +99,18 @@ namespace ISZR.Web.Controllers
 
 		public IActionResult FAQ()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			return View();
 		}
 
 		// GET: Permissions
 		public async Task<IActionResult> Permissions(string name, string type)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			var dataContext = _context.Permissions
 				.OrderByDescending(r => r.Name)
 				.AsQueryable();

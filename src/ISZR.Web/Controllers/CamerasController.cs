@@ -16,6 +16,9 @@ namespace ISZR.Web.Controllers
 		// GET: Cameras
 		public async Task<IActionResult> Index()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
@@ -28,6 +31,9 @@ namespace ISZR.Web.Controllers
 		// GET: Cameras/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
@@ -49,6 +55,9 @@ namespace ISZR.Web.Controllers
 		// GET: Cameras/Create
 		public IActionResult Create()
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 			return View();
@@ -73,6 +82,9 @@ namespace ISZR.Web.Controllers
 		// GET: Cameras/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
@@ -127,6 +139,9 @@ namespace ISZR.Web.Controllers
 		// GET: Cameras/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
+			// ISZR használati jog ellenőrzése
+			if (!Account.IsUser()) return Forbid();
+
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
