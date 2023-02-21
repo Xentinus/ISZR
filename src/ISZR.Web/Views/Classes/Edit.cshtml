@@ -24,16 +24,26 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Osztály megnevezése</label>
-                                    <input asp-for="Name" type="text" class="form-control" placeholder="Név..." spellcheck="true">
                                     <span asp-validation-for="Name" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Osztály megnevezése" spellcheck="true">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" value="Mentés" class="btn btn-warning" />
-                        <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="float-right">
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                    <input type="submit" value="Osztály szerkesztése" class="btn btn-warning ml-1" />
+                                </span>
+                            </div>
+                        </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

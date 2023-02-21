@@ -252,7 +252,7 @@ namespace ISZR.Web.Controllers
 				request.CreationDate = DateTime.Now;
 
 				// Igénylés típusa
-				request.Type = "Meglévő felhasználó részére e-mail cím igénylése";
+				request.Type = "E-mail cím igénylése";
 
 				// Alapértelmezett státusz
 				request.Status = "Folyamatban";
@@ -301,53 +301,10 @@ namespace ISZR.Web.Controllers
 			{
 				request.RequestAuthorId = await RequestAuthorId();
 				request.CreationDate = DateTime.Now;
-				request.Type = "Meglévő felhasználó részére telefonos PIN kód igénylése";
+				request.Type = "Telefonos PIN kód igénylése";
 				request.Status = "Folyamatban";
 
 				request.Description = "Kérem engedélyezni telefonos PIN kód kiadását a felhasználó részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
-				_context.Add(request);
-				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
-			}
-			ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
-			return View();
-		}
-
-		// GET: Meglévő felhasználó részére parkolási engedély igénylése
-		public async Task<IActionResult> Parking()
-		{
-			// ISZR használati jog ellenőrzése
-			if (!Account.IsUser()) return Forbid();
-
-			// Az ISZR-ben nem megtalálható személyek kizására
-			if (!await Account.IsUserExists(_context)) return Forbid();
-
-			// Az oldalt csak ügyintézők tekinthetik meg
-			if (!Account.IsUgyintezo()) return Forbid();
-
-			// Lista elemek betöltése
-			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
-
-			// Az oldal megjelenítése
-			return View();
-		}
-
-		// POST: Meglévő felhasználó részére parkolási engedély igénylése
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Parking(string brand, string modell, string licensePlate, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
-		{
-			if (brand == null || modell == null || licensePlate == null) return Forbid();
-
-			if (ModelState.IsValid)
-			{
-				request.RequestAuthorId = await RequestAuthorId();
-				request.CreationDate = DateTime.Now;
-				request.Type = "Meglévő felhasználó részére parkolási engedély igénylése";
-				request.Status = "Folyamatban";
-
-				request.Description = $"Kérem engedélyezni a felhasználó részére, az alábbi jármű parkolási engedélyének kiállítását.<br /><br />" +
-					$"<dl>\r\n<dt><i class=\"fas fa-car\"></i> Jármű típusa</dt>\r\n<dd>{brand} {modell}</dd>\r\n<dt><i class=\"fas fa-parking\"></i> Jármű rendszáma</dt>\r\n<dd>{licensePlate}</dd>\r\n</dl>";
 				_context.Add(request);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -390,7 +347,7 @@ namespace ISZR.Web.Controllers
 				request.CreationDate = DateTime.Now;
 
 				// Igénylés típusa
-				request.Type = "HikCentral jogosultság igénylése meglévő felhasználó részére";
+				request.Type = "HikCentral jogosultság igénylése";
 
 				// Alapértelmezett státusz
 				request.Status = "Folyamatban";

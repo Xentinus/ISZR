@@ -10,7 +10,7 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
 // Services
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
    .AddNegotiate();
 

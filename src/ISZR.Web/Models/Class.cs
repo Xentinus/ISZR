@@ -8,24 +8,29 @@ namespace ISZR.Web.Models
 	public class Class
 	{
 		/// <summary>
-		/// Az osztály azonosítója ISZR-en belül
+		/// Osztály azonosítója
 		/// </summary>
 		[Key]
 		public int ClassId { get; set; }
 
 		/// <summary>
-		/// Az osztály neve
+		/// Osztály megnevezése
 		/// </summary>
 		[Display(Name = "Osztály megnevezése")]
 		[Required(ErrorMessage = "Az osztály nevének megadása kötelező!")]
 		[MinLength(3, ErrorMessage = "Az osztály neve nem lehet kevesebb mint 3 karakter")]
 		[MaxLength(64, ErrorMessage = "Az osztály neve nem lehet nagyobb mint 64 karakter")]
-		public string Name { get; set; } = string.Empty;
+		public string? Name { get; set; }
 
 		/// <summary>
 		/// Osztályhoz hozzátartozó felhasználók
 		/// </summary>
 		public virtual List<User>? Users { get; set; }
+
+		/// <summary>
+		/// Osztályhoz hozzátartozó csoportok
+		/// </summary>
+		public virtual List<Group>? Groups { get; set; }
 
 		/// <summary>
 		/// Archiválva

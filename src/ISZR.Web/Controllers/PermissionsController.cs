@@ -27,7 +27,8 @@ namespace ISZR.Web.Controllers
 			ViewBag.WindowsPermissions = _context.Permissions.Where(r => r.Type == "Windows").Count();
 			ViewBag.Fonix3Permissions = _context.Permissions.Where(r => r.Type == "Főnix 3").Count();
 
-			return View(await _context.Permissions.ToListAsync());
+            var dataContext = _context.Permissions.OrderBy(u => u.Name);
+            return View(await dataContext.ToListAsync());
 		}
 
 		// GET: Permissions/Details/5
@@ -132,49 +133,6 @@ namespace ISZR.Web.Controllers
 				return RedirectToAction(nameof(Index));
 			}
 			return View(permission);
-		}
-
-		// GET: Permissions/Delete/5
-		public async Task<IActionResult> Delete(int? id)
-		{
-			// ISZR használati jog ellenőrzése
-			if (!Account.IsUser()) return Forbid();
-
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
-
-			if (id == null || _context.Permissions == null)
-			{
-				return NotFound();
-			}
-
-			var permission = await _context.Permissions
-				.FirstOrDefaultAsync(m => m.PermissionId == id);
-			if (permission == null)
-			{
-				return NotFound();
-			}
-
-			return View(permission);
-		}
-
-		// POST: Permissions/Delete/5
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
-		{
-			if (_context.Permissions == null)
-			{
-				return Problem("Entity set 'DataContext.Permission'  is null.");
-			}
-			var permission = await _context.Permissions.FindAsync(id);
-			if (permission != null)
-			{
-				_context.Permissions.Remove(permission);
-			}
-
-			await _context.SaveChangesAsync();
-			return RedirectToAction(nameof(Index));
 		}
 
 		private bool PermissionExists(int id)

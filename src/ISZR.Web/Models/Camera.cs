@@ -14,20 +14,13 @@ namespace ISZR.Web.Models
 		public int CameraId { get; set; }
 
 		/// <summary>
-		/// Kamera neve
+		/// Kamera megnevezése
 		/// </summary>
 		[Display(Name = "Kamera megnevezése")]
 		[Required(ErrorMessage = "A kamera nevének megadása kötelező!")]
 		[MinLength(2, ErrorMessage = "A kamera neve nem lehet kevesebb mint 2 karakter")]
 		[MaxLength(64, ErrorMessage = "A kamera neve nem lehet nagyobb mint 64 karakter")]
-		public string Name { get; set; } = string.Empty;
-
-		/// <summary>
-		/// Kamera típusa
-		/// </summary>
-		[Display(Name = "Kamera típusa")]
-		[Required(ErrorMessage = "A kamera típusának kiválasztása kötelező!")]
-		public string Type { get; set; } = string.Empty;
+		public string? Name { get; set; }
 
 		/// <summary>
 		/// Kamera helyszíne
@@ -36,7 +29,7 @@ namespace ISZR.Web.Models
 		[Required(ErrorMessage = "A kamera helyszínének megadása kötelező!")]
 		[MinLength(2, ErrorMessage = "A kamera helyszíne nem lehet kevesebb mint 2 karakter")]
 		[MaxLength(64, ErrorMessage = "A kamera helyszíne nem lehet nagyobb mint 64 karakter")]
-		public string Location { get; set; } = string.Empty;
+		public string? Location { get; set; }
 
 		/// <summary>
 		/// Archiválva

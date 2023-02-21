@@ -8,7 +8,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
-			<div class="card card-info">
+			<div class="card card-success">
 				<div class="card-header">
 					<h3 class="card-title">Jogosultsághoz tartozó adatok beállítása</h3>
 				</div>
@@ -64,8 +64,14 @@
 								</div>
 							</div>
 						}
-						<input type="submit" value="Jogosultság létrehozása" class="btn btn-info" />
-						<a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-danger" /></a>
+						<div class="row">
+							<div class="col-12 float-right">
+								<span class="float-right">
+									<a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+									<input type="submit" value="Jogosultság hozzáadása" class="btn btn-success ml-1" />
+								</span>
+							</div>
+						</div>
 					</form>
 				</div>
 

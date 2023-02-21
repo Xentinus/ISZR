@@ -1,0 +1,95 @@
+﻿@model ISZR.Web.Models.Group
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Új jogosultsági csoport hozzáadása";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Jogosultsági csoporthoz tartozó adatok beállítása</h3>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div class="row">
+                            <div class="col-12">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>Csoport megnevezése</label>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultsági csoport megnevezése" spellcheck="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>Csoport osztálya</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                        </div>
+                                        <select asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Csoporthoz hozzátartozó Windows jogosultságok</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fab fa-windows"></i></span>
+                                        </div>
+                                        <select name="windowsPermissions" asp-items="ViewBag.Windows" class="form-control select2bs4stay" multiple="multiple">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Csoporthoz hozzátartozó Főnix 3 jogosultságok</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-dove"></i></span>
+                                        </div>
+                                        <select name="fonix3Permissions" asp-items="ViewBag.Fonix3" class="form-control select2bs4stay" multiple="multiple">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 float-right">
+                                <span class="float-right">
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                    <input type="submit" value="Jogosultsági csoport hozzáadása" class="btn btn-success ml-1" />
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

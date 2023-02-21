@@ -63,7 +63,7 @@ namespace ISZR.Web.Controllers
 
 			// Display registration page
 			ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name");
-			ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name");
+            ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name");
 			return View(user);
 		}
 
@@ -93,7 +93,7 @@ namespace ISZR.Web.Controllers
 				return RedirectToAction(nameof(Dashboard));
 			}
 			ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name", user.ClassId);
-			ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name", user.PositionId);
+            ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name", user.PositionId);
 			return View(user);
 		}
 
@@ -112,7 +112,7 @@ namespace ISZR.Web.Controllers
 			if (!Account.IsUser()) return Forbid();
 
 			var dataContext = _context.Permissions
-				.OrderByDescending(r => r.Name)
+				.OrderBy(r => r.Name)
 				.AsQueryable();
 
 			// Név szűrése

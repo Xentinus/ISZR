@@ -59,13 +59,15 @@
 										<div class="col-12 col-md-6">
 											<div class="alert alert-info alert-dismissible">
 												<h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-												Amennyiben a felhasználó nem található a listában, kérem küldjön e-mailt az informatikai csoportnak!
+												Amennyiben a felhasználó nem található a listában, küldjön e-mailt az informatikai csoportnak!
 											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-12">
-											<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+											<span class="float-right">
+												<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+											</span>
 										</div>
 									</div>
 								</div>
@@ -106,16 +108,18 @@
 									</div>
 									<div class="row">
 										<div class="col-12">
-											<a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
-											<a class="btn btn-info" onclick="summary()">Tovább</a>
-											<script>
-												function summary() {
-													document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
-													document.getElementById("summaryWindows").innerHTML = $('#selectedWindows option:selected').toArray().map(item => item.text).join(", ");
-													document.getElementById("summaryFonix").innerHTML = $('#selectedFonix option:selected').toArray().map(item => item.text).join(", ");
-													stepper.next();
-												}
-											</script>
+											<span class="float-right">
+												<a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+												<a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
+												<script>
+													function summary() {
+														document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
+														document.getElementById("summaryWindows").innerHTML = $('#selectedWindows option:selected').toArray().map(item => item.text).join(", ");
+														document.getElementById("summaryFonix").innerHTML = $('#selectedFonix option:selected').toArray().map(item => item.text).join(", ");
+														stepper.next();
+													}
+												</script>
+											</span>
 										</div>
 									</div>
 								</div>
@@ -146,8 +150,10 @@
 									</div>
 									<div class="row">
 										<div class="col-12">
-											<a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
-											<button type="submit" class="btn btn-info">Igénylés létrehozása</button>
+											<span class="float-right">
+												<a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+												<button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+											</span>
 										</div>
 									</div>
 								</div>

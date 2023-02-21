@@ -32,8 +32,14 @@
                 </li>
                 <li class="nav-header"><b>Informtikai karbantartások</b></li>
                 <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Groups" ? "active" : "")" asp-controller="Groups" asp-action="Index">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Jogosultsági csoportok</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Permissions" asp-action="Index">
-                        <i class="nav-icon fas fa-user-tag"></i>
+                        <i class="nav-icon fas fa-key"></i>
                         <p>Jogosultságok</p>
                     </a>
                 </li>

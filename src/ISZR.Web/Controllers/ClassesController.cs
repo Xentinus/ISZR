@@ -27,7 +27,8 @@ namespace ISZR.Web.Controllers
 			ViewBag.Active = _context.Classes.Where(c => c.IsArchived == false).Count();
 			ViewBag.Archived = ViewBag.All - ViewBag.Active;
 
-			return View(await _context.Classes.ToListAsync());
+            var dataContext = _context.Classes.OrderBy(u => u.Name);
+            return View(await dataContext.ToListAsync());
 		}
 
 		// GET: Classes/Details/5
@@ -137,49 +138,6 @@ namespace ISZR.Web.Controllers
 				return RedirectToAction(nameof(Index));
 			}
 			return View(@class);
-		}
-
-		// GET: Classes/Delete/5
-		public async Task<IActionResult> Delete(int? id)
-		{
-			// ISZR használati jog ellenőrzése
-			if (!Account.IsUser()) return Forbid();
-
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
-
-			if (id == null || _context.Classes == null)
-			{
-				return NotFound();
-			}
-
-			var @class = await _context.Classes
-				.FirstOrDefaultAsync(m => m.ClassId == id);
-			if (@class == null)
-			{
-				return NotFound();
-			}
-
-			return View(@class);
-		}
-
-		// POST: Classes/Delete/5
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
-		{
-			if (_context.Classes == null)
-			{
-				return Problem("Entity set 'DataContext.Class'  is null.");
-			}
-			var @class = await _context.Classes.FindAsync(id);
-			if (@class != null)
-			{
-				_context.Classes.Remove(@class);
-			}
-
-			await _context.SaveChangesAsync();
-			return RedirectToAction(nameof(Index));
 		}
 
 		private bool ClassExists(int id)

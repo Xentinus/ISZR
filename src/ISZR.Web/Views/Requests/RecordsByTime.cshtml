@@ -77,24 +77,28 @@
 									</div>
 									<div class="row">
 										<div class="col-12">
-											<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+											<span class="float-right">
+												<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+											</span>
 										</div>
 									</div>
 								</div>
 								<div id="recordTime" class="content" role="tabpanel" aria-labelledby="recordTime-trigger">
 									<div class="row">
 										<div class="col-12">
-											<a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
-											<a class="btn btn-info" onclick="summary()">Tovább</a>
-											<script>
-												function summary() {
-													document.getElementById("summaryDate").innerHTML = $('#inputDate').val();
-													document.getElementById("summaryWhy").innerHTML = $('#inputWhy').val();
-													document.getElementById("summaryTags").innerHTML = $('#inputTags').val();
-													document.getElementById("summaryCameras").innerHTML = $('#selectedCameras option:selected').toArray().map(item => item.text).join(", ");
-													stepper.next();
-												}
-											</script>
+											<span class="float-right">
+												<a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+												<a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
+												<script>
+													function summary() {
+														document.getElementById("summaryDate").innerHTML = $('#inputDate').val();
+														document.getElementById("summaryWhy").innerHTML = $('#inputWhy').val();
+														document.getElementById("summaryTags").innerHTML = $('#inputTags').val();
+														document.getElementById("summaryCameras").innerHTML = $('#selectedCameras option:selected').toArray().map(item => item.text).join(", ");
+														stepper.next();
+													}
+												</script>
+											</span>
 										</div>
 									</div>
 								</div>
@@ -128,8 +132,10 @@
 									</div>
 									<div class="row">
 										<div class="col-12">
-											<a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
-											<button type="submit" class="btn btn-info">Igénylés létrehozása</button>
+											<span class="float-right">
+												<a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+												<button type="submit" class="btn btn-info">Igénylés létrehozása</button>
+											</span>
 										</div>
 									</div>
 								</div>

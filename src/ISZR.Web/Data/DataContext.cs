@@ -1,4 +1,5 @@
 ﻿using ISZR.Web.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ISZR.Web.Data
 {
@@ -20,5 +21,7 @@ namespace ISZR.Web.Data
 		public DbSet<Request> Requests { get; set; } = default!;
 
 		public DbSet<Permission> Permissions { get; set; } = default!;
+
+		public DbSet<Group> Groups { get; set; } = default!;
 	}
 }

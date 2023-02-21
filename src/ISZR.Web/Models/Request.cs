@@ -17,34 +17,34 @@ namespace ISZR.Web.Models
 		/// Igénylés típusa
 		/// </summary>
 		[Display(Name = "Igénylés típusa")]
-		public string Type { get; set; } = string.Empty;
+		public string? Type { get; set; }
 
 		/// <summary>
 		/// Igénylés státusza
 		/// </summary>
 		[Display(Name = "Igénylés státusza")]
-		public string Status { get; set; } = string.Empty;
+		public string? Status { get; set; }
 
 		/// <summary>
 		/// Igénylés leírása
 		/// </summary>
 		[Display(Name = "Igénylés leírása")]
 		[DataType(DataType.MultilineText)]
-		public string Description { get; set; } = string.Empty;
+		public string? Description { get; set; }
 
 		/// <summary>
 		/// Igényelt Windows jogosultságok
 		/// </summary>
 		[Display(Name = "Windows jogosultságok")]
 		[DataType(DataType.MultilineText)]
-		public string WindowsPermissions { get; set; } = string.Empty;
+		public string? WindowsPermissions { get; set; }
 
 		/// <summary>
 		/// Igényelt Főnix 3 jogosultságok
 		/// </summary>
 		[Display(Name = "Főnix 3 jogosultságok")]
 		[DataType(DataType.MultilineText)]
-		public string FonixPermissions { get; set; } = string.Empty;
+		public string? FonixPermissions { get; set; }
 
 		/// <summary>
 		/// Igénylés készítésének időpontja

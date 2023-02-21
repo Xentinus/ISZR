@@ -1,46 +1,55 @@
 ﻿@model ISZR.Web.Models.Class
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Új osztály hozzáadása";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Új osztály hozzáadása";
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3 class="card-title">Osztályhoz tartozó adatok beállítása</h3>
-                </div>
-
-                <div class="card-body">
-                    <form asp-action="Create">
-                        <div class="row">
-                            <div class="col-12">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Osztály megnevezése</label>
-                                    <input asp-for="Name" type="text" class="form-control" placeholder="Név..." spellcheck="true">
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="submit" value="Hozzáadás" class="btn btn-info" />
-                        <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-danger" /></a>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card card-success">
+				<div class="card-header">
+					<h3 class="card-title">Osztályhoz tartozó adatok beállítása</h3>
+				</div>
+				<div class="card-body">
+					<form asp-action="Create">
+						<div class="row">
+							<div class="col-12">
+								<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
+								<div class="form-group">
+									<label>Osztály megnevezése</label>
+									<span asp-validation-for="Name" class="text-danger"></span>
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-users"></i></span>
+										</div>
+										<input type="text" asp-for="Name" class="form-control" placeholder="Osztály megnevezése" spellcheck="true">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 float-right">
+								<span class="float-right">
+									<a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+									<input type="submit" value="Osztály hozzáadása" class="btn btn-success ml-1" />
+								</span>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

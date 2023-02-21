@@ -51,8 +51,8 @@ namespace ISZR.Web.Controllers
 			}
 
 			// Display registration page
-			ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name");
-			ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name");
+			ViewData["ClassId"] = new SelectList(_context.Set<Class>().OrderBy(c => c.Name), "ClassId", "Name");
+			ViewData["PositionId"] = new SelectList(_context.Set<Position>().OrderBy(p => p.Name), "PositionId", "Name");
 
 			// Return full form if user exists (first login)
 			if (user?.LogonCount == 0) return View(user);
@@ -64,7 +64,7 @@ namespace ISZR.Web.Controllers
 		// POST: Welcome/Index
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Index([Bind("UserId,Username,DisplayName,Email,Phone,Rank,Location,LastLogin,ClassId,PositionId")] User user)
+		public async Task<IActionResult> Index([Bind("UserId,Username,DisplayName,Email,Phone,Rank,LastLogin,ClassId,PositionId")] User user)
 		{
 			if (ModelState.IsValid)
 			{
@@ -100,7 +100,6 @@ namespace ISZR.Web.Controllers
 					foundUser.PositionId = user.PositionId;
 					foundUser.Phone = user.Phone;
 					foundUser.Email = user.Email;
-					foundUser.Location = user.Location;
 
 					// Add login count
 					foundUser.LogonCount++;
@@ -115,8 +114,8 @@ namespace ISZR.Web.Controllers
 			}
 
 			// Display registration page
-			ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name", user.ClassId);
-			ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name", user.PositionId);
+			ViewData["ClassId"] = new SelectList(_context.Set<Class>().OrderBy(c => c.Name), "ClassId", "Name");
+			ViewData["PositionId"] = new SelectList(_context.Set<Position>().OrderBy(p => p.Name), "PositionId", "Name");
 
 			// Return full form
 			return View(user);

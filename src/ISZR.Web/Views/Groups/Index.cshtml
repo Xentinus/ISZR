@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ISZR.Web.Models.Group>
+
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Jogosultsági csoportok karbantartása";
+}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header bg-info">
+					<h3 class="card-title"><a asp-action="Create"><input type="button" value="Új jogosultsági csoport hozzáadása" class="btn btn-light" /></a></h3>
+				</div>
+
+				<div class="card-body p-0">
+					<table class="table table-striped">
+						<thead class="bg-info">
+							<tr>
+								<th>Osztály</th>
+								<th>Csoport</th>
+								<th>Állapot</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										@if (item.Class != null)
+										{
+											<span>@item.Class.Name</span>
+										}
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.Name)
+									</td>
+									<td>
+										@if (item.IsArchived)
+										{
+											<span class="text-danger font-weight-bold"><i class="fas fa-archive"></i> Archivált</span>
+										}
+										else
+										{
+											<span class="text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
+										}
+									</td>
+									<td class="float-right">
+										<a asp-action="Details" asp-route-id="@item.GroupId"><input type="button" value="Részletek" class="btn btn-info" /></a>
+										<a asp-action="Edit" asp-route-id="@item.GroupId"><input type="button" value="Szerkesztés" class="btn btn-warning ml-1" /></a>
+										<a><input type="button" value="Archiválás" class="btn btn-danger ml-1" disabled="disabled" /></a>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

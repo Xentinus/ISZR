@@ -27,7 +27,8 @@ namespace ISZR.Web.Controllers
 			ViewBag.Active = _context.Positions.Where(c => c.IsArchived == false).Count();
 			ViewBag.Archived = ViewBag.All - ViewBag.Active;
 
-			return View(await _context.Positions.ToListAsync());
+            var dataContext = _context.Positions.OrderBy(u => u.Name);
+            return View(await dataContext.ToListAsync());
 		}
 
 		// GET: Positions/Details/5
@@ -138,50 +139,6 @@ namespace ISZR.Web.Controllers
 			}
 			return View(position);
 		}
-
-		// GET: Positions/Delete/5
-		public async Task<IActionResult> Delete(int? id)
-		{
-			// ISZR használati jog ellenőrzése
-			if (!Account.IsUser()) return Forbid();
-
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
-
-			if (id == null || _context.Positions == null)
-			{
-				return NotFound();
-			}
-
-			var position = await _context.Positions
-				.FirstOrDefaultAsync(m => m.PositionId == id);
-			if (position == null)
-			{
-				return NotFound();
-			}
-
-			return View(position);
-		}
-
-		// POST: Positions/Delete/5
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
-		{
-			if (_context.Positions == null)
-			{
-				return Problem("Entity set 'DataContext.Position'  is null.");
-			}
-			var position = await _context.Positions.FindAsync(id);
-			if (position != null)
-			{
-				_context.Positions.Remove(position);
-			}
-
-			await _context.SaveChangesAsync();
-			return RedirectToAction(nameof(Index));
-		}
-
 		private bool PositionExists(int id)
 		{
 			return _context.Positions.Any(e => e.PositionId == id);

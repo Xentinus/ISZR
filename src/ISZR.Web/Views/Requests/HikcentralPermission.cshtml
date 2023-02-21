@@ -1,7 +1,7 @@
 ﻿@model ISZR.Web.Models.Request
 
 @{
-	ViewData["Title"] = "HikCentral jogosultság igénylése meglévő felhasználó részére";
+	ViewData["Title"] = "HikCentral jogosultság igénylése";
 }
 
 <div class="container-fluid">
@@ -59,13 +59,16 @@
 										<div class="col-12 col-md-6">
 											<div class="alert alert-info alert-dismissible">
 												<h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-												Amennyiben a felhasználó nem található a listában, kérem küldjön e-mailt az informatikai csoportnak!
+												Csak a rendszerben létező felhasználóknak lehet igényelni Hikcentral jogosultságot!<br />
+												Amennyiben nem található a kívánt felhasználó, küldön e-mail az Informatikai csoport részére.
 											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-12">
-											<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+											<span class="float-right">
+												<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+											</span>
 										</div>
 									</div>
 								</div>
@@ -97,15 +100,17 @@
 									</div>
 									<div class="row">
 										<div class="col-12">
-											<a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
-											<a class="btn btn-info" onclick="summary()">Tovább</a>
-											<script>
-												function summary() {
-													document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
-													document.getElementById("summaryPermissionType").innerHTML = $('#inputPermissionType').val();
-													stepper.next();
-												}
-											</script>
+											<span class="float-right">
+												<a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+												<a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
+												<script>
+													function summary() {
+														document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
+														document.getElementById("summaryPermissionType").innerHTML = $('#inputPermissionType').val();
+														stepper.next();
+													}
+												</script>
+											</span>
 										</div>
 									</div>
 								</div>
@@ -118,7 +123,7 @@
 													<dt class="col-sm-4"><i class="fas fa-user"></i> Kinek a részére</dt>
 													<dd id="summaryUser" class="col-sm-8"></dd>
 													<dt class="col-sm-4"><i class="fas fa-tag"></i> Igénylés típusa</dt>
-													<dd class="col-sm-8">HikCentral jogosultság igénylése meglévő felhasználó részére</dd>
+													<dd class="col-sm-8">HikCentral jogosultság igénylése</dd>
 													<dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
 													<dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
 													<dt class="col-sm-4"><i class="fas fa-shield-alt"></i> Jogosultság típusa</dt>
@@ -134,8 +139,10 @@
 									</div>
 									<div class="row">
 										<div class="col-12">
-											<a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
-											<button type="submit" class="btn btn-info">Igénylés létrehozása</button>
+											<span class="float-right">
+												<a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+												<button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+											</span>
 										</div>
 									</div>
 								</div>

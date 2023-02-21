@@ -1,77 +1,84 @@
 ﻿@model IEnumerable<ISZR.Web.Models.Class>
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Osztályok karbantartása";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Osztályok karbantartása";
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-4 col-12">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Osztály összesen</span>
-                    <span class="info-box-number">@ViewBag.All</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-12">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Aktív osztályok</span>
-                    <span class="info-box-number">@ViewBag.Active</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-12">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-archive"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Archivált osztályok</span>
-                    <span class="info-box-number">@ViewBag.Archived</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-info">
-                    <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új osztály hozzáadása" class="btn btn-light" /></a></h3>
-                </div>
+	<div class="row">
+		<div class="col-md-4 col-12">
+			<div class="info-box mb-3">
+				<span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Osztály összesen</span>
+					<span class="info-box-number">@ViewBag.All</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4 col-12">
+			<div class="info-box mb-3">
+				<span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Aktív osztályok</span>
+					<span class="info-box-number">@ViewBag.Active</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4 col-12">
+			<div class="info-box mb-3">
+				<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-archive"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Archivált osztályok</span>
+					<span class="info-box-number">@ViewBag.Archived</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header bg-info">
+					<h3 class="card-title"><a asp-action="Create"><input type="button" value="Új osztály hozzáadása" class="btn btn-light" /></a></h3>
+				</div>
 
-                <div class="card-body p-0">
-                    <table class="table table-striped">
-                        <thead class="bg-info">
-                            <tr>
-                                <th>Azonosító</th>
-                                <th>Osztály neve</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ClassId)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td class="float-right">
-                                        <a asp-action="Details" asp-route-id="@item.ClassId"><input type="button" value="Részletek" class="btn btn-info" /></a>
-                                        <a asp-action="Edit" asp-route-id="@item.ClassId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
-                                        <a asp-action="Delete" asp-route-id="@item.ClassId"><input type="button" value="Törlés" class="btn btn-danger" /></a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="card-body p-0">
+					<table class="table table-striped">
+						<thead class="bg-info">
+							<tr>
+								<th>Név</th>
+								<th>Állapot</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										@Html.DisplayFor(modelItem => item.Name)
+									</td>
+									<td>
+										@if (item.IsArchived)
+										{
+											<span class="text-danger font-weight-bold"><i class="fas fa-archive"></i> Archivált</span>
+										}
+										else
+										{
+												  <span class="text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
+										}
+									</td>
+									<td class="float-right">
+										<a asp-action="Details" asp-route-id="@item.ClassId"><input type="button" value="Részletek" class="btn btn-info" /></a>
+										<a asp-action="Edit" asp-route-id="@item.ClassId"><input type="button" value="Szerkesztés" class="btn btn-warning ml-1" /></a>
+										<a><input type="button" value="Archiválás" class="btn btn-danger ml-1" disabled="disabled" /></a>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

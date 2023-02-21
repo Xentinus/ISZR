@@ -22,41 +22,39 @@
                         </div>
                         <input type="hidden" asp-for="CameraId" />
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Kamera megnevezése</label>
-                                    <input asp-for="Name" type="text" class="form-control" placeholder="Név..." spellcheck="false">
                                     <span asp-validation-for="Name" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-video"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Kamera megnevezése" spellcheck="false">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Kamera típusa</label>
-                                    <select asp-for="Type" class="form-control">
-                                        <option>Beltéri csőkamera</option>
-                                        <option>Beltéri dómkamera</option>
-                                        <option>Beltéri PTZ kamera</option>
-                                        <option>Kültéri csőkamera</option>
-                                        <option>Kültéri dómkamera</option>
-                                        <option>Kültéri PTZ kamera</option>
-                                    </select>
-                                    <span asp-validation-for="Type" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Szektor megnevezése</label>
-                                    <input asp-for="Location" type="text" class="form-control" placeholder="Név..." spellcheck="true">
                                     <span asp-validation-for="Location" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-map-marked"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Location" class="form-control" placeholder="Szektor megnevezése" spellcheck="true">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" value="Mentés" class="btn btn-warning" />
-                        <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="float-right">
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                    <input type="submit" value="Intézeti kamera szerkesztése" class="btn btn-warning ml-1" />
+                                </span>
+                            </div>
+                        </div>
                     </form>
                 </div>
 

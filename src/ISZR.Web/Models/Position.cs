@@ -20,7 +20,7 @@ namespace ISZR.Web.Models
 		[Required(ErrorMessage = "A beosztás megnevezése kötelező!")]
 		[MinLength(3, ErrorMessage = "A beosztás neve nem lehet kevesebb mint 3 karakter")]
 		[MaxLength(48, ErrorMessage = "A beosztás neve nem lehet nagyobb mint 48 karakter")]
-		public string Name { get; set; } = string.Empty;
+		public string? Name { get; set; }
 
 		/// <summary>
 		/// Beosztáshoz hozzátartozó felhasználók

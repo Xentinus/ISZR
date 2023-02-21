@@ -8,11 +8,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="card card-info">
+            <div class="card card-success">
                 <div class="card-header">
                     <h3 class="card-title">Beosztáshoz tartozó adatok beállítása</h3>
                 </div>
-
                 <div class="card-body">
                     <form asp-action="Create">
                         <div class="row">
@@ -24,13 +23,24 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Beosztás megnevezése</label>
-                                    <input asp-for="Name" type="text" class="form-control" placeholder="Név..." spellcheck="true">
                                     <span asp-validation-for="Name" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Beosztás megnevezése" spellcheck="true">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" value="Hozzáadás" class="btn btn-info" />
-                        <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-danger" /></a>
+                        <div class="row">
+                            <div class="col-12 float-right">
+                                <span class="float-right">
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                    <input type="submit" value="Beosztás hozzáadása" class="btn btn-success ml-1" />
+                                </span>
+                            </div>
+                        </div>
                     </form>
                 </div>
 

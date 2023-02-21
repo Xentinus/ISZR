@@ -105,7 +105,7 @@
 					</div>
 				</div>
 				@{
-					if (Model?.WindowsPermissions != "")
+					if (Model?.WindowsPermissions != null)
 					{
 						<div class="row">
 							<div class="col-12 d-none d-print-block">
@@ -124,7 +124,7 @@
 					}
 				}
 				@{
-					if (Model?.FonixPermissions != "")
+					if (Model?.FonixPermissions != null)
 					{
 						<div class="row">
 							<div class="col-12 d-none d-print-block">
@@ -160,8 +160,8 @@
 				</div>
 				<div class="row d-print-none">
 					<div class="col-12">
-						<a href='javascript:history.go(-1)'><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
-						<a class="btn btn-default" onclick="window.print()"><i class="fas fa-print"></i> Nyomtatás</a>
+						<a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+						<a class="btn btn-default ml-1" onclick="window.print()"><i class="fas fa-print"></i> Nyomtatás</a>
 						@if (Account.IsAdmin())
 						{
 							if (Model?.Status != "Elutasítva")

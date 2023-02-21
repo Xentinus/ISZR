@@ -28,7 +28,7 @@ namespace ISZR.Web.Controllers
 			ViewBag.Active = _context.Users.Where(u => u.IsArchived == false).Count();
 			ViewBag.Archived = ViewBag.All - ViewBag.Active;
 
-			var dataContext = _context.Users.Include(u => u.Class).Include(u => u.Position);
+			var dataContext = _context.Users.Include(u => u.Class).Include(u => u.Position).OrderBy(u => u.DisplayName);
 			return View(await dataContext.ToListAsync());
 		}
 
@@ -87,7 +87,7 @@ namespace ISZR.Web.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("UserId,Username,DisplayName,Email,Phone,Rank,Location,LastLogin,LogonCount,ClassId,PositionId")] User user)
+		public async Task<IActionResult> Edit(int id, [Bind("UserId,Username,DisplayName,Email,Phone,Rank,LastLogin,LogonCount,ClassId,PositionId")] User user)
 		{
 			if (id != user.UserId) return NotFound();
 

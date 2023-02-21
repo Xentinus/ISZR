@@ -45,8 +45,8 @@
                     <table class="table table-striped">
                         <thead class="bg-info">
                             <tr>
-                                <th>Azonosító</th>
-                                <th>Beosztás neve</th>
+                                <th>Név</th>
+                                <th>Állapot</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -55,15 +55,22 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.PositionId)
+                                        @Html.DisplayFor(modelItem => item.Name)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
+                                        @if (item.IsArchived)
+										{
+											<span class="text-danger font-weight-bold"><i class="fas fa-archive"></i> Archivált</span>
+										}
+										else
+										{
+                                            <span class="text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
+										}
                                     </td>
                                     <td class="float-right">
                                         <a asp-action="Details" asp-route-id="@item.PositionId"><input type="button" value="Részletek" class="btn btn-info" /></a>
-                                        <a asp-action="Edit" asp-route-id="@item.PositionId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
-                                        <a asp-action="Delete" asp-route-id="@item.PositionId"><input type="button" value="Törlés" class="btn btn-danger" /></a>
+                                        <a asp-action="Edit" asp-route-id="@item.PositionId"><input type="button" value="Szerkesztés" class="btn btn-warning ml-1" /></a>
+                                        <a><input type="button" value="Archiválás" class="btn btn-danger ml-1" disabled="disabled" /></a>
                                     </td>
                                 </tr>
                             }

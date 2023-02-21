@@ -20,34 +20,40 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label>Kamera megnevezése</label>
-                                <p>@Html.DisplayFor(model => model.Name)</p>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-video"></i></span>
+                                    </div>
+                                    <input type="text" asp-for="Name" class="form-control" placeholder="Kamera megnevezése" spellcheck="false" disabled="disabled">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Kamera típusa</label>
-                                <p>@Html.DisplayFor(model => model.Type)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-
+                        <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label>Szektor megnevezése</label>
-                                <p>@Html.DisplayFor(model => model.Location)</p>
+                                <span asp-validation-for="Location" class="text-danger"></span>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-map-marked"></i></span>
+                                    </div>
+                                    <input type="text" asp-for="Location" class="form-control" placeholder="Szektor megnevezése" spellcheck="true" disabled="disabled">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <a asp-action="Edit" asp-route-id="@Model?.CameraId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
-                    <a asp-action="Index"><input type="button" value="Vissza a listához" class="btn btn-info" /></a>
+                    <div class="row">
+                        <div class="col-12 float-right">
+                            <span class="float-right">
+                                <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                <a asp-action="Edit" asp-route-id="@Model?.CameraId"><input type="button" value="Intézeti kamera szerkesztése" class="btn btn-info ml-1" /></a>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
