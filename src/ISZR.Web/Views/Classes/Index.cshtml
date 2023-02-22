@@ -47,6 +47,7 @@
 						<thead class="bg-info">
 							<tr>
 								<th>Név</th>
+								<th>Engedélyező személy</th>
 								<th>Állapot</th>
 								<th></th>
 							</tr>
@@ -57,6 +58,15 @@
 								<tr>
 									<td>
 										@Html.DisplayFor(modelItem => item.Name)
+									</td>
+									<td>
+										@if (item.Authorizer != null)
+										{
+											<span>@item.Authorizer?.DisplayName bv. @item.Authorizer?.Rank?.ToLower()</span>
+										} else
+										{
+											<span class="text-danger font-weight-bold"><i class="fas fa-exclamation-triangle"></i> Engedélyező nincs beállítva</span>
+										}
 									</td>
 									<td>
 										@if (item.IsArchived)

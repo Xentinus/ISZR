@@ -91,6 +91,8 @@ namespace ISZR.Web.Controllers
 				.Include(r => r.RequestAuthor.Class)
 				.Include(r => r.RequestAuthor.Position)
 				.Include(r => r.RequestFor.Class)
+				.Include(r => r.RequestFor.Class.Authorizer)
+				.Include(r => r.RequestFor.Class.Authorizer.Position)
 				.Include(r => r.RequestFor.Position)
 				.FirstOrDefaultAsync(m => m.RequestId == id);
 

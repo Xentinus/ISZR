@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyVersion>23.2.21.41</AssemblyVersion>
-    <FileVersion>23.2.21.41</FileVersion>
+    <AssemblyVersion>23.2.22.18</AssemblyVersion>
+    <FileVersion>23.2.22.18</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISZR.Core\ISZR.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

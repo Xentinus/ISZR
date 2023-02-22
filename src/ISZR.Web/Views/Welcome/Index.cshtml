@@ -1,5 +1,4 @@
 ﻿@model ISZR.Web.Models.User
-@using ISZR.Web.Components;
 
 @{
 	Layout = "~/Views/Shared/_FullPageLayout.cshtml";
@@ -136,10 +135,6 @@
 							<div class="col-12">
 								<span class="float-right">
 									<input type="submit" value="Új felhasználói profil létrehozása" class="btn btn-info" />
-									@if (Account.IsAdmin())
-									{
-											<a asp-controller="Users" asp-action="Index" class="btn btn-danger ml-1"><i class="fas fa-toolbox"></i> Karbantartás</a>
-									}
 								</span>
 							</div>
 						</div>
