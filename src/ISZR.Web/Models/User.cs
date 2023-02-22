@@ -105,5 +105,12 @@ namespace ISZR.Web.Models
 		[Display(Name = "Felhasználónak kért igénylések")]
 		[InverseProperty("RequestFor")]
 		public virtual List<Request>? RequestFor { get; set; }
-    }
+
+		/// <summary>
+		/// Osztályok ahol engedélyező
+		/// </summary>
+		[Display(Name = "Osztályok ahol engedélyező")]
+		[InverseProperty("Authorizer")]
+		public virtual List<Class>? Authorizer { get; set; }
+	}
 }

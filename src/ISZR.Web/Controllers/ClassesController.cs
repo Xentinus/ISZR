@@ -1,6 +1,7 @@
 ﻿using ISZR.Web.Components;
 using ISZR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISZR.Web.Controllers
 {
@@ -27,7 +28,7 @@ namespace ISZR.Web.Controllers
 			ViewBag.Active = _context.Classes.Where(c => c.IsArchived == false).Count();
 			ViewBag.Archived = ViewBag.All - ViewBag.Active;
 
-            var dataContext = _context.Classes.OrderBy(u => u.Name);
+            var dataContext = _context.Classes.Include(c => c.Authorizer).OrderBy(c => c.Name);
             return View(await dataContext.ToListAsync());
 		}
 
@@ -47,11 +48,7 @@ namespace ISZR.Web.Controllers
 
 			if (@class == null) return NotFound();
 
-			///
-			//@class.Users = await _context.User
-			//   .Where(u => u.ClassId == id)
-			//  .ToListAsync();
-
+			ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 			return View(@class);
 		}
 
@@ -64,6 +61,7 @@ namespace ISZR.Web.Controllers
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
+			ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 			return View();
 		}
 
@@ -72,7 +70,7 @@ namespace ISZR.Web.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("ClassId,Name")] Class @class)
+		public async Task<IActionResult> Create([Bind("ClassId,Name,AuthorizerId")] Class @class)
 		{
 			if (ModelState.IsValid)
 			{
@@ -80,6 +78,7 @@ namespace ISZR.Web.Controllers
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
+			ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 			return View(@class);
 		}
 
@@ -102,6 +101,7 @@ namespace ISZR.Web.Controllers
 			{
 				return NotFound();
 			}
+			ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 			return View(@class);
 		}
 
@@ -110,7 +110,7 @@ namespace ISZR.Web.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("ClassId,Name")] Class @class)
+		public async Task<IActionResult> Edit(int id, [Bind("ClassId,Name,AuthorizerId")] Class @class)
 		{
 			if (id != @class.ClassId)
 			{
@@ -137,6 +137,8 @@ namespace ISZR.Web.Controllers
 				}
 				return RedirectToAction(nameof(Index));
 			}
+
+			ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 			return View(@class);
 		}
 

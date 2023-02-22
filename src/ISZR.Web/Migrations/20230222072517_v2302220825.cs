@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ISZR.Web.Migrations
 {
-    public partial class RenewModels : Migration
+    public partial class v2302220825 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,6 @@ namespace ISZR.Web.Migrations
                     CameraId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     IsArchived = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -45,10 +44,11 @@ namespace ISZR.Web.Migrations
                 {
                     PermissionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ActiveDirectoryPermissions = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ActiveDirectoryPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,21 +70,22 @@ namespace ISZR.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Group",
+                name: "Groups",
                 columns: table => new
                 {
                     GroupId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     ClassId = table.Column<int>(type: "int", nullable: false),
-                    WindowsPermissions = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FonixPermissions = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    WindowsPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FonixPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Group", x => x.GroupId);
+                    table.PrimaryKey("PK_Groups", x => x.GroupId);
                     table.ForeignKey(
-                        name: "FK_Group_Classes_ClassId",
+                        name: "FK_Groups_Classes_ClassId",
                         column: x => x.ClassId,
                         principalTable: "Classes",
                         principalColumn: "ClassId",
@@ -97,10 +98,9 @@ namespace ISZR.Web.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DisplayName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     Rank = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(48)", maxLength: 48, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -132,11 +132,11 @@ namespace ISZR.Web.Migrations
                 {
                     RequestId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WindowsPermissions = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FonixPermissions = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WindowsPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FonixPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RequestAuthorId = table.Column<int>(type: "int", nullable: true),
                     RequestForId = table.Column<int>(type: "int", nullable: true),
@@ -158,8 +158,8 @@ namespace ISZR.Web.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Group_ClassId",
-                table: "Group",
+                name: "IX_Groups_ClassId",
+                table: "Groups",
                 column: "ClassId");
 
             migrationBuilder.CreateIndex(
@@ -189,7 +189,7 @@ namespace ISZR.Web.Migrations
                 name: "Cameras");
 
             migrationBuilder.DropTable(
-                name: "Group");
+                name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Permissions");

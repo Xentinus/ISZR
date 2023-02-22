@@ -21,7 +21,7 @@
                         </div>
                         <input type="hidden" asp-for="ClassId" />
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Osztály megnevezése</label>
                                     <span asp-validation-for="Name" class="text-danger"></span>
@@ -33,6 +33,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Engedélyező személy</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-signature"></i></span>
+                                    </div>
+                                    <select asp-for="AuthorizerId" class="form-control select2bs4" asp-items="ViewBag.AuthorizerId"></select>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                         <div class="row">
                             <div class="col-12">

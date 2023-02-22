@@ -32,14 +32,18 @@
 						<div class="col-lg-4 col-md-6 invoice-col">
 							<strong>Igénylést intéző</strong>
 							<address>
-								@Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank.ToLower()<br>
+								@Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank?.ToLower()<br>
 								@Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
-								@if (Model?.RequestAuthor?.Email != string.Empty)
+								@if (Account.IsAdmin())
+								{
+									<span class="d-print-none"><i class="fab fa-windows"></i> @Model?.RequestAuthor?.Username<br /></span>
+								}
+								@if (Model?.RequestAuthor?.Email != null)
 								{
 									<i class="fas fa-envelope"></i> @Model?.RequestAuthor?.Email
 									<br>
 								}
-								@if (Model?.RequestAuthor?.Phone != string.Empty)
+								@if (Model?.RequestAuthor?.Phone != null)
 								{
 									<i class="fas fa-phone-square-alt"></i> @Model?.RequestAuthor?.Phone
 								}
@@ -51,14 +55,18 @@
 						<div class="col-lg-4 col-md-6 invoice-col">
 							<strong>Kinek a számra</strong>
 							<address>
-								@Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank.ToLower()<br>
+								@Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank?.ToLower()<br>
 								@Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
-								@if (Model?.RequestFor?.Email != string.Empty)
+								@if (Account.IsAdmin())
+								{
+									<span class="d-print-none"><i class="fab fa-windows"></i> @Model?.RequestFor?.Username<br /></span>
+								}
+								@if (Model?.RequestFor?.Email != null)
 								{
 									<i class="fas fa-envelope"></i> @Model?.RequestFor?.Email
 									<br>
 								}
-								@if (Model?.RequestFor?.Phone != string.Empty)
+								@if (Model?.RequestFor?.Phone != null)
 								{
 									<i class="fas fa-phone-square-alt"></i> @Model?.RequestFor?.Phone
 								}
@@ -98,7 +106,7 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
-						<span class="font-weight-bold d-none d-print-block">Tisztelt Parancsnok Úr!</span>
+						<span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.RequestFor?.Class?.Authorizer?.Position?.Name Úr!</span>
 					</div>
 					<div class="col-12 mb-3">
 						@Html.Raw(@Model?.Description)
@@ -147,14 +155,14 @@
 						<div class="float-left signature text-center ml-5">
 							<p class="mb-5 text-left font-weight-bold">Kérelmező:</p>
 							<hr />
-							<h5 class="mb-0">@Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank.ToLower()</h5>
+							<h5 class="mb-0">@Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank?.ToLower()</h5>
 							@Model?.RequestAuthor?.Position?.Name
 						</div>
 						<div class="float-right text-center mr-5">
 							<p class="mb-5 text-left font-weight-bold">Engedélyezem:</p>
 							<hr />
-							<h5 class="mb-0">Fülöp István András bv. ezredes</h5>
-							Intézetparancsnok
+							<h5 class="mb-0">@Model?.RequestFor?.Class?.Authorizer?.DisplayName bv. @Model?.RequestFor?.Class?.Authorizer?.Rank?.ToLower()</h5>
+							@Model?.RequestFor?.Class?.Authorizer?.Position?.Name
 						</div>
 					</div>
 				</div>

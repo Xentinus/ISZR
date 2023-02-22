@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISZR.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230221082038_AddedArchiveAndInstitute")]
-    partial class AddedArchiveAndInstitute
+    [Migration("20230222072517_v2302220825")]
+    partial class v2302220825
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,7 +84,6 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FonixPermissions")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsArchived")
@@ -96,39 +95,13 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("WindowsPermissions")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GroupId");
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("Group");
-                });
-
-            modelBuilder.Entity("ISZR.Web.Models.Institute", b =>
-                {
-                    b.Property<int>("InstituteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InstituteId"), 1L, 1);
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("LeaderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("InstituteId");
-
-                    b.HasIndex("LeaderId");
-
-                    b.ToTable("Institute");
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("ISZR.Web.Models.Permission", b =>
@@ -140,7 +113,6 @@ namespace ISZR.Web.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermissionId"), 1L, 1);
 
                     b.Property<string>("ActiveDirectoryPermissions")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
@@ -197,11 +169,9 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FonixPermissions")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RequestAuthorId")
@@ -214,15 +184,12 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WindowsPermissions")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RequestId");
@@ -255,13 +222,6 @@ namespace ISZR.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("InsituteId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("InstituteId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
@@ -273,7 +233,8 @@ namespace ISZR.Web.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
 
                     b.Property<int?>("PositionId")
                         .IsRequired()
@@ -284,14 +245,11 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
 
                     b.HasIndex("ClassId");
-
-                    b.HasIndex("InstituteId");
 
                     b.HasIndex("PositionId");
 
@@ -307,15 +265,6 @@ namespace ISZR.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Class");
-                });
-
-            modelBuilder.Entity("ISZR.Web.Models.Institute", b =>
-                {
-                    b.HasOne("ISZR.Web.Models.User", "Leader")
-                        .WithMany("Leader")
-                        .HasForeignKey("LeaderId");
-
-                    b.Navigation("Leader");
                 });
 
             modelBuilder.Entity("ISZR.Web.Models.Request", b =>
@@ -341,10 +290,6 @@ namespace ISZR.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ISZR.Web.Models.Institute", "Institute")
-                        .WithMany("Users")
-                        .HasForeignKey("InstituteId");
-
                     b.HasOne("ISZR.Web.Models.Position", "Position")
                         .WithMany("Users")
                         .HasForeignKey("PositionId")
@@ -352,8 +297,6 @@ namespace ISZR.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Class");
-
-                    b.Navigation("Institute");
 
                     b.Navigation("Position");
                 });
@@ -365,11 +308,6 @@ namespace ISZR.Web.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("ISZR.Web.Models.Institute", b =>
-                {
-                    b.Navigation("Users");
-                });
-
             modelBuilder.Entity("ISZR.Web.Models.Position", b =>
                 {
                     b.Navigation("Users");
@@ -377,8 +315,6 @@ namespace ISZR.Web.Migrations
 
             modelBuilder.Entity("ISZR.Web.Models.User", b =>
                 {
-                    b.Navigation("Leader");
-
                     b.Navigation("RequestAuthor");
 
                     b.Navigation("RequestFor");
