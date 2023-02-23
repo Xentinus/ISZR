@@ -36,10 +36,10 @@ namespace ISZR.Web.Models
 		[Required(ErrorMessage = "A rendfokozat kiválasztása kötelező!")]
 		public string? Rank { get; set; }
 
-        /// <summary>
-        /// Felhasználó emailes elérhetősége
-        /// </summary>
-        [Display(Name = "E-mail cím")]
+		/// <summary>
+		/// Felhasználó emailes elérhetősége
+		/// </summary>
+		[Display(Name = "E-mail cím")]
 		[Required(AllowEmptyStrings = true)]
 		[EmailAddress(ErrorMessage = "A mezőbe beírt cím nem e-mail cím!")]
 		public string? Email { get; set; }
@@ -48,8 +48,8 @@ namespace ISZR.Web.Models
 		/// Felhasználó telefonos elérhetősége
 		/// </summary>
 		[Display(Name = "NTG elérhetőség")]
-        [Required(AllowEmptyStrings = true)]
-        [MaxLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet nagyobb mint 7 karakter")]
+		[Required(AllowEmptyStrings = true)]
+		[MaxLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet nagyobb mint 7 karakter")]
 		public string? Phone { get; set; }
 
 		/// <summary>
@@ -105,6 +105,13 @@ namespace ISZR.Web.Models
 		[Display(Name = "Felhasználónak kért igénylések")]
 		[InverseProperty("RequestFor")]
 		public virtual List<Request>? RequestFor { get; set; }
+
+		/// <summary>
+		/// Felhasználó által elintézett igénylések
+		/// </summary>
+		[Display(Name = "Felhasználó által elintézett igénylések")]
+		[InverseProperty("Resolver")]
+		public virtual List<Request>? Resolver { get; set; }
 
 		/// <summary>
 		/// Osztályok ahol engedélyező

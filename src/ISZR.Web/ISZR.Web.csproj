@@ -16,13 +16,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.12" />
-    <PackageReference Include="System.DirectoryServices" Version="6.0.1" />
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ISZR.Core\ISZR.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
