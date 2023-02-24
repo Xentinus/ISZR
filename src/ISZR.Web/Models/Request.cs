@@ -81,5 +81,15 @@ namespace ISZR.Web.Models
 		[DataType(DataType.DateTime)]
 		[DisplayFormat(DataFormatString = "{0:yyyy. MMMM dd. HH:mm}")]
 		public DateTime ResolveDate { get; set; }
+
+		/// <summary>
+		/// Személy aki lezárja az igénylést
+		/// </summary>
+		[Display(Name = "Személy aki lezárja az igénylést")]
+		public Nullable<int> ResolverId { get; set; }
+
+		[Display(Name = "Személy aki lezárja az igénylést")]
+		[ForeignKey("ResolverId")]
+		public virtual User? Resolver { get; set; }
 	}
 }
