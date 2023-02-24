@@ -74,35 +74,48 @@
                         </div>
                     }
                     <div class="col-lg-4 col-12 invoice-col d-print-none">
-                        <b>Igénylés típusa: </b> @Model?.Type<br />
-                        <b>Létrehozásának ideje:</b> @Model?.CreationDate.ToString("yyyy. MMMM dd. HH:mm")<br>
+                        <div>
+                            <span class="font-weight-bold">Igénylés típusa:</span>
+                            <span class="ml-1">@Model?.Type</span>
+                        </div>
+                        <div>
+                            <span class="font-weight-bold">Létrehozva:</span>
+                            <span class="ml-1">@Model?.CreationDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+                        </div>
                         @if (Model?.ResolveDate != new DateTime())
                         {
-                            <b>Lezárásának ideje:</b> @Model?.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")
-                            <br />
-                            <b>Lezáró személy:</b>
-                            <br />
+                            <div>
+                                <span class="font-weight-bold">Lezárva:</span>
+                                <span class="ml-1">@Model?.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+                            </div>
+                            <div>
+                                <span class="font-weight-bold">Lezáró személy:</span>
+                                <span class="ml-1">@Model?.Resolver?.DisplayName</span>
+                            </div>
                         }
-                        @{
-                            switch (Model?.Status)
-                            {
-                                case "Elutasítva":
-                                    {
-                                        <b>Státusz:</b> <span class="badge badge-danger"><i class="icon fas fa-ban"></i> @Model?.Status</span>
-                                        break;
-                                    }
-                                case "Végrehajtva":
-                                    {
-                                        <b>Státusz:</b> <span class="badge badge-success"><i class="icon fas fa-check"></i> @Model?.Status</span>
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        <b>Státusz:</b> <span class="badge badge-warning"><i class="icon fas fa-comment-dots"></i> @Model?.Status</span>
-                                        break;
-                                    }
+                        <div>
+                            <span class="font-weight-bold">Státusz:</span>
+                            @{
+                                switch (Model?.Status)
+                                {
+                                    case "Elutasítva":
+                                        {
+                                            <span class="badge badge-danger ml-1"><i class="icon fas fa-ban"></i> @Model?.Status</span>
+                                            break;
+                                        }
+                                    case "Végrehajtva":
+                                        {
+                                            <span class="badge badge-success ml-1"><i class="icon fas fa-check"></i> @Model?.Status</span>
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            <span class="badge badge-warning ml-1"><i class="icon fas fa-comment-dots"></i> @Model?.Status</span>
+                                            break;
+                                        }
+                                }
                             }
-                        }
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -175,10 +188,8 @@
                 </div>
                 <div class="row d-print-none">
                     <div class="col-12">
-                        <span class="float-left">
-                            <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
-                        </span>
                         <span class="float-right">
+                            <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
                             <a class="btn btn-default ml-1" onclick="window.print()"><i class="fas fa-print"></i> Nyomtatás</a>
                             @if (Account.IsAdmin())
                             {
@@ -187,6 +198,7 @@
                                     <form style="display: inline;" asp-action="Details">
                                         <input hidden name="id" value="@Model?.RequestId">
                                         <input hidden name="status" value="Elutasítva">
+                                        <input hidden name="resolverId" value="@Model?.ResolverId">
                                         <button type="submit" class="btn btn-default float-right ml-1">
                                             <span class="text-danger mr-1"><i class="fas fa-times-circle"></i></span>Elutasítás
                                         </button>
@@ -198,6 +210,7 @@
                                     <form style="display: inline;" asp-action="Details">
                                         <input hidden name="id" value="@Model?.RequestId">
                                         <input hidden name="status" value="Folyamatban">
+                                        <input hidden name="resolverId" value="@Model?.ResolverId">
                                         <button type="submit" class="btn btn-default float-right ml-1">
                                             <span class="text-warning mr-1"><i class="fas fa-comment-dots"></i></span>Folyamatba helyezés
                                         </button>
@@ -209,6 +222,7 @@
                                     <form style="display: inline;" asp-action="Details">
                                         <input hidden name="id" value="@Model?.RequestId">
                                         <input hidden name="status" value="Végrehajtva">
+                                        <input hidden name="resolverId" value="@Model?.ResolverId">
                                         <button type="submit" class="btn btn-default float-right ml-1">
                                             <span class="text-success mr-1"><i class="fas fa-check-circle"></i></span>Végrehajtás
                                         </button>
