@@ -18,9 +18,6 @@ namespace ISZR.Web.Controllers
         // GET: Requests
         public async Task<IActionResult> Index(string status, string type, int requestFor)
         {
-            // ISZR használati jog ellenőrzése
-            if (!Account.IsUser()) return Forbid();
-
             // Az ISZR-ben nem megtalálható személyek kizására
             if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -76,9 +73,6 @@ namespace ISZR.Web.Controllers
         // GET: Requests/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            // ISZR használati jog ellenőrzése
-            if (!Account.IsUser()) return Forbid();
-
             // Az ISZR-ben nem megtalálható személyek kizására
             if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -101,22 +95,22 @@ namespace ISZR.Web.Controllers
             // Amennyiben a kért kérelem nem létezik, az oldal megjelenítésének elutasítása
             if (request == null) return NotFound();
 
-            if (Account.IsAdmin())
-            {
-                request.ResolverId = await Account.GetUserId(_context);
-            }
+            // Adminisztrátorok részére ResolverId beállítása (adatbázisban nem írja még felül, csak ha státusz módosít)
+            if (Account.IsAdmin()) request.ResolverId = await Account.GetUserId(_context);
 
             // Oldal megjelenítése a kért igényléssel
             return View(request);
         }
 
-        // POST: Administrator/Details/5
+        // POST: Request/Details/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(int? id, string? status, int? resolverId)
         {
+            // Igényléssel kapcsolat
             if (id == null || status == null || _context.Requests == null) return NotFound();
 
+            // Adott azonosítójú kérelem kikeresése
             var request = await _context.Requests
                 .Include(r => r.RequestAuthor)
                 .Include(r => r.RequestFor)
@@ -129,21 +123,26 @@ namespace ISZR.Web.Controllers
                 .Include(r => r.RequestFor.Position)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
 
+            // Amennyiben a kért kérelem nem létezik, az oldal megjelenítésének elutasítása
             if (request == null) return NotFound();
 
+            // Igénylés státuszának megváltoztatása
             try
             {
                 request.Status = status;
                 if (status == "Folyamatban")
                 {
+                    // Folyamatban esetén időpont átírása
                     request.ResolveDate = new DateTime();
                 }
                 else
                 {
+                    // Más státusz alapján aktuális idő, és személy beállítása
                     request.ResolveDate = DateTime.Now;
                     request.ResolverId = resolverId;
                 }
 
+                // Igénylés státuszának frissítése
                 _context.Update(request);
                 await _context.SaveChangesAsync();
             }
@@ -159,15 +158,13 @@ namespace ISZR.Web.Controllers
                 }
             }
 
+            // Igénylés megjelenítése
             return View(request);
         }
 
         // GET: Meglévő felhasználó részére többletjogosultság
         public async Task<IActionResult> UserAdditionalAccess()
         {
-            // ISZR használati jog ellenőrzése
-            if (!Account.IsUser()) return Forbid();
-
             // Az ISZR-ben nem megtalálható személyek kizására
             if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -192,7 +189,7 @@ namespace ISZR.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Igénylést létrehozó személy azonosítója
-                request.RequestAuthorId = await RequestAuthorId();
+                request.RequestAuthorId = await GetLoggedUserId();
 
                 // Igénylés létrehozásának dátuma
                 request.CreationDate = DateTime.Now;
@@ -207,14 +204,20 @@ namespace ISZR.Web.Controllers
                 request.Description = "Kérem engedélyezni a felhasználó részére többletjogosultság kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
 
                 // Windows jogosultságok Active-Directory értékeinek sorrendbe helyezése
-                StringBuilder windows = new StringBuilder();
-                foreach (string permission in windowsPermissions) windows.AppendJoin(';', permission);
-                request.WindowsPermissions = windows.ToString();
+                if (windowsPermissions.Length > 0)
+                {
+                    StringBuilder windows = new StringBuilder();
+                    foreach (string permission in windowsPermissions) windows.Append(permission[permission.Length - 1] == ';' ? $"{permission} " : $"{permission}; ");
+                    request.WindowsPermissions = windows.ToString();
+                }
 
                 // Főnix 3 jogosultságok neveinek sorrendbe helyezése
-                StringBuilder fonix3 = new StringBuilder();
-                foreach (string permission in fonix3Permissions) fonix3.AppendJoin(';', permission);
-                request.FonixPermissions = fonix3.ToString();
+                if (fonix3Permissions.Length > 0)
+                {
+                    StringBuilder fonix3 = new StringBuilder();
+                    foreach (string permission in fonix3Permissions) fonix3.Append(permission[permission.Length - 1] == ';' ? $"{permission} " : $"{permission}; ");
+                    request.FonixPermissions = fonix3.ToString();
+                }
 
                 // Igénylés hozzáadása a rendszerhez
                 _context.Add(request);
@@ -232,9 +235,6 @@ namespace ISZR.Web.Controllers
         // GET: Meglévő felhasználó részére e-mail cím igénylése
         public async Task<IActionResult> Email()
         {
-            // ISZR használati jog ellenőrzése
-            if (!Account.IsUser()) return Forbid();
-
             // Az ISZR-ben nem megtalálható személyek kizására
             if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -257,7 +257,7 @@ namespace ISZR.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Igénylést létrehozó személy azonosítója
-                request.RequestAuthorId = await RequestAuthorId();
+                request.RequestAuthorId = await GetLoggedUserId();
 
                 // Igénylés létrehozásának dátuma
                 request.CreationDate = DateTime.Now;
@@ -287,9 +287,6 @@ namespace ISZR.Web.Controllers
         // GET: Meglévő felhasználó részére telefonos PIN kód igénylése
         public async Task<IActionResult> Phone()
         {
-            // ISZR használati jog ellenőrzése
-            if (!Account.IsUser()) return Forbid();
-
             // Az ISZR-ben nem megtalálható személyek kizására
             if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -308,18 +305,89 @@ namespace ISZR.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Phone([Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
         {
+            // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
-                request.RequestAuthorId = await RequestAuthorId();
+                // Igénylést létrehozó személy azonosítója
+                request.RequestAuthorId = await GetLoggedUserId();
+
+                // Igénylés létrehozásának dátuma
                 request.CreationDate = DateTime.Now;
+
+                // Igénylés típusa
                 request.Type = "Telefonos PIN kód igénylése";
+
+                // Alapértelmezett státusz
                 request.Status = "Folyamatban";
 
+                // Igénylés leírása
                 request.Description = "Kérem engedélyezni telefonos PIN kód kiadását a felhasználó részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
+
+                // Igénylés hozzáadása a rendszerhez
                 _context.Add(request);
                 await _context.SaveChangesAsync();
+
+                // Igénylés megnyítása
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
             }
+
+            // Amennyiben nem jók az értékek az oldal újratöltése
+            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            return View();
+        }
+
+        // GET: Meglévő felhasználó részére parkolási engedély igénylése
+        public async Task<IActionResult> Parking()
+        {
+            // Az ISZR-ben nem megtalálható személyek kizására
+            if (!await Account.IsUserExists(_context)) return Forbid();
+
+            // Az oldalt csak ügyintézők tekinthetik meg
+            if (!Account.IsUgyintezo()) return Forbid();
+
+            // Lista elemek betöltése
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+            // Az oldal megjelenítése
+            return View();
+        }
+
+        // POST: Meglévő felhasználó részére parkolási engedély igénylése
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Parking(string brand, string modell, string licensePlate, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+        {
+            // Autóval kapcsolatos adatok meglétének ellenőrzése
+            if (brand == null || modell == null || licensePlate == null) return Forbid();
+
+            // Megadott értékek ellenőrzése
+            if (ModelState.IsValid)
+            {
+                // Igénylést létrehozó személy azonosítója
+                request.RequestAuthorId = await GetLoggedUserId();
+
+                // Igénylés létrehozásának dátuma
+                request.CreationDate = DateTime.Now;
+
+                // Igénylés típusa
+                request.Type = "Parkolási engedély igénylése";
+
+                // Alapértelmezett státusz
+                request.Status = "Folyamatban";
+
+                // Igénylés leírása
+                request.Description = $"Kérem engedélyezni a felhasználó részére, az alábbi jármű parkolási engedélyének kiállítását.<br /><br />" +
+                    $"<dl>\r\n<dt><i class=\"fas fa-car\"></i> Jármű típusa</dt>\r\n<dd>{brand} {modell}</dd>\r\n<dt><i class=\"fas fa-parking\"></i> Jármű rendszáma</dt>\r\n<dd>{licensePlate}</dd>\r\n</dl>";
+
+                // Igénylés hozzáadása a rendszerhez
+                _context.Add(request);
+                await _context.SaveChangesAsync();
+
+                // Igénylés megnyítása
+                return RedirectToAction(nameof(Details), new { @id = request.RequestId });
+            }
+
+            // Amennyiben nem jók az értékek az oldal újratöltése
             ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
             return View();
         }
@@ -327,9 +395,6 @@ namespace ISZR.Web.Controllers
         // GET: HikCentral jogosultság igénylése meglévő felhasználó részére
         public async Task<IActionResult> HikcentralPermission()
         {
-            // ISZR használati jog ellenőrzése
-            if (!Account.IsUser()) return Forbid();
-
             // Az ISZR-ben nem megtalálható személyek kizására
             if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -352,7 +417,7 @@ namespace ISZR.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Igénylést létrehozó személy azonosítója
-                request.RequestAuthorId = await RequestAuthorId();
+                request.RequestAuthorId = await GetLoggedUserId();
 
                 // Igénylés létrehozásának dátuma
                 request.CreationDate = DateTime.Now;
@@ -382,9 +447,6 @@ namespace ISZR.Web.Controllers
         // GET: Kamerafelvétel lementése címkék alapján
         public async Task<IActionResult> RecordsByTags()
         {
-            // ISZR használati jog ellenőrzése
-            if (!Account.IsUser()) return Forbid();
-
             // Az ISZR-ben nem megtalálható személyek kizására
             if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -406,7 +468,7 @@ namespace ISZR.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Igénylést létrehozó személy azonosítója
-                request.RequestAuthorId = await RequestAuthorId();
+                request.RequestAuthorId = await GetLoggedUserId();
                 request.RequestForId = request.RequestAuthorId;
 
                 // Igénylés létrehozásának dátuma
@@ -441,9 +503,6 @@ namespace ISZR.Web.Controllers
         // GET: Kamerafelvétel lementése címkék alapján
         public async Task<IActionResult> RecordsByTime()
         {
-            // ISZR használati jog ellenőrzése
-            if (!Account.IsUser()) return Forbid();
-
             // Az ISZR-ben nem megtalálható személyek kizására
             if (!await Account.IsUserExists(_context)) return Forbid();
 
@@ -465,7 +524,7 @@ namespace ISZR.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Igénylést létrehozó személy azonosítója
-                request.RequestAuthorId = await RequestAuthorId();
+                request.RequestAuthorId = await GetLoggedUserId();
                 request.RequestForId = request.RequestAuthorId;
 
                 // Igénylés létrehozásának dátuma
@@ -502,7 +561,7 @@ namespace ISZR.Web.Controllers
             return _context.Requests.Any(e => e.RequestId == id);
         }
 
-        private async Task<int> RequestAuthorId()
+        private async Task<int> GetLoggedUserId()
         {
             // Get username from pc
             string? activeUsername = User.Identity?.Name;

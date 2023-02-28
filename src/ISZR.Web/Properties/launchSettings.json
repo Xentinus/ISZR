@@ -6,15 +6,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:56347;http://localhost:56348"
-    },
-    "ISZR Production": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
-      },
-      "applicationUrl": "https://localhost:56347;http://localhost:56348"
+      "applicationUrl": "https://localhost:56347;http://localhost:56348",
+      "sqlDebugging": true
     }
   }
 }

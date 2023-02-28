@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ISZR.Web.Migrations
 {
-    public partial class v2302220825 : Migration
+    public partial class AddedSexAndEmailPhoneCanNull : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,20 +22,6 @@ namespace ISZR.Web.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cameras", x => x.CameraId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Classes",
-                columns: table => new
-                {
-                    ClassId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Classes", x => x.ClassId);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,6 +56,21 @@ namespace ISZR.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Classes",
+                columns: table => new
+                {
+                    ClassId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    AuthorizerId = table.Column<int>(type: "int", nullable: true),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Classes", x => x.ClassId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
                 {
@@ -101,8 +102,8 @@ namespace ISZR.Web.Migrations
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DisplayName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     Rank = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: true),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LogonCount = table.Column<int>(type: "int", nullable: false),
                     ClassId = table.Column<int>(type: "int", nullable: false),
@@ -140,7 +141,8 @@ namespace ISZR.Web.Migrations
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RequestAuthorId = table.Column<int>(type: "int", nullable: true),
                     RequestForId = table.Column<int>(type: "int", nullable: true),
-                    ResolveDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ResolveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ResolverId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -155,7 +157,17 @@ namespace ISZR.Web.Migrations
                         column: x => x.RequestForId,
                         principalTable: "Users",
                         principalColumn: "UserId");
+                    table.ForeignKey(
+                        name: "FK_Requests_Users_ResolverId",
+                        column: x => x.ResolverId,
+                        principalTable: "Users",
+                        principalColumn: "UserId");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classes_AuthorizerId",
+                table: "Classes",
+                column: "AuthorizerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_ClassId",
@@ -173,6 +185,11 @@ namespace ISZR.Web.Migrations
                 column: "RequestForId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Requests_ResolverId",
+                table: "Requests",
+                column: "ResolverId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_ClassId",
                 table: "Users",
                 column: "ClassId");
@@ -181,10 +198,21 @@ namespace ISZR.Web.Migrations
                 name: "IX_Users_PositionId",
                 table: "Users",
                 column: "PositionId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Classes_Users_AuthorizerId",
+                table: "Classes",
+                column: "AuthorizerId",
+                principalTable: "Users",
+                principalColumn: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Classes_Users_AuthorizerId",
+                table: "Classes");
+
             migrationBuilder.DropTable(
                 name: "Cameras");
 

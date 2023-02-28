@@ -67,6 +67,12 @@
 							<p>Telefonáláshoz PIN kód igénylése</p>
 						</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Parking" ? "active" : "")" asp-controller="Requests" asp-action="Parking">
+							<i class="nav-icon fas fa-parking"></i>
+							<p>Parkolási engedély igénylése</p>
+						</a>
+					</li>
 					<li class="nav-header"><b>Biztonságtechnikával kapcsolatos</b></li>
 					<li class="nav-item">
 						<a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "HikcentralPermission" ? "active" : "")" asp-controller="Requests" asp-action="HikcentralPermission">
