@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ISZR.Web.Controllers
 {
+    /// <summary>
+    /// /Positions/? Controller
+    /// </summary>
     public class PositionsController : Controller
     {
         private readonly DataContext _context;
@@ -13,102 +16,123 @@ namespace ISZR.Web.Controllers
             _context = context;
         }
 
-        // GET: Positions
+        /// <summary>
+        /// Beosztások listájának megjelenítése
+        /// </summary>
         public async Task<IActionResult> Index()
         {
             // Admin jogosultság ellenőrzése
             if (!Account.IsAdmin()) return Forbid();
 
-            // Dashboard informations
+            // Beosztások statisztikájának kiszámítása
             ViewBag.All = _context.Positions.Count();
             ViewBag.Active = _context.Positions.Where(c => !c.IsArchived).Count();
             ViewBag.Archived = ViewBag.All - ViewBag.Active;
 
+            // Beosztások listájának lekérdezése
             var dataContext = _context.Positions.OrderBy(u => u.Name);
+
+            // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());
         }
 
-        // GET: Positions/Details/5
+        /// <summary>
+        /// Beosztás részleteinek megjelenítése
+        /// </summary>
+        /// <param name="id">Beosztás azonosítója</param>
         public async Task<IActionResult> Details(int? id)
         {
             // Admin jogosultság ellenőrzése
             if (!Account.IsAdmin()) return Forbid();
 
-            if (id == null || _context.Positions == null)
-            {
-                return NotFound();
-            }
+            // Azonosító meglétének ellenőrzése
+            if (id == null || _context.Positions == null) return NotFound();
 
-            var position = await _context.Positions
-                .FirstOrDefaultAsync(m => m.PositionId == id);
-            if (position == null)
-            {
-                return NotFound();
-            }
+            // Beosztás megkeresése az adatbázisban
+            var position = await _context.Positions.FirstOrDefaultAsync(m => m.PositionId == id);
 
+            // Beosztás meglétének ellenőrzése
+            if (position == null) return NotFound();
+
+            // Felület megjelenítése a kért beosztás értékeivel
             return View(position);
         }
 
-        // GET: Positions/Create
+        /// <summary>
+        /// Beosztás létrehozásának felülete
+        /// </summary>
         public IActionResult Create()
         {
             // Admin jogosultság ellenőrzése
             if (!Account.IsAdmin()) return Forbid();
 
+            // Felület megjelenítése
             return View();
         }
 
-        // POST: Positions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Beosztás létrehozása az adatbázisban
+        /// </summary>
+        /// <param name="position">Beosztás megadott új értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PositionId,Name")] Position position)
         {
+            // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
+                // Beosztás hozzáadása az adatbázishoz
                 _context.Add(position);
                 await _context.SaveChangesAsync();
+
+                // Felhasználó átírányítása a beosztások listájára
                 return RedirectToAction(nameof(Index));
             }
+
+            // Felület újra megjelenítése, amennyiben az értékek hibásan lettek megadva
             return View(position);
         }
 
-        // GET: Positions/Edit/5
+        /// <summary>
+        /// Beosztás értékeinek felülírása az adatbázisban felület
+        /// </summary>
+        /// <param name="id">Beosztás azonosítója</param>
         public async Task<IActionResult> Edit(int? id)
         {
             // Admin jogosultság ellenőrzése
             if (!Account.IsAdmin()) return Forbid();
 
-            if (id == null || _context.Positions == null)
-            {
-                return NotFound();
-            }
+            // Azonosító meglétének ellenőrzése
+            if (id == null || _context.Positions == null) return NotFound();
 
+            // Beosztás megkeresése az adatbázisban
             var position = await _context.Positions.FindAsync(id);
-            if (position == null)
-            {
-                return NotFound();
-            }
+
+            // Beosztás meglétének ellenőrzése
+            if (position == null) return NotFound();
+
+            // Felület megjelenítése a kért beosztás értékeivel
             return View(position);
         }
 
-        // POST: Positions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Beosztás értékeinek felülírása az adatbázisban
+        /// </summary>
+        /// <param name="id">Beosztás azonosítója</param>
+        /// <param name="position">Beosztás új értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PositionId,Name")] Position position)
         {
-            if (id != position.PositionId)
-            {
-                return NotFound();
-            }
+            // Azonosító meglétének ellenőrzése
+            if (id != position.PositionId) return NotFound();
 
+            // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Beosztás értékeinek frissítése az adatbázisban
                     _context.Update(position);
                     await _context.SaveChangesAsync();
                 }
@@ -123,11 +147,20 @@ namespace ISZR.Web.Controllers
                         throw;
                     }
                 }
+
+                // Felhasználó átírányítása a beosztások listájára
                 return RedirectToAction(nameof(Index));
             }
+
+            // Felület újra megjelenítése, amennyiben a kért értékek hibásak
             return View(position);
         }
 
+        /// <summary>
+        /// Beosztás létének ellenőrzése
+        /// </summary>
+        /// <param name="id">Beosztás azonosítója</param>
+        /// <returns>Létezik e a kért beosztás (igaz/hamis)</returns>
         private bool PositionExists(int id)
         {
             return _context.Positions.Any(e => e.PositionId == id);

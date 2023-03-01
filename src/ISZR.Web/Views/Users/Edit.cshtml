@@ -28,7 +28,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Felhasználónév</label>
+                                    <label>Felhasználónév</label><span class="text-danger font-weight-bold">*</span>
                                     <span asp-validation-for="Username" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -40,7 +40,7 @@
                             </div>
                             <div class="col-12 col-md-3">
                                 <div class="form-group">
-                                    <label>Utolsó bejelentkezés ideje</label>
+                                    <label>Utolsó bejelentkezés ideje</label><span class="text-danger font-weight-bold">*</span>
                                     <span asp-validation-for="LastLogin" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-12 col-md-3">
                                 <div class="form-group">
-                                    <label>Bejelentkezések mennyisége</label>
+                                    <label>Bejelentkezések mennyisége</label><span class="text-danger font-weight-bold">*</span>
                                     <span asp-validation-for="LogonCount" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -71,7 +71,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Név</label>
+                                    <label>Név</label><span class="text-danger font-weight-bold">*</span>
                                     <span asp-validation-for="DisplayName" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -81,9 +81,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-3">
                                 <div class="form-group">
-                                    <label>Rendfokozat</label>
+                                    <label>Nem</label><span class="text-danger font-weight-bold">*</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                        </div>
+                                        <select asp-for="Genre" class="form-control select2bs4">
+                                            <option value="Male">Férfi</option>
+                                            <option value="Female">Nő</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="form-group">
+                                    <label>Rendfokozat</label><span class="text-danger font-weight-bold">*</span>
                                     <span asp-validation-for="Rank" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -111,9 +125,16 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="m-2">Munkával kapcsolatos adatok</h4>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Osztály</label>
+                                    <label>Osztály</label><span class="text-danger font-weight-bold">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-users"></i></span>
@@ -124,7 +145,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Beosztás</label>
+                                    <label>Beosztás</label><span class="text-danger font-weight-bold">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>

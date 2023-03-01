@@ -1,27 +1,43 @@
 ﻿@model ISZR.Web.Models.User
 
 @{
-    ViewData["Title"] = "Felhasználói beállítások";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Felhasználó hozzáadása";
 }
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="card card-info">
+            <div class="card card-success">
                 <div class="card-header">
-                    <h3 class="card-title">Felhasználóhoz tartozó adatok szerkesztése</h3>
+                    <h3 class="card-title">Felhasználóhoz tartozó adatok</h3>
                 </div>
                 <div class="card-body">
-                    <form asp-action="Settings">
+                    <form asp-action="Create">
                         <div class="row">
                             <div class="col-12">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             </div>
                         </div>
-                        <input type="hidden" asp-for="UserId" />
-                        <input type="hidden" asp-for="Username" />
-                        <input type="hidden" asp-for="LastLogin" />
-                        <input type="hidden" asp-for="LogonCount" />
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="m-2">Informatikai adatok</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Felhasználónév</label>
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-desktop"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Username" class="form-control" placeholder="Felhasználó Login neve" spellcheck="false">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-12">
                                 <h4 class="m-2">Személyes adatok</h4>
@@ -30,13 +46,13 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Név</label>
+                                    <label>Név</label><span class="text-danger font-weight-bold">*</span>
                                     <span asp-validation-for="DisplayName" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                                         </div>
-                                        <input type="text" asp-for="DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true" required>
+                                        <input type="text" asp-for="DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true">
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +72,7 @@
                             </div>
                             <div class="col-12 col-md-3">
                                 <div class="form-group">
-                                    <label>Rendfokozat</label>
+                                    <label>Rendfokozat</label><span class="text-danger font-weight-bold">*</span>
                                     <span asp-validation-for="Rank" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -93,7 +109,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Osztály</label>
+                                    <label>Osztály</label><span class="text-danger font-weight-bold">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-users"></i></span>
@@ -104,7 +120,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Beosztás</label>
+                                    <label>Beosztás</label><span class="text-danger font-weight-bold">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
@@ -148,7 +164,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <span class="float-right">
-                                    <input type="submit" value="Felhasználói beállítások mentése" class="btn btn-info" />
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                    <input type="submit" value="Felhasználó létrehozása" class="btn btn-success ml-1" />
                                 </span>
                             </div>
                         </div>

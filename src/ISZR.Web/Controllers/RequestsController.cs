@@ -6,6 +6,9 @@ using System.Text;
 
 namespace ISZR.Web.Controllers
 {
+    /// <summary>
+    /// /Requests/? Controller
+    /// </summary>
     public class RequestsController : Controller
     {
         private readonly DataContext _context;
@@ -15,12 +18,18 @@ namespace ISZR.Web.Controllers
             _context = context;
         }
 
-        // GET: Requests
+        /// <summary>
+        /// Igénylések megjelenítése szűrés alapján
+        /// </summary>
+        /// <param name="status">Igénylés státusza</param>
+        /// <param name="type">Igénylés típusa</param>
+        /// <param name="requestFor">Kinek a számára zajlik az igénylés</param>
         public async Task<IActionResult> Index(string status, string type, int requestFor)
         {
             // Az ISZR-ben nem megtalálható személyek kizására
             if (!await Account.IsUserExists(_context)) return Forbid();
 
+            // Igénylések listájának lekérdezése
             var dataContext = _context.Requests
                 .Include(r => r.RequestAuthor)
                 .Include(r => r.RequestFor)
@@ -64,13 +73,16 @@ namespace ISZR.Web.Controllers
             dataContext = dataContext.Take(50);
 
             // Felhasználó alapú szűréshez lista
-            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 
             // Az oldal megjelenítése az igénylésekkel
             return View(await dataContext.ToListAsync());
         }
 
-        // GET: Requests/Details/5
+        /// <summary>
+        /// Adott igénylés részleteinek megjelenítése
+        /// </summary>
+        /// <param name="id">Igénylés azonosítója</param>
         public async Task<IActionResult> Details(int? id)
         {
             // Az ISZR-ben nem megtalálható személyek kizására
@@ -102,7 +114,12 @@ namespace ISZR.Web.Controllers
             return View(request);
         }
 
-        // POST: Request/Details/5
+        /// <summary>
+        /// Adott igénylés státuszának módosítása
+        /// </summary>
+        /// <param name="id">Igénylés azonosítója</param>
+        /// <param name="status">Igénylés státusza</param>
+        /// <param name="resolverId">Igénylést lezáró személy azonosítója</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(int? id, string? status, int? resolverId)
@@ -162,7 +179,9 @@ namespace ISZR.Web.Controllers
             return View(request);
         }
 
-        // GET: Meglévő felhasználó részére többletjogosultság
+        /// <summary>
+        /// Többletjogosultság igénylésének felülete
+        /// </summary>
         public async Task<IActionResult> UserAdditionalAccess()
         {
             // Az ISZR-ben nem megtalálható személyek kizására
@@ -173,14 +192,20 @@ namespace ISZR.Web.Controllers
 
             // Lista elemek betöltése
             ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
-            ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows").OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
-            ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3").OrderBy(p => p.Name), "Name", "Name");
+            ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows" && !p.IsArchived).OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
+            ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3" && !p.IsArchived).OrderBy(p => p.Name), "Name", "Name");
 
             // Oldal megjelenítése
             return View();
         }
 
-        // POST: Meglévő felhasználó részére többletjogosultság
+        /// <summary>
+        /// Töbletjogosultság igénylés hozzáadása az adatbázishoz
+        /// </summary>
+        /// <param name="windowsPermissions">Kért Windows jogosultságok tömbben</param>
+        /// <param name="fonix3Permissions">Kért Főnix 3 jogosultságok tömbben</param>
+        /// <param name="request">Igénylés értékei</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserAdditionalAccess(string[] windowsPermissions, string[] fonix3Permissions, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
@@ -228,11 +253,15 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+            // Felület újra megjelenítése, amennyiben az értékek hibásak voltak
             return View();
         }
 
-        // GET: Meglévő felhasználó részére e-mail cím igénylése
+        /// <summary>
+        /// E-mail cím igénylés felülete
+        /// </summary>
         public async Task<IActionResult> Email()
         {
             // Az ISZR-ben nem megtalálható személyek kizására
@@ -248,7 +277,10 @@ namespace ISZR.Web.Controllers
             return View();
         }
 
-        // POST: Meglévő felhasználó részére e-mail cím igénylése
+        /// <summary>
+        /// E-mail cím igénylés hozzáadása az adatbázishoz
+        /// </summary>
+        /// <param name="request">Igénylés értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Email([Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
@@ -280,11 +312,15 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+            // Felület újra megjelenítése, amennyiben az értékeket hibásan adták meg
             return View();
         }
 
-        // GET: Meglévő felhasználó részére telefonos PIN kód igénylése
+        /// <summary>
+        /// Telefonos PIN kód igénylés felülete
+        /// </summary>
         public async Task<IActionResult> Phone()
         {
             // Az ISZR-ben nem megtalálható személyek kizására
@@ -296,11 +332,14 @@ namespace ISZR.Web.Controllers
             // Lista elemek betöltése
             ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 
-            // Az oldal megjelenítése
+            // Felület megjelenítése
             return View();
         }
 
-        // POST: Meglévő felhasználó részére telefonos PIN kód igénylése
+        /// <summary>
+        /// Telefonos PIN kód igénylés hozzáadása az adatbázishoz
+        /// </summary>
+        /// <param name="request">Igénylés értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Phone([Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
@@ -332,11 +371,15 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+            // Felület megjelenítése
             return View();
         }
 
-        // GET: Meglévő felhasználó részére parkolási engedély igénylése
+        /// <summary>
+        /// Parkolási engedély igénylésének felülete
+        /// </summary>
         public async Task<IActionResult> Parking()
         {
             // Az ISZR-ben nem megtalálható személyek kizására
@@ -348,11 +391,18 @@ namespace ISZR.Web.Controllers
             // Lista elemek betöltése
             ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 
-            // Az oldal megjelenítése
+            // Felület megjelenítése
             return View();
         }
 
-        // POST: Meglévő felhasználó részére parkolási engedély igénylése
+        /// <summary>
+        /// Parkolási engedély igénylésének hozzáadása az adatbázishoz
+        /// </summary>
+        /// <param name="brand">Jármű márkája</param>
+        /// <param name="modell">Jármű modellje</param>
+        /// <param name="licensePlate">Jármű rendszáma</param>
+        /// <param name="request">Igénylés értékei</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Parking(string brand, string modell, string licensePlate, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
@@ -388,11 +438,15 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+            // Felület megjelenítése
             return View();
         }
 
-        // GET: HikCentral jogosultság igénylése meglévő felhasználó részére
+        /// <summary>
+        /// Hikcentral jogosultság igénylésének felülete
+        /// </summary>
         public async Task<IActionResult> HikcentralPermission()
         {
             // Az ISZR-ben nem megtalálható személyek kizására
@@ -404,11 +458,15 @@ namespace ISZR.Web.Controllers
             // Lista elemek betöltése
             ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 
-            // Az oldal megjelenítése
+            // Felület megjelenítése
             return View();
         }
 
-        // POST: HikCentral jogosultság igénylése meglévő felhasználó részére
+        /// <summary>
+        /// Hikcentral jogosultság igénylésének hozzáadása az adatbázishoz
+        /// </summary>
+        /// <param name="permissionType">Jogosultsági típus</param>
+        /// <param name="request">Igénylés értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> HikcentralPermission(string permissionType, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
@@ -440,11 +498,15 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+            // Felület megjelenítése
             return View();
         }
 
-        // GET: Kamerafelvétel lementése címkék alapján
+        /// <summary>
+        /// Címkézett kamerafelvételek lementésének felülete
+        /// </summary>
         public async Task<IActionResult> RecordsByTags()
         {
             // Az ISZR-ben nem megtalálható személyek kizására
@@ -453,13 +515,21 @@ namespace ISZR.Web.Controllers
             // Az oldalt csak ügyintézők tekinthetik meg
             if (!Account.IsUgyintezo()) return Forbid();
 
-            ViewData["Cameras"] = new MultiSelectList(_context.Cameras.OrderBy(p => p.Name), "Name", "Name");
+            // Lista elem betöltése
+            ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
 
-            // Az oldal megjelenítése
+            // Felület megjelenítése
             return View();
         }
 
-        // POST: Kamerafelvétel lementése címkék alapján
+        /// <summary>
+        /// Címkézett kamerafelvételek lementésének hozzáadása az adatbázisba
+        /// </summary>
+        /// <param name="inputDate">Esemény dátuma</param>
+        /// <param name="inputWhy">Lementésének oka</param>
+        /// <param name="inputTags">Címkék megnevezése</param>
+        /// <param name="selectedCameras">Kiválasztott kamerák</param>
+        /// <param name="request">Igénylés értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RecordsByTags(DateTime inputDate, string inputWhy, string inputTags, string[] selectedCameras, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
@@ -496,11 +566,15 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+            // Felület megjelenítése
             return View();
         }
 
-        // GET: Kamerafelvétel lementése címkék alapján
+        /// <summary>
+        /// Időpont alapú kamerafelvételek felülete
+        /// </summary>
         public async Task<IActionResult> RecordsByTime()
         {
             // Az ISZR-ben nem megtalálható személyek kizására
@@ -509,16 +583,20 @@ namespace ISZR.Web.Controllers
             // Az oldalt csak ügyintézők tekinthetik meg
             if (!Account.IsUgyintezo()) return Forbid();
 
-            ViewData["Cameras"] = new MultiSelectList(_context.Cameras.OrderBy(p => p.Name), "Name", "Name");
+            ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
 
-            // Az oldal megjelenítése
+            // Felület megjelenítése
             return View();
         }
 
-        // POST: Kamerafelvétel lementése címkék alapján
+        /// <summary>
+        /// Időpont alapú kamerafelvétel hozzáadása az adatbázishoz
+        /// </summary>
+        /// <param name="request">Igénylés értékei</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RecordsByTime(DateTime inputDate, string inputWhy, string inputTags, string[] selectedCameras, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+        public async Task<IActionResult> RecordsByTime([Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
         {
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
@@ -536,13 +614,6 @@ namespace ISZR.Web.Controllers
                 // Alapértelmezett státusz
                 request.Status = "Folyamatban";
 
-                // Kamerák sorrendbe helyezése
-                string cameras = string.Join(", ", selectedCameras);
-
-                // Igénylés leírása
-                request.Description = $"Kérem engedélyezni a kamerarendszerben rögzített adatok külső adattárolón történő tárolását, illetve felhasználását megkeresés alapján Bűnügyi vagy Felügyeleti szerv részére.<br /><br />" +
-                    $"<dl>\r\n<dt><i class=\"far fa-eye\"></i> Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n<dt><i class=\"fas fa-calendar\"></i> Esemény dátuma</dt>\r\n<dd>{inputDate.ToString("yyyy.MM.dd")}</dd>\r\n<dt><i class=\"fas fa-tags\"></i> Címkék megnevezése</dt>\r\n<dd>{inputTags}</dd>\r\n<dt><i class=\"fas fa-video\"></i> Megcímkézett kamerák</dt>\r\n<dd>{cameras}</dd>\r\n</dl>";
-
                 // Igénylés hozzáadása a rendszerhez
                 _context.Add(request);
                 await _context.SaveChangesAsync();
@@ -552,27 +623,39 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["RequestForId"] = new SelectList(_context.Users.OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+            // Felület megjelenítése
             return View();
         }
 
+        /// <summary>
+        /// Igénylés meglétének ellenőrzése
+        /// </summary>
+        /// <param name="id">Igénylés azonosítója</param>
+        /// <returns>Létezik e az adott igénylés (igaz/hamis)</returns>
         private bool RequestExists(int id)
         {
             return _context.Requests.Any(e => e.RequestId == id);
         }
 
+        /// <summary>
+        /// Bejelentkezett felhasználó azonosítójának megszerzése
+        /// </summary>
+        /// <returns>Felhasználói azonosító</returns>
         private async Task<int> GetLoggedUserId()
         {
-            // Get username from pc
+            // Felhasználónév lekérdezése a számítógéptől
             string? activeUsername = User.Identity?.Name;
             if (activeUsername == null) return -1;
 
-            // Looking for user
+            // Felhasználó megkeresése az adatbázisban
             var foundUser = await _context.Users
                 .Include(u => u.Class)
                 .Include(u => u.Position)
                 .FirstOrDefaultAsync(m => m.Username == activeUsername);
 
+            // Felhasználó meglétének ellenőrzése
             if (foundUser == null) return -1;
 
             // Return user id

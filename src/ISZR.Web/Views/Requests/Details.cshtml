@@ -120,7 +120,13 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.RequestFor?.Class?.Authorizer?.Position?.Name Úr!</span>
+                        @if (Model?.RequestFor?.Class?.Authorizer?.Genre == Genre.Male)
+                        {
+                            <span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.RequestFor?.Class?.Authorizer?.Position?.Name Úr!</span>
+                        } else
+                        {
+                            <span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.RequestFor?.Class?.Authorizer?.Position?.Name Asszony!</span>
+                        }
                     </div>
                     <div class="col-12 mb-3">
                         @Html.Raw(@Model?.Description)

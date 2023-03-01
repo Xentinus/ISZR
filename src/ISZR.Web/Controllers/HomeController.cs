@@ -6,6 +6,9 @@ using System.Diagnostics;
 
 namespace ISZR.Web.Controllers
 {
+    /// <summary>
+    /// /Home/? Controller
+    /// </summary>
     public class HomeController : Controller
     {
         private readonly DataContext _context;
@@ -16,9 +19,8 @@ namespace ISZR.Web.Controllers
         }
 
         /// <summary>
-        /// Irányítópult megjelenítése a felhasználó adataival, statisztikáival.
+        /// Irányítópult megjelenítése a felhasználó értékeivel, statisztikáival.
         /// </summary>
-        /// <returns>GET: Home/Dashboard</returns>
         public async Task<IActionResult> Dashboard()
         {
             // Bejelentkezett felhasználó megkeresése
@@ -50,7 +52,6 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Felhasználók beállításainak megjelenítése
         /// </summary>
-        /// <returns>GET: Home/Settings</returns>
         public async Task<IActionResult> Settings()
         {
             // Bejelentkezett felhasználó megkeresése
@@ -60,8 +61,8 @@ namespace ISZR.Web.Controllers
             if (user == null) return RedirectToAction("Index", "Welcome");
 
             // Lenyíló menük adatainak betöltése
-            ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name");
-            ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name");
+            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+            ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name");
 
             // Felhasználó beállításainak megjelenítése
             return View(user);
@@ -71,17 +72,16 @@ namespace ISZR.Web.Controllers
         /// Felhasználó által megadott felhasználói beállítások felülírása.
         /// </summary>
         /// <param name="user">Felhasználó</param>
-        /// <returns>POST: Home/Settings</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Settings([Bind("UserId,Username,DisplayName,Email,Phone,Rank,Location,LastLogin,LogonCount,ClassId,PositionId")] User user)
+        public async Task<IActionResult> Settings([Bind("UserId,Username,DisplayName,Email,Phone,Rank,Location,LastLogin,LogonCount,ClassId,PositionId,Genre")] User user)
         {
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Felhasználó adatainak frissítése az adatbázisban
+                    // Felhasználó értékeinek frissítése az adatbázisban
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
@@ -101,8 +101,8 @@ namespace ISZR.Web.Controllers
             }
 
             // Lenyíló menük adatainak betöltése
-            ViewData["ClassId"] = new SelectList(_context.Set<Class>(), "ClassId", "Name", user.ClassId);
-            ViewData["PositionId"] = new SelectList(_context.Set<Position>(), "PositionId", "Name", user.PositionId);
+            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+            ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name", user.PositionId);
 
             // Felhasználó beállításainak megjelenítése
             return View(user);
@@ -111,7 +111,6 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Felhasználók által gyakran ismételt kérdések megjelenítése a felhasználók részére.
         /// </summary>
-        /// <returns>GET: Home/FAQ</returns>
         public IActionResult FAQ()
         {
             // Gyakran ismételt kérdések oldalának megjelenítése
@@ -123,7 +122,6 @@ namespace ISZR.Web.Controllers
         /// </summary>
         /// <param name="name">Szűrés név alapján</param>
         /// <param name="type">Szűrés típus alapján</param>
-        /// <returns>GET: Home/Permissions</returns>
         public async Task<IActionResult> Permissions(string name, string type)
         {
             // A rendszerben található jogosultságok betöltése
@@ -159,7 +157,6 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Az aktuális folyamatban hiba történt, ennek tájékoztatása a felhasználó felé.
         /// </summary>
-        /// <returns>GET: Home/Error</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

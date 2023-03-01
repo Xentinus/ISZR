@@ -4,6 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ISZR.Web.Models
 {
     /// <summary>
+    /// Nemek
+    /// </summary>
+    public enum Genre
+    {
+        Male,
+        Female
+    }
+
+    /// <summary>
     /// A felhasználó adatai
     /// </summary>
     public class User
@@ -35,6 +44,13 @@ namespace ISZR.Web.Models
         [Display(Name = "Rendfokozat")]
         [Required(ErrorMessage = "A rendfokozat kiválasztása kötelező!")]
         public string? Rank { get; set; }
+
+        /// <summary>
+        /// Felhasználó neme
+        /// </summary>
+        [Display(Name = "Nemi identitás")]
+        [Required(ErrorMessage = "A nem kiválasztása kötelező!")]
+        public Genre Genre { get; set; } = Genre.Male;
 
         /// <summary>
         /// Felhasználó emailes elérhetősége
