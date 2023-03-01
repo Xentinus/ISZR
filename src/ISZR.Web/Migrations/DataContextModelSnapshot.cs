@@ -227,8 +227,10 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Genre")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
@@ -240,7 +242,6 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(7)
                         .HasColumnType("nvarchar(7)");
 

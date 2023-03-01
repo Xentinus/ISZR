@@ -4,140 +4,174 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ISZR.Web.Controllers
 {
-	public class PermissionsController : Controller
-	{
-		private readonly DataContext _context;
+    /// <summary>
+    /// /Permissions/? Controller
+    /// </summary>
+    public class PermissionsController : Controller
+    {
+        private readonly DataContext _context;
 
-		public PermissionsController(DataContext context)
-		{
-			_context = context;
-		}
+        public PermissionsController(DataContext context)
+        {
+            _context = context;
+        }
 
-		// GET: Permissions
-		public async Task<IActionResult> Index()
-		{
-			// ISZR használati jog ellenőrzése
-			if (!Account.IsUser()) return Forbid();
+        /// <summary>
+        /// Jogosultságok listájának megjelenítése
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> Index()
+        {
+            // Admin jogosultság ellenőrzése
+            if (!Account.IsAdmin()) return Forbid();
 
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
+            // Jogosultságok statisztikájának megjelenítése
+            ViewBag.Permissions = _context.Permissions.Count();
+            ViewBag.WindowsPermissions = _context.Permissions.Where(r => r.Type == "Windows").Count();
+            ViewBag.Fonix3Permissions = _context.Permissions.Where(r => r.Type == "Főnix 3").Count();
 
-			// Dashboard informations
-			ViewBag.Permissions = _context.Permissions.Count();
-			ViewBag.WindowsPermissions = _context.Permissions.Where(r => r.Type == "Windows").Count();
-			ViewBag.Fonix3Permissions = _context.Permissions.Where(r => r.Type == "Főnix 3").Count();
-
+            // Jogosultságok listájának lekérdezése
             var dataContext = _context.Permissions.OrderBy(u => u.Name);
+
+            // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());
-		}
+        }
 
-		// GET: Permissions/Details/5
-		public async Task<IActionResult> Details(int? id)
-		{
-			// ISZR használati jog ellenőrzése
-			if (!Account.IsUser()) return Forbid();
+        /// <summary>
+        /// Adott jogosultság értékeinek megjelenítése
+        /// </summary>
+        /// <param name="id">Jogosultság azonosítója</param>
+        public async Task<IActionResult> Details(int? id)
+        {
+            // Admin jogosultság ellenőrzése
+            if (!Account.IsAdmin()) return Forbid();
 
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
+            // Azonosítók meglétének ellenőrzése
+            if (id == null || _context.Permissions == null) return NotFound();
 
-			if (id == null || _context.Permissions == null)
-			{
-				return NotFound();
-			}
+            // Jogosultság megkeresése az adatbázisban
+            var permission = await _context.Permissions.FirstOrDefaultAsync(m => m.PermissionId == id);
 
-			var permission = await _context.Permissions
-				.FirstOrDefaultAsync(m => m.PermissionId == id);
-			if (permission == null)
-			{
-				return NotFound();
-			}
+            // Jogosultság meglétének ellenőrzése
+            if (permission == null) return NotFound();
 
-			return View(permission);
-		}
+            // Felület megjelenítése a kért osztály értékeivel
+            return View(permission);
+        }
 
-		// GET: Permissions/Create
-		public IActionResult Create(string? type)
-		{
-			// ISZR használati jog ellenőrzése
-			if (!Account.IsUser()) return Forbid();
+        /// <summary>
+        /// Jogosultság létrehozásának felülete
+        /// </summary>
+        /// <param name="type">Jogosultsági típus</param>
+        public IActionResult Create(string? type)
+        {
+            // Admin jogosultság ellenőrzése
+            if (!Account.IsAdmin()) return Forbid();
 
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
+            // Típus meglétének ellenőrzése
+            if (type == null) return NotFound();
 
-			if (type == null) return NotFound();
-			ViewData["type"] = type;
-			return View();
-		}
+            // Típus beállítása
+            ViewData["type"] = type;
 
-		// POST: Permissions/Create
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Name,Type,Description,ActiveDirectoryPermissions")] Permission permission)
-		{
-			if (ModelState.IsValid)
-			{
-				_context.Add(permission);
-				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));
-			}
-			return View(permission);
-		}
+            // Felület megjelenítése típus alapján
+            return View();
+        }
 
-		// GET: Permissions/Edit/5
-		public async Task<IActionResult> Edit(int? id)
-		{
-			// ISZR használati jog ellenőrzése
-			if (!Account.IsUser()) return Forbid();
+        /// <summary>
+        /// Jogosultság létrehozása az adatbázisban
+        /// </summary>
+        /// <param name="permission">Jogosultság új értékei</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Name,Type,Description,ActiveDirectoryPermissions")] Permission permission)
+        {
+            // Megadott értékek ellenőrzése
+            if (ModelState.IsValid)
+            {
+                // Jogosultság hozzáadása az adatbázishoz
+                _context.Add(permission);
+                await _context.SaveChangesAsync();
 
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
+                // Felhasználó átírányítása a jogosultságok listájához
+                return RedirectToAction(nameof(Index));
+            }
 
-			if (id == null || _context.Permissions == null) return NotFound();
-			var permission = await _context.Permissions.FindAsync(id);
-			if (permission == null) return NotFound();
-			return View(permission);
-		}
+            // Felület újra megjelenítése, amennyiben a megadott értékek hibásak
+            return View(permission);
+        }
 
-		// POST: Permissions/Edit/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("PermissionId,Name,Type,Description,ActiveDirectoryPermissions")] Permission permission)
-		{
-			if (id != permission.PermissionId)
-			{
-				return NotFound();
-			}
+        /// <summary>
+        /// Jogosultság értékeinek szerkesztésének felülete
+        /// </summary>
+        /// <param name="id">Jogosultsági azonosító</param>
+        public async Task<IActionResult> Edit(int? id)
+        {
+            // Admin jogosultság ellenőrzése
+            if (!Account.IsAdmin()) return Forbid();
 
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					_context.Update(permission);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!PermissionExists(permission.PermissionId))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(Index));
-			}
-			return View(permission);
-		}
+            // Azonosító meglétének ellenőrzése
+            if (id == null || _context.Permissions == null) return NotFound();
 
-		private bool PermissionExists(int id)
-		{
-			return _context.Permissions.Any(e => e.PermissionId == id);
-		}
-	}
+            // Jogosultság megkeresése az adatbázisban
+            var permission = await _context.Permissions.FindAsync(id);
+
+            // Jogosultság meglétének ellenőrzése
+            if (permission == null) return NotFound();
+
+            // Felület megjelenítése a kért jogosultság értékeivel
+            return View(permission);
+        }
+
+        /// <summary>
+        /// Jogosultság értékeinek szerkesztése az adatbázisban
+        /// </summary>
+        /// <param name="id">Jogosultsági azonosító</param>
+        /// <param name="permission">Jogosultság új értékei</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("PermissionId,Name,Type,Description,ActiveDirectoryPermissions")] Permission permission)
+        {
+            // Azonosító meglétének ellenőrzése
+            if (id != permission.PermissionId) return NotFound();
+
+            // Megadott értékek ellenőrzése
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Jogosultság értékeinek felülírása az adatbázisban
+                    _context.Update(permission);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PermissionExists(permission.PermissionId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                // Felhasználó átírányítása a jogosultságok listájára
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Felület újra megjelenítése, amennyiben a kért értékek hibásak
+            return View(permission);
+        }
+
+        /// <summary>
+        /// Jogosultság meglétének ellenőrzése az adatbázisban
+        /// </summary>
+        /// <param name="id">Jogosultsági azonosító</param>
+        /// <returns>Létezi e a kért jogosultság (igaz/hamis)</returns>
+        private bool PermissionExists(int id)
+        {
+            return _context.Permissions.Any(e => e.PermissionId == id);
+        }
+    }
 }

@@ -39,7 +39,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-history"></i></span>
                                     </div>
-                                    <input type="text" value="@Model?.LastLogin.ToString("yyyy. MMMM dd. dddd, HH óra mm perc")" class="form-control" disabled>
+                                    <input type="text" value="@Model?.LastLogin.ToString("yyyy. MMMM dd. HH:mm")" class="form-control" disabled>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +72,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label>Nem</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                    </div>
+                                    <select asp-for="@Model.Genre" class="form-control select2bs4" disabled>
+                                        <option value="Male">Férfi</option>
+                                        <option value="Female">Nő</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
                             <div class="form-group">
                                 <label>Rendfokozat</label>
                                 <div class="input-group mb-3">
@@ -83,6 +97,13 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="m-2">Munkával kapcsolatos adatok</h4>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label>Osztály</label>
@@ -120,7 +141,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
-                                    <input type="email" value="@Model?.Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)" disabled>
+                                    <input type="email" value="@Model?.Email" class="form-control" disabled>
                                 </div>
                             </div>
                         </div>

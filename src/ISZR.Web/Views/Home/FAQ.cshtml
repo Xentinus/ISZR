@@ -1,122 +1,113 @@
 ﻿@{
-	ViewData["Title"] = "GYIK";
+    ViewData["Title"] = "Gyakran ismételt kérdések";
 }
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-12" id="accordion">
-			<div class="card card-info card-outline">
-				<a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseZero">
-					<div class="card-header bg-info">
-						<h4 class="card-title w-100">
-							1. Hogyan tölthetem le a szolgálati jegyeket?
-						</h4>
-					</div>
-				</a>
-				<div id="collapseZero" class="collapse" data-parent="#accordion">
-					<div class="card-body">
-						Ha sikeresen elkészült az igénylés, akkor <b>alul az igénylés leírásában</b> található egy <a class="btn btn-default"><i class="fas fa-print"></i> Nyomtatás</a> gomb.
-						<span class="text-muted">( Ez a gomb csak az ügyintézők részére látható! )</span>
-						<hr />
-						A szolgálati jegyet mindenképpen <b>PDF-ként mentsük el</b>, és ne nyomtassuk ki a nyomtatón!
-					</div>
-				</div>
-			</div>
-			<div class="card card-info card-outline">
-				<a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseOne">
-					<div class="card-header bg-info">
-						<h4 class="card-title w-100">
-							2. Robtzsaruban hova kell feltölteni az elkészült szolgálati jegyeket?
-						</h4>
-					</div>
-				</a>
-				<div id="collapseOne" class="collapse" data-parent="#accordion">
-					<div class="card-body">
-						Az elkészült elektronikus szolgálati jegyeket az oszályok <b>saját maguk által készült főszámokra tőltik</b>.
-					</div>
-				</div>
-			</div>
-			<div class="card card-info card-outline">
-				<a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseTwo">
-					<div class="card-header bg-info">
-						<h4 class="card-title w-100">
-							3. Kivel kell aláíratnom az elkészült szolgálati jegyet?
-						</h4>
-					</div>
-				</a>
-				<div id="collapseTwo" class="collapse" data-parent="#accordion">
-					<div class="card-body">
-						Elösszőr is a szolálati jegy <b>elkészítőjének</b> kell aláírnia úgy, hogy <b>nem készít alszámot vele!</b><br />
-						Az aláírt verziót, <b>vezetői jováhagyásra</b> kell felajánlani:<br />
-						<ul>
-							<li><b>helyi</b> kollégáknak az <b>intézet parancsnok</b> részére.</li>
-							<li><b>GEI</b> kollégáknak a <b>saját vezetőjük</b> részére.</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="card card-info card-outline">
-				<a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseThree">
-					<div class="card-header bg-info">
-						<h4 class="card-title w-100">
-							4. Szükséges e expediálnom a vezetői jováhagyásra felajánlott szolgálati jegyeket?
-						</h4>
-					</div>
-				</a>
-				<div id="collapseThree" class="collapse" data-parent="#accordion">
-					<div class="card-body">
-						Minden robotzsaruba feltöltött szolgálati jegyet, aláíratás során, vagy utánna el kell küldeni <b>NOVA SZEÜSZ-ként a BV Gazdasági Ellátó Intézet részére.</b><br /><b>Megjegyzésbe</b> bele kell írni, hogy <b>"I. Agglomeráció Sopronkőhida részére szolgálati jegy"</b>.<hr />Amennyiben nem érkezik meg az aláírt szolgálati jegy, nem tudjuk biztosítani annak végrehajtását!
-					</div>
-				</div>
-			</div>
-			<div class="card card-info card-outline">
-				<a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseFour">
-					<div class="card-header bg-info">
-						<h4 class="card-title w-100">
-							5. Az adott személy honnan tudhatja meg, hogy jogosultságot kapott?
-						</h4>
-					</div>
-				</a>
-				<div id="collapseFour" class="collapse" data-parent="#accordion">
-					<div class="card-body">
-						A jogosultság igénylés állapotát <b>csak</b> az ISZR felhasználók láthatják!
-						<hr />
-						<b>Sima felhasználóként</b> a program <b>csak a részére kért</b> igényléseket jeleníti meg, azonban az <b>ügyintézők, minden személy részére kért</b> igénylést látnak.
-					</div>
-				</div>
-			</div>
-			<div class="card card-info card-outline">
-				<a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseFive">
-					<div class="card-header bg-info">
-						<h4 class="card-title w-100">
-							6. Egyesével kell aláíratni a szolgálati jegyeket vagy lehet container fájlként kezelni?
-						</h4>
-					</div>
-				</a>
-				<div id="collapseFive" class="collapse" data-parent="#accordion">
-					<div class="card-body">
-						Informatikai szolgálati jegyek esetében <b>lehetséges</b> a szolgálati jegyek container fájlként való kezelése <b>amennyiben egy adott személynek</b> szól.<br />
-						<hr />
-						Azonban <b>kamerafelvételek</b> esetében <b>csak egyesével</b> lehet kezelni!
-					</div>
-				</div>
-			</div>
-			<div class="card card-info card-outline">
-				<a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseSix">
-					<div class="card-header bg-info">
-						<h4 class="card-title w-100">
-							7. Mi a különbség a sima illetve az ügyintézők között?
-						</h4>
-					</div>
-				</a>
-				<div id="collapseSix" class="collapse" data-parent="#accordion">
-					<div class="card-body">
-						<b>A sima felhasználók csak a részükre kért igényléseket</b> illetve a jogosultsági magyarázatot látják. Ezeken kivül csak a saját elérhetőségüket tudják módosítani.
-						<hr />
-						<b>Az ügykezelők minden felhasználó részére kért igénylést</b> látnak, illetve, az sima felhasználón túl <b>csak ők tudnak igényelni</b> és igényléseket nyomtatni.
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-12" id="accordion">
+            <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseZero">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            1. Hogyan tölthetem le a szolgálati jegyeket?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseZero" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Ha sikeresen elkészült az igénylés, akkor <b>alul az igénylés leírásában</b> található egy <a class="btn btn-default"><i class="fas fa-print"></i> Nyomtatás</a> gomb.
+                        <hr />
+                        A szolgálati jegyet mindenképpen <b>PDF-ként mentsük el</b>, és ne nyomtassuk ki a nyomtatón!
+                    </div>
+                </div>
+            </div>
+            <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseOne">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            2. Robtzsaruban hova kell feltölteni az elkészült szolgálati jegyeket?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseOne" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Az elkészült elektronikus szolgálati jegyeket az oszályok <b>saját maguk által készült főszámokra tőltik</b>.
+                    </div>
+                </div>
+            </div>
+            <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseTwo">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            3. Kivel kell aláíratnom az elkészült szolgálati jegyet?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Elösszőr is a szolálati jegy <b>elkészítőjének</b> kell aláírnia úgy, hogy <b>nem készít alszámot vele!</b><br />
+                        Az aláírt verziót, <b>vezetői jováhagyásra</b> kell felajánlani:<br />
+                        <ul>
+                            <li><b>helyi</b> kollégáknak az <b>intézet parancsnok</b> részére.</li>
+                            <li><b>GEI</b> kollégáknak a <b>saját vezetőjük</b> részére.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseThree">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            4. Szükséges e expediálnom a vezetői jováhagyásra felajánlott szolgálati jegyeket?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Minden robotzsaruba feltöltött szolgálati jegyet, aláíratás során, vagy utánna el kell küldeni <b>NOVA SZEÜSZ-ként a BV Gazdasági Ellátó Intézet részére.</b><br /><b>Megjegyzésbe</b> bele kell írni, hogy <b>"I. Agglomeráció Sopronkőhida részére szolgálati jegy"</b>.<hr />Amennyiben nem érkezik meg az aláírt szolgálati jegy, nem tudjuk biztosítani annak végrehajtását!
+                    </div>
+                </div>
+            </div>
+            <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseFour">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            5. Az adott személy honnan tudhatja meg, hogy jogosultságot kapott?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseFour" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        A jogosultság igénylés állapotát <b>csak</b> az ISZR felhasználók láthatják!
+                        <hr />
+                        <b>Sima felhasználóként</b> a program <b>csak a részére kért</b> igényléseket jeleníti meg, azonban az <b>ügyintézők, minden személy részére kért</b> igénylést látnak.
+                    </div>
+                </div>
+            </div>
+            <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseFive">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            6. Egyesével kell aláíratni a szolgálati jegyeket vagy lehet container fájlként kezelni?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseFive" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Informatikai szolgálati jegyek esetében <b>lehetséges</b> a szolgálati jegyek container fájlként való kezelése <b>amennyiben egy adott személynek</b> szól.<br />
+                        <hr />
+                        Azonban <b>kamerafelvételek</b> esetében <b>csak egyesével</b> lehet kezelni!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-3 text-center text-muted font-italic">
+            További információkért írjon emailt a GEI Informatikai csoportnak!
+        </div>
+        <div class="col-12 text-center text-muted font-italic font-weight-bold">
+            <a class="text-info" href="mailto:skfb-info-informatika@bv.gov.hu">skfb-info-informatika@bv.gov.hu</a>
+        </div>
+    </div>
 </div>

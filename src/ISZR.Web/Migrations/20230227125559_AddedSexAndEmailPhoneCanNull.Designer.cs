@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISZR.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230222072517_v2302220825")]
-    partial class v2302220825
+    [Migration("20230227125559_AddedSexAndEmailPhoneCanNull")]
+    partial class AddedSexAndEmailPhoneCanNull
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,6 +58,9 @@ namespace ISZR.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassId"), 1L, 1);
 
+                    b.Property<int?>("AuthorizerId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
@@ -67,6 +70,8 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.HasKey("ClassId");
+
+                    b.HasIndex("AuthorizerId");
 
                     b.ToTable("Classes");
                 });
@@ -183,6 +188,9 @@ namespace ISZR.Web.Migrations
                     b.Property<DateTime>("ResolveDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ResolverId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -197,6 +205,8 @@ namespace ISZR.Web.Migrations
                     b.HasIndex("RequestAuthorId");
 
                     b.HasIndex("RequestForId");
+
+                    b.HasIndex("ResolverId");
 
                     b.ToTable("Requests");
                 });
@@ -219,7 +229,6 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsArchived")
@@ -232,7 +241,6 @@ namespace ISZR.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(7)
                         .HasColumnType("nvarchar(7)");
 
@@ -256,6 +264,15 @@ namespace ISZR.Web.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ISZR.Web.Models.Class", b =>
+                {
+                    b.HasOne("ISZR.Web.Models.User", "Authorizer")
+                        .WithMany("Authorizer")
+                        .HasForeignKey("AuthorizerId");
+
+                    b.Navigation("Authorizer");
+                });
+
             modelBuilder.Entity("ISZR.Web.Models.Group", b =>
                 {
                     b.HasOne("ISZR.Web.Models.Class", "Class")
@@ -277,9 +294,15 @@ namespace ISZR.Web.Migrations
                         .WithMany("RequestFor")
                         .HasForeignKey("RequestForId");
 
+                    b.HasOne("ISZR.Web.Models.User", "Resolver")
+                        .WithMany("Resolver")
+                        .HasForeignKey("ResolverId");
+
                     b.Navigation("RequestAuthor");
 
                     b.Navigation("RequestFor");
+
+                    b.Navigation("Resolver");
                 });
 
             modelBuilder.Entity("ISZR.Web.Models.User", b =>
@@ -315,9 +338,13 @@ namespace ISZR.Web.Migrations
 
             modelBuilder.Entity("ISZR.Web.Models.User", b =>
                 {
+                    b.Navigation("Authorizer");
+
                     b.Navigation("RequestAuthor");
 
                     b.Navigation("RequestFor");
+
+                    b.Navigation("Resolver");
                 });
 #pragma warning restore 612, 618
         }

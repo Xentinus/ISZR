@@ -1,151 +1,194 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ISZR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Web.Data;
-using ISZR.Web.Models;
+using System.Text;
 
 namespace ISZR.Web.Controllers
 {
-	public class GroupsController : Controller
-	{
-		private readonly DataContext _context;
+    /// <summary>
+    /// /Groups/? Controller
+    /// </summary>
+    public class GroupsController : Controller
+    {
+        private readonly DataContext _context;
 
-		public GroupsController(DataContext context)
-		{
-			_context = context;
-		}
+        public GroupsController(DataContext context)
+        {
+            _context = context;
+        }
 
-		// GET: Groups
-		public async Task<IActionResult> Index()
-		{
-			var dataContext = _context.Groups.Include(g => g.Class).OrderBy(g => g.Name);
-			return View(await dataContext.ToListAsync());
-		}
+        /// <summary>
+        /// Csoportok megjelenítése
+        /// </summary>
+        public async Task<IActionResult> Index()
+        {
+            // Csoportok listájának lekérdezése
+            var dataContext = _context.Groups.Include(g => g.Class).OrderBy(g => g.Name);
 
-		// GET: Groups/Details/5
-		public async Task<IActionResult> Details(int? id)
-		{
-			if (id == null || _context.Groups == null)
-			{
-				return NotFound();
-			}
+            // Felület megjelenítése a kért listával
+            return View(await dataContext.ToListAsync());
+        }
 
-			var group = await _context.Groups
-				.Include(g => g.Class)
-				.FirstOrDefaultAsync(m => m.GroupId == id);
-			if (group == null)
-			{
-				return NotFound();
-			}
+        /// <summary>
+        /// Adott csoport részletei
+        /// </summary>
+        /// <param name="id">Csoport azonosítója</param>
+        public async Task<IActionResult> Details(int? id)
+        {
+            // Azonosító meglétének ellenőrzése
+            if (id == null || _context.Groups == null) return NotFound();
 
-			ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", group.ClassId);
-			return View(group);
-		}
+            // Kért csoport kikeresése az adatbázisból
+            var group = await _context.Groups
+                .Include(g => g.Class)
+                .FirstOrDefaultAsync(m => m.GroupId == id);
 
-		// GET: Groups/Create
-		public IActionResult Create()
-		{
-			ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name");
-			ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows").OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
-			ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3").OrderBy(p => p.Name), "Name", "Name");
-			return View();
-		}
+            // Csoport meglétének ellenőrzése
+            if (group == null) return NotFound();
 
-		// POST: Groups/Create
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(string[] windowsPermissions, string[] fonix3Permissions, [Bind("GroupId,Name,ClassId,WindowsPermissions,FonixPermissions")] Group group)
-		{
-			if (ModelState.IsValid)
-			{
-				// Windows jogosultságok Active-Directory értékeinek sorrendbe helyezése
-				group.WindowsPermissions = PermissionList(windowsPermissions);
+            // Lista elem betöltése
+            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name", group.ClassId);
 
-				// Főnix 3 jogosultságok neveinek sorrendbe helyezése
-				group.FonixPermissions = PermissionList(fonix3Permissions);
+            // Felület megjelenítése a kért csoporttal
+            return View(group);
+        }
 
-				_context.Add(group);
-				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));
-			}
-			ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", group.ClassId);
-			ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows").OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
-			ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3").OrderBy(p => p.Name), "Name", "Name");
-			return View(group);
-		}
+        /// <summary>
+        /// Csoport létrehozásának felülete
+        /// </summary>
+        public IActionResult Create()
+        {
+            // Lista elemek betöltése
+            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+            ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows" && !p.IsArchived).OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
+            ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3" && !p.IsArchived).OrderBy(p => p.Name), "Name", "Name");
 
-		// GET: Groups/Edit/5
-		public async Task<IActionResult> Edit(int? id)
-		{
-			if (id == null || _context.Groups == null)
-			{
-				return NotFound();
-			}
+            // Felület megjelenítése
+            return View();
+        }
 
-			var group = await _context.Groups.FindAsync(id);
-			if (group == null)
-			{
-				return NotFound();
-			}
-			ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", group.ClassId);
-			return View(group);
-		}
+        /// <summary>
+        /// Csoport létrehozása a rendszerben
+        /// </summary>
+        /// <param name="windowsPermissions">Kért windows jogosultságok tömbben</param>
+        /// <param name="fonix3Permissions">Kért főnix 3 jogosultságok tömbben</param>
+        /// <param name="group">Megadott csoport adatai</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(string[] windowsPermissions, string[] fonix3Permissions, [Bind("GroupId,Name,ClassId,WindowsPermissions,FonixPermissions")] Group group)
+        {
+            // Megadott értékek ellenőrzése
+            if (ModelState.IsValid)
+            {
+                // Windows jogosultságok Active-Directory értékeinek sorrendbe helyezése
+                group.WindowsPermissions = PermissionList(windowsPermissions);
 
-		// POST: Groups/Edit/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("GroupId,Name,ClassId,WindowsPermissions,FonixPermissions")] Group group)
-		{
-			if (id != group.GroupId)
-			{
-				return NotFound();
-			}
+                // Főnix 3 jogosultságok neveinek sorrendbe helyezése
+                group.FonixPermissions = PermissionList(fonix3Permissions);
 
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					_context.Update(group);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!GroupExists(group.GroupId))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(Index));
-			}
-			ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "Name", group.ClassId);
-			return View(group);
-		}
+                // Jogosultsági csoport hozzáadása a rendszerhez
+                _context.Add(group);
+                await _context.SaveChangesAsync();
 
-		private string PermissionList(string[] permissions)
-		{
-			string returnText = string.Empty;
-			foreach (string permission in permissions)
-			{
-				returnText += permission[permission.Length - 1] == ';' ? $"{permission} " : $"{permission}; ";
-			}
-			return returnText;
-		}
+                // Felhasználó átírányítása a csoportok listájára
+                return RedirectToAction(nameof(Index));
+            }
 
-		private bool GroupExists(int id)
-		{
-			return _context.Groups.Any(e => e.GroupId == id);
-		}
-	}
+            // Lista elemek betöltése
+            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+            ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows" && !p.IsArchived).OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
+            ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3" && !p.IsArchived).OrderBy(p => p.Name), "Name", "Name");
+
+            // Felület megjelenítése amennyiben hibásan lettek megadva az adatok
+            return View(group);
+        }
+
+        /// <summary>
+        /// Csoport adatainak szerkesztésének felülete
+        /// </summary>
+        /// <param name="id">Csoport azonosítója</param>
+        public async Task<IActionResult> Edit(int? id)
+        {
+            // Csoport azonosító meglétének ellenőrzése
+            if (id == null || _context.Groups == null) return NotFound();
+
+            // Kért csoport megkeresése az adatbázisban
+            var group = await _context.Groups.FindAsync(id);
+
+            // Csoport meglétének ellenőrzése
+            if (group == null) return NotFound();
+
+            // Lista elem betöltése
+            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+
+            // Felület megjelenítése a kért csoport adataival
+            return View(group);
+        }
+
+        /// <summary>
+        /// Csoport adatainak szerkesztése
+        /// </summary>
+        /// <param name="id">Csoport azonosítója</param>
+        /// <param name="group">Csoport megadott új értékei</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("GroupId,Name,ClassId,WindowsPermissions,FonixPermissions")] Group group)
+        {
+            // Azonosító meglétének ellenőrzése
+            if (id != group.GroupId) return NotFound();
+
+            // Megadott értékek ellenőrzése
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Csoport adatainak felülírása
+                    _context.Update(group);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!GroupExists(group.GroupId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                // Felhasználó átírányítása a csoportok listájára
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Lista elem betöltése
+            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+
+            // Felület megjelenítése amennyiben hibás adatokat tartalmaz
+            return View(group);
+        }
+
+        /// <summary>
+        /// Jogosultságok sorrendbe helyezése elválasztással
+        /// </summary>
+        /// <param name="permissions">Jogosultságokat tartalmazó string tömb</param>
+        /// <returns>Egy stringként adja vissza ;-al elválasztva a jogosutlságokat</returns>
+        private string PermissionList(string[] permissions)
+        {
+            StringBuilder permissionList = new StringBuilder();
+            foreach (string permission in permissions) permissionList.Append(permission[permission.Length - 1] == ';' ? $"{permission} " : $"{permission}; ");
+            return permissionList.ToString();
+        }
+
+        /// <summary>
+        /// Csoport meglétének ellenőrzése
+        /// </summary>
+        /// <param name="id">Csoport azonosítója</param>
+        /// <returns>Létezik e az adott csoport (igaz/hamis)</returns>
+        private bool GroupExists(int id)
+        {
+            return _context.Groups.Any(e => e.GroupId == id);
+        }
+    }
 }
