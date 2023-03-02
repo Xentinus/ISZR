@@ -25,16 +25,56 @@ namespace ISZR.Web.Controllers
             // Admin jogosultság ellenőrzése
             if (!Account.IsAdmin()) return Forbid();
 
-            // Felhasználók statisztikáinak kiszámítása
-            ViewBag.All = _context.Users.Count();
-            ViewBag.Active = _context.Users.Where(u => !u.IsArchived).Count();
-            ViewBag.Archived = ViewBag.All - ViewBag.Active;
-
             // Felhasználók listájának lekérdezése
             var dataContext = _context.Users.Include(u => u.Class).Include(u => u.Position).OrderBy(u => u.DisplayName);
 
             // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());
+        }
+
+        /// <summary>
+        /// Felhasználó archiválási állapotának megváltoztatása
+        /// </summary>
+        /// <param name="id">Felhasználói azonosító</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(int? id)
+        {
+            // Azonosító meglétének ellenőrzése
+            if (id == null || _context.Users == null) return NotFound();
+
+            // Felhasználó megkeresése az adatbázisban
+            var user = await _context.Users
+                .Include(u => u.Class)
+                .Include(u => u.Position)
+                .FirstOrDefaultAsync(m => m.UserId == id);
+
+            // Felhasználó meglétének ellenőrzése
+            if (user == null) return NotFound();
+
+            try
+            {
+                // Archiválás értékének módosítása
+                user.IsArchived = !user.IsArchived;
+
+                // Felhasználó értékeinek frissítése az adatbázisban
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(user.UserId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            // Felület újra megjelenítése
+            return RedirectToAction(nameof(Index));
         }
 
         /// <summary>

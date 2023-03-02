@@ -7,35 +7,6 @@
 
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-4 col-12">
-			<div class="info-box mb-3">
-				<span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">Osztály összesen</span>
-					<span class="info-box-number">@ViewBag.All</span>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4 col-12">
-			<div class="info-box mb-3">
-				<span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">Aktív osztályok</span>
-					<span class="info-box-number">@ViewBag.Active</span>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4 col-12">
-			<div class="info-box mb-3">
-				<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-archive"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">Archivált osztályok</span>
-					<span class="info-box-number">@ViewBag.Archived</span>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
 		<div class="col-12">
 			<div class="card">
 				<div class="card-header bg-info">
@@ -43,6 +14,48 @@
 				</div>
 
 				<div class="card-body p-0">
+					@foreach (var item in Model)
+					{
+						<div class="modal fade" id="deleteModal@(item.ClassId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.ClassId)" aria-hidden="true">
+							<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header bg-danger">
+										<h5 class="modal-title" id="deleteModalLabel@(item.ClassId)">Archiválási állapot megváltoztatása</h5>
+									</div>
+									<div class="modal-body">
+										<div>Biztosan szeretnéd <b>@item.Name</b> nevű osztály/csoport archiválási állapotát megváltoztatni?</div>
+										<div>
+											Jelenlegi állapota:
+											@if (item.IsArchived)
+											{
+												<span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+											}
+											else
+											{
+												<span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+											}
+											<span class="ml-1">Változtatás utánni állapota:</span>
+											@if (!item.IsArchived)
+											{
+												<span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+											}
+											else
+											{
+												<span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+											}
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt"></i> Vissza</button>
+										<form asp-action="Index" asp-route-id="@item.ClassId" method="post">
+											<input type="hidden" asp-for="@item.ClassId" />
+											<button type="submit" class="btn btn-danger">Osztály/Csoport állapotának megváltoztatása</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
 					<table class="table table-striped">
 						<thead class="bg-info">
 							<tr>
@@ -81,7 +94,7 @@
 									<td class="float-right">
 										<a asp-action="Details" asp-route-id="@item.ClassId"><input type="button" value="Részletek" class="btn btn-info" /></a>
 										<a asp-action="Edit" asp-route-id="@item.ClassId"><input type="button" value="Szerkesztés" class="btn btn-warning ml-1" /></a>
-										<a><input type="button" value="Archiválás" class="btn btn-danger ml-1" disabled="disabled" /></a>
+										<input type="button" data-toggle="modal" data-target="#deleteModal@(item.ClassId)" value="Állapot változtatás" class="btn btn-danger ml-1" />
 									</td>
 								</tr>
 							}

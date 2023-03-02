@@ -583,6 +583,7 @@ namespace ISZR.Web.Controllers
             // Az oldalt csak ügyintézők tekinthetik meg
             if (!Account.IsUgyintezo()) return Forbid();
 
+            // Lenyíló menü elemeinek lekérdezése
             ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
 
             // Felület megjelenítése

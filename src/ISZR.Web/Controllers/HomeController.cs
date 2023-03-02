@@ -126,13 +126,14 @@ namespace ISZR.Web.Controllers
         {
             // A rendszerben található jogosultságok betöltése
             var dataContext = _context.Permissions
-                .OrderBy(r => r.Name)
+                .Where(p => !p.IsArchived)
+                .OrderBy(p => p.Name)
                 .AsQueryable();
 
             // Jogosultságok szűrése név alapján, amennyiben a felhasználó szűrt név alapján
             if (name != null && name != "")
             {
-                dataContext = dataContext.Where(r => r.Name.ToLower().Contains(name.ToLower()));
+                dataContext = dataContext.Where(p => p.Name.ToLower().Contains(name.ToLower()));
             }
 
             // Jogosultságok szűrése típus alapján, amennyiben a felhasználó szűrt típus alapján
@@ -141,12 +142,12 @@ namespace ISZR.Web.Controllers
                 if (type == "Windows jogosultság")
                 {
                     // Windows jogosultságok szűrése
-                    dataContext = dataContext.Where(r => r.Type == "Windows");
+                    dataContext = dataContext.Where(p => p.Type == "Windows");
                 }
                 else
                 {
                     // Főnix 3 jogosultságok szűrése
-                    dataContext = dataContext.Where(r => r.Type == "Főnix 3");
+                    dataContext = dataContext.Where(p => p.Type == "Főnix 3");
                 }
             }
 

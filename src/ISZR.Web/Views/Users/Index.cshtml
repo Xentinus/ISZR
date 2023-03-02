@@ -1,96 +1,107 @@
 ﻿@model IEnumerable<ISZR.Web.Models.User>
 
 @{
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
-	ViewData["Title"] = "Felhasználók karbantartása";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Felhasználók karbantartása";
 }
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-4 col-12">
-			<div class="info-box mb-3">
-				<span class="info-box-icon bg-info elevation-1"><i class="fas fa-user"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">Felhasználó összesen</span>
-					<span class="info-box-number">@ViewBag.All</span>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4 col-12">
-			<div class="info-box mb-3">
-				<span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">Aktív felhasználók</span>
-					<span class="info-box-number">@ViewBag.Active</span>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4 col-12">
-			<div class="info-box mb-3">
-				<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-archive"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">Archivált felhasználók</span>
-					<span class="info-box-number">@ViewBag.Archived</span>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-12">
-			<div class="card">
-				<div class="card-header bg-info">
-					<h3 class="card-title"><a asp-action="Create"><input type="button" value="Új felhasználó hozzáadása" class="btn btn-light"/></a></h3>
-				</div>
-				<div class="card-body p-0">
-					<table class="table table-striped">
-						<thead class="bg-info">
-							<tr>
-								<th>Felhasználónév</th>
-								<th>Név</th>
-								<th>Állapot</th>
-								<th>Utolsó bejelentkezés</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach (var item in Model)
-							{
-								<tr>
-									<td>
-										@Html.DisplayFor(modelItem => item.Username)<br>
-										@if (item.IsArchived)
-										{
-											<span class="text-danger font-weight-bold">Felhasználó archiválva!</span>
-										}
-									</td>
-									<td>
-										@Html.DisplayFor(modelItem => item.DisplayName)
-									</td>
-									<td>
-										@if (item.IsArchived)
-										{
-											<span class="text-danger font-weight-bold"><i class="fas fa-archive"></i> Archivált</span>
-										}
-										else
-										{
-											<span class="text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
-										}
-									</td>
-									<td>
-										@Html.DisplayFor(modelItem => item.LastLogin)
-									</td>
-									<td class="float-right">
-										<a asp-action="Details" asp-route-id="@item.UserId"><input type="button" value="Részletek" class="btn btn-info" /></a>
-										<a asp-action="Edit" asp-route-id="@item.UserId"><input type="button" value="Szerkesztés" class="btn btn-warning ml-1" /></a>
-										<a><input type="button" value="Archiválás" class="btn btn-danger ml-1" disabled="disabled" /></a>
-									</td>
-								</tr>
-							}
-						</tbody>
-					</table>
-				</div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info">
+                    <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új felhasználó hozzáadása" class="btn btn-light" /></a></h3>
+                </div>
+                <div class="card-body p-0">
+                    @foreach (var item in Model)
+                    {
+                        <div class="modal fade" id="deleteModal@(item.UserId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.UserId)" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-danger">
+                                        <h5 class="modal-title" id="deleteModalLabel@(item.UserId)">Archiválási állapot megváltoztatása</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div>Biztosan szeretnéd <b>@item.DisplayName</b> nevű felhasználó archiválási állapotát megváltoztatni?</div>
+                                        <div>Felhasználónév: @item.Username</div>
+                                        <div>Utolsó bejelentkezés: @Html.DisplayFor(modelItem => item.LastLogin)</div>
+                                        <div>
+                                            Jelenlegi állapota:
+                                            @if (item.IsArchived)
+                                            {
+                                                <span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+                                            }
+                                            <span class="ml-1">Változtatás utánni állapota:</span>
+                                            @if (!item.IsArchived)
+                                            {
+                                                <span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt"></i> Vissza</button>
+                                        <form asp-action="Index" asp-route-id="@item.UserId">
+                                            <input type="hidden" asp-for="@item.UserId" />
+                                            <button type="submit" class="btn btn-danger">Felhasználó állapotának megváltoztatása</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <table class="table table-striped">
+                        <thead class="bg-info">
+                            <tr>
+                                <th>Felhasználónév</th>
+                                <th>Név</th>
+                                <th>Állapot</th>
+                                <th>Utolsó bejelentkezés</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Username)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DisplayName)
+                                    </td>
+                                    <td>
+                                        @if (item.IsArchived)
+                                        {
+                                            <span class="text-danger font-weight-bold"><i class="fas fa-archive"></i> Archivált</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LastLogin)
+                                    </td>
+                                    <td class="float-right">
+                                        <a asp-action="Details" asp-route-id="@item.UserId"><input type="button" value="Részletek" class="btn btn-info" /></a>
+                                        <a asp-action="Edit" asp-route-id="@item.UserId"><input type="button" value="Szerkesztés" class="btn btn-warning ml-1" /></a>
+                                        <input type="button" data-toggle="modal" data-target="#deleteModal@(item.UserId)" value="Állapot változtatás" class="btn btn-danger ml-1" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -26,16 +26,54 @@ namespace ISZR.Web.Controllers
             // Admin jogosultság ellenőrzése
             if (!Account.IsAdmin()) return Forbid();
 
-            // Osztályok statisztikájának kiszámolása
-            ViewBag.All = _context.Classes.Count();
-            ViewBag.Active = _context.Classes.Where(c => !c.IsArchived).Count();
-            ViewBag.Archived = ViewBag.All - ViewBag.Active;
-
             // Osztályok listájának lekérdezése
             var dataContext = _context.Classes.Include(c => c.Authorizer).OrderBy(c => c.Name);
 
             // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());
+        }
+
+        /// <summary>
+        /// Osztály archiválási állapotának megváltoztatása
+        /// </summary>
+        /// <param name="id">Osztály azonosítója</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(int? id)
+        {
+            // Azonosító meglétének ellenőrzése
+            if (id == null || _context.Classes == null) return NotFound();
+
+            // Osztály megkeresése az adatbázisban
+            var @class = await _context.Classes
+                .FirstOrDefaultAsync(m => m.ClassId == id);
+
+            // Osztály meglétének ellenőrzése
+            if (@class == null) return NotFound();
+
+            try
+            {
+                // Archiválás értékének módosítása
+                @class.IsArchived = !@class.IsArchived;
+
+                // Osztály értékeinek frissítése az adatbázisban
+                _context.Update(@class);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ClassExists(@class.ClassId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            // Felület újra megjelenítése
+            return RedirectToAction(nameof(Index));
         }
 
         /// <summary>
