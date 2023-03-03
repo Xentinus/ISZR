@@ -9,16 +9,16 @@
             <div class="info-box bg-default">
                 <span class="info-box-icon"><i class="fas fa-server"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Kiszolgáló állapota</span>
+                    <span class="info-box-text">Kiszolgáló szerver</span>
                     <span class="info-box-number text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-4 col-lg-3">
             <div class="info-box bg-default">
-                <span class="info-box-icon"><i class="fas fa-server"></i></span>
+                <span class="info-box-icon"><i class="fas fa-network-wired"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">API állapota</span>
+                    <span class="info-box-text">API</span>
                     <span class="info-box-number text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
                 </div>
             </div>
@@ -27,100 +27,207 @@
             <div class="info-box bg-default">
                 <span class="info-box-icon"><i class="fas fa-database"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Adatbázis állapota</span>
+                    <span class="info-box-text">Adatbázis</span>
                     <span class="info-box-number text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-12">
+            <h4 class="m-2">Mai napon történt események</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-xl-3 col-md-6">
             <div class="row">
                 <div class="col-12">
-                    <h4 class="m-2">Felhasználókkal kapcsolatos adatok</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-xl-6">
                     <div class="info-box bg-default">
                         <div class="info-box-content">
-                            <span class="info-box-text text-center text-muted">Rendszerben tárolt mennyiség</span>
+                            <span class="info-box-text text-center text-muted">Mai napon bejelentkezett felhasználók</span>
+                            <span class="info-box-number text-center text-muted mb-0">@ViewBag.TodayUsers fő</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-3 col-md-6">
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="info-box bg-default">
+                        <div class="info-box-content">
+                            <span class="info-box-text text-center text-muted">Mai napon lezárt igénylések</span>
                             <span class="info-box-number text-center text-muted mb-0">
-                                Összesen @ViewBag.AllUsers fő
+                                <span class="text-success mr-1"><i class="icon fas fa-check mr-1"></i>@ViewBag.TodayDoneRequests darab</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h4 class="m-2">Igénylésekkel kapcsolatos adatok</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-xl-3 col-md-6">
+            <div class="row">
+                <div class="col-12">
+                    <div class="info-box bg-default">
+                        <div class="info-box-content">
+                            <span class="info-box-text text-center text-muted">Rendszerben tárolt igénylések összesen</span>
+                            <span class="info-box-number text-center text-muted mb-0">
+                                @ViewBag.AllRequests darab
+                                (<span class="text-success ml-1 mr-1"><i class="icon fas fa-check mr-1"></i>@ViewBag.DoneRequests</span>
+                                <span class="text-warning mr-1"><i class="icon fas fa-comment-dots mr-1"></i>@ViewBag.InProgressRequests</span>
+                                <span class="text-danger mr-1"><i class="icon fas fa-ban mr-1"></i>@ViewBag.DeniedRequests</span>)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-3 col-md-6">
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="info-box bg-default">
+                        <div class="info-box-content">
+                            <span class="info-box-text text-center text-muted">@DateTime.Now.Year évben végrehajtott igénylések</span>
+                            <span class="info-box-number text-center text-muted mb-0">
+                                <span class="text-success mr-1"><i class="icon fas fa-check mr-1"></i>@ViewBag.YearRequests darab</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-3 col-md-6">
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="info-box bg-default">
+                        <div class="info-box-content">
+                            <span class="info-box-text text-center text-muted">Aktuális hónapban végrehajtott igénylések</span>
+                            <span class="info-box-number text-center text-muted mb-0">
+                                <span class="text-success mr-1"><i class="icon fas fa-check mr-1"></i>@ViewBag.MonthRequests darab</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-3 col-md-6">
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="info-box bg-default">
+                        <div class="info-box-content">
+                            <span class="info-box-text text-center text-muted">Jelenleg még folyamatban lévő igénylések</span>
+                            <span class="info-box-number text-center text-muted mb-0">
+                                <span class="text-warning mr-1"><i class="icon fas fa-comment-dots mr-1"></i>@ViewBag.InProgressRequests darab</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h4 class="m-2">Rendszerben tárolt adatok mennyisége</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-xl-3 col-md-6">
+            <div class="row">
+                <div class="col-12">
+                    <div class="info-box bg-default">
+                        <div class="info-box-content">
+                            <span class="info-box-text text-center text-muted">Osztályok</span>
+                            <span class="info-box-number text-center text-muted mb-0">
+                                @ViewBag.AllClasses darab
+                                (<span class="text-success font-weight-bold ml-1 mr-1"><i class="fas fa-signal mr-1"></i>@ViewBag.ActiveClasses</span>
+                                <span class="text-danger font-weight-bold mr-1"><i class="fas fa-archive mr-1"></i>@ViewBag.ArchivedClasses</span>)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-3 col-md-6">
+            <div class="row">
+                <div class="col-12">
+                    <div class="info-box bg-default">
+                        <div class="info-box-content">
+                            <span class="info-box-text text-center text-muted">Csoportok</span>
+                            <span class="info-box-number text-center text-muted mb-0">
+                                @ViewBag.AllGroups darab
+                                (<span class="text-success font-weight-bold ml-1 mr-1"><i class="fas fa-signal mr-1"></i>@ViewBag.ActiveGroups</span>
+                                <span class="text-danger font-weight-bold mr-1"><i class="fas fa-archive mr-1"></i>@ViewBag.ArchivedGroups</span>)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-3 col-md-6">
+            <div class="row">
+                <div class="col-12">
+                    <div class="info-box bg-default">
+                        <div class="info-box-content">
+                            <span class="info-box-text text-center text-muted">Felhasználók</span>
+                            <span class="info-box-number text-center text-muted mb-0">
+                                @ViewBag.AllUsers fő
                                 (<span class="text-success font-weight-bold ml-1 mr-1"><i class="fas fa-signal mr-1"></i>@ViewBag.ActiveUsers</span>
                                 <span class="text-danger font-weight-bold mr-1"><i class="fas fa-archive mr-1"></i>@ViewBag.ArchivedUsers</span>)
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-xl-6">
-                    <div class="info-box bg-default">
-                        <div class="info-box-content">
-                            <span class="info-box-text text-center text-muted">Mai napon bejelentkezett felhasználók mennyisége</span>
-                            <span class="info-box-number text-center text-muted mb-0">Összesen @ViewBag.TodayUsers fő</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-xl-3 col-md-6">
             <div class="row">
                 <div class="col-12">
-                    <h4 class="m-2">Jogosultságokkal kapcsolatos adatok</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-xl-6">
                     <div class="info-box bg-default">
                         <div class="info-box-content">
-                            <span class="info-box-text text-center text-muted">Rendszerben tárolt mennyiség</span>
+                            <span class="info-box-text text-center text-muted">Beosztások</span>
                             <span class="info-box-number text-center text-muted mb-0">
-                                Összesen @ViewBag.AllPermission darab
-                                (<span class="text-success font-weight-bold ml-1 mr-1"><i class="fas fa-signal mr-1"></i>@ViewBag.ActivePermission</span>
-                                <span class="text-danger font-weight-bold mr-1"><i class="fas fa-archive mr-1"></i>@ViewBag.ArchivedPermission</span>)
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-xl-6">
-                    <div class="info-box bg-default">
-                        <div class="info-box-content">
-                            <span class="info-box-text text-center text-muted">Rendszerben tárolt jogosultságok eloszlása</span>
-                            <span class="info-box-number text-center text-muted mb-0">
-                                <span class="text-info mr-1"><i class="fab fa-windows mr-1"></i>@ViewBag.WindowsPermission</span>
-                                <span class="text-warning"><i class="fas fa-dove mr-1"></i>@ViewBag.FonixPermission</span>
+                                @ViewBag.AllPositions darab
+                                (<span class="text-success font-weight-bold ml-1 mr-1"><i class="fas fa-signal mr-1"></i>@ViewBag.ActivePositions</span>
+                                <span class="text-danger font-weight-bold mr-1"><i class="fas fa-archive mr-1"></i>@ViewBag.ArchivedPositions</span>)
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-xl-3 col-md-6">
             <div class="row">
                 <div class="col-12">
-                    <h4 class="m-2">Igénylésekkel kapcsolatos adatok</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-xl-6">
                     <div class="info-box bg-default">
                         <div class="info-box-content">
-                            <span class="info-box-text text-center text-muted">Rendszerben tárolt mennyiség</span>
+                            <span class="info-box-text text-center text-muted">Kamerák</span>
                             <span class="info-box-number text-center text-muted mb-0">
-                                Összesen @ViewBag.AllRequest darab
-                                (<span class="text-success ml-1 mr-1"><i class="icon fas fa-check mr-1"></i>@ViewBag.DoneRequest</span>
-                                <span class="text-warning mr-1"><i class="icon fas fa-comment-dots mr-1"></i>@ViewBag.InProgressRequest</span>
-                                <span class="text-danger mr-1"><i class="icon fas fa-ban mr-1"></i>@ViewBag.DeniedRequest</span>)
+                                @ViewBag.AllCameras darab
+                                (<span class="text-success font-weight-bold ml-1 mr-1"><i class="fas fa-signal mr-1"></i>@ViewBag.ActiveCameras</span>
+                                <span class="text-danger font-weight-bold mr-1"><i class="fas fa-archive mr-1"></i>@ViewBag.ArchivedCameras</span>)
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-xl-6">
+            </div>
+        </div>
+        <div class="col-12 col-xl-3 col-md-6">
+            <div class="row">
+                <div class="col-12">
                     <div class="info-box bg-default">
                         <div class="info-box-content">
-                            <span class="info-box-text text-center text-muted">Mai napon lezárt igénylések mennyisége</span>
+                            <span class="info-box-text text-center text-muted">Jogosultságok</span>
                             <span class="info-box-number text-center text-muted mb-0">
-                                Összesen @ViewBag.TodayDoneRequest darab
+                                @ViewBag.AllPermissions darab
+                                (<span class="text-success font-weight-bold ml-1 mr-1"><i class="fas fa-signal mr-1"></i>@ViewBag.ActivePermissions</span>
+                                <span class="text-danger font-weight-bold mr-1"><i class="fas fa-archive mr-1"></i>@ViewBag.ArchivedPermissions</span>)
                             </span>
                         </div>
                     </div>
