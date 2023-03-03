@@ -3,7 +3,7 @@
 namespace ISZR.Web.Models
 {
     /// <summary>
-    /// Intézeti kamera
+    /// Kamera
     /// </summary>
     public class Camera
     {

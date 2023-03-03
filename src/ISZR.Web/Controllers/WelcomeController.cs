@@ -68,6 +68,9 @@ namespace ISZR.Web.Controllers
                 // Amennyiben a felhasználó még nem létezik az adatbázisban
                 if (foundUser == null)
                 {
+                    // Új felasználó felhasználónevének lekérdezése
+                    user.Username = GetUsername();
+
                     // Alapértelmezett bejelentkezési szám megnövelése
                     user.LogonCount++;
 
@@ -115,7 +118,7 @@ namespace ISZR.Web.Controllers
         private async Task<User?> GetLoggedUser()
         {
             // Felhasználónév lekérése a számítógéptől
-            string? activeUsername = User.Identity?.Name;
+            string? activeUsername = GetUsername();
 
             // Amennyiben nem található a rendszerben felhasználónév (pl linux), kérelem elutasítása
             if (activeUsername == null) return null;
@@ -125,6 +128,15 @@ namespace ISZR.Web.Controllers
                 .Include(u => u.Class)
                 .Include(u => u.Position)
                 .FirstOrDefaultAsync(m => m.Username == activeUsername);
+        }
+
+        /// <summary>
+        /// Bejelentkezett felhasználó felhasználónevének lekérdezése
+        /// </summary>
+        /// <returns>Felhasználó felhasználóneve</returns>
+        private string? GetUsername()
+        {
+            return User.Identity?.Name;
         }
 
         /// <summary>
