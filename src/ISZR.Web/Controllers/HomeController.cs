@@ -35,16 +35,16 @@ namespace ISZR.Web.Controllers
             if (Account.IsUgyintezo())
             {
                 // Felhasználó összes igénylése
-                ViewBag.AllRequests = _context.Requests.Where(r => r.RequestAuthorId == user.UserId).Count();
+                ViewBag.AllRequests = _context.Requests.Count(r => r.RequestAuthorId == user.UserId);
 
                 // Felhasználó folyamatban lévő igénylései
-                ViewBag.InProgressRequests = _context.Requests.Where(r => r.Status == "Folyamatban" && r.RequestAuthorId == user.UserId).Count();
+                ViewBag.InProgressRequests = _context.Requests.Count(r => r.Status == "Folyamatban" && r.RequestAuthorId == user.UserId);
 
                 // Felhasználó végrehajtott igénylései
-                ViewBag.DoneRequests = _context.Requests.Where(r => r.Status == "Végrehajtva" && r.RequestAuthorId == user.UserId).Count();
+                ViewBag.DoneRequests = _context.Requests.Count(r => r.Status == "Végrehajtva" && r.RequestAuthorId == user.UserId);
 
                 // Felhasználó elutasított igénylései
-                ViewBag.DeniedRequests = _context.Requests.Where(r => r.Status == "Elutasítva" && r.RequestAuthorId == user.UserId).Count();
+                ViewBag.DeniedRequests = _context.Requests.Count(r => r.Status == "Elutasítva" && r.RequestAuthorId == user.UserId);
             }
 
             // Irányítópult megjelenítése a felhasználónak
@@ -183,6 +183,7 @@ namespace ISZR.Web.Controllers
             ViewBag.DeniedRequests = _context.Requests.Count(r => r.Status == "Elutasítva");
             ViewBag.MonthRequests = _context.Requests.Count(r => r.ResolveDate.Month == DateTime.Now.Month);
             ViewBag.YearRequests = _context.Requests.Count(r => r.ResolveDate.Year == DateTime.Now.Year);
+            ViewBag.TodayNewRequests = _context.Requests.Count(r => r.CreationDate.Date == DateTime.Now.Date);
 
             // Osztályokkal kapcsolatos statisztikák kiszámítása
             ViewBag.AllClasses = _context.Classes.Count();

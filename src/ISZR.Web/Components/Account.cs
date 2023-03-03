@@ -26,7 +26,6 @@ namespace ISZR.Web.Components
             {
                 // Bejelentkezett windows felhasználó jogosultságainak ellenőrzése
                 if (identity.Groups == null) return false;
-                //dataContext = dataContext.Where(r => r.Name.ToLower().Contains(name.ToLower()));
 
                 // Szükséges jogosultság keresése a csoportok között
                 foreach (IdentityReference group in identity.Groups)
