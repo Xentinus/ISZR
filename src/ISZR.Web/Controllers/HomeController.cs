@@ -1,7 +1,9 @@
 ﻿using ISZR.Web.Components;
 using ISZR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Win32;
 using System.Diagnostics;
 
 namespace ISZR.Web.Controllers
@@ -153,6 +155,57 @@ namespace ISZR.Web.Controllers
 
             // Jogosultsági magyarázat megjelnítése
             return View(await dataContext.ToListAsync());
+        }
+
+        /// <summary>
+        /// Rendszer állapotfelméréséről jelentés
+        /// </summary>
+        public IActionResult HealthCheck()
+        {
+            // Felhasználókkal kapcsolatos statisztikák kiszámítása
+            ViewBag.AllUsers = _context.Users.Count();
+            ViewBag.TodayUsers = _context.Users.Count(u => u.LastLogin.Date == DateTime.Now.Date);
+            ViewBag.ActiveUsers = _context.Users.Count(u => !u.IsArchived);
+            ViewBag.ArchivedUsers = ViewBag.AllUsers - ViewBag.ActiveUsers;
+
+            // Jogosultságokkal kapcsolatos statisztikák kiszámítása
+            ViewBag.AllPermissions = _context.Permissions.Count();
+            ViewBag.WindowsPermissions = _context.Permissions.Count(p => p.Type == "Windows");
+            ViewBag.FonixPermissions = _context.Permissions.Count(p => p.Type == "Főnix 3");
+            ViewBag.ActivePermissions = _context.Permissions.Count(p => !p.IsArchived);
+            ViewBag.ArchivedPermissions = ViewBag.AllPermissions - ViewBag.ActivePermissions;
+
+            // Igénylésekkel kapcsolatos statisztikák kiszámítása
+            ViewBag.AllRequests = _context.Requests.Count();
+            ViewBag.TodayDoneRequests = _context.Requests.Count(r => r.ResolveDate.Date == DateTime.Now.Date);
+            ViewBag.DoneRequests = _context.Requests.Count(r => r.Status == "Végrehajtva");
+            ViewBag.InProgressRequests = _context.Requests.Count(r => r.Status == "Folyamatban");
+            ViewBag.DeniedRequests = _context.Requests.Count(r => r.Status == "Elutasítva");
+            ViewBag.MonthRequests = _context.Requests.Count(r => r.ResolveDate.Month == DateTime.Now.Month);
+            ViewBag.YearRequests = _context.Requests.Count(r => r.ResolveDate.Year == DateTime.Now.Year);
+
+            // Osztályokkal kapcsolatos statisztikák kiszámítása
+            ViewBag.AllClasses = _context.Classes.Count();
+            ViewBag.ActiveClasses = _context.Classes.Count(c => !c.IsArchived);
+            ViewBag.ArchivedClasses = ViewBag.AllClasses - ViewBag.ActiveClasses;
+
+            // Csoportokkal kapcsolatos statisztikák kiszámítása
+            ViewBag.AllGroups = _context.Groups.Count();
+            ViewBag.ActiveGroups = _context.Groups.Count(c => !c.IsArchived);
+            ViewBag.ArchivedGroups = ViewBag.AllGroups - ViewBag.ActiveGroups;
+
+            // Beosztásokkal kapcsolatos statisztikák kiszámítása
+            ViewBag.AllPositions = _context.Positions.Count();
+            ViewBag.ActivePositions = _context.Positions.Count(c => !c.IsArchived);
+            ViewBag.ArchivedPositions = ViewBag.AllPositions - ViewBag.ActivePositions;
+
+            // Kamerákkal kapcsolatos statisztikák kiszámítása
+            ViewBag.AllCameras = _context.Cameras.Count();
+            ViewBag.ActiveCameras = _context.Cameras.Count(c => !c.IsArchived);
+            ViewBag.ArchivedCameras = ViewBag.AllCameras - ViewBag.ActiveCameras;
+
+            // Felület megjelenítése
+            return View();
         }
 
         /// <summary>
