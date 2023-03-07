@@ -586,9 +586,10 @@ namespace ISZR.Web.Controllers
 
             // Lenyíló menü elemeinek lekérdezése
             ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
+			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 
-            // Felület megjelenítése
-            return View();
+			// Felület megjelenítése
+			return View();
         }
 
         /// <summary>
@@ -624,8 +625,9 @@ namespace ISZR.Web.Controllers
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
             }
 
-            // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+			// Amennyiben nem jók az értékek az oldal újratöltése
+			ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
+			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 
             // Felület megjelenítése
             return View();
