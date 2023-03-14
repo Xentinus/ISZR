@@ -1,15 +1,12 @@
 ﻿<footer class="main-footer font-weight-normal d-print-none">
-	<div class="float-left">
-		&copy; 2021-@DateTime.Now.Year.
-		<span>
-			Az alkalmazást készítette <span class="text-info font-weight-bold">Kellner Béla</span>.
-		</span>
-	</div>
-	<div class="float-right ml-3">
-		<span>Informatikai Szolgálati jegy Rendszer</span>
-		<span class="text-info font-weight-bold">
-			@System.Reflection.Assembly.GetExecutingAssembly().GetName().Version
-			<i class="fas fa-code-branch"></i>
-		</span>
-	</div>
+    <div class="float-left">
+        Copyright &copy; 2021-@DateTime.Now.Year. <abbr title="Az alkalmazás készítője és jelenlegi karbantartója" class="text-decoration-none text-info font-weight-bold">Kellner Béla</abbr>
+    </div>
+    <div class="float-right ml-3">
+        <span>Informatikai Szolgálati jegy Rendszer</span>
+        <span class="text-info font-weight-bold">
+            @System.Reflection.Assembly.GetExecutingAssembly().GetName().Version
+            <i class="fas fa-code-branch"></i>
+        </span>
+    </div>
 </footer>
