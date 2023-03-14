@@ -11,10 +11,17 @@
         <div class="row">
             <div class="col-12">
                 <form asp-controller="Requests" asp-action="Index" method="get">
-                    <div class="card card-info collapsed-card">
+                    <div class="card card-info">
                         <div class="card-header" data-card-widget="collapse">
-                            <h3 class="card-title font-weight-bold">Igénylések szűrése</h3>
-                            <i class="fas fa-filter ml-2"></i>
+                            <h3 class="card-title font-weight-bold"><i class="fas fa-filter mr-2"></i> Igénylések szűrése</h3>
+                            <div class="card-tools d-print-none">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -70,8 +77,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer d-print-none">
                             <span class="float-right">
+                                <a class="btn btn-default ml-1 mr-1" onclick="window.print()"><i class="fas fa-print"></i> Lista nyomtatása</a>
                                 <button type="submit" alt="Megjelenített igénylések szűrése" class="btn btn-info">Szűrés</button>
                             </span>
                         </div>
