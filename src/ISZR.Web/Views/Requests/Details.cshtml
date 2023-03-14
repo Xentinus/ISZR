@@ -22,7 +22,7 @@
                     <div class="col-12">
                         <h4>
                             <span class="d-print-none"><i class="fas fa-paperclip"></i> Digitális Szolgálati jegy</span>
-                            <small class="float-right">ISZR <span class="text-info font-weight-bold">#@Model?.RequestId</span></small>
+                            <small class="float-right">ISZR <a href="@Url.Content(Context.Request.Path)" class="text-info font-weight-bold text-decoration-none">#@Model?.RequestId</a></small>
                         </h4>
                     </div>
                 </div>
