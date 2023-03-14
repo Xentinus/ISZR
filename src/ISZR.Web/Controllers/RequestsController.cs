@@ -2,6 +2,7 @@
 using ISZR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System.Text;
 
 namespace ISZR.Web.Controllers
@@ -106,6 +107,16 @@ namespace ISZR.Web.Controllers
 
             // Amennyiben a kért kérelem nem létezik, az oldal megjelenítésének elutasítása
             if (request == null) return NotFound();
+
+            // Ha nem ügyintéző akkor csak a saját ügyeit tekintheti meg
+            if (!Account.IsUgyintezo())
+            {
+                var userId = await Account.GetUserId(_context);
+                if (request.RequestForId != userId)
+                {
+                    return Forbid();
+                }
+            }
 
             // Adminisztrátorok részére ResolverId beállítása (adatbázisban nem írja még felül, csak ha státusz módosít)
             if (Account.IsAdmin()) request.ResolverId = await Account.GetUserId(_context);
@@ -535,6 +546,9 @@ namespace ISZR.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RecordsByTags(DateTime inputDate, string inputWhy, string inputTags, string[] selectedCameras, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
         {
+            // Adatok meglétének ellenőrzése
+            if (inputWhy == null || inputTags == null || selectedCameras == null) return Forbid();
+
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
@@ -586,6 +600,7 @@ namespace ISZR.Web.Controllers
 
             // Lenyíló menü elemeinek lekérdezése
             ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
+            ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 
             // Felület megjelenítése
             return View();
@@ -594,18 +609,25 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Időpont alapú kamerafelvétel hozzáadása az adatbázishoz
         /// </summary>
+        /// <param name="inputWhy">Lementés oka</param>
+        /// <param name="recordsArray">Felvételek tömbje stringként tárolva</param>
         /// <param name="request">Igénylés értékei</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RecordsByTime([Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+        public async Task<IActionResult> RecordsByTime(string inputWhy, string recordsArray, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
         {
+            // Adatok meglétének ellenőrzése
+            if (inputWhy == null || recordsArray == null) return Forbid();
+
+            // Felvételek tömbösítése
+            string[][]? records = JsonConvert.DeserializeObject<string[][]?>(recordsArray);
+
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
                 // Igénylést létrehozó személy azonosítója
                 request.RequestAuthorId = await GetLoggedUserId();
-                request.RequestForId = request.RequestAuthorId;
 
                 // Igénylés létrehozásának dátuma
                 request.CreationDate = DateTime.Now;
@@ -616,6 +638,19 @@ namespace ISZR.Web.Controllers
                 // Alapértelmezett státusz
                 request.Status = "Folyamatban";
 
+                // Igénylés leírása
+                request.Description = $"Kérem engedélyezni a kamerarendszerben rögzített adatok külső adattárolón történő tárolását, illetve felhasználását megkeresés alapján Bűnügyi vagy Felügyeleti szerv részére.<br /><br />" +
+                    $"<dl>\r\n<dt><i class=\"far fa-eye\"></i> Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n</dl><br />" +
+                    $"<div class=\"card\">\r\n<div class=\"card-body p-0\">\r\n<table class=\"table\">\r\n<thead class=\"bg-secondary\">\r\n<tr>\r\n<th><i class=\"fas fa-video mr-2\"></i>Kamera</th>\r\n<th><i class=\"fas fa-play mr-2\"></i>Felvétel kezdete</th>\r\n<th><i class=\"fas fa-stop mr-2\"></i>Felvétel vége</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n";
+
+                // Kamerafelvételek hozzáadása a táblázhoz
+                StringBuilder recordTable = new StringBuilder();
+                foreach (string[] record in records) recordTable.Append($"<tr><td>{record[0]}</td><td>{record[1]}</td><td>{record[2]}</td></tr>");
+                request.Description += recordTable.ToString();
+
+                // Táblázat lezárása
+                request.Description += $"</tbody>\r\n</table>\r\n</div>\r\n</div>";
+
                 // Igénylés hozzáadása a rendszerhez
                 _context.Add(request);
                 await _context.SaveChangesAsync();
@@ -625,6 +660,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
+            ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
             ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
 
             // Felület megjelenítése

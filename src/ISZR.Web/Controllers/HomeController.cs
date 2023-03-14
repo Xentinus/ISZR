@@ -1,9 +1,7 @@
 ﻿using ISZR.Web.Components;
 using ISZR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Win32;
 using System.Diagnostics;
 
 namespace ISZR.Web.Controllers
