@@ -29,7 +29,7 @@
                 <div class="row invoice-info mb-2">
                     @if (Model?.RequestAuthor != null)
                     {
-                        <div class="col-lg-4 col-md-6 invoice-col">
+                        <div class="col-xl-4 col-md-6 col-12 invoice-col">
                             <strong>Igénylést intéző</strong>
                             <address>
                                 @Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank?.ToLower()<br>
@@ -52,7 +52,7 @@
                     }
                     @if (Model?.RequestFor != null)
                     {
-                        <div class="col-lg-4 col-md-6 invoice-col">
+                        <div class="col-xl-4 col-md-6 col-12 invoice-col">
                             <strong>Kinek a számra</strong>
                             <address>
                                 @Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank?.ToLower()<br>
@@ -73,7 +73,7 @@
                             </address>
                         </div>
                     }
-                    <div class="col-lg-4 col-12 invoice-col d-print-none">
+                    <div class="col-xl-4 col-12 invoice-col d-print-none">
                         <div>
                             <span class="font-weight-bold">Igénylés típusa:</span>
                             <span class="ml-1">@Model?.Type</span>
