@@ -46,12 +46,12 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Személy aki részére az igénylés zajlik</label>
+                                                <label>Személy aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                                     </div>
-                                                    <select id="selectedUser" asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4">
+                                                    <select id="selectedUser" asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4" required>
                                                     </select>
                                                 </div>
                                             </div>
@@ -66,7 +66,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+                                            <span class="float-right">
+                                                <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -74,12 +76,12 @@
                                     <div class="row">
                                         <div class="col-12 col-md-4">
                                             <div class="form-group">
-                                                <label>Jármű márkaja</label>
+                                                <label>Jármű márkaja</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-car"></i></span>
                                                     </div>
-                                                    <select id="inputBrand" name="brand" class="form-control select2bs4">
+                                                    <select id="inputBrand" name="brand" class="form-control select2bs4" required>
                                                         <option>Abarth</option>
                                                         <option>Aiways</option>
                                                         <option>Alfa Romeo</option>
@@ -180,7 +182,7 @@
                                         </div>
                                         <div class="col-12 col-md-4">
                                             <div class="form-group">
-                                                <label>Jármű modellje</label>
+                                                <label>Jármű modellje</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-car-side"></i></span>
@@ -191,7 +193,7 @@
                                         </div>
                                         <div class="col-12 col-md-4">
                                             <div class="form-group">
-                                                <label>Jármű rendszáma</label>
+                                                <label>Jármű rendszáma</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-parking"></i></span>
@@ -203,17 +205,19 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
-                                            <a class="btn btn-info" onclick="summary()">Tovább</a>
-                                            <script>
-                                                function summary() {
-                                                    document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
-                                                    document.getElementById("summaryBrand").innerHTML = $('#inputBrand').val();
-                                                    document.getElementById("summaryModell").innerHTML = $('#inputModell').val();
-                                                    document.getElementById("summaryLicensePlate").innerHTML = $('#inputLicensePlate').val();
-                                                    stepper.next();
-                                                }
-                                            </script>
+                                            <span class="float-right">
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
+                                                <script>
+                                                    function summary() {
+                                                        document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
+                                                        document.getElementById("summaryBrand").innerHTML = $('#inputBrand').val();
+                                                        document.getElementById("summaryModell").innerHTML = $('#inputModell').val();
+                                                        document.getElementById("summaryLicensePlate").innerHTML = $('#inputLicensePlate').val();
+                                                        stepper.next();
+                                                    }
+                                                </script>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -239,15 +243,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="custom-control custom-checkbox mb-3">
-                                        <input type="checkbox" class="custom-control-input" id="acceptRequest" required>
-                                        <label class="custom-control-label" for="acceptRequest">Az összefoglalót elolvastam és minden információ helyesen lett megadva.</label>
-                                        <div class="invalid-feedback">Az adatok helyességének ellenőrzése nélkül nem készülhet el az igénylés.</div>
-                                    </div>
                                     <div class="row">
-                                        <div class="col-12">
-                                            <a class="btn btn-warning" onclick="stepper.previous()">Elöző</a>
-                                            <button type="submit" class="btn btn-info">Igénylés létrehozása</button>
+                                        <div class="col-12 mt-3">
+                                            <div class="float-left">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                                    <label class="custom-control-label" for="agreeToTerms">
+                                                        Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="float-right">
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

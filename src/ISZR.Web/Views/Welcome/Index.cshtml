@@ -38,7 +38,7 @@
                             <div class="row">
                                 <div class="col-12 col-md-5">
                                     <div class="form-group">
-                                        <label>Név</label><span class="text-danger font-weight-bold">*</span>
+                                        <label>Név</label><span class="text-danger font-weight-bold ml-1">*</span>
                                         <span asp-validation-for="DisplayName" class="text-danger"></span>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
@@ -50,12 +50,12 @@
                                 </div>
                                 <div class="col-12 col-md-2">
                                     <div class="form-group">
-                                        <label>Nem</label><span class="text-danger font-weight-bold">*</span>
+                                        <label>Nem</label><span class="text-danger font-weight-bold ml-1">*</span>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
                                             </div>
-                                            <select asp-for="Genre" class="form-control select2bs4">
+                                            <select asp-for="Genre" class="form-control select2bs4" required>
                                                 <option value="Male">Férfi</option>
                                                 <option value="Female">Nő</option>
                                             </select>
@@ -64,13 +64,13 @@
                                 </div>
                                 <div class="col-12 col-md-5">
                                     <div class="form-group">
-                                        <label>Rendfokozat</label><span class="text-danger font-weight-bold">*</span>
+                                        <label>Rendfokozat</label><span class="text-danger font-weight-bold ml-1">*</span>
                                         <span asp-validation-for="Rank" class="text-danger"></span>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-medal"></i></span>
                                             </div>
-                                            <select asp-for="Rank" class="form-control select2bs4">
+                                            <select asp-for="Rank" class="form-control select2bs4" required>
                                                 <option>Munkavállaló</option>
                                                 <option>Rendvédelmi-alkalmazott</option>
                                                 <option>Őrmester</option>
@@ -101,23 +101,23 @@
                             <div class="row">
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
-                                        <label>Osztály / Csoport</label><span class="text-danger font-weight-bold">*</span>
+                                        <label>Osztály / Csoport</label><span class="text-danger font-weight-bold ml-1">*</span>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-users"></i></span>
                                             </div>
-                                            <select asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId"></select>
+                                            <select asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId" required></select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
-                                        <label>Beosztás</label><span class="text-danger font-weight-bold">*</span>
+                                        <label>Beosztás</label><span class="text-danger font-weight-bold ml-1">*</span>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
                                             </div>
-                                            <select asp-for="PositionId" class="form-control select2bs4" asp-items="ViewBag.PositionId"></select>
+                                            <select asp-for="PositionId" class="form-control select2bs4" asp-items="ViewBag.PositionId" required></select>
                                         </div>
                                     </div>
                                 </div>
@@ -154,15 +154,18 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox mb-3">
-                                        <input type="checkbox" class="custom-control-input" id="acceptRequest" required>
-                                        <label class="custom-control-label" for="acceptRequest">Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) helyes adatokkal töltöttem ki, kérem a profil létrehozását.</label>
-                                        <div class="invalid-feedback">Az adatok helyességének ellenőrzése nélkül nem készülhet el az igénylés.</div>
+                                <div class="col-12 mt-3">
+                                    <div class="float-left">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                            <label class="custom-control-label" for="agreeToTerms">
+                                                Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                            </label>
+                                        </div>
                                     </div>
-                                    <span class="float-right">
+                                    <div class="float-right">
                                         <input type="submit" value="Új felhasználói profil létrehozása" class="btn btn-info" />
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
                         </form>
