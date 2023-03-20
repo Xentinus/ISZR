@@ -1,7 +1,7 @@
-﻿@model ISZR.Web.Models.Request
+﻿@model ISZR.Web.Models.User
 
 @{
-    ViewData["Title"] = "Kamerafelvétel lementése címkék alapján";
+    ViewData["Title"] = "Új felhasználó részére jogosultság igénylés";
 }
 
 <div class="container-fluid">
@@ -12,25 +12,20 @@
                     <h3 class="card-title">Igénylés menete</h3>
                 </div>
                 <div class="card-body p-0">
-                    <form asp-action="RecordsByTags">
-                        <div class="row">
-                            <div class="col-12">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            </div>
-                        </div>
+                    <form asp-action="NewUserAccess" method="post">
                         <div class="bs-stepper linear">
                             <div class="bs-stepper-header" role="tablist">
                                 <div class="step active" data-target="#request-info">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-camera"></i></span>
-                                        <span class="bs-stepper-label">Felvételel kapcsolatos információk</span>
+                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-male"></i></span>
+                                        <span class="bs-stepper-label">Új felhasználó adatai</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
-                                <div class="step" data-target="#recordTags">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="recordTags" id="recordTags-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-tags"></i></span>
-                                        <span class="bs-stepper-label">Címkék és azok kamerái</span>
+                                <div class="step" data-target="#permissions">
+                                    <button type="button" class="step-trigger" role="tab" aria-controls="permissions" id="permissions-trigger" aria-selected="false" disabled="disabled">
+                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-key"></i></span>
+                                        <span class="bs-stepper-label">Csoport kiválasztása</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
@@ -44,54 +39,123 @@
                             <div class="bs-stepper-content">
                                 <div id="request-info" class="content active dstepper-block" role="tabpanel" aria-labelledby="request-info-trigger">
                                     <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Személy aki részére az igénylés zajlik</label>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                                    </div>
-                                                    <select id="selectedUser" asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-                                                Csak a rendszerben létező felhasználóknak lehet igényelni kamerafelvételt!<br />
-                                                Amennyiben nem található a kívánt felhasználó, küldön e-mail az Informatikai csoport részére.
-                                            </div>
+                                        <div class="col-12">
+                                            <h4 class="m-2">Új felhasználó személyes adatai</h4>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Esemény dátuma</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Név</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <span asp-validation-for="DisplayName" class="text-danger"></span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
                                                     </div>
-                                                    <input id="inputDate" name="inputDate" type="date" min="@DateTime.Now.AddMonths(-1).AddDays(-14).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" required />
+                                                    <input type="text" id="newUser" asp-for="DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true" required>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-                                                A bástyafalon elhelyezett kamerák amelyek külterületre néznek, 3 napig rögzítenek felvételeket. Minden más kamera amely nem külterületre néz, körülbelül 1 hónapig rögzít.
+                                        <div class="col-12 col-md-3">
+                                            <div class="form-group">
+                                                <label>Nem</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                                    </div>
+                                                    <select asp-for="Genre" class="form-control select2bs4" required>
+                                                        <option value="Male">Férfi</option>
+                                                        <option value="Female">Nő</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <div class="form-group">
+                                                <label>Rendfokozat</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-medal"></i></span>
+                                                    </div>
+                                                    <select asp-for="Rank" class="form-control select2bs4" required>
+                                                        <option>Munkavállaló</option>
+                                                        <option>Rendvédelmi-alkalmazott</option>
+                                                        <option>Őrmester</option>
+                                                        <option>Törzsörmester</option>
+                                                        <option>Főtörzsörmester</option>
+                                                        <option>Zászlós</option>
+                                                        <option>Törzszászlós</option>
+                                                        <option>Főtörzszászlós</option>
+                                                        <option>Hadnagy</option>
+                                                        <option>Főhadnagy</option>
+                                                        <option>Százados</option>
+                                                        <option>Őrnagy</option>
+                                                        <option>Alezredes</option>
+                                                        <option>Ezredes</option>
+                                                        <option>Dandártábornok</option>
+                                                        <option>Vezérőrnagy</option>
+                                                        <option>Altábornagy</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                            <h4 class="m-2">Munkával kapcsolatos adatai</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Kamerafelvétel lementésének oka</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Osztály / Csoport</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="far fa-eye"></i></span>
+                                                        <span class="input-group-text"><i class="fas fa-users"></i></span>
                                                     </div>
-                                                    <input id="inputWhy" name="inputWhy" type="text" class="form-control" required />
+                                                    <select asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId" required></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label>Beosztás</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
+                                                    </div>
+                                                    <select asp-for="PositionId" class="form-control select2bs4" asp-items="ViewBag.PositionId" required></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h4 class="m-2">Elérhetősége</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label>E-mail cím</label>
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                                    </div>
+                                                    <input type="email" asp-for="Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label>NTG elérhetőség</label>
+                                                <span asp-validation-for="Phone" class="text-danger"></span>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                                    </div>
+                                                    <input type="text" asp-for="Phone" class="form-control" placeholder="1061234" spellcheck="true">
                                                 </div>
                                             </div>
                                         </div>
@@ -104,41 +168,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="recordTags" class="content" role="tabpanel" aria-labelledby="recordTags-trigger">
+                                <div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
                                     <div class="row">
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12">
                                             <div class="form-group">
-                                                <label>Lementeni kívánt címkék megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Jogosultsági csoport</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                                                        <span class="input-group-text"><i class="fas fa-dove"></i></span>
                                                     </div>
-                                                    <input id="inputTags" name="inputTags" type="text" class="form-control" required />
+                                                    <select id="selectedGroup" name="selectedGroup" class="form-control select2bs4" asp-items="ViewBag.GroupId" required></select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                A címkék lehetőleg azonosak legyenek. Így garantálni tudjuk, hogy a Hikcentral megtalálja a kért címkéket.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Címkével ellátott kamerák</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-video"></i></span>
-                                                    </div>
-                                                    <select id="selectedCameras" name="selectedCameras" asp-items="ViewBag.Cameras" class="form-control select2bs4stay" multiple="multiple" required>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                A Hikcentrálban nem lehetséges a teljes intézeten belülli címkére keresés, emiatt a megcímkézett kamerák listáját kötelezően ki kell tölteni. (csak 16 kamerát lehet egyszerre kijelölni)
                                             </div>
                                         </div>
                                     </div>
@@ -149,11 +189,8 @@
                                                 <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
                                                 <script>
                                                     function summary() {
-                                                        document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
-                                                        document.getElementById("summaryDate").innerHTML = $('#inputDate').val();
-                                                        document.getElementById("summaryWhy").innerHTML = $('#inputWhy').val();
-                                                        document.getElementById("summaryTags").innerHTML = $('#inputTags').val();
-                                                        document.getElementById("summaryCameras").innerHTML = $('#selectedCameras option:selected').toArray().map(item => item.text).join(", ");
+                                                        document.getElementById("summaryUser").innerHTML = $('#newUser').val();
+                                                        document.getElementById("summaryGroup").innerHTML = $('#selectedGroup option:selected').toArray().map(item => item.text).join();
                                                         stepper.next();
                                                     }
                                                 </script>
@@ -170,17 +207,11 @@
                                                     <dt class="col-sm-4"><i class="fas fa-user"></i> Kinek a részére</dt>
                                                     <dd id="summaryUser" class="col-sm-8"></dd>
                                                     <dt class="col-sm-4"><i class="fas fa-tag"></i> Igénylés típusa</dt>
-                                                    <dd class="col-sm-8">Kamerafelvétel lementése</dd>
+                                                    <dd class="col-sm-8">Új felhasználó részére jogosultság igénylés</dd>
                                                     <dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
                                                     <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-calendar"></i> Esemény dátuma</dt>
-                                                    <dd id="summaryDate" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="far fa-eye"></i> Lementésének oka</dt>
-                                                    <dd id="summaryWhy" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-tags"></i> Címkék megnevezése</dt>
-                                                    <dd id="summaryTags" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-video"></i> Megcímkézett kamerák</dt>
-                                                    <dd id="summaryCameras" class="col-sm-8"></dd>
+                                                    <dt class="col-sm-4"><i class="fa fa-key"></i> Jogosultsági csoport</dt>
+                                                    <dd id="summaryGroup" class="col-sm-8"></dd>
                                                 </dl>
                                             </div>
                                         </div>
@@ -217,3 +248,9 @@
         window.stepper = new Stepper(document.querySelector('.bs-stepper'));
     });
 </script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

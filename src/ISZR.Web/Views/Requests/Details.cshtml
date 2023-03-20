@@ -34,18 +34,19 @@
                             <address>
                                 @Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank?.ToLower()<br>
                                 @Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
-                                @if (Account.IsAdmin())
+                                @if (Model?.RequestAuthor?.Username != null)
                                 {
-                                    <span class="d-print-none"><i class="fab fa-windows"></i> @Model?.RequestAuthor?.Username<br /></span>
+                                    <i class="fab fa-windows mr-1"></i> @Model?.RequestAuthor?.Username
+                                    <br />
                                 }
                                 @if (Model?.RequestAuthor?.Email != null)
                                 {
-                                    <i class="fas fa-envelope"></i> @Model?.RequestAuthor?.Email
-                                    <br>
+                                    <i class="fas fa-envelope mr-1"></i> @Model?.RequestAuthor?.Email
+                                    <br />
                                 }
                                 @if (Model?.RequestAuthor?.Phone != null)
                                 {
-                                    <i class="fas fa-phone-square-alt"></i> @Model?.RequestAuthor?.Phone
+                                    <i class="fas fa-phone-square-alt mr-1"></i> @Model?.RequestAuthor?.Phone
                                 }
                             </address>
                         </div>
@@ -57,18 +58,19 @@
                             <address>
                                 @Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank?.ToLower()<br>
                                 @Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
-                                @if (Account.IsAdmin())
+                                @if (Model?.RequestFor?.Username != null)
                                 {
-                                    <span class="d-print-none"><i class="fab fa-windows"></i> @Model?.RequestFor?.Username<br /></span>
+                                    <i class="fab fa-windows mr-1"></i> @Model?.RequestFor?.Username
+                                    <br />
                                 }
                                 @if (Model?.RequestFor?.Email != null)
                                 {
-                                    <i class="fas fa-envelope"></i> @Model?.RequestFor?.Email
-                                    <br>
+                                    <i class="fas fa-envelope mr-1"></i> @Model?.RequestFor?.Email
+                                    <br />
                                 }
                                 @if (Model?.RequestFor?.Phone != null)
                                 {
-                                    <i class="fas fa-phone-square-alt"></i> @Model?.RequestFor?.Phone
+                                    <i class="fas fa-phone-square-alt mr-1"></i> @Model?.RequestFor?.Phone
                                 }
                             </address>
                         </div>

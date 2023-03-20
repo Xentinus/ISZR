@@ -46,12 +46,12 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Személy aki részére az igénylés zajlik</label>
+                                                <label>Személy aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                                     </div>
-                                                    <select id="selectedUser" asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4">
+                                                    <select id="selectedUser" asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4" required>
                                                     </select>
                                                 </div>
                                             </div>
@@ -67,12 +67,12 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label>Kamerafelvétel lementésének oka</label>
+                                                <label>Kamerafelvétel lementésének oka</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="far fa-eye"></i></span>
                                                     </div>
-                                                    <input id="inputWhy" name="inputWhy" type="text" class="form-control" required="required" />
+                                                    <input id="inputWhy" name="inputWhy" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -221,17 +221,20 @@
                                             <input type="hidden" id="recordsArray" name="recordsArray" />
                                         </div>
                                     </div>
-                                    <div class="custom-control custom-checkbox mb-3">
-                                        <input type="checkbox" class="custom-control-input" id="acceptRequest" required>
-                                        <label class="custom-control-label" for="acceptRequest">Az összefoglalót elolvastam és minden információ helyesen lett megadva.</label>
-                                        <div class="invalid-feedback">Az adatok helyességének ellenőrzése nélkül nem készülhet el az igénylés.</div>
-                                    </div>
                                     <div class="row">
-                                        <div class="col-12">
-                                            <span class="float-right">
+                                        <div class="col-12 mt-3">
+                                            <div class="float-left">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                                    <label class="custom-control-label" for="agreeToTerms">
+                                                        Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="float-right">
                                                 <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
                                                 <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
-                                            </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

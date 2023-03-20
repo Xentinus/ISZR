@@ -46,12 +46,12 @@
 									<div class="row">
 										<div class="col-12 col-md-6">
 											<div class="form-group">
-												<label>Személy aki részére az igénylés zajlik</label>
+												<label>Személy aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
 												<div class="input-group mb-3">
 													<div class="input-group-prepend">
 														<span class="input-group-text"><i class="fas fa-user"></i></span>
 													</div>
-													<select id="selectedUser" asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4">
+													<select id="selectedUser" asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4" required>
 													</select>
 												</div>
 											</div>
@@ -130,31 +130,46 @@
 											<div class="alert alert-light alert-dismissible">
 												<h5><i class="icon fas fa-exclamation-triangle"></i> Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
 												<dl class="row">
-													<dt class="col-sm-4"><i class="fas fa-user"></i> Kinek a részére</dt>
+													<dt class="col-sm-4"><i class="fas fa-user mr-1"></i>Kinek a részére</dt>
 													<dd id="summaryUser" class="col-sm-8"></dd>
-													<dt class="col-sm-4"><i class="fas fa-tag"></i> Igénylés típusa</dt>
+													<dt class="col-sm-4"><i class="fas fa-tag mr-1"></i>Igénylés típusa</dt>
 													<dd class="col-sm-8">Meglévő felhasználó részére többletjogosultság</dd>
-													<dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
+													<dt class="col-sm-4"><i class="fas fa-history mr-1"></i>Igénylés létrehozásának ideje</dt>
 													<dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-													<dt class="col-sm-4"><i class="fa fa-key"></i> Windows jogosultságok</dt>
-													<dd id="summaryWindows" class="col-sm-8"></dd>
-													<dt class="col-sm-4"><i class="fas fa-dove"></i> Főnix 3 jogosultságok</dt>
-													<dd id="summaryFonix" class="col-sm-8"></dd>
 												</dl>
+											</div>
+											<div class="row">
+												<div class="col-12">
+													<div class="alert alert-info alert-dismissible">
+														<h5><i class="icon fab fa-windows"></i> Windows jogosultságok</h5>
+														<div id="summaryWindows"></div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-12">
+													<div class="alert alert-warning alert-dismissible">
+														<h5><i class="icon fas fa-dove"></i> Főnix 3 jogosultságok</h5>
+														<div id="summaryFonix"></div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
-									<div class="custom-control custom-checkbox mb-3">
-										<input type="checkbox" class="custom-control-input" id="acceptRequest" required>
-										<label class="custom-control-label" for="acceptRequest">Az összefoglalót elolvastam és minden információ helyesen lett megadva.</label>
-										<div class="invalid-feedback">Az adatok helyességének ellenőrzése nélkül nem készülhet el az igénylés.</div>
-									</div>
 									<div class="row">
-										<div class="col-12">
-											<span class="float-right">
+										<div class="col-12 mt-3">
+											<div class="float-left">
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+													<label class="custom-control-label" for="agreeToTerms">
+														Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+													</label>
+												</div>
+											</div>
+											<div class="float-right">
 												<a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
 												<button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
-											</span>
+											</div>
 										</div>
 									</div>
 								</div>
