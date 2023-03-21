@@ -191,7 +191,7 @@ namespace ISZR.Web.Controllers
 		}
 
 		/// <summary>
-		/// Többletjogosultság igénylésének felülete
+		/// Új felhasználó jogosultságának igénylése
 		/// </summary>
 		public async Task<IActionResult> NewUserAccess()
 		{
@@ -211,9 +211,10 @@ namespace ISZR.Web.Controllers
 		}
 
 		/// <summary>
-		/// Töbletjogosultság igénylés hozzáadása az adatbázishoz
+		/// Új felhasználó jogosultságának igénylése
 		/// </summary>
-		/// <returns></returns>
+		/// <param name="selectedGroup">Kiválasztott jogosultsági csoport</param>
+		/// <param name="user">Új felhasználóval kapcsolatos adatok</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> NewUserAccess(int? selectedGroup, [Bind("UserId,Username,DisplayName,Email,Phone,Rank,LastLogin,ClassId,PositionId,Genre")] User user)
@@ -314,7 +315,6 @@ namespace ISZR.Web.Controllers
 		/// <param name="windowsPermissions">Kért Windows jogosultságok tömbben</param>
 		/// <param name="fonix3Permissions">Kért Főnix 3 jogosultságok tömbben</param>
 		/// <param name="request">Igénylés értékei</param>
-		/// <returns></returns>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> UserAdditionalAccess(string[] windowsPermissions, string[] fonix3Permissions, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
@@ -363,6 +363,78 @@ namespace ISZR.Web.Controllers
 
 			// Amennyiben nem jók az értékek az oldal újratöltése
 			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+			// Felület újra megjelenítése, amennyiben az értékek hibásak voltak
+			return View();
+		}
+
+		/// <summary>
+		/// Új beosztáshoz járó jogosultsági felület
+		/// </summary>
+		public async Task<IActionResult> UserChangePosition()
+		{
+			// Az ISZR-ben nem megtalálható személyek kizására
+			if (!await Account.IsUserExists(_context)) return Forbid();
+
+			// Az oldalt csak ügyintézők tekinthetik meg
+			if (!Account.IsUgyintezo()) return Forbid();
+
+			// Lista elemek betöltése
+			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+			ViewData["GroupId"] = new SelectList(_context.Groups.Where(g => !g.IsArchived).OrderBy(g => g.Name), "GroupId", "Name");
+
+			// Oldal megjelenítése
+			return View();
+		}
+
+		/// <summary>
+		/// Új beosztáshoz tartozó jogosultsági igénylés hozzáadása az adatbázishoz
+		/// </summary>
+		/// <param name="request">Igénylés értékei</param>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UserChangePosition(string? currentPermissions, int? selectedGroup, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+		{
+			// Kötelező adatok meglétének ellenőrzése
+			if (currentPermissions == null || selectedGroup == null || request == null) return Forbid();
+
+			// Megadott értékek ellenőrzése
+			if (ModelState.IsValid)
+			{
+				// Kért csoport jogosultságainak lekérdezése
+				Group? group = await GetGroupById(selectedGroup);
+
+				// Igénylést létrehozó személy azonosítója
+				request.RequestAuthorId = await GetLoggedUserId();
+
+				// Igénylés létrehozásának dátuma
+				request.CreationDate = DateTime.Now;
+
+				// Igénylés típusa
+				request.Type = "Meglévő felhasználó új beosztásának jogosultságai";
+
+				// Alapértelmezett státusz
+				request.Status = "Folyamatban";
+
+				// Igénylés leírása
+				request.Description = "Kérem engedélyezni a felhasználó részére új beosztásának jogosultságainak kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.<br /><br />" +
+					$"<dl>\r\n<dt><i class=\"fas fa-people-arrows\"></i> Felhasználó jelenlegi jogosultságai</dt>\r\n<dd>{currentPermissions}</dd>\r\n</dl>";
+
+				// Csoport jogosultságainak hozzáadása
+				request.WindowsPermissions = group.WindowsPermissions != null ? group.WindowsPermissions : null;
+				request.FonixPermissions = group.FonixPermissions != null ? group.FonixPermissions : null;
+
+				// Igénylés hozzáadása a rendszerhez
+				_context.Add(request);
+				await _context.SaveChangesAsync();
+
+				// Igénylés megnyítása
+				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
+			}
+
+			// Amennyiben nem jók az értékek az oldal újratöltése
+			ViewData["RequestForId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+			ViewData["GroupId"] = new SelectList(_context.Groups.Where(g => !g.IsArchived).OrderBy(g => g.Name), "GroupId", "Name");
 
 			// Felület újra megjelenítése, amennyiben az értékek hibásak voltak
 			return View();
