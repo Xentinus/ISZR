@@ -30,7 +30,7 @@
 					</li>
 					<li class="nav-header"><b>Informatikával kapcsolatos</b></li>
 					<li class="nav-item">
-						<a href="#" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "UserAdditionalAccess" || ViewContext.RouteData.Values["Action"]?.ToString() == "NewUserAccess" ? "active" : "")">
+							<a href="#" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "UserAdditionalAccess" || ViewContext.RouteData.Values["Action"]?.ToString() == "NewUserAccess" || ViewContext.RouteData.Values["Action"]?.ToString() == "UserChangePosition" ? "active" : "")">
 							<i class="nav-icon fas fa-address-card"></i>
 							<p>Jogosultság igénylése <i class="fas fa-angle-left right"></i></p>
 						</a>
@@ -48,7 +48,7 @@
 								</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link">
+								<a class="nav-link" asp-controller="Requests" asp-action="UserChangePosition">
 									<i class="fas fa-people-arrows nav-icon"></i>
 									<p>Meglévő felhasználó új beosztásának jogosultságai</p>
 								</a>
