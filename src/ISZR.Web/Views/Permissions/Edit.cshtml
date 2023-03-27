@@ -25,7 +25,7 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="form-group">
-									<label>Jogosultság megnevezése</label>
+									<label>Jogosultság megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
 									<span asp-validation-for="Name" class="text-danger"></span>
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
@@ -37,7 +37,7 @@
 							</div>
 							<div class="col-12">
 								<div class="form-group">
-									<label>Jogosultság leírása</label>
+									<label>Jogosultság leírása</label><span class="text-danger font-weight-bold ml-1">*</span>
 									<span asp-validation-for="Description" class="text-danger"></span>
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
@@ -53,7 +53,7 @@
 							<div class="row">
 								<div class="col-12">
 									<div class="form-group">
-										<label>Active Directory jogosultságok megnevezése</label>
+										<label>Active Directory jogosultságok megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
 										<span asp-validation-for="ActiveDirectoryPermissions" class="text-danger"></span>
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
@@ -67,10 +67,18 @@
 						}
 						<div class="row">
 							<div class="col-12">
-								<span class="float-right">
-									<a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+								<div class="float-left">
+									<div class="custom-control custom-checkbox">
+										<input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+										<label class="custom-control-label" for="agreeToTerms">
+											Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+										</label>
+									</div>
+								</div>
+								<div class="float-right">
+									<a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
 									<input type="submit" value="Jogosultság szerkesztése" class="btn btn-warning ml-1" />
-								</span>
+								</div>
 							</div>
 						</div>
 					</form>

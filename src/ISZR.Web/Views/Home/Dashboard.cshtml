@@ -16,14 +16,23 @@
 					<img class="img-circle elevation-2" src="~/img/avatar.png" alt="Profilkép">
 				</div>
 				<div class="card-body">
-					<strong><i class="fas fa-medal mr-1"></i> Rendfokozat</strong>
+					<strong><i class="icon fas fa-medal mr-2"></i>Rendfokozat</strong>
 					<p class="text-muted">@Model?.Rank</p>
-					<hr>
-					<strong><i class="fas fa-users mr-1"></i> Osztály</strong>
+					<hr />
+					<strong><i class="icon fas fa-users mr-2"></i>Osztály</strong>
 					<p class="text-muted">@Model?.Class.Name</p>
-					<hr>
-					<strong><i class="fas fa-history mr-1"></i> Bejelentkezés időpontja</strong>
-					<p class="text-muted">@Model?.LastLogin.ToString("yyyy. MMMM dd. HH:mm")</p>
+					@if (Model?.Email != null)
+					{
+						<hr />
+						<strong><i class="icon fas fa-envelope mr-2"></i>E-mail elérhetőség</strong>
+						<p class="text-muted">@Model?.Email</p>
+					}
+					@if (Model?.Phone != null)
+					{
+						<hr />
+						<strong><i class="icon fas fa-phone mr-2"></i>NTG elérhetőség</strong>
+						<p class="text-muted">@Model?.Phone</p>
+					}
 				</div>
 			</div>
 		</div>

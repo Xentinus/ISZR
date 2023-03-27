@@ -22,21 +22,21 @@
                             <div class="bs-stepper-header" role="tablist">
                                 <div class="step active" data-target="#request-info">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-camera"></i></span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-camera"></i></span>
                                         <span class="bs-stepper-label">Felvételel kapcsolatos információk</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" data-target="#recordTime">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="recordTime" id="recordTime-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-clock"></i></span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-clock"></i></span>
                                         <span class="bs-stepper-label">Kamerák és azok időpontjai</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" data-target="#summary">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-list"></i></span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
                                         <span class="bs-stepper-label">Összesítés</span>
                                     </button>
                                 </div>
@@ -46,7 +46,7 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Személy aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -57,15 +57,15 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-                                                Csak a rendszerben létező felhasználóknak lehet igényelni kamerafelvételt!<br />
-                                                Amennyiben nem található a kívánt felhasználó, küldön e-mail az Informatikai csoport részére.
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
+                                                Csak a rendszerben létező felhasználók részére lehet igényelni kamerafelvételt!<br />
+                                                Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-12 col-md-6">
                                             <div class="form-group">
                                                 <label>Kamerafelvétel lementésének oka</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
@@ -74,6 +74,12 @@
                                                     </div>
                                                     <input id="inputWhy" name="inputWhy" type="text" class="form-control" required />
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a felvétel okáról</h5>
+                                                A megnevezett okkal lesznek elnevezve a felvételek a későbbi könnyebb visszakeresés érdekében.
                                             </div>
                                         </div>
                                     </div>
@@ -90,9 +96,9 @@
                                         @for (int i = 1; i < 10; i++)
                                         {
                                             <div class="col-12 col-xl-4 col-md-6">
-                                                <div class="card card-secondary collapsed-card">
+                                                <div class="card card-light collapsed-card">
                                                     <div class="card-header" data-card-widget="collapse">
-                                                        <h3 class="card-title">Felvétel #@i</h3>
+                                                        <h5 class="card-title"><i class="icon fas fa-video mr-2"></i>Felvétel #@i</h5>
                                                         <div class="card-tools">
                                                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                                                 <i class="fas fa-plus"></i>
@@ -139,7 +145,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <span class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
                                                 <script>
                                                     function summary() {
@@ -187,15 +193,15 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i> Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+                                                <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
                                                 <dl class="row">
-                                                    <dt class="col-sm-4"><i class="fas fa-user"></i> Kinek a részére</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-user"></i>Felhasználó részére</dt>
                                                     <dd id="summaryUser" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-tag"></i> Igénylés típusa</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
                                                     <dd class="col-sm-8">Kamerafelvétel lementése</dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
                                                     <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-                                                    <dt class="col-sm-4"><i class="far fa-eye"></i> Lementésének oka</dt>
+                                                    <dt class="col-sm-4"><i class="icon far fa-eye"></i>Kamerafelvétel lementésének oka</dt>
                                                     <dd id="summaryWhy" class="col-sm-8"></dd>
                                                 </dl>
                                             </div>
@@ -206,11 +212,11 @@
                                             <div class="card">
                                                 <div class="card-body p-0">
                                                     <table class="table">
-                                                        <thead class="bg-secondary">
+                                                        <thead class="bg-light">
                                                             <tr>
-                                                                <th><i class="fas fa-video mr-2"></i>Kamera</th>
-                                                                <th><i class="fas fa-play mr-2"></i>Felvétel kezdete</th>
-                                                                <th><i class="fas fa-stop mr-2"></i>Felvétel vége</th>
+                                                                <th><i class="icon fas fa-video mr-2"></i>Kamera</th>
+                                                                <th><i class="icon fas fa-play mr-2"></i>Felvétel kezdete</th>
+                                                                <th><i class="icon fas fa-stop mr-2"></i>Felvétel vége</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -222,7 +228,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12 mt-3">
+                                        <div class="col-12">
                                             <div class="float-left">
                                                 <div class="custom-control custom-checkbox">
                                                     <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
@@ -232,7 +238,7 @@
                                                 </div>
                                             </div>
                                             <div class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
                                             </div>
                                         </div>

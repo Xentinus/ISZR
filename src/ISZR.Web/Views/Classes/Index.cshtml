@@ -10,7 +10,7 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-header bg-info">
-					<h3 class="card-title"><a asp-action="Create"><input type="button" value="Új osztály hozzáadása" class="btn btn-light" /></a></h3>
+					<h3 class="card-title"><a asp-action="Create"><input type="button" value="Új osztály létrehozása" class="btn btn-light" /></a></h3>
 				</div>
 
 				<div class="card-body p-0">
@@ -23,33 +23,33 @@
 										<h5 class="modal-title" id="deleteModalLabel@(item.ClassId)">Archiválási állapot megváltoztatása</h5>
 									</div>
 									<div class="modal-body">
-										<div>Biztosan szeretnéd <b>@item.Name</b> nevű osztály/csoport archiválási állapotát megváltoztatni?</div>
+										<div>Biztosan szeretnéd <b>@item.Name</b> nevű osztály archiválási állapotát megváltoztatni?</div>
 										<div>
 											Jelenlegi állapota:
 											@if (item.IsArchived)
 											{
-												<span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+												<span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
 											}
 											else
 											{
-												<span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+												<span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
 											}
 											<span class="ml-1">Változtatás utánni állapota:</span>
 											@if (!item.IsArchived)
 											{
-												<span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+												<span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
 											}
 											else
 											{
-												<span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+												<span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
 											}
 										</div>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt"></i> Vissza</button>
+										<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
 										<form asp-action="Index" asp-route-id="@item.ClassId" method="post">
 											<input type="hidden" asp-for="@item.ClassId" />
-											<button type="submit" class="btn btn-danger">Osztály/Csoport állapotának megváltoztatása</button>
+											<button type="submit" class="btn btn-danger">Osztály állapotának megváltoztatása</button>
 										</form>
 									</div>
 								</div>
@@ -78,22 +78,21 @@
 											<span>@item.Authorizer?.DisplayName bv. @item.Authorizer?.Rank?.ToLower()</span>
 										} else
 										{
-											<span class="text-danger font-weight-bold"><i class="fas fa-exclamation-triangle"></i> Engedélyező nincs beállítva</span>
+											<span class="text-danger font-weight-bold"><i class="icon fas fa-exclamation-triangle mr-1"></i>Engedélyező nincs beállítva</span>
 										}
 									</td>
 									<td>
 										@if (item.IsArchived)
 										{
-											<span class="text-danger font-weight-bold"><i class="fas fa-archive"></i> Archivált</span>
+											<span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
 										}
 										else
 										{
-												  <span class="text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
+												  <span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
 										}
 									</td>
 									<td class="float-right">
-										<a asp-action="Details" asp-route-id="@item.ClassId"><input type="button" value="Részletek" class="btn btn-info" /></a>
-										<a asp-action="Edit" asp-route-id="@item.ClassId"><input type="button" value="Szerkesztés" class="btn btn-warning ml-1" /></a>
+										<a asp-action="Edit" asp-route-id="@item.ClassId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
 										<input type="button" data-toggle="modal" data-target="#deleteModal@(item.ClassId)" value="Állapot változtatás" class="btn btn-danger ml-1" />
 									</td>
 								</tr>

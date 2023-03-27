@@ -21,26 +21,15 @@
 						</div>
 						<input type="hidden" asp-for="GroupId" />
 						<div class="row">
-							<div class="col-12 col-md-6">
+							<div class="col-12">
 								<div class="form-group">
-									<label>Csoport megnevezése</label>
+									<label>Jogosultsági csoport megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
 									<span asp-validation-for="Name" class="text-danger"></span>
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
 											<span class="input-group-text"><i class="fas fa-key"></i></span>
 										</div>
-										<input type="text" asp-for="Name" class="form-control" placeholder="Jogosultsági csoport megnevezése" spellcheck="true">
-									</div>
-								</div>
-							</div>
-							<div class="col-12 col-md-6">
-								<div class="form-group">
-									<label>Csoport osztálya</label>
-									<div class="input-group mb-3">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fas fa-users"></i></span>
-										</div>
-										<select asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId"></select>
+										<input type="text" asp-for="Name" class="form-control" placeholder="Jogosultsági csoport megnevezése" spellcheck="true" required>
 									</div>
 								</div>
 							</div>
@@ -48,7 +37,7 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="form-group">
-									<label>Csoporthoz hozzátartozó Windows jogosultságok</label>
+									<label>Jogosultsági csoporthoz tartozó Windows jogosultságok</label>
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
 											<span class="input-group-text"><i class="fab fa-windows"></i></span>
@@ -59,7 +48,7 @@
 							</div>
 							<div class="col-12">
 								<div class="form-group">
-									<label>Csoporthoz hozzátartozó Főnix 3 jogosultságok</label>
+									<label>Jogosultsági csoporthoz tartozó Főnix 3 jogosultságok</label>
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
 											<span class="input-group-text"><i class="fas fa-dove"></i></span>
@@ -71,10 +60,18 @@
 						</div>
 						<div class="row">
 							<div class="col-12">
-								<span class="float-right">
-									<a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+								<div class="float-left">
+									<div class="custom-control custom-checkbox">
+										<input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+										<label class="custom-control-label" for="agreeToTerms">
+											Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+										</label>
+									</div>
+								</div>
+								<div class="float-right">
+									<a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
 									<input type="submit" value="Jogosultsági csoport szerkesztése" class="btn btn-warning ml-1" />
-								</span>
+								</div>
 							</div>
 						</div>
 					</form>

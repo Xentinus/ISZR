@@ -46,7 +46,7 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Személy aki részére az igénylés zajlik</label>
+                                                <label>Felhasználó, aki részére az igénylés zajlik</label>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -57,10 +57,10 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-                                                Csak a rendszerben létező felhasználóknak lehet igényelni kamerafelvételt!<br />
-                                                Amennyiben nem található a kívánt felhasználó, küldön e-mail az Informatikai csoport részére.
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
+                                                Csak a rendszerben létező felhasználók részére lehet igényelni kamerafelvételt!<br />
+                                                Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
                                             </div>
                                         </div>
                                     </div>
@@ -77,14 +77,14 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-                                                A bástyafalon elhelyezett kamerák amelyek külterületre néznek, 3 napig rögzítenek felvételeket. Minden más kamera amely nem külterületre néz, körülbelül 1 hónapig rögzít.
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a dátumával kapcsolatban</h5>
+                                                Címke alapú kamerafelvétel igénylésekor csak egy kijelölt nap lehetséges.
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-12 col-md-6">
                                             <div class="form-group">
                                                 <label>Kamerafelvétel lementésének oka</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
@@ -93,6 +93,12 @@
                                                     </div>
                                                     <input id="inputWhy" name="inputWhy" type="text" class="form-control" required />
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a felvétel okáról</h5>
+                                                A megnevezett okkal lesznek elnevezve a felvételek a későbbi könnyebb visszakeresés érdekében.
                                             </div>
                                         </div>
                                     </div>
@@ -118,15 +124,16 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                A címkék lehetőleg azonosak legyenek. Így garantálni tudjuk, hogy a Hikcentral megtalálja a kért címkéket.
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a címke megnevezéssel kapcsolatban</h5>
+                                                A címkék lehetőleg azonosak legyenek, hogy a HikCentral megtalálja a kért címkéket.
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Címkével ellátott kamerák</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Megcímkézett kamerák az adott napon</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-video"></i></span>
@@ -137,15 +144,16 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                A Hikcentrálban nem lehetséges a teljes intézeten belülli címkére keresés, emiatt a megcímkézett kamerák listáját kötelezően ki kell tölteni. (csak 16 kamerát lehet egyszerre kijelölni)
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a kamerákkal kapcsolatban</h5>
+                                                A HikCentral nem képes az összes kamerán egyszerre címkére keresni, emiatt kell egy megcímkézett kamerák listája.
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <span class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
                                                 <script>
                                                     function summary() {
@@ -165,21 +173,21 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i> Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+                                                <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
                                                 <dl class="row">
-                                                    <dt class="col-sm-4"><i class="fas fa-user"></i> Kinek a részére</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-user"></i>Kinek a részére</dt>
                                                     <dd id="summaryUser" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-tag"></i> Igénylés típusa</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
                                                     <dd class="col-sm-8">Kamerafelvétel lementése</dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
                                                     <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-calendar"></i> Esemény dátuma</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-calendar"></i>Esemény dátuma</dt>
                                                     <dd id="summaryDate" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="far fa-eye"></i> Lementésének oka</dt>
+                                                    <dt class="col-sm-4"><i class="icon far fa-eye"></i>Lementésének oka</dt>
                                                     <dd id="summaryWhy" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-tags"></i> Címkék megnevezése</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-tags"></i>Címkék megnevezése</dt>
                                                     <dd id="summaryTags" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-video"></i> Megcímkézett kamerák</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-video"></i>Megcímkézett kamerák</dt>
                                                     <dd id="summaryCameras" class="col-sm-8"></dd>
                                                 </dl>
                                             </div>
@@ -196,7 +204,7 @@
                                                 </div>
                                             </div>
                                             <div class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
                                             </div>
                                         </div>

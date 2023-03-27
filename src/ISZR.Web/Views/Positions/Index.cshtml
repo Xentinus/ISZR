@@ -10,7 +10,7 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-header bg-info">
-					<h3 class="card-title"><a asp-action="Create"><input type="button" value="Új beosztás hozzáadása" class="btn btn-light" /></a></h3>
+					<h3 class="card-title"><a asp-action="Create"><input type="button" value="Új beosztás létrehozása" class="btn btn-light" /></a></h3>
 				</div>
 				<div class="card-body p-0">
 					@foreach (var item in Model)
@@ -27,25 +27,25 @@
 											Jelenlegi állapota:
 											@if (item.IsArchived)
 											{
-												<span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+												<span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
 											}
 											else
 											{
-												<span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+												<span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
 											}
 											<span class="ml-1">Változtatás utánni állapota:</span>
 											@if (!item.IsArchived)
 											{
-												<span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+												<span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
 											}
 											else
 											{
-												<span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+												<span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
 											}
 										</div>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt"></i> Vissza</button>
+										<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</button>
 										<form asp-action="Index" asp-route-id="@item.PositionId">
 											<input type="hidden" asp-for="@item.PositionId" />
 											<button type="submit" class="btn btn-danger">Beosztás állapotának megváltoztatása</button>
@@ -73,16 +73,15 @@
 									<td>
 										@if (item.IsArchived)
 										{
-											<span class="text-danger font-weight-bold"><i class="fas fa-archive"></i> Archivált</span>
+											<span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
 										}
 										else
 										{
-											<span class="text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
+											<span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
 										}
 									</td>
 									<td class="float-right">
-										<a asp-action="Details" asp-route-id="@item.PositionId"><input type="button" value="Részletek" class="btn btn-info" /></a>
-										<a asp-action="Edit" asp-route-id="@item.PositionId"><input type="button" value="Szerkesztés" class="btn btn-warning ml-1" /></a>
+										<a asp-action="Edit" asp-route-id="@item.PositionId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
 										<input type="button" data-toggle="modal" data-target="#deleteModal@(item.PositionId)" value="Állapot változtatás" class="btn btn-danger ml-1" />
 									</td>
 								</tr>

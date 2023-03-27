@@ -10,8 +10,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header bg-info">
-                    <h3 class="card-title"><a asp-action="Create" asp-route-type="Windows" class="btn btn-light mr-1"><i class="fab fa-windows"></i> Windows jogosultság hozzáadása</a></h3>
-                    <h3 class="card-title"><a asp-action="Create" asp-route-type="Főnix 3" class="btn btn-light mr-1"><i class="fas fa-dove"></i> Főnix 3 jogosultság hozzáadása</a></h3>
+                    <h3 class="card-title"><a asp-action="Create" asp-route-type="Windows" class="btn btn-light mr-1"><i class="icon fab fa-windows mr-2"></i>Új Windows jogosultság létrehozása</a></h3>
+                    <h3 class="ml-2 card-title"><a asp-action="Create" asp-route-type="Főnix 3" class="btn btn-light mr-1"><i class="icon fas fa-dove mr-2"></i>Új Főnix 3 jogosultság létrehozása</a></h3>
                 </div>
 
                 <div class="card-body p-0">
@@ -29,36 +29,36 @@
                                             Jogosultság típusa:
                                             @if (item.Type == "Windows")
                                             {
-                                                <span class="text-info font-weight-bold"><i class="fab fa-windows ml-1"></i> Windows jogosultság</span>
+                                                <span class="text-info font-weight-bold"><i class="icon fab fa-windows ml-1 mr-2"></i>Windows jogosultság</span>
                                             }
                                             @if (item.Type == "Főnix 3")
                                             {
-                                                <span class="text-warning font-weight-bold"><i class="fas fa-dove ml-1"></i> Főnix 3 jogosultság</span>
+                                                <span class="text-warning font-weight-bold"><i class="icon fas fa-dove ml-1 mr-2"></i>Főnix 3 jogosultság</span>
                                             }
                                         </div>
                                         <div>
                                             Jelenlegi állapota:
                                             @if (item.IsArchived)
                                             {
-                                                <span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+                                                <span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
                                             }
                                             else
                                             {
-                                                <span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+                                                <span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
                                             }
                                             <span class="ml-1">Változtatás utánni állapota:</span>
                                             @if (!item.IsArchived)
                                             {
-                                                <span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+                                                <span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
                                             }
                                             else
                                             {
-                                                <span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+                                                <span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
                                             }
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt"></i> Vissza</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</button>
                                         <form asp-action="Index" asp-route-id="@item.PermissionId">
                                             <input type="hidden" asp-for="@item.PermissionId" />
                                             <button type="submit" class="btn btn-danger">Jogosultság állapotának megváltoztatása</button>
@@ -85,11 +85,11 @@
                                         @Html.DisplayFor(modelItem => item.Name)<br />
                                         @if (item.Type == "Windows")
                                         {
-                                            <span class="text-info font-weight-bold"><i class="fab fa-windows"></i> Windows jogosultság</span>
+                                            <span class="text-info font-weight-bold"><i class="icon fab fa-windows mr-2"></i>Windows jogosultság</span>
                                         }
                                         @if (item.Type == "Főnix 3")
                                         {
-                                            <span class="text-warning font-weight-bold"><i class="fas fa-dove"></i> Főnix 3 jogosultság</span>
+                                            <span class="text-warning font-weight-bold"><i class="icon fas fa-dove mr-2"></i>Főnix 3 jogosultság</span>
                                         }
                                     </td>
                                     <td>
@@ -98,11 +98,11 @@
                                     <td>
                                         @if (item.IsArchived)
                                         {
-                                            <span class="text-danger font-weight-bold"><i class="fas fa-archive"></i> Archivált</span>
+                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
                                         }
                                         else
                                         {
-                                            <span class="text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
+                                            <span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
                                         }
                                     </td>
                                     <td class="float-right">

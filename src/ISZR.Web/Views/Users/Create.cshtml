@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Felhasználó hozzáadása";
+    ViewData["Title"] = "Felhasználó létrehozása";
 }
 
 <div class="container-fluid">
@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Név</label><span class="text-danger font-weight-bold">*</span>
+                                    <label>Név</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="DisplayName" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -58,7 +58,7 @@
                             </div>
                             <div class="col-12 col-md-3">
                                 <div class="form-group">
-                                    <label>Nem</label><span class="text-danger font-weight-bold">*</span>
+                                    <label>Nem</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
@@ -72,7 +72,7 @@
                             </div>
                             <div class="col-12 col-md-3">
                                 <div class="form-group">
-                                    <label>Rendfokozat</label><span class="text-danger font-weight-bold">*</span>
+                                    <label>Rendfokozat</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Rank" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -109,7 +109,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Osztály</label><span class="text-danger font-weight-bold">*</span>
+                                    <label>Osztály</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-users"></i></span>
@@ -120,7 +120,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Beosztás</label><span class="text-danger font-weight-bold">*</span>
+                                    <label>Beosztás</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
@@ -163,10 +163,18 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <span class="float-right">
-                                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                <div class="float-left">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                        <label class="custom-control-label" for="agreeToTerms">
+                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                     <input type="submit" value="Felhasználó létrehozása" class="btn btn-success ml-1" />
-                                </span>
+                                </div>
                             </div>
                         </div>
                     </form>

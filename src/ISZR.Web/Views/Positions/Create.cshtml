@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Új beosztás hozzáadása";
+    ViewData["Title"] = "Új beosztás létrehozása";
 }
 
 <div class="container-fluid">
@@ -22,23 +22,31 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Beosztás megnevezése</label>
+                                    <label>Beosztás megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
                                         </div>
-                                        <input type="text" asp-for="Name" class="form-control" placeholder="Beosztás megnevezése" spellcheck="true">
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Beosztás megnevezése" spellcheck="true" required>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 float-right">
-                                <span class="float-right">
-                                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
-                                    <input type="submit" value="Beosztás hozzáadása" class="btn btn-success ml-1" />
-                                </span>
+                            <div class="col-12">
+                                <div class="float-left">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                        <label class="custom-control-label" for="agreeToTerms">
+                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                    <input type="submit" value="Beosztás létrehozása" class="btn btn-success ml-1" />
+                                </div>
                             </div>
                         </div>
                     </form>

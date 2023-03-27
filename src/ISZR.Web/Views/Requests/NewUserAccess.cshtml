@@ -17,21 +17,21 @@
                             <div class="bs-stepper-header" role="tablist">
                                 <div class="step active" data-target="#request-info">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-male"></i></span>
-                                        <span class="bs-stepper-label">Új felhasználó adatai</span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-male"></i></span>
+                                        <span class="bs-stepper-label">Felhasználóval kapcsolatos adatok</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" data-target="#permissions">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="permissions" id="permissions-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-key"></i></span>
-                                        <span class="bs-stepper-label">Csoport kiválasztása</span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-users"></i></span>
+                                        <span class="bs-stepper-label">Jogosultsági csoport kiválasztása</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" data-target="#summary">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-list"></i></span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
                                         <span class="bs-stepper-label">Összesítés</span>
                                     </button>
                                 </div>
@@ -77,7 +77,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-medal"></i></span>
                                                     </div>
-                                                    <select asp-for="Rank" class="form-control select2bs4" required>
+                                                    <select id="selectedRank" asp-for="Rank" class="form-control select2bs4" required>
                                                         <option>Munkavállaló</option>
                                                         <option>Rendvédelmi-alkalmazott</option>
                                                         <option>Őrmester</option>
@@ -113,7 +113,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-users"></i></span>
                                                     </div>
-                                                    <select asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId" required></select>
+                                                    <select id="selectedClass" asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId" required></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -124,7 +124,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
                                                     </div>
-                                                    <select asp-for="PositionId" class="form-control select2bs4" asp-items="ViewBag.PositionId" required></select>
+                                                    <select id="selectedPosition" asp-for="PositionId" class="form-control select2bs4" asp-items="ViewBag.PositionId" required></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,9 +170,9 @@
                                 </div>
                                 <div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Jogosultsági csoport</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Jogosultsági csoport kiválasztása az új felhasználó részére</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-users"></i></span>
@@ -181,15 +181,25 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a jogosultsági csoportokról</h5>
+                                                A csoportok tartalmaznak minden Windows, illetve Főnix 3 jogosultságot, amelyek a munka elvégzéséhez szükségesek.<br />
+                                                Amennyiben szükséges új csoport létrehozása, küldjön e-mailt az informatika részére annak hozzáadásáról.
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <span class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
                                                 <script>
                                                     function summary() {
-                                                        document.getElementById("summaryUser").innerHTML = $('#newUser').val();
+                                                        document.getElementById("summaryUserName").innerHTML = $('#newUser').val();
+                                                        document.getElementById("summaryUserRank").innerHTML = $('#selectedRank option:selected').toArray().map(item => item.text).join();
+                                                        document.getElementById("summaryUserClass").innerHTML = $('#selectedClass option:selected').toArray().map(item => item.text).join();
+                                                        document.getElementById("summaryUserPosition").innerHTML = $('#selectedPosition option:selected').toArray().map(item => item.text).join();
                                                         document.getElementById("summaryGroup").innerHTML = $('#selectedGroup option:selected').toArray().map(item => item.text).join();
                                                         stepper.next();
                                                     }
@@ -202,15 +212,21 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i> Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+                                                <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
                                                 <dl class="row">
-                                                    <dt class="col-sm-4"><i class="fas fa-user"></i> Kinek a részére</dt>
-                                                    <dd id="summaryUser" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-tag"></i> Igénylés típusa</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-user"></i>Új felhasználó neve</dt>
+                                                    <dd id="summaryUserName" class="col-sm-8"></dd>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-medal"></i>Új felhasználó rendfokozata</dt>
+                                                    <dd id="summaryUserRank" class="col-sm-8"></dd>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-users"></i>Új felhasználó osztálya</dt>
+                                                    <dd id="summaryUserClass" class="col-sm-8"></dd>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-people-arrows"></i>Új felhasználó beosztása</dt>
+                                                    <dd id="summaryUserPosition" class="col-sm-8"></dd>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
                                                     <dd class="col-sm-8">Új felhasználó részére jogosultság igénylés</dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
                                                     <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-                                                    <dt class="col-sm-4"><i class="fa fa-key"></i> Jogosultsági csoport</dt>
+                                                    <dt class="col-sm-4"><i class="icon fa fa-key"></i>Kiválasztott jogosultsági csoport</dt>
                                                     <dd id="summaryGroup" class="col-sm-8"></dd>
                                                 </dl>
                                             </div>
@@ -227,7 +243,7 @@
                                                 </div>
                                             </div>
                                             <div class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
                                             </div>
                                         </div>

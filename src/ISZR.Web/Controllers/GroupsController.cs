@@ -23,7 +23,7 @@ namespace ISZR.Web.Controllers
 		public async Task<IActionResult> Index()
 		{
 			// Csoportok listájának lekérdezése
-			var dataContext = _context.Groups.Include(g => g.Class).OrderBy(g => g.Name);
+			var dataContext = _context.Groups.OrderBy(g => g.Name);
 
 			// Felület megjelenítése a kért listával
 			return View(await dataContext.ToListAsync());
@@ -41,8 +41,7 @@ namespace ISZR.Web.Controllers
 			if (id == null || _context.Groups == null) return NotFound();
 
 			// Csoport megkeresése az adatbázisban
-			var group = await _context.Groups
-				.FirstOrDefaultAsync(m => m.GroupId == id);
+			var group = await _context.Groups.FirstOrDefaultAsync(m => m.GroupId == id);
 
 			// Csoport meglétének ellenőrzése
 			if (group == null) return NotFound();
@@ -82,15 +81,10 @@ namespace ISZR.Web.Controllers
 			if (id == null || _context.Groups == null) return NotFound();
 
 			// Kért csoport kikeresése az adatbázisból
-			var group = await _context.Groups
-				.Include(g => g.Class)
-				.FirstOrDefaultAsync(m => m.GroupId == id);
+			var group = await _context.Groups.FirstOrDefaultAsync(m => m.GroupId == id);
 
 			// Csoport meglétének ellenőrzése
 			if (group == null) return NotFound();
-
-			// Lista elem betöltése
-			ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name", group.ClassId);
 
 			// Felület megjelenítése a kért csoporttal
 			return View(group);
@@ -102,7 +96,6 @@ namespace ISZR.Web.Controllers
 		public IActionResult Create()
 		{
 			// Lista elemek betöltése
-			ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
 			ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows" && !p.IsArchived).OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
 			ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3" && !p.IsArchived).OrderBy(p => p.Name), "Name", "Name");
 
@@ -118,7 +111,7 @@ namespace ISZR.Web.Controllers
 		/// <param name="group">Megadott csoport adatai</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(string[] windowsPermissions, string[] fonix3Permissions, [Bind("GroupId,Name,ClassId,WindowsPermissions,FonixPermissions")] Group group)
+		public async Task<IActionResult> Create(string[] windowsPermissions, string[] fonix3Permissions, [Bind("GroupId,Name,WindowsPermissions,FonixPermissions")] Group group)
 		{
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
@@ -138,7 +131,6 @@ namespace ISZR.Web.Controllers
 			}
 
 			// Lista elemek betöltése
-			ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
 			ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows" && !p.IsArchived).OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
 			ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3" && !p.IsArchived).OrderBy(p => p.Name), "Name", "Name");
 
@@ -161,9 +153,6 @@ namespace ISZR.Web.Controllers
 			// Csoport meglétének ellenőrzése
 			if (group == null) return NotFound();
 
-			// Lista elem betöltése
-			ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
-
 			// Felület megjelenítése a kért csoport adataival
 			return View(group);
 		}
@@ -175,7 +164,7 @@ namespace ISZR.Web.Controllers
 		/// <param name="group">Csoport megadott új értékei</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("GroupId,Name,ClassId,WindowsPermissions,FonixPermissions")] Group group)
+		public async Task<IActionResult> Edit(int id, [Bind("GroupId,Name,WindowsPermissions,FonixPermissions")] Group group)
 		{
 			// Azonosító meglétének ellenőrzése
 			if (id != group.GroupId) return NotFound();
@@ -208,9 +197,6 @@ namespace ISZR.Web.Controllers
 				// Felhasználó átírányítása a csoportok listájára
 				return RedirectToAction(nameof(Index));
 			}
-
-			// Lista elem betöltése
-			ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
 
 			// Felület megjelenítése amennyiben hibás adatokat tartalmaz
 			return View(group);
