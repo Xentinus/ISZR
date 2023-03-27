@@ -29,25 +29,25 @@
                                             Jelenlegi állapota:
                                             @if (item.IsArchived)
                                             {
-                                                <span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+                                                <span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
                                             }
                                             else
                                             {
-                                                <span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+                                                <span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
                                             }
                                             <span class="ml-1">Változtatás utánni állapota:</span>
                                             @if (!item.IsArchived)
                                             {
-                                                <span class="text-danger font-weight-bold"><i class="fas fa-archive ml-1"></i> Archivált</span>
+                                                <span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
                                             }
                                             else
                                             {
-                                                <span class="text-success font-weight-bold"><i class="fas fa-signal ml-1"></i> Elérhető</span>
+                                                <span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
                                             }
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt"></i> Vissza</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
                                         <form asp-action="Index" asp-route-id="@item.UserId">
                                             <input type="hidden" asp-for="@item.UserId" />
                                             <button type="submit" class="btn btn-danger">Felhasználó állapotának megváltoztatása</button>
@@ -80,11 +80,11 @@
                                     <td>
                                         @if (item.IsArchived)
                                         {
-                                            <span class="text-danger font-weight-bold"><i class="fas fa-archive"></i> Archivált</span>
+                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
                                         }
                                         else
                                         {
-                                            <span class="text-success font-weight-bold"><i class="fas fa-signal"></i> Elérhető</span>
+                                            <span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
                                         }
                                     </td>
                                     <td>

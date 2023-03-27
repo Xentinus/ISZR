@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Új intézeti kamera hozzáadása";
+    ViewData["Title"] = "Új kamera létrehozása";
 }
 
 <div class="container-fluid">
@@ -10,7 +10,7 @@
         <div class="col-12">
             <div class="card card-success">
                 <div class="card-header">
-                    <h3 class="card-title">Intézeti kamerához tartozó adatok beállítása</h3>
+                    <h3 class="card-title">Kamerához tartozó adatok beállítása</h3>
                 </div>
 
                 <div class="card-body">
@@ -23,35 +23,43 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Kamera megnevezése</label>
+                                    <label>Kamera megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-video"></i></span>
                                         </div>
-                                        <input type="text" asp-for="Name" class="form-control" placeholder="Kamera megnevezése" spellcheck="false">
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Kamera megnevezése" spellcheck="false" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Szektor megnevezése</label>
+                                    <label>Szektor megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Location" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-map-marked"></i></span>
                                         </div>
-                                        <input type="text" asp-for="Location" class="form-control" placeholder="Szektor megnevezése" spellcheck="true">
+                                        <input type="text" asp-for="Location" class="form-control" placeholder="Szektor megnevezése" spellcheck="true" required>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 float-right">
-                                <span class="float-right">
-                                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
-                                    <input type="submit" value="Intézeti kamera hozzáadása" class="btn btn-success ml-1" />
-                                </span>
+                            <div class="col-12">
+                                <div class="float-left">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                        <label class="custom-control-label" for="agreeToTerms">
+                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                    <input type="submit" value="Kamera létrehozása" class="btn btn-success ml-1" />
+                                </div>
                             </div>
                         </div>
                     </form>

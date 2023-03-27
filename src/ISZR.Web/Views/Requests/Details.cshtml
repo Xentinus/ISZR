@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col-12">
                         <h4>
-                            <span class="d-print-none"><i class="fas fa-paperclip"></i> Digitális Szolgálati jegy</span>
+                            <span class="d-print-none"><i class="icon fas fa-paperclip mr-2"></i>Digitális Szolgálati jegy</span>
                             <small class="float-right">ISZR <a href="@Url.Content(Context.Request.Path)" class="text-info font-weight-bold text-decoration-none">#@Model?.RequestId</a></small>
                         </h4>
                     </div>
@@ -36,17 +36,23 @@
                                 @Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
                                 @if (Model?.RequestAuthor?.Username != null)
                                 {
-                                    <i class="fab fa-windows mr-1"></i> @Model?.RequestAuthor?.Username
+                                    <i class="icon fab fa-windows mr-2"></i>
+
+                                    @Model?.RequestAuthor?.Username
                                     <br />
                                 }
                                 @if (Model?.RequestAuthor?.Email != null)
                                 {
-                                    <i class="fas fa-envelope mr-1"></i> @Model?.RequestAuthor?.Email
+                                    <i class="icon fas fa-envelope mr-2"></i>
+
+                                    @Model?.RequestAuthor?.Email
                                     <br />
                                 }
                                 @if (Model?.RequestAuthor?.Phone != null)
                                 {
-                                    <i class="fas fa-phone-square-alt mr-1"></i> @Model?.RequestAuthor?.Phone
+                                    <i class="icon fas fa-phone-square-alt mr-2"></i>
+
+                                    @Model?.RequestAuthor?.Phone
                                 }
                             </address>
                         </div>
@@ -54,65 +60,71 @@
                     @if (Model?.RequestFor != null)
                     {
                         <div class="col-xl-4 col-md-6 col-12 invoice-col">
-                            <strong>Kinek a számra</strong>
+                            <strong>Felhasználó számára</strong>
                             <address>
                                 @Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank?.ToLower()<br>
                                 @Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
                                 @if (Model?.RequestFor?.Username != null)
                                 {
-                                    <i class="fab fa-windows mr-1"></i> @Model?.RequestFor?.Username
+                                    <i class="icon fab fa-windows mr-2"></i>
+
+                                    @Model?.RequestFor?.Username
                                     <br />
                                 }
                                 @if (Model?.RequestFor?.Email != null)
                                 {
-                                    <i class="fas fa-envelope mr-1"></i> @Model?.RequestFor?.Email
+                                    <i class="icon fas fa-envelope mr-2"></i>
+
+                                    @Model?.RequestFor?.Email
                                     <br />
                                 }
                                 @if (Model?.RequestFor?.Phone != null)
                                 {
-                                    <i class="fas fa-phone-square-alt mr-1"></i> @Model?.RequestFor?.Phone
+                                    <i class="icon fas fa-phone-square-alt mr-2"></i>
+
+                                    @Model?.RequestFor?.Phone
                                 }
                             </address>
                         </div>
                     }
                     <div class="col-xl-4 col-12 invoice-col d-print-none">
                         <div>
-                            <span class="font-weight-bold">Igénylés típusa:</span>
-                            <span class="ml-1">@Model?.Type</span>
+                            <span class="font-weight-bold mr-1">Igénylés típusa:</span>
+                            <span>@Model?.Type</span>
                         </div>
                         <div>
-                            <span class="font-weight-bold">Létrehozva:</span>
-                            <span class="ml-1">@Model?.CreationDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+                            <span class="font-weight-bold mr-1">Létrehozva:</span>
+                            <span>@Model?.CreationDate.ToString("yyyy. MMMM dd. HH:mm")</span>
                         </div>
                         @if (Model?.ResolveDate != new DateTime())
                         {
                             <div>
-                                <span class="font-weight-bold">Lezárva:</span>
-                                <span class="ml-1">@Model?.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+                                <span class="font-weight-bold mr-1">Lezárva:</span>
+                                <span>@Model?.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")</span>
                             </div>
                             <div>
-                                <span class="font-weight-bold">Lezáró személy:</span>
-                                <span class="ml-1">@Model?.Resolver?.DisplayName</span>
+                                <span class="font-weight-bold mr-1">Lezáró személy:</span>
+                                <span>@Model?.Resolver?.DisplayName</span>
                             </div>
                         }
                         <div>
-                            <span class="font-weight-bold">Státusz:</span>
+                            <span class="font-weight-bold mr-1">Státusz:</span>
                             @{
                                 switch (Model?.Status)
                                 {
                                     case "Elutasítva":
                                         {
-                                            <span class="badge badge-danger ml-1"><i class="icon fas fa-ban"></i> @Model?.Status</span>
+                                            <span class="badge badge-danger"><i class="icon fas fa-ban mr-2"></i>@Model?.Status</span>
                                             break;
                                         }
                                     case "Végrehajtva":
                                         {
-                                            <span class="badge badge-success ml-1"><i class="icon fas fa-check"></i> @Model?.Status</span>
+                                            <span class="badge badge-success"><i class="icon fas fa-check mr-2"></i>@Model?.Status</span>
                                             break;
                                         }
                                     default:
                                         {
-                                            <span class="badge badge-warning ml-1"><i class="icon fas fa-comment-dots"></i> @Model?.Status</span>
+                                            <span class="badge badge-warning"><i class="icon fas fa-comment-dots mr-2"></i>@Model?.Status</span>
                                             break;
                                         }
                                 }
@@ -125,7 +137,8 @@
                         @if (Model?.RequestFor?.Class?.Authorizer?.Genre == Genre.Male)
                         {
                             <span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.RequestFor?.Class?.Authorizer?.Position?.Name Úr!</span>
-                        } else
+                        }
+                        else
                         {
                             <span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.RequestFor?.Class?.Authorizer?.Position?.Name Asszony!</span>
                         }
@@ -134,46 +147,46 @@
                         @Html.Raw(@Model?.Description)
                     </div>
                 </div>
-                @{
-                    if (Model?.WindowsPermissions != null)
-                    {
-                        <div class="row">
-                            <div class="col-12 d-none d-print-block">
-                                <dl>
-                                    <dt><i class="fab fa-windows"></i> Windows jogosultságok</dt>
-                                    <dd>@Model?.WindowsPermissions</dd>
-                                </dl>
-                            </div>
-                            <div class="col-12 d-print-none">
-                                <div class="alert alert-info alert-dismissible">
-                                    <h5><i class="icon fab fa-windows"></i> Windows jogosultságok</h5>
-                                    @Model?.WindowsPermissions
-                                </div>
+
+                @if (Model?.WindowsPermissions != null)
+                {
+                    <div class="row">
+                        <div class="col-12 d-none d-print-block">
+                            <dl>
+                                <dt><i class="fab fa-windows mr-2"></i>Windows jogosultságok</dt>
+                                <dd>@Model?.WindowsPermissions</dd>
+                            </dl>
+                        </div>
+                        <div class="col-12 d-print-none">
+                            <div class="alert alert-info alert-dismissible">
+                                <h5><i class="icon fab fa-windows"></i>Windows jogosultságok</h5>
+                                @Model?.WindowsPermissions
                             </div>
                         </div>
-                    }
+                    </div>
                 }
-                @{
-                    if (Model?.FonixPermissions != null)
-                    {
-                        <div class="row">
-                            <div class="col-12 d-none d-print-block">
-                                <dl>
-                                    <dt><i class="fas fa-dove"></i> Főnix 3 jogosultságok</dt>
-                                    <dd>@Model?.FonixPermissions</dd>
-                                </dl>
-                            </div>
-                            <div class="col-12 d-print-none">
-                                <div class="alert alert-warning alert-dismissible">
-                                    <h5><i class="icon fas fa-dove"></i> Főnix 3 jogosultságok</h5>
-                                    @Model?.FonixPermissions
-                                </div>
+
+                @if (Model?.FonixPermissions != null)
+                {
+                    <div class="row">
+                        <div class="col-12 d-none d-print-block">
+                            <dl>
+                                <dt><i class="fas fa-dove mr-2"></i>Főnix 3 jogosultságok</dt>
+                                <dd>@Model?.FonixPermissions</dd>
+                            </dl>
+                        </div>
+                        <div class="col-12 d-print-none">
+                            <div class="alert alert-warning alert-dismissible">
+                                <h5><i class="icon fas fa-dove"></i>Főnix 3 jogosultságok</h5>
+                                @Model?.FonixPermissions
                             </div>
                         </div>
-                    }
+                    </div>
                 }
+
                 <div class="row mt-5 d-none d-print-block">
                     <div class="col-12">
+
                         @if (Model?.RequestAuthor != null)
                         {
                             <div class="float-left signature text-center ml-5">
@@ -183,6 +196,7 @@
                                 @Model?.RequestAuthor?.Position?.Name
                             </div>
                         }
+
                         @if (Model?.RequestFor?.Class?.Authorizer != null)
                         {
                             <div class="float-right text-center mr-5">
@@ -192,13 +206,14 @@
                                 @Model?.RequestFor?.Class?.Authorizer?.Position?.Name
                             </div>
                         }
+
                     </div>
                 </div>
                 <div class="row d-print-none">
                     <div class="col-12">
-                        <span class="float-right">
-                            <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
-                            <a class="btn btn-default ml-1 mr-1" onclick="window.print()"><i class="fas fa-print"></i> Igénylés nyomtatása</a>
+                        <div class="float-right">
+                            <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                            <a class="btn btn-default ml-1 mr-1" onclick="window.print()"><i class="fas fa-print mr-2"></i>Igénylés nyomtatása</a>
                             @if (Account.IsAdmin())
                             {
                                 if (Model?.Status != "Elutasítva")
@@ -208,7 +223,7 @@
                                         <input hidden name="status" value="Elutasítva">
                                         <input hidden name="resolverId" value="@Model?.ResolverId">
                                         <button type="submit" class="btn btn-default float-right ml-1">
-                                            <span class="text-danger mr-1"><i class="fas fa-times-circle"></i></span>Igénylés elutasítása
+                                            <span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Igénylés elutasítása
                                         </button>
                                     </form>
                                 }
@@ -220,7 +235,7 @@
                                         <input hidden name="status" value="Folyamatban">
                                         <input hidden name="resolverId" value="@Model?.ResolverId">
                                         <button type="submit" class="btn btn-default float-right ml-1 mr-1">
-                                            <span class="text-warning mr-1"><i class="fas fa-comment-dots"></i></span>Igénylés folyamatba helyezése
+                                            <span class="text-warning"><i class="fas fa-comment-dots mr-2"></i></span>Igénylés folyamatba helyezése
                                         </button>
                                     </form>
                                 }
@@ -232,12 +247,12 @@
                                         <input hidden name="status" value="Végrehajtva">
                                         <input hidden name="resolverId" value="@Model?.ResolverId">
                                         <button type="submit" class="btn btn-default float-right ml-1 mr-1">
-                                            <span class="text-success mr-1"><i class="fas fa-check-circle"></i></span>Igénylés végrehajtása
+                                            <span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Igénylés végrehajtása
                                         </button>
                                     </form>
                                 }
                             }
-                        </span>
+                        </div>
                     </div>
                 </div>
             </div>

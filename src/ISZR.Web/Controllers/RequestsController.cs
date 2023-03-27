@@ -418,7 +418,7 @@ namespace ISZR.Web.Controllers
 
 				// Igénylés leírása
 				request.Description = "Kérem engedélyezni a felhasználó részére új beosztásának jogosultságainak kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.<br /><br />" +
-					$"<dl>\r\n<dt><i class=\"fas fa-people-arrows\"></i> Felhasználó jelenlegi jogosultságai</dt>\r\n<dd>{currentPermissions}</dd>\r\n</dl>";
+					$"<dl>\r\n<dt><i class=\"icon fas fa-people-arrows mr-2\"></i>Teendő a felhasználó jelenlegi jogosultságaival</dt>\r\n<dd>{currentPermissions}</dd>\r\n</dl>";
 
 				// Csoport jogosultságainak hozzáadása
 				request.WindowsPermissions = group.WindowsPermissions != null ? group.WindowsPermissions : null;
@@ -608,7 +608,7 @@ namespace ISZR.Web.Controllers
 
 				// Igénylés leírása
 				request.Description = $"Kérem engedélyezni a felhasználó részére, az alábbi jármű parkolási engedélyének kiállítását.<br /><br />" +
-					$"<dl>\r\n<dt><i class=\"fas fa-car\"></i> Jármű típusa</dt>\r\n<dd>{brand} {modell}</dd>\r\n<dt><i class=\"fas fa-parking\"></i> Jármű rendszáma</dt>\r\n<dd>{licensePlate}</dd>\r\n</dl>";
+					$"<dl>\r\n<dt><i class=\"icon fas fa-car mr-2\"></i>Jármű típusa</dt>\r\n<dd>{brand} {modell}</dd>\r\n<dt><i class=\"icon fas fa-parking mr-2\"></i>Jármű rendszáma</dt>\r\n<dd>{licensePlate}</dd>\r\n</dl>";
 
 				// Igénylés hozzáadása a rendszerhez
 				_context.Add(request);
@@ -739,7 +739,7 @@ namespace ISZR.Web.Controllers
 
 				// Igénylés leírása
 				request.Description = $"Kérem engedélyezni a kamerarendszerben rögzített adatok külső adattárolón történő tárolását, illetve felhasználását megkeresés alapján Bűnügyi vagy Felügyeleti szerv részére.<br /><br />" +
-					$"<dl>\r\n<dt><i class=\"far fa-eye\"></i> Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n<dt><i class=\"fas fa-calendar\"></i> Esemény dátuma</dt>\r\n<dd>{inputDate.ToString("yyyy.MM.dd")}</dd>\r\n<dt><i class=\"fas fa-tags\"></i> Címkék megnevezése</dt>\r\n<dd>{inputTags}</dd>\r\n<dt><i class=\"fas fa-video\"></i> Megcímkézett kamerák</dt>\r\n<dd>{cameras}</dd>\r\n</dl>";
+					$"<dl>\r\n<dt><i class=\"icon far fa-eye mr-2\"></i>Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n<dt><i class=\"icon fas fa-calendar mr-2\"></i>Esemény dátuma</dt>\r\n<dd>{inputDate.ToString("yyyy.MM.dd")}</dd>\r\n<dt><i class=\"icon fas fa-tags mr-2\"></i>Címkék megnevezése</dt>\r\n<dd>{inputTags}</dd>\r\n<dt><i class=\"icon fas fa-video mr-2\"></i>Megcímkézett kamerák</dt>\r\n<dd>{cameras}</dd>\r\n</dl>";
 
 				// Igénylés hozzáadása a rendszerhez
 				_context.Add(request);
@@ -810,8 +810,8 @@ namespace ISZR.Web.Controllers
 
 				// Igénylés leírása
 				request.Description = $"Kérem engedélyezni a kamerarendszerben rögzített adatok külső adattárolón történő tárolását, illetve felhasználását megkeresés alapján Bűnügyi vagy Felügyeleti szerv részére.<br /><br />" +
-					$"<dl>\r\n<dt><i class=\"far fa-eye\"></i> Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n</dl><br />" +
-					$"<div class=\"card\">\r\n<div class=\"card-body p-0\">\r\n<table class=\"table\">\r\n<thead class=\"bg-secondary\">\r\n<tr>\r\n<th><i class=\"fas fa-video mr-2\"></i>Kamera</th>\r\n<th><i class=\"fas fa-play mr-2\"></i>Felvétel kezdete</th>\r\n<th><i class=\"fas fa-stop mr-2\"></i>Felvétel vége</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n";
+					$"<dl>\r\n<dt><i class=\"icon far fa-eye mr-2\"></i>Kamerafelvétel lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n</dl><br />" +
+					$"<div class=\"card\">\r\n<div class=\"card-body p-0\">\r\n<table class=\"table\">\r\n<thead class=\"bg-light\">\r\n<tr>\r\n<th><i class=\"icon fas fa-video mr-2\"></i>Kamera</th>\r\n<th><i class=\"icon fas fa-play mr-2\"></i>Felvétel kezdete</th>\r\n<th><i class=\"icon fas fa-stop mr-2\"></i>Felvétel vége</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n";
 
 				// Kamerafelvételek hozzáadása a táblázhoz
 				StringBuilder recordTable = new StringBuilder();

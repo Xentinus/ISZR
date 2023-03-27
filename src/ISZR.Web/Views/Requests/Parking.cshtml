@@ -22,21 +22,21 @@
                             <div class="bs-stepper-header" role="tablist">
                                 <div class="step active" data-target="#request-info">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-male"></i></span>
-                                        <span class="bs-stepper-label">Felhasználó kiválasztása</span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-male"></i></span>
+                                        <span class="bs-stepper-label">Felhasználóval kapcsolatos adatok</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" data-target="#car-info">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="car-info" id="car-info-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-car"></i></span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-car"></i></span>
                                         <span class="bs-stepper-label">Autóval kapcsolatos információk</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" data-target="#summary">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-list"></i></span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
                                         <span class="bs-stepper-label">Összesítés</span>
                                     </button>
                                 </div>
@@ -46,7 +46,7 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Személy aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -57,10 +57,10 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-                                                Csak a rendszerben létező felhasználóknak lehet igényelni parkolási engedélyt!<br />
-                                                Amennyiben nem található a kívánt felhasználó, küldön e-mail az Informatikai csoport részére.
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
+                                                Csak a rendszerben létező felhasználók részére lehet igényelni parkolási engedélyt!<br />
+                                                Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
                                             </div>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                                 </div>
                                 <div id="car-info" class="content" role="tabpanel" aria-labelledby="car-info-trigger">
                                     <div class="row">
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <div class="form-group">
                                                 <label>Jármű márkaja</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
@@ -180,7 +180,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <div class="form-group">
                                                 <label>Jármű modellje</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
@@ -191,9 +191,18 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-6">
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a járműről</h5>
+                                                Nem szükséges teljes mértékben pontosítani a jármű típusát. (pl. XY 1.4 Benzin)<br />
+                                                Amennyiben nem található a kívánt márka, küldjön e-mailt az informatika részére annak hozzáadásáról.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Jármű rendszáma</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Rendszám</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-parking"></i></span>
@@ -202,11 +211,17 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a rendszámról</h5>
+                                                Az országot nem kell megjelölni, elég csak leírni a betűket és a számokat.
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <span class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
                                                 <script>
                                                     function summary() {
@@ -225,26 +240,26 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i> Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+                                                <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
                                                 <dl class="row">
-                                                    <dt class="col-sm-4"><i class="fas fa-user"></i> Kinek a részére</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-user"></i>Felhasználó részére</dt>
                                                     <dd id="summaryUser" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-tag"></i> Igénylés típusa</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
                                                     <dd class="col-sm-8">Parkolási engedély igénylése</dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
                                                     <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-car"></i> Jármű márkaja</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-car"></i>Jármű márkaja</dt>
                                                     <dd id="summaryBrand" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-car-side"></i> Jármű modellje</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-car-side"></i>Jármű modellje</dt>
                                                     <dd id="summaryModell" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-parking"></i> Jármű rendszáma</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-parking"></i>Jármű rendszáma</dt>
                                                     <dd id="summaryLicensePlate" class="col-sm-8"></dd>
                                                 </dl>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12 mt-3">
+                                        <div class="col-12">
                                             <div class="float-left">
                                                 <div class="custom-control custom-checkbox">
                                                     <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
@@ -254,7 +269,7 @@
                                                 </div>
                                             </div>
                                             <div class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
                                             </div>
                                         </div>

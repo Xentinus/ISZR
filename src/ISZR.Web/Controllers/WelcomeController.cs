@@ -4,156 +4,156 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISZR.Web.Controllers
 {
-    /// <summary>
-    /// /Welcome/? Controller
-    /// </summary>
-    public class WelcomeController : Controller
-    {
-        private readonly DataContext _context;
+	/// <summary>
+	/// /Welcome/? Controller
+	/// </summary>
+	public class WelcomeController : Controller
+	{
+		private readonly DataContext _context;
 
-        public WelcomeController(DataContext context)
-        {
-            _context = context;
-        }
+		public WelcomeController(DataContext context)
+		{
+			_context = context;
+		}
 
-        /// <summary>
-        /// Üdvözlő felület megjelenítése
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IActionResult> Index()
-        {
-            // Az oldalt megnyító felhasználó kikeresése az adatbázisban
-            User? user = await GetLoggedUser();
+		/// <summary>
+		/// Üdvözlő felület megjelenítése
+		/// </summary>
+		/// <returns></returns>
+		public async Task<IActionResult> Index()
+		{
+			// Az oldalt megnyító felhasználó kikeresése az adatbázisban
+			User? user = await GetLoggedUser();
 
-            // Felhasználó meglétének és belépés számának ellenőrzése
-            if (user != null && user.LogonCount > 0)
-            {
-                // Amennyiben a felhasználó létrezik, annak új belépési idejének mentése és számláló hozzáadása
-                user.LastLogin = DateTime.Now;
-                user.LogonCount++;
+			// Felhasználó meglétének és belépés számának ellenőrzése
+			if (user != null && user.LogonCount > 0)
+			{
+				// Amennyiben a felhasználó létrezik, annak új belépési idejének mentése és számláló hozzáadása
+				user.LastLogin = DateTime.Now;
+				user.LogonCount++;
 
-                // Bejelentkezett felhasználó értékeinek frissítése
-                _context.Update(user);
-                await _context.SaveChangesAsync();
+				// Bejelentkezett felhasználó értékeinek frissítése
+				_context.Update(user);
+				await _context.SaveChangesAsync();
 
-                // Bejelentkezett felhasználó átírányítása az irányítópultra
-                return RedirectToAction("Dashboard", "Home");
-            }
+				// Bejelentkezett felhasználó átírányítása az irányítópultra
+				return RedirectToAction("Dashboard", "Home");
+			}
 
-            // Regisztrációhoz szükséges listák értékeinek betöltése
-            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
-            ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name");
+			// Regisztrációhoz szükséges listák értékeinek betöltése
+			ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+			ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name");
 
-            // Felület megjelenítése a felhasználó értékeivel amennyiben a felhasználó létezik de még egyszer sem lépett be
-            if (user?.LogonCount == 0) return View(user);
+			// Felület megjelenítése a felhasználó értékeivel amennyiben a felhasználó létezik de még egyszer sem lépett be
+			if (user?.LogonCount == 0) return View(user);
 
-            // Felület megjelenítése amennyiben a felhasználó nem létezik
-            return View();
-        }
+			// Felület megjelenítése amennyiben a felhasználó nem létezik
+			return View();
+		}
 
-        /// <summary>
-        /// Üdvözlő felületen új felhasználói profil létrehozása
-        /// </summary>
-        /// <param name="user">Felhasználó megadott értékei</param>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([Bind("UserId,Username,DisplayName,Email,Phone,Rank,LastLogin,ClassId,PositionId,Genre")] User user)
-        {
-            // Megadott értékek ellenőrzése
-            if (ModelState.IsValid)
-            {
-                // Felhasználó megkeresése az adatbázisban
-                User? foundUser = await CheckUsername(user.Username);
+		/// <summary>
+		/// Üdvözlő felületen új felhasználói profil létrehozása
+		/// </summary>
+		/// <param name="user">Felhasználó megadott értékei</param>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Index([Bind("UserId,Username,DisplayName,Email,Phone,Rank,LastLogin,ClassId,PositionId,Genre")] User user)
+		{
+			// Megadott értékek ellenőrzése
+			if (ModelState.IsValid)
+			{
+				// Felhasználó megkeresése az adatbázisban
+				User? foundUser = await CheckUsername(user.Username);
 
-                // Amennyiben a felhasználó még nem létezik az adatbázisban
-                if (foundUser == null)
-                {
-                    // Új felasználó felhasználónevének lekérdezése
-                    user.Username = GetUsername();
+				// Amennyiben a felhasználó még nem létezik az adatbázisban
+				if (foundUser == null)
+				{
+					// Új felasználó felhasználónevének lekérdezése
+					user.Username = GetUsername();
 
-                    // Alapértelmezett bejelentkezési szám megnövelése
-                    user.LogonCount++;
+					// Alapértelmezett bejelentkezési szám megnövelése
+					user.LogonCount++;
 
-                    // Felhasználó hozzáadása az adatbázishoz
-                    _context.Add(user);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    // Amennyiben a felhasználó létezik annak értékeinek felülírása a megadottakkal
-                    foundUser.DisplayName = user.DisplayName;
-                    foundUser.Rank = user.Rank;
-                    foundUser.Class = user.Class;
-                    foundUser.ClassId = user.ClassId;
-                    foundUser.Position = user.Position;
-                    foundUser.PositionId = user.PositionId;
-                    foundUser.Phone = user.Phone;
-                    foundUser.Email = user.Email;
-                    foundUser.Genre = user.Genre;
+					// Felhasználó hozzáadása az adatbázishoz
+					_context.Add(user);
+					await _context.SaveChangesAsync();
+				}
+				else
+				{
+					// Amennyiben a felhasználó létezik annak értékeinek felülírása a megadottakkal
+					foundUser.DisplayName = user.DisplayName;
+					foundUser.Rank = user.Rank;
+					foundUser.Class = user.Class;
+					foundUser.ClassId = user.ClassId;
+					foundUser.Position = user.Position;
+					foundUser.PositionId = user.PositionId;
+					foundUser.Phone = user.Phone;
+					foundUser.Email = user.Email;
+					foundUser.Genre = user.Genre;
 
-                    // Bejelentkezési szám megnövelése
-                    foundUser.LogonCount++;
+					// Bejelentkezési szám megnövelése
+					foundUser.LogonCount++;
 
-                    // Felhasználó frissítése az adatbázisban
-                    _context.Update(foundUser);
-                    await _context.SaveChangesAsync();
-                }
+					// Felhasználó frissítése az adatbázisban
+					_context.Update(foundUser);
+					await _context.SaveChangesAsync();
+				}
 
-                // Felhasználó átírányítása az irányítópultra
-                return RedirectToAction("Dashboard", "Home");
-            }
+				// Felhasználó átírányítása az irányítópultra
+				return RedirectToAction("Dashboard", "Home");
+			}
 
-            // Regisztrációhoz szükséges listák értékeinek betöltése
-            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
-            ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name");
+			// Regisztrációhoz szükséges listák értékeinek betöltése
+			ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+			ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name");
 
-            // Felület újra megjelenítése, amennyiben a felhasználó hibás értékeket adott meg
-            return View(user);
-        }
+			// Felület újra megjelenítése, amennyiben a felhasználó hibás értékeket adott meg
+			return View(user);
+		}
 
-        /// <summary>
-        /// Bejelentkezett felhasználó megkeresése a rendszerben
-        /// </summary>
-        /// <returns>Bejelentkezett felhasználó adatai</returns>
-        private async Task<User?> GetLoggedUser()
-        {
-            // Felhasználónév lekérése a számítógéptől
-            string? activeUsername = GetUsername();
+		/// <summary>
+		/// Bejelentkezett felhasználó megkeresése a rendszerben
+		/// </summary>
+		/// <returns>Bejelentkezett felhasználó adatai</returns>
+		private async Task<User?> GetLoggedUser()
+		{
+			// Felhasználónév lekérése a számítógéptől
+			string? activeUsername = GetUsername();
 
-            // Amennyiben nem található a rendszerben felhasználónév (pl linux), kérelem elutasítása
-            if (activeUsername == null) return null;
+			// Amennyiben nem található a rendszerben felhasználónév (pl linux), kérelem elutasítása
+			if (activeUsername == null) return null;
 
-            // Megtalált felhasználó visszaadása (amennyiben nem talált, null értéket fog visszaadni)
-            return await _context.Users
-                .Include(u => u.Class)
-                .Include(u => u.Position)
-                .FirstOrDefaultAsync(m => m.Username == activeUsername);
-        }
+			// Megtalált felhasználó visszaadása (amennyiben nem talált, null értéket fog visszaadni)
+			return await _context.Users
+				.Include(u => u.Class)
+				.Include(u => u.Position)
+				.FirstOrDefaultAsync(m => m.Username == activeUsername);
+		}
 
-        /// <summary>
-        /// Bejelentkezett felhasználó felhasználónevének lekérdezése
-        /// </summary>
-        /// <returns>Felhasználó felhasználóneve</returns>
-        private string? GetUsername()
-        {
-            return User.Identity?.Name;
-        }
+		/// <summary>
+		/// Bejelentkezett felhasználó felhasználónevének lekérdezése
+		/// </summary>
+		/// <returns>Felhasználó felhasználóneve</returns>
+		private string? GetUsername()
+		{
+			return User.Identity?.Name;
+		}
 
-        /// <summary>
-        /// Felhasználó megkeresése a rendszerben
-        /// </summary>
-        /// <param name="username">Felhasználó név</param>
-        /// <returns>Felhasználó amennyiben létezik</returns>
-        private async Task<User?> CheckUsername(string? username)
-        {
-            // Felhasználónév meglétének ellenőrzése
-            if (username == null) return null;
+		/// <summary>
+		/// Felhasználó megkeresése a rendszerben
+		/// </summary>
+		/// <param name="username">Felhasználó név</param>
+		/// <returns>Felhasználó amennyiben létezik</returns>
+		private async Task<User?> CheckUsername(string? username)
+		{
+			// Felhasználónév meglétének ellenőrzése
+			if (username == null) return null;
 
-            // Megtalált felhasználó visszaadása (amennyiben nem talált, nul értéket fog visszaadni
-            return await _context.Users
-                .Include(u => u.Class)
-                .Include(u => u.Position)
-                .FirstOrDefaultAsync(u => u.Username == username);
-        }
-    }
+			// Megtalált felhasználó visszaadása (amennyiben nem talált, nul értéket fog visszaadni
+			return await _context.Users
+				.Include(u => u.Class)
+				.Include(u => u.Position)
+				.FirstOrDefaultAsync(u => u.Username == username);
+		}
+	}
 }

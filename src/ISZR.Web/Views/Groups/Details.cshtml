@@ -14,9 +14,9 @@
 				</div>
 				<div class="card-body">
 					<div class="row">
-						<div class="col-12 col-md-6">
+						<div class="col-12">
 							<div class="form-group">
-								<label>Csoport megnevezése</label>
+								<label>Jogosultsági csoport megnevezése</label>
 								<span asp-validation-for="Name" class="text-danger"></span>
 								<div class="input-group mb-3">
 									<div class="input-group-prepend">
@@ -26,22 +26,11 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-12 col-md-6">
-							<div class="form-group">
-								<label>Csoport osztálya</label>
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="fas fa-users"></i></span>
-									</div>
-									<select asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId" disabled="disabled"></select>
-								</div>
-							</div>
-						</div>
 					</div>
 					<div class="row">
 						<div class="col-12">
 							<div class="form-group">
-								<label>Csoporthoz hozzátartozó Windows jogosultságok</label>
+								<label>Jogosultsági csoporthoz tartozó Windows jogosultságok</label>
 								<div class="input-group mb-3">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fab fa-windows"></i></span>
@@ -52,7 +41,7 @@
 						</div>
 						<div class="col-12">
 							<div class="form-group">
-								<label>Csoporthoz hozzátartozó Főnix 3 jogosultságok</label>
+								<label>Jogosultsági csoporthoz tartozó Főnix 3 jogosultságok</label>
 								<div class="input-group mb-3">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fas fa-dove"></i></span>
@@ -65,7 +54,7 @@
 					<div class="row">
 						<div class="col-12 float-right">
 							<span class="float-right">
-								<a asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+								<a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
 								<a asp-action="Edit" asp-route-id="@Model?.GroupId"><input type="button" value="Jogosultsági csoport szerkesztése" class="btn btn-info ml-1" /></a>
 							</span>
 						</div>

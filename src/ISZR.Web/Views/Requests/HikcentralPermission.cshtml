@@ -22,21 +22,21 @@
                             <div class="bs-stepper-header" role="tablist">
                                 <div class="step active" data-target="#request-info">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-male"></i></span>
-                                        <span class="bs-stepper-label">Felhasználó kiválasztása</span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-male"></i></span>
+                                        <span class="bs-stepper-label">Felhasználóval kapcsolatos adatok</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" data-target="#permission-info">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="permission-info" id="permission-info-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-shield-alt"></i></span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-shield-alt"></i></span>
                                         <span class="bs-stepper-label">Jogosultsággal kapcsolatos információk</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" data-target="#summary">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-list"></i></span>
+                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
                                         <span class="bs-stepper-label">Összesítés</span>
                                     </button>
                                 </div>
@@ -46,7 +46,7 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Személy aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -57,10 +57,10 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i> Figyelem!</h5>
-                                                Csak a rendszerben létező felhasználóknak lehet igényelni Hikcentral jogosultságot!<br />
-                                                Amennyiben nem található a kívánt felhasználó, küldön e-mail az Informatikai csoport részére.
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
+                                                Csak a rendszerben létező felhasználók részére lehet igényelni HikCentral jogosultságot!<br />
+                                                Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
                                             </div>
                                         </div>
                                     </div>
@@ -76,7 +76,7 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Jogosultság típusa</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>A felhasználó számára kiválaszott jogosultsági típus</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fas fa-shield-alt"></i></span>
@@ -84,26 +84,26 @@
                                                     <select id="inputPermissionType" name="permissionType" class="form-control select2bs4" required>
                                                         <option>Felügyelő</option>
                                                         <option>Megtekintő</option>
-                                                        <option>HES</option>
+                                                        <option>Címkéző</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="alert alert-info alert-dismissible">
-                                                <i class="fas fa-shield-alt"></i> <span class="font-weight-bold">Felügyelő jogosultság</span><br />
-                                                A jogosultsággal csak élőkép nézése lehetséges.<br />
-                                                <i class="fas fa-shield-alt"></i> <span class="font-weight-bold">Megtekintő jogosultság</span><br />
-                                                A felügyelői jogosultságon túl, a felhasználó képes felvételeket visszajátszani.<br />
-                                                <i class="fas fa-shield-alt"></i> <span class="font-weight-bold">HES jogosultság</span><br />
-                                                A felügyelő és megtekintőn túl, a felhasználó képes a felvételeken címkéket létrehozni.
+                                            <div class="alert alert-light alert-dismissible">
+                                                <h5><i class="icon fas fa-eye"></i>Felügyelő</h5>
+                                                A felhasználó csak a kamerák élőképeit képes nézni. Nincs jogosultsága azokon visszajátszani!<br /><hr />
+                                                <h5><i class="icon fas fa-film"></i>Megtekintő</h5>
+                                                A felhasználó képes a kamerák élőképeit nézni, illetve azokon visszajátszani!<br /><hr />
+                                                <h5><i class="icon fas fa-tags"></i>Címkéző</h5>
+                                                A felhasználó képes a kamerák élőképeit nézni, valamint címkéket is eltud helyezni visszajátszáskor.
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <span class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
                                                 <script>
                                                     function summary() {
@@ -120,22 +120,22 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i> Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+                                                <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
                                                 <dl class="row">
-                                                    <dt class="col-sm-4"><i class="fas fa-user"></i> Kinek a részére</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-user"></i>Felhasználó részére</dt>
                                                     <dd id="summaryUser" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-tag"></i> Igénylés típusa</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
                                                     <dd class="col-sm-8">HikCentral jogosultság igénylése</dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-history"></i> Igénylés létrehozásának ideje</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
                                                     <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-                                                    <dt class="col-sm-4"><i class="fas fa-shield-alt"></i> Jogosultság típusa</dt>
+                                                    <dt class="col-sm-4"><i class="icon fas fa-shield-alt"></i>Igényelt jogosultsági típus</dt>
                                                     <dd id="summaryPermissionType" class="col-sm-8"></dd>
                                                 </dl>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12 mt-3">
+                                        <div class="col-12">
                                             <div class="float-left">
                                                 <div class="custom-control custom-checkbox">
                                                     <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
@@ -145,7 +145,7 @@
                                                 </div>
                                             </div>
                                             <div class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt"></i> Vissza</a>
+                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                                 <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
                                             </div>
                                         </div>
