@@ -32,9 +32,23 @@ namespace ISZR.Web.Controllers
 				user.LastLogin = DateTime.Now;
 				user.LogonCount++;
 
-				// Bejelentkezett felhasználó értékeinek frissítése
-				_context.Update(user);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Bejelentkezett felhasználó értékeinek frissítése
+					_context.Update(user);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!UserExists(user.UserId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Bejelentkezett felhasználó átírányítása az irányítópultra
 				return RedirectToAction("Dashboard", "Home");
@@ -74,9 +88,23 @@ namespace ISZR.Web.Controllers
 					// Alapértelmezett bejelentkezési szám megnövelése
 					user.LogonCount++;
 
-					// Felhasználó hozzáadása az adatbázishoz
-					_context.Add(user);
-					await _context.SaveChangesAsync();
+					try
+					{
+						// Felhasználó hozzáadása az adatbázishoz
+						_context.Add(user);
+						await _context.SaveChangesAsync();
+					}
+					catch (DbUpdateConcurrencyException)
+					{
+						if (!UserExists(user.UserId))
+						{
+							return NotFound();
+						}
+						else
+						{
+							throw;
+						}
+					}
 				}
 				else
 				{
@@ -94,9 +122,23 @@ namespace ISZR.Web.Controllers
 					// Bejelentkezési szám megnövelése
 					foundUser.LogonCount++;
 
-					// Felhasználó frissítése az adatbázisban
-					_context.Update(foundUser);
-					await _context.SaveChangesAsync();
+					try
+					{
+						// Felhasználó frissítése az adatbázisban
+						_context.Update(foundUser);
+						await _context.SaveChangesAsync();
+					}
+					catch (DbUpdateConcurrencyException)
+					{
+						if (!UserExists(user.UserId))
+						{
+							return NotFound();
+						}
+						else
+						{
+							throw;
+						}
+					}
 				}
 
 				// Felhasználó átírányítása az irányítópultra
@@ -137,6 +179,16 @@ namespace ISZR.Web.Controllers
 		private string? GetUsername()
 		{
 			return User.Identity?.Name;
+		}
+
+		/// <summary>
+		/// Felhasználói azonosító megkeresése a rendszerben
+		/// </summary>
+		/// <param name="id">Felhasználói azonosító</param>
+		/// <returns>Létezik e a felhasználói azonosító (igaz/hamis)</returns>
+		private bool UserExists(int id)
+		{
+			return _context.Users.Any(e => e.UserId == id);
 		}
 
 		/// <summary>

@@ -102,9 +102,23 @@ namespace ISZR.Web.Controllers
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
 			{
-				// Osztály hozzáadása az adatbázishoz
-				_context.Add(@class);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Osztály hozzáadása az adatbázishoz
+					_context.Add(@class);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!ClassExists(@class.ClassId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Felhasználó átírányítása az osztályok listájára
 				return RedirectToAction(nameof(Index));

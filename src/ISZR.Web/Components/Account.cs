@@ -13,7 +13,7 @@ namespace ISZR.Web.Components
 		public static bool CheckGroup(string groupName)
 		{
 			// groupName nem lehet null értékű
-			if (groupName == null) return false;
+			if (string.IsNullOrEmpty(groupName)) return false;
 
 			groupName = $"^.*{groupName}$";
 

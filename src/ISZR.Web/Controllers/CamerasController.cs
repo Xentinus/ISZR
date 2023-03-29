@@ -24,9 +24,6 @@ namespace ISZR.Web.Controllers
 			// Admin jogosultság ellenőrzése
 			if (!Account.IsAdmin()) return Forbid();
 
-			// Kamerák statisztikájának kiszámolása
-			ViewBag.All = _context.Cameras.Count();
-
 			// Kamera lista elkészítése
 			var dataContext = _context.Cameras.OrderBy(u => u.Name);
 
@@ -100,9 +97,23 @@ namespace ISZR.Web.Controllers
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
 			{
-				// Kamera hozzáadása a rendszerhez
-				_context.Add(camera);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Kamera hozzáadása a rendszerhez
+					_context.Add(camera);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!CameraExists(camera.CameraId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Felhasználó átírányítása a kamerák listájára
 				return RedirectToAction(nameof(Index));
@@ -166,6 +177,7 @@ namespace ISZR.Web.Controllers
 						throw;
 					}
 				}
+
 				// Felhasználó átirányítása a kamerák listájára
 				return RedirectToAction(nameof(Index));
 			}
