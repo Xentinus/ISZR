@@ -38,7 +38,7 @@ namespace ISZR.Web.Controllers
 				.AsQueryable();
 
 			// Amennyiben semmilyen érték nem létezik (vendég felhasználóknak, saját igénylések megtekintése)
-			if (status == null && type == null && requestFor == 0)
+			if (string.IsNullOrEmpty(status) && string.IsNullOrEmpty(type) && requestFor == 0)
 			{
 				int userId = await Account.GetUserId(_context);
 				dataContext = dataContext.Where(r => r.RequestForId == userId);
@@ -49,14 +49,14 @@ namespace ISZR.Web.Controllers
 				if (!Account.IsUgyintezo()) return Forbid();
 
 				// Státusz alapú szürés
-				if (status != null && status != "Mind")
+				if (!string.IsNullOrEmpty(status) && status != "Mind")
 				{
 					dataContext = dataContext.Where(r => r.Status == status);
 					ViewBag.status = status;
 				}
 
 				// Típus alapú szürés
-				if (type != null && type != "Mind")
+				if (!string.IsNullOrEmpty(type) && type != "Mind")
 				{
 					dataContext = dataContext.Where(r => r.Type == type);
 					ViewBag.type = type;
@@ -136,7 +136,7 @@ namespace ISZR.Web.Controllers
 		public async Task<IActionResult> Details(int? id, string? status, int? resolverId)
 		{
 			// Igényléssel kapcsolat
-			if (id == null || status == null || _context.Requests == null) return NotFound();
+			if (id == null || string.IsNullOrEmpty(status) || _context.Requests == null) return NotFound();
 
 			// Adott azonosítójú kérelem kikeresése
 			var request = await _context.Requests
@@ -155,21 +155,21 @@ namespace ISZR.Web.Controllers
 			if (request == null) return NotFound();
 
 			// Igénylés státuszának megváltoztatása
+			request.Status = status;
+			if (status == "Folyamatban")
+			{
+				// Folyamatban esetén időpont átírása
+				request.ResolveDate = new DateTime();
+			}
+			else
+			{
+				// Más státusz alapján aktuális idő, és személy beállítása
+				request.ResolveDate = DateTime.Now;
+				request.ResolverId = resolverId;
+			}
+
 			try
 			{
-				request.Status = status;
-				if (status == "Folyamatban")
-				{
-					// Folyamatban esetén időpont átírása
-					request.ResolveDate = new DateTime();
-				}
-				else
-				{
-					// Más státusz alapján aktuális idő, és személy beállítása
-					request.ResolveDate = DateTime.Now;
-					request.ResolverId = resolverId;
-				}
-
 				// Igénylés státuszának frissítése
 				_context.Update(request);
 				await _context.SaveChangesAsync();
@@ -227,35 +227,35 @@ namespace ISZR.Web.Controllers
 			{
 				// Kért csoport jogosultságainak lekérdezése
 				Group? group = await GetGroupById(selectedGroup);
-				Request? request = new Request();
+				Request? request = new();
+
+				// Új felhasználó hozzáadása a rendszerhez
+				int? newUserId = await CreateNewUserAndGetId(user);
+
+				// Új felhasználó beállítása
+				request.RequestForId = newUserId;
+
+				// Igénylést létrehozó személy azonosítója
+				request.RequestAuthorId = await GetLoggedUserId();
+
+				// Igénylés létrehozásának dátuma
+				request.CreationDate = DateTime.Now;
+
+				// Igénylés típusa
+				request.Type = "Új felhasználó részére jogosultság igénylés";
+
+				// Alapértelmezett státusz
+				request.Status = "Folyamatban";
+
+				// Igénylés leírása
+				request.Description = "Kérem engedélyezni új felhasználó részére jogosultság kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
+
+				// Csoport jogosultságainak hozzáadása
+				request.WindowsPermissions = !string.IsNullOrEmpty(group.WindowsPermissions) ? group.WindowsPermissions : null;
+				request.FonixPermissions = !string.IsNullOrEmpty(group.FonixPermissions) ? group.FonixPermissions : null;
 
 				try
 				{
-					// Új felhasználó hozzáadása a rendszerhez
-					int? newUserId = await CreateNewUserAndGetId(user);
-
-					// Új felhasználó beállítása
-					request.RequestForId = newUserId;
-
-					// Igénylést létrehozó személy azonosítója
-					request.RequestAuthorId = await GetLoggedUserId();
-
-					// Igénylés létrehozásának dátuma
-					request.CreationDate = DateTime.Now;
-
-					// Igénylés típusa
-					request.Type = "Új felhasználó részére jogosultság igénylés";
-
-					// Alapértelmezett státusz
-					request.Status = "Folyamatban";
-
-					// Igénylés leírása
-					request.Description = "Kérem engedélyezni új felhasználó részére jogosultság kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
-
-					// Csoport jogosultságainak hozzáadása
-					request.WindowsPermissions = group.WindowsPermissions != null ? group.WindowsPermissions : null;
-					request.FonixPermissions = group.FonixPermissions != null ? group.FonixPermissions : null;
-
 					// Igénylés hozzáadása a rendszerhez
 					await _context.Requests.AddAsync(request);
 					await _context.SaveChangesAsync();
@@ -317,7 +317,7 @@ namespace ISZR.Web.Controllers
 		/// <param name="request">Igénylés értékei</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> UserAdditionalAccess(string[] windowsPermissions, string[] fonix3Permissions, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+		public async Task<IActionResult> UserAdditionalAccess(string[]? windowsPermissions, string[]? fonix3Permissions, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
 		{
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
@@ -340,22 +340,36 @@ namespace ISZR.Web.Controllers
 				// Windows jogosultságok Active-Directory értékeinek sorrendbe helyezése
 				if (windowsPermissions.Length > 0)
 				{
-					StringBuilder windows = new StringBuilder();
-					foreach (string permission in windowsPermissions) windows.Append(permission[permission.Length - 1] == ';' ? $"{permission} " : $"{permission}; ");
+					StringBuilder windows = new();
+					foreach (string permission in windowsPermissions) windows.Append(permission[^1] == ';' ? $"{permission} " : $"{permission}; ");
 					request.WindowsPermissions = windows.ToString();
 				}
 
 				// Főnix 3 jogosultságok neveinek sorrendbe helyezése
 				if (fonix3Permissions.Length > 0)
 				{
-					StringBuilder fonix3 = new StringBuilder();
-					foreach (string permission in fonix3Permissions) fonix3.Append(permission[permission.Length - 1] == ';' ? $"{permission} " : $"{permission}; ");
+					StringBuilder fonix3 = new();
+					foreach (string permission in fonix3Permissions) fonix3.Append(permission[^1] == ';' ? $"{permission} " : $"{permission}; ");
 					request.FonixPermissions = fonix3.ToString();
 				}
 
-				// Igénylés hozzáadása a rendszerhez
-				_context.Add(request);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Igénylés hozzáadása a rendszerhez
+					_context.Add(request);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!RequestExists(request.RequestId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -396,7 +410,7 @@ namespace ISZR.Web.Controllers
 		public async Task<IActionResult> UserChangePosition(string? currentPermissions, int? selectedGroup, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
 		{
 			// Kötelező adatok meglétének ellenőrzése
-			if (currentPermissions == null || selectedGroup == null || request == null) return Forbid();
+			if (string.IsNullOrEmpty(currentPermissions) || selectedGroup == null || request == null) return Forbid();
 
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
@@ -421,12 +435,26 @@ namespace ISZR.Web.Controllers
 					$"<dl>\r\n<dt><i class=\"icon fas fa-people-arrows mr-2\"></i>Teendő a felhasználó jelenlegi jogosultságaival</dt>\r\n<dd>{currentPermissions}</dd>\r\n</dl>";
 
 				// Csoport jogosultságainak hozzáadása
-				request.WindowsPermissions = group.WindowsPermissions != null ? group.WindowsPermissions : null;
-				request.FonixPermissions = group.FonixPermissions != null ? group.FonixPermissions : null;
+				request.WindowsPermissions = !string.IsNullOrEmpty(group.WindowsPermissions) ? group.WindowsPermissions : null;
+				request.FonixPermissions = !string.IsNullOrEmpty(group.FonixPermissions) ? group.FonixPermissions : null;
 
-				// Igénylés hozzáadása a rendszerhez
-				_context.Add(request);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Igénylés hozzáadása a rendszerhez
+					_context.Add(request);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!RequestExists(request.RequestId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -484,9 +512,24 @@ namespace ISZR.Web.Controllers
 				// Igénylés leírása
 				request.Description = "Kérem engedélyezni a felhasználó részére e-mail cím elkészítését, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
 
-				// Igénylés hozzáadása a rendszerhez
-				_context.Add(request);
-				await _context.SaveChangesAsync();
+
+				try
+				{
+					// Igénylés hozzáadása a rendszerhez
+					_context.Add(request);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!RequestExists(request.RequestId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -543,9 +586,23 @@ namespace ISZR.Web.Controllers
 				// Igénylés leírása
 				request.Description = "Kérem engedélyezni telefonos PIN kód kiadását a felhasználó részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
 
-				// Igénylés hozzáadása a rendszerhez
-				_context.Add(request);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Igénylés hozzáadása a rendszerhez
+					_context.Add(request);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!RequestExists(request.RequestId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -586,10 +643,10 @@ namespace ISZR.Web.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Parking(string brand, string modell, string licensePlate, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+		public async Task<IActionResult> Parking(string? brand, string? modell, string? licensePlate, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
 		{
 			// Autóval kapcsolatos adatok meglétének ellenőrzése
-			if (brand == null || modell == null || licensePlate == null) return Forbid();
+			if (string.IsNullOrEmpty(brand) || string.IsNullOrEmpty(modell) || string.IsNullOrEmpty(licensePlate)) return Forbid();
 
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
@@ -610,9 +667,23 @@ namespace ISZR.Web.Controllers
 				request.Description = $"Kérem engedélyezni a felhasználó részére, az alábbi jármű parkolási engedélyének kiállítását.<br /><br />" +
 					$"<dl>\r\n<dt><i class=\"icon fas fa-car mr-2\"></i>Jármű típusa</dt>\r\n<dd>{brand} {modell}</dd>\r\n<dt><i class=\"icon fas fa-parking mr-2\"></i>Jármű rendszáma</dt>\r\n<dd>{licensePlate}</dd>\r\n</dl>";
 
-				// Igénylés hozzáadása a rendszerhez
-				_context.Add(request);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Igénylés hozzáadása a rendszerhez
+					_context.Add(request);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!RequestExists(request.RequestId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -650,10 +721,13 @@ namespace ISZR.Web.Controllers
 		/// <param name="request">Igénylés értékei</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> HikcentralPermission(string permissionType, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+		public async Task<IActionResult> HikcentralPermission(string? permissionType, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
 		{
-			// Megadott értékek ellenőrzése
-			if (ModelState.IsValid)
+            // Autóval kapcsolatos adatok meglétének ellenőrzése
+            if (string.IsNullOrEmpty(permissionType)) return Forbid();
+
+            // Megadott értékek ellenőrzése
+            if (ModelState.IsValid)
 			{
 				// Igénylést létrehozó személy azonosítója
 				request.RequestAuthorId = await GetLoggedUserId();
@@ -670,9 +744,23 @@ namespace ISZR.Web.Controllers
 				// Igénylés leírása
 				request.Description = $"Kérem engedélyezni a felhasználó részére {permissionType.ToLower()} típusú jogosultságot bíztosítani a Hikcentral programon belül, a kamerarendszer használatához.";
 
-				// Igénylés hozzáadása a rendszerhez
-				_context.Add(request);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Igénylés hozzáadása a rendszerhez
+					_context.Add(request);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!RequestExists(request.RequestId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -714,10 +802,10 @@ namespace ISZR.Web.Controllers
 		/// <param name="request">Igénylés értékei</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> RecordsByTags(DateTime inputDate, string inputWhy, string inputTags, string[] selectedCameras, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+		public async Task<IActionResult> RecordsByTags(DateTime inputDate, string? inputWhy, string? inputTags, string[]? selectedCameras, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
 		{
 			// Adatok meglétének ellenőrzése
-			if (inputWhy == null || inputTags == null || selectedCameras == null) return Forbid();
+			if (string.IsNullOrEmpty(inputWhy) || string.IsNullOrEmpty(inputTags) || selectedCameras == null) return Forbid();
 
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
@@ -737,13 +825,30 @@ namespace ISZR.Web.Controllers
 				// Kamerák sorrendbe helyezése
 				string cameras = string.Join(", ", selectedCameras);
 
-				// Igénylés leírása
-				request.Description = $"Kérem engedélyezni a kamerarendszerben rögzített adatok külső adattárolón történő tárolását, illetve felhasználását megkeresés alapján Bűnügyi vagy Felügyeleti szerv részére.<br /><br />" +
-					$"<dl>\r\n<dt><i class=\"icon far fa-eye mr-2\"></i>Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n<dt><i class=\"icon fas fa-calendar mr-2\"></i>Esemény dátuma</dt>\r\n<dd>{inputDate.ToString("yyyy.MM.dd")}</dd>\r\n<dt><i class=\"icon fas fa-tags mr-2\"></i>Címkék megnevezése</dt>\r\n<dd>{inputTags}</dd>\r\n<dt><i class=\"icon fas fa-video mr-2\"></i>Megcímkézett kamerák</dt>\r\n<dd>{cameras}</dd>\r\n</dl>";
+				// Dátum átalakítása
+				string inputDateString = inputDate.ToString("yyyy.MM.dd");
 
-				// Igénylés hozzáadása a rendszerhez
-				_context.Add(request);
-				await _context.SaveChangesAsync();
+                // Igénylés leírása
+                request.Description = $"Kérem engedélyezni a kamerarendszerben rögzített adatok külső adattárolón történő tárolását, illetve felhasználását megkeresés alapján Bűnügyi vagy Felügyeleti szerv részére.<br /><br />" +
+					$"<dl>\r\n<dt><i class=\"icon far fa-eye mr-2\"></i>Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n<dt><i class=\"icon fas fa-calendar mr-2\"></i>Esemény dátuma</dt>\r\n<dd>{inputDateString}</dd>\r\n<dt><i class=\"icon fas fa-tags mr-2\"></i>Címkék megnevezése</dt>\r\n<dd>{inputTags}</dd>\r\n<dt><i class=\"icon fas fa-video mr-2\"></i>Megcímkézett kamerák</dt>\r\n<dd>{cameras}</dd>\r\n</dl>";
+
+				try
+				{
+					// Igénylés hozzáadása a rendszerhez
+					_context.Add(request);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!RequestExists(request.RequestId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -785,10 +890,10 @@ namespace ISZR.Web.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> RecordsByTime(string inputWhy, string recordsArray, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
+		public async Task<IActionResult> RecordsByTime(string? inputWhy, string? recordsArray, [Bind("RequestId,Type,Status,Description,RequestAuthorId,RequestForId")] Request request)
 		{
 			// Adatok meglétének ellenőrzése
-			if (inputWhy == null || recordsArray == null) return Forbid();
+			if (string.IsNullOrEmpty(inputWhy) || string.IsNullOrEmpty(recordsArray)) return Forbid();
 
 			// Felvételek tömbösítése
 			string[][]? records = JsonConvert.DeserializeObject<string[][]?>(recordsArray);
@@ -814,16 +919,30 @@ namespace ISZR.Web.Controllers
 					$"<div class=\"card\">\r\n<div class=\"card-body p-0\">\r\n<table class=\"table\">\r\n<thead class=\"bg-light\">\r\n<tr>\r\n<th><i class=\"icon fas fa-video mr-2\"></i>Kamera</th>\r\n<th><i class=\"icon fas fa-play mr-2\"></i>Felvétel kezdete</th>\r\n<th><i class=\"icon fas fa-stop mr-2\"></i>Felvétel vége</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n";
 
 				// Kamerafelvételek hozzáadása a táblázhoz
-				StringBuilder recordTable = new StringBuilder();
+				StringBuilder recordTable = new();
 				foreach (string[] record in records) recordTable.Append($"<tr><td>{record[0]}</td><td>{record[1]}</td><td>{record[2]}</td></tr>");
 				request.Description += recordTable.ToString();
 
 				// Táblázat lezárása
 				request.Description += $"</tbody>\r\n</table>\r\n</div>\r\n</div>";
 
-				// Igénylés hozzáadása a rendszerhez
-				_context.Add(request);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Igénylés hozzáadása a rendszerhez
+					_context.Add(request);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!RequestExists(request.RequestId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Igénylés megnyítása
 				return RedirectToAction(nameof(Details), new { @id = request.RequestId });

@@ -43,10 +43,10 @@ namespace ISZR.Web.Controllers
 
 				// Felhasználó elutasított igénylései
 				ViewBag.DeniedRequests = _context.Requests.Count(r => r.Status == "Elutasítva" && r.RequestAuthorId == user.UserId);
-            }
+			}
 
-            // Irányítópult megjelenítése a felhasználónak
-            return View(user);
+			// Irányítópult megjelenítése a felhasználónak
+			return View(user);
 		}
 
 		/// <summary>
@@ -96,6 +96,7 @@ namespace ISZR.Web.Controllers
 						throw;
 					}
 				}
+
 				// Felhasználó visszairányítása az irányítópultba
 				return RedirectToAction(nameof(Dashboard));
 			}

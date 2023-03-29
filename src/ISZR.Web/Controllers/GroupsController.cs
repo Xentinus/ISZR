@@ -122,9 +122,23 @@ namespace ISZR.Web.Controllers
 				// Főnix 3 jogosultságok neveinek sorrendbe helyezése
 				if (fonix3Permissions.Length > 0) group.FonixPermissions = PermissionList(fonix3Permissions);
 
-				// Jogosultsági csoport hozzáadása a rendszerhez
-				_context.Add(group);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Jogosultsági csoport hozzáadása a rendszerhez
+					_context.Add(group);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!GroupExists(group.GroupId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Felhasználó átírányítása a csoportok listájára
 				return RedirectToAction(nameof(Index));
@@ -172,12 +186,12 @@ namespace ISZR.Web.Controllers
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
 			{
+				// Null érték megtartása amennyiben üres a mező
+				group.WindowsPermissions = group.WindowsPermissions == "" ? null : group.WindowsPermissions;
+				group.FonixPermissions = group.FonixPermissions == "" ? null : group.FonixPermissions;
+
 				try
 				{
-					// Null érték megtartása amennyiben üres a mező
-					group.WindowsPermissions = group.WindowsPermissions == "" ? null : group.WindowsPermissions;
-					group.FonixPermissions = group.FonixPermissions == "" ? null : group.FonixPermissions;
-
 					// Csoport adatainak felülírása
 					_context.Update(group);
 					await _context.SaveChangesAsync();

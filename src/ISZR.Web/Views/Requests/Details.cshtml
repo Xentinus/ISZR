@@ -34,24 +34,21 @@
                             <address>
                                 @Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank?.ToLower()<br>
                                 @Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
-                                @if (Model?.RequestAuthor?.Username != null)
+                                @if (!string.IsNullOrEmpty(Model?.RequestAuthor?.Username))
                                 {
                                     <i class="icon fab fa-windows mr-2"></i>
-
                                     @Model?.RequestAuthor?.Username
                                     <br />
                                 }
-                                @if (Model?.RequestAuthor?.Email != null)
+                                @if (!string.IsNullOrEmpty(Model?.RequestAuthor?.Email))
                                 {
                                     <i class="icon fas fa-envelope mr-2"></i>
-
                                     @Model?.RequestAuthor?.Email
                                     <br />
                                 }
-                                @if (Model?.RequestAuthor?.Phone != null)
+                                @if (!string.IsNullOrEmpty(Model?.RequestAuthor?.Phone))
                                 {
                                     <i class="icon fas fa-phone-square-alt mr-2"></i>
-
                                     @Model?.RequestAuthor?.Phone
                                 }
                             </address>
@@ -64,24 +61,21 @@
                             <address>
                                 @Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank?.ToLower()<br>
                                 @Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
-                                @if (Model?.RequestFor?.Username != null)
+                                @if (!string.IsNullOrEmpty(Model?.RequestFor?.Username))
                                 {
                                     <i class="icon fab fa-windows mr-2"></i>
-
                                     @Model?.RequestFor?.Username
                                     <br />
                                 }
-                                @if (Model?.RequestFor?.Email != null)
+                                @if (!string.IsNullOrEmpty(Model?.RequestFor?.Email))
                                 {
                                     <i class="icon fas fa-envelope mr-2"></i>
-
                                     @Model?.RequestFor?.Email
                                     <br />
                                 }
-                                @if (Model?.RequestFor?.Phone != null)
+                                @if (!string.IsNullOrEmpty(Model?.RequestFor?.Phone))
                                 {
                                     <i class="icon fas fa-phone-square-alt mr-2"></i>
-
                                     @Model?.RequestFor?.Phone
                                 }
                             </address>
@@ -148,7 +142,7 @@
                     </div>
                 </div>
 
-                @if (Model?.WindowsPermissions != null)
+                @if (!string.IsNullOrEmpty(Model?.WindowsPermissions))
                 {
                     <div class="row">
                         <div class="col-12 d-none d-print-block">
@@ -166,7 +160,7 @@
                     </div>
                 }
 
-                @if (Model?.FonixPermissions != null)
+                @if (!string.IsNullOrEmpty(Model?.FonixPermissions))
                 {
                     <div class="row">
                         <div class="col-12 d-none d-print-block">

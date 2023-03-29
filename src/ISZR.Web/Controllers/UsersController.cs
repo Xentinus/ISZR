@@ -135,9 +135,23 @@ namespace ISZR.Web.Controllers
 				// Amennyiben az adott felhasználónévvel rendelkezik ember, felhasználó átirányítása az adott felhasználó nevű felhasználó részleteire
 				if (foundUser != null) return RedirectToAction(nameof(Details), new { @id = foundUser.UserId });
 
-				// Felhasználó hozzáadása a rendszerhez
-				_context.Add(user);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Felhasználó hozzáadása a rendszerhez
+					_context.Add(user);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!UserExists(user.UserId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Adminisztrátor átirányítása a felhasználók listájához
 				return RedirectToAction(nameof(Index));
@@ -209,6 +223,8 @@ namespace ISZR.Web.Controllers
 						throw;
 					}
 				}
+
+				// Adminisztrátor átirányítása a felhasználók listájához
 				return RedirectToAction(nameof(Index));
 			}
 

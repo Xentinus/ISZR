@@ -127,9 +127,23 @@ namespace ISZR.Web.Controllers
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
 			{
-				// Jogosultság hozzáadása az adatbázishoz
-				_context.Add(permission);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Jogosultság hozzáadása az adatbázishoz
+					_context.Add(permission);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!PermissionExists(permission.PermissionId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Felhasználó átírányítása a jogosultságok listájához
 				return RedirectToAction(nameof(Index));

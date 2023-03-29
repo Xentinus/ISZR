@@ -97,9 +97,23 @@ namespace ISZR.Web.Controllers
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
 			{
-				// Beosztás hozzáadása az adatbázishoz
-				_context.Add(position);
-				await _context.SaveChangesAsync();
+				try
+				{
+					// Beosztás hozzáadása az adatbázishoz
+					_context.Add(position);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!PositionExists(position.PositionId))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
 
 				// Felhasználó átírányítása a beosztások listájára
 				return RedirectToAction(nameof(Index));
