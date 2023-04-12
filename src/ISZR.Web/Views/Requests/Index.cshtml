@@ -124,31 +124,31 @@
                                         }
                                     </td>
                                     <td class="d-none d-md-table-cell">
-                                        @Html.DisplayFor(modelItem => item.CreationDate)
-                                        @if (item.ResolveDate != new DateTime())
+                                        @Html.DisplayFor(modelItem => item.CreatedDateTime)
+                                        @if (item.ClosedDateTime != new DateTime())
                                         {
                                             if (item.Status == "Végrehajtva")
                                             {
                                                 <br />
-                                                <span class="text-success font-weight-bold">@item.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+                                                <span class="text-success font-weight-bold">@item.ClosedDateTime.ToString("yyyy. MMMM dd. HH:mm")</span>
                                             }
                                             else if (item.Status == "Elutasítva")
                                             {
                                                 <br />
-                                                <span class="text-danger font-weight-bold">@item.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+                                                <span class="text-danger font-weight-bold">@item.ClosedDateTime.ToString("yyyy. MMMM dd. HH:mm")</span>
                                             }
                                         }
                                     </td>
                                     <td class="d-none d-xl-table-cell">
-                                        @if (item.RequestAuthor != null)
+                                        @if (item.CreatedByUser != null)
                                         {
-                                            <span>@item.RequestAuthor.DisplayName</span>
+                                            <span>@item.CreatedByUser.DisplayName</span>
                                         }
                                     </td>
                                     <td>
-                                        @if (item.RequestFor != null)
+                                        @if (item.CreatedForUser != null)
                                         {
-                                            <span>@item.RequestFor.DisplayName</span>
+                                            <span>@item.CreatedForUser.DisplayName</span>
                                         }
                                     </td>
                                     <td>

@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISZR.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230301075802_AddGenreToUser")]
-    partial class AddGenreToUser
+    [Migration("20230412081448_v202304121014")]
+    partial class v202304121014
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.14")
+                .HasAnnotation("ProductVersion", "6.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -34,11 +34,6 @@ namespace ISZR.Web.Migrations
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -84,10 +79,6 @@ namespace ISZR.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupId"), 1L, 1);
 
-                    b.Property<int?>("ClassId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.Property<string>("FonixPermissions")
                         .HasColumnType("nvarchar(max)");
 
@@ -96,17 +87,49 @@ namespace ISZR.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("WindowsPermissions")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GroupId");
 
-                    b.HasIndex("ClassId");
-
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("ISZR.Web.Models.Parking", b =>
+                {
+                    b.Property<int>("ParkingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParkingId"), 1L, 1);
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LicensePlate")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("Modell")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int?>("OwnerUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ParkingId");
+
+                    b.HasIndex("OwnerUserId");
+
+                    b.ToTable("Parkings");
                 });
 
             modelBuilder.Entity("ISZR.Web.Models.Permission", b =>
@@ -141,6 +164,32 @@ namespace ISZR.Web.Migrations
                     b.ToTable("Permissions");
                 });
 
+            modelBuilder.Entity("ISZR.Web.Models.Phone", b =>
+                {
+                    b.Property<int>("PhoneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PhoneId"), 1L, 1);
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhoneCode")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<int?>("PhoneUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PhoneId");
+
+                    b.HasIndex("PhoneUserId");
+
+                    b.ToTable("Phones");
+                });
+
             modelBuilder.Entity("ISZR.Web.Models.Position", b =>
                 {
                     b.Property<int>("PositionId")
@@ -154,8 +203,8 @@ namespace ISZR.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(48)
-                        .HasColumnType("nvarchar(48)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("PositionId");
 
@@ -170,8 +219,23 @@ namespace ISZR.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"), 1L, 1);
 
-                    b.Property<DateTime>("CreationDate")
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClosedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ClosedDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedForUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -179,16 +243,7 @@ namespace ISZR.Web.Migrations
                     b.Property<string>("FonixPermissions")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RequestAuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RequestForId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ResolveDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ResolverId")
+                    b.Property<int?>("PhoneId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -202,11 +257,15 @@ namespace ISZR.Web.Migrations
 
                     b.HasKey("RequestId");
 
-                    b.HasIndex("RequestAuthorId");
+                    b.HasIndex("CarId");
 
-                    b.HasIndex("RequestForId");
+                    b.HasIndex("ClosedByUserId");
 
-                    b.HasIndex("ResolverId");
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("CreatedForUserId");
+
+                    b.HasIndex("PhoneId");
 
                     b.ToTable("Requests");
                 });
@@ -225,8 +284,8 @@ namespace ISZR.Web.Migrations
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -276,36 +335,55 @@ namespace ISZR.Web.Migrations
                     b.Navigation("Authorizer");
                 });
 
-            modelBuilder.Entity("ISZR.Web.Models.Group", b =>
+            modelBuilder.Entity("ISZR.Web.Models.Parking", b =>
                 {
-                    b.HasOne("ISZR.Web.Models.Class", "Class")
-                        .WithMany("Groups")
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("ISZR.Web.Models.User", "OwnerUser")
+                        .WithMany("Cars")
+                        .HasForeignKey("OwnerUserId");
 
-                    b.Navigation("Class");
+                    b.Navigation("OwnerUser");
+                });
+
+            modelBuilder.Entity("ISZR.Web.Models.Phone", b =>
+                {
+                    b.HasOne("ISZR.Web.Models.User", "PhoneUser")
+                        .WithMany("Phones")
+                        .HasForeignKey("PhoneUserId");
+
+                    b.Navigation("PhoneUser");
                 });
 
             modelBuilder.Entity("ISZR.Web.Models.Request", b =>
                 {
-                    b.HasOne("ISZR.Web.Models.User", "RequestAuthor")
-                        .WithMany("RequestAuthor")
-                        .HasForeignKey("RequestAuthorId");
+                    b.HasOne("ISZR.Web.Models.Parking", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId");
 
-                    b.HasOne("ISZR.Web.Models.User", "RequestFor")
-                        .WithMany("RequestFor")
-                        .HasForeignKey("RequestForId");
+                    b.HasOne("ISZR.Web.Models.User", "ClosedByUser")
+                        .WithMany("ClosedByUser")
+                        .HasForeignKey("ClosedByUserId");
 
-                    b.HasOne("ISZR.Web.Models.User", "Resolver")
-                        .WithMany("Resolver")
-                        .HasForeignKey("ResolverId");
+                    b.HasOne("ISZR.Web.Models.User", "CreatedByUser")
+                        .WithMany("CreatedByUser")
+                        .HasForeignKey("CreatedByUserId");
 
-                    b.Navigation("RequestAuthor");
+                    b.HasOne("ISZR.Web.Models.User", "CreatedForUser")
+                        .WithMany("CreatedForUser")
+                        .HasForeignKey("CreatedForUserId");
 
-                    b.Navigation("RequestFor");
+                    b.HasOne("ISZR.Web.Models.Phone", "Phone")
+                        .WithMany()
+                        .HasForeignKey("PhoneId");
 
-                    b.Navigation("Resolver");
+                    b.Navigation("Car");
+
+                    b.Navigation("ClosedByUser");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("CreatedForUser");
+
+                    b.Navigation("Phone");
                 });
 
             modelBuilder.Entity("ISZR.Web.Models.User", b =>
@@ -329,8 +407,6 @@ namespace ISZR.Web.Migrations
 
             modelBuilder.Entity("ISZR.Web.Models.Class", b =>
                 {
-                    b.Navigation("Groups");
-
                     b.Navigation("Users");
                 });
 
@@ -343,11 +419,15 @@ namespace ISZR.Web.Migrations
                 {
                     b.Navigation("Authorizer");
 
-                    b.Navigation("RequestAuthor");
+                    b.Navigation("Cars");
 
-                    b.Navigation("RequestFor");
+                    b.Navigation("ClosedByUser");
 
-                    b.Navigation("Resolver");
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("CreatedForUser");
+
+                    b.Navigation("Phones");
                 });
 #pragma warning restore 612, 618
         }
