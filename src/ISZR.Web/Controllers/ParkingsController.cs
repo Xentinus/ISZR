@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ISZR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Web.Data;
-using ISZR.Web.Models;
 
 namespace ISZR.Web.Controllers
 {
@@ -140,7 +134,7 @@ namespace ISZR.Web.Controllers
             var parking = await _context.Parkings.FindAsync(id);
 
             // Parkolási engedély meglétének ellenőrzése
-            if (parking == null)return NotFound();
+            if (parking == null) return NotFound();
 
             // Lista elemek betöltése
             ViewData["OwnerUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
@@ -159,7 +153,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("ParkingId,Brand,Modell,LicensePlate,OwnerUserId,IsArchived")] Parking parking)
         {
             // Azonosító meglétének ellenőrzése
-            if (id != parking.ParkingId)return NotFound();
+            if (id != parking.ParkingId) return NotFound();
 
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
@@ -200,7 +194,7 @@ namespace ISZR.Web.Controllers
         /// <returns>Létezik e az adott parkolási engedély (igaz/hamis)</returns>
         private bool ParkingExists(int id)
         {
-          return (_context.Parkings?.Any(e => e.ParkingId == id)).GetValueOrDefault();
+            return (_context.Parkings?.Any(e => e.ParkingId == id)).GetValueOrDefault();
         }
     }
 }

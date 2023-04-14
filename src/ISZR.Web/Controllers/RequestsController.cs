@@ -2,6 +2,7 @@
 using ISZR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -553,7 +554,15 @@ namespace ISZR.Web.Controllers
             if (!Account.IsUgyintezo()) return Forbid();
 
             // Lista elemek betöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            try
+            {
+                ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+                ViewData["PhoneId"] = new SelectList(_context.Phones.Where(p => !p.IsArchived).Where(p => p.PhoneUserId == null).OrderBy(p => p.PhoneCode), "PhoneId", "PhoneCode");
+            }
+            catch (RuntimeBinderException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             // Felület megjelenítése
             return View();
@@ -565,11 +574,38 @@ namespace ISZR.Web.Controllers
         /// <param name="request">Igénylés értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Phone([Bind("RequestId,Type,Status,Description,CreatedByUserId,CreatedForUserId")] Request request)
+        public async Task<IActionResult> Phone(int? selectedPIN, [Bind("RequestId,Type,Status,Description,CreatedByUserId,CreatedForUserId")] Request request)
         {
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
+                // PIN kód megkeresése a rendszerben
+                Phone? phone = await GetPhoneById(selectedPIN);
+
+                // PIN kód meglétének ellenőrzése
+                if (phone == null) return Forbid();
+
+                // Személy beállítása
+                phone.PhoneUserId = request.CreatedForUserId;
+
+                try
+                {
+                    // PIN kód adatainak felülírása
+                    _context.Update(phone);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PhoneExists(phone.PhoneId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
                 // Igénylést létrehozó személy azonosítója
                 request.CreatedByUserId = await GetLoggedUserId();
 
@@ -583,7 +619,7 @@ namespace ISZR.Web.Controllers
                 request.Status = "Folyamatban";
 
                 // Igénylés leírása
-                request.Description = "Kérem engedélyezni telefonos PIN kód kiadását a felhasználó részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
+                request.Description = $"Kérem engedélyezni <b>{phone.PhoneCode}</b> számú telefonos PIN kód kiadását a felhasználó részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
 
                 try
                 {
@@ -608,7 +644,15 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            try
+            {
+                ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+                ViewData["PhoneId"] = new SelectList(_context.Phones.Where(p => !p.IsArchived).Where(p => p.PhoneUserId == null).OrderBy(p => p.PhoneCode), "PhoneId", "PhoneCode");
+            }
+            catch (RuntimeBinderException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             // Felület megjelenítése
             return View();
@@ -985,6 +1029,16 @@ namespace ISZR.Web.Controllers
             return await _context.Groups.FirstOrDefaultAsync(g => g.GroupId == id);
         }
 
+        /// <summary>
+        /// PIN kód megkeresése a rendszerben a kiválasztott PIN kód alapján
+        /// </summary>
+        /// <param name="id">PIN kód azonosítója</param>
+        /// <returns>PIN kód az adatbázisban</returns>
+        private async Task<Phone?> GetPhoneById(int? id)
+        {
+            return await _context.Phones.FirstOrDefaultAsync(p => p.PhoneId == id);
+        }
+
         private async Task<int?> CreateNewUserAndGetId(User? newUser)
         {
             if (newUser == null) return null;
@@ -1015,6 +1069,16 @@ namespace ISZR.Web.Controllers
 
             // Return user id
             return foundUser.UserId;
+        }
+
+        /// <summary>
+        /// PIN kód meglétének ellenőrzése
+        /// </summary>
+        /// <param name="id">PIN kód azonosítója</param>
+        /// <returns>Létezik e az adott PIN kód (igaz/hamis)</returns>
+        private bool PhoneExists(int id)
+        {
+            return (_context.Phones?.Any(e => e.PhoneId == id)).GetValueOrDefault();
         }
     }
 }

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ISZR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ISZR.Web.Data;
-using ISZR.Web.Models;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace ISZR.Web.Controllers
@@ -92,7 +86,6 @@ namespace ISZR.Web.Controllers
                 Console.WriteLine(ex.Message);
             }
 
-
             // Felület megjelenítése
             return View();
         }
@@ -159,7 +152,14 @@ namespace ISZR.Web.Controllers
             if (phone == null) return NotFound();
 
             // Lista elemek betöltése
-            ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            try
+            {
+                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            }
+            catch (RuntimeBinderException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             // Felület megjelenítése a kért PIN kód adataival
             return View(phone);
@@ -203,7 +203,14 @@ namespace ISZR.Web.Controllers
             }
 
             // Lista elemek betöltése
-            ViewData["PhoneUserId"] = new SelectList(_context.Users, "UserId", "DisplayName", phone.PhoneUserId);
+            try
+            {
+                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            }
+            catch (RuntimeBinderException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             // Felület megjelenítése amennyiben hibás adatokat tartalmaz
             return View(phone);
@@ -216,7 +223,7 @@ namespace ISZR.Web.Controllers
         /// <returns>Létezik e az adott PIN kód (igaz/hamis)</returns>
         private bool PhoneExists(int id)
         {
-          return (_context.Phones?.Any(e => e.PhoneId == id)).GetValueOrDefault();
+            return (_context.Phones?.Any(e => e.PhoneId == id)).GetValueOrDefault();
         }
     }
 }
