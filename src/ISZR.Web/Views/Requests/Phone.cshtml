@@ -1,141 +1,165 @@
 ﻿@model ISZR.Web.Models.Request
 
 @{
-    ViewData["Title"] = "Meglévő felhasználó részére telefonos PIN kód igénylése";
+    ViewData["Title"] = "Telefonos PIN kód igénylése";
 }
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-default">
-                <div class="card-header bg-info">
-                    <h3 class="card-title">Igénylés menete</h3>
-                </div>
-                <div class="card-body p-0">
-                    <form asp-action="Phone">
-                        <div class="row">
-                            <div class="col-12">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            </div>
-                        </div>
-                        <div class="bs-stepper linear">
-                            <div class="bs-stepper-header" role="tablist">
-                                <div class="step active" data-target="#informations">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="informations" id="informations-trigger" aria-selected="true">
-                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-info"></i></span>
-                                        <span class="bs-stepper-label">Tájékoztatás</span>
-                                    </button>
-                                </div>
-                                <div class="line"></div>
-                                <div class="step" data-target="#request-info">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-male"></i></span>
-                                        <span class="bs-stepper-label">Felhasználóval kapcsolatos adatok</span>
-                                    </button>
-                                </div>
-                                <div class="line"></div>
-                                <div class="step" data-target="#summary">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
-                                        <span class="bs-stepper-label">Összesítés</span>
-                                    </button>
+            @if (((IEnumerable<dynamic>)ViewBag.PhoneId).Count() > 0)
+            {
+                <div class="card card-default">
+                    <div class="card-header bg-info">
+                        <h3 class="card-title">Igénylés menete</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <form asp-action="Phone">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 </div>
                             </div>
-                            <div class="bs-stepper-content">
-                                <div id="informations" class="content active dstepper-block" role="tabpanel" aria-labelledby="informations-trigger">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i>Információ a telefonos PIN kód igénylés menetéről</h5>
-                                                Az intézetnek meghatározott mennyiségű PIN kódja van, amelyeket külső telefonáláshoz lehet használni.<br />
-                                                Ha ezek elfogynak, akkor egy ideig nem tudunk kódot biztosítani, kivéve, ha valaki más átadja a kódját (pl. elhagyja az intézetet)
-                                            </div>
-                                        </div>
+                            <div class="bs-stepper linear">
+                                <div class="bs-stepper-header" role="tablist">
+                                    <div class="step active" data-target="#select-user">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="select-user" id="select-user-trigger" aria-selected="true">
+                                            <span class="bs-stepper-circle bg-info"><i class="icon fas fa-male"></i></span>
+                                            <span class="bs-stepper-label">Felhasználóval kapcsolatos adatok</span>
+                                        </button>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span class="float-right">
-                                                <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
-                                            </span>
-                                        </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#select-code">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="select-code" id="select-code-trigger" aria-selected="false" disabled="disabled">
+                                            <span class="bs-stepper-circle bg-info"><i class="icon fas fa-key"></i></span>
+                                            <span class="bs-stepper-label">PIN kód kiválasztása</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#summary">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
+                                            <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
+                                            <span class="bs-stepper-label">Összesítés</span>
+                                        </button>
                                     </div>
                                 </div>
-                                <div id="request-info" class="content" role="tabpanel" aria-labelledby="request-info-trigger">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <div class="bs-stepper-content">
+                                    <div id="select-user" class="content active dstepper-block" role="tabpanel" aria-labelledby="select-user-trigger">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                        </div>
+                                                        <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4" required>
+                                                        </select>
                                                     </div>
-                                                    <select id="selectedUser" asp-for="RequestForId" asp-items="ViewBag.RequestForId" class="form-control select2bs4" required>
-                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
+                                                    Csak a rendszerben létező felhasználók részére lehet telefonos PIN kódot igényelni!<br />
+                                                    Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
-                                                Csak a rendszerben létező felhasználók részére lehet telefonos PIN kódot igényelni!<br />
-                                                Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="float-right">
+                                                    <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                                <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
-                                                <script>
-                                                    function summary() {
-                                                        document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
-                                                        stepper.next();
-                                                    }
-                                                </script>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4"><i class="icon fas fa-user"></i>Felhasználó részére</dt>
-                                                    <dd id="summaryUser" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
-                                                    <dd class="col-sm-8">Telefonos PIN kód igénylése</dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
-                                                    <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-                                                </dl>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="float-left">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
-                                                    <label class="custom-control-label" for="agreeToTerms">
-                                                        Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
-                                                    </label>
+                                    <div id="select-code" class="content" role="tabpanel" aria-labelledby="select-code-trigger">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Felhasználó számára kiválasztott PIN kód</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                                        </div>
+                                                        <select id="selectedPIN" name="selectedPIN" asp-for="PhoneId" asp-items="ViewBag.PhoneId" class="form-control select2bs4" required>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                                <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+                                            <div class="col-12 col-md-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ az igényelhető PIN kódokról</h5>
+                                                    Az intézetnek meghatározott mennyiségű PIN kódja van, amelyeket külső telefonáláshoz lehet használni.<br />
+                                                    Ha ezek elfogynak, nem tudunk egy bizonyos ideig kódot biztosítani, kivéve, ha valaki más átadja a kódját (pl. elhagyja az intézetet)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="float-right">
+                                                    <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                                    <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
+                                                    <script>
+                                                        function summary() {
+                                                            document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
+                                                            document.getElementById("summaryPIN").innerHTML = $('#selectedPIN option:selected').toArray().map(item => item.text).join();
+                                                            stepper.next();
+                                                        }
+                                                    </script>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+                                                    <dl class="row">
+                                                        <dt class="col-sm-4"><i class="icon fas fa-user"></i>Felhasználó részére</dt>
+                                                        <dd id="summaryUser" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
+                                                        <dd class="col-sm-8">Telefonos PIN kód igénylése</dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
+                                                        <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-key"></i>Kiválasztott PIN kód</dt>
+                                                        <dd id="summaryPIN" class="col-sm-8"></dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="float-left">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                                        <label class="custom-control-label" for="agreeToTerms">
+                                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="float-right">
+                                                    <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                                    <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
-
+            } else
+            {
+                <div class="alert alert-danger alert-dismissible">
+                    <h5><i class="icon fas fa-ban"></i> Figyelem!</h5>
+                    A rendszerben tárolt összes PIN kód jelenleg kivan adva!<br>
+                    Az igénylés <b>automatikusan</b> ismét elérhetővé válik, amennyiben felszabadul egy kód.
+                </div>
+            }
         </div>
     </div>
 </div>

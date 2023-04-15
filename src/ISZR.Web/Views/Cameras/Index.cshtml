@@ -60,7 +60,6 @@
 						<thead class="bg-info">
 							<tr>
 								<th>Név</th>
-								<th>Szektor</th>
 								<th>Állapot</th>
 								<th></th>
 							</tr>
@@ -71,9 +70,6 @@
 								<tr>
 									<td>
 										@Html.DisplayFor(modelItem => item.Name)
-									</td>
-									<td>
-										@Html.DisplayFor(modelItem => item.Location)
 									</td>
 									<td>
 										@if (item.IsArchived)

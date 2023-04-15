@@ -27,56 +27,56 @@
                     </div>
                 </div>
                 <div class="row invoice-info mb-2">
-                    @if (Model?.RequestAuthor != null)
+                    @if (Model?.CreatedByUser != null)
                     {
                         <div class="col-xl-4 col-md-6 col-12 invoice-col">
                             <strong>Igénylést intéző</strong>
                             <address>
-                                @Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank?.ToLower()<br>
-                                @Model?.RequestAuthor?.Class?.Name, @Model?.RequestAuthor?.Position?.Name<br />
-                                @if (!string.IsNullOrEmpty(Model?.RequestAuthor?.Username))
+                                @Model?.CreatedByUser?.DisplayName bv. @Model?.CreatedByUser?.Rank?.ToLower()<br>
+                                @Model?.CreatedByUser?.Class?.Name, @Model?.CreatedByUser?.Position?.Name<br />
+                                @if (!string.IsNullOrEmpty(Model?.CreatedByUser?.Username))
                                 {
                                     <i class="icon fab fa-windows mr-2"></i>
-                                    @Model?.RequestAuthor?.Username
+                                    @Model?.CreatedByUser?.Username
                                     <br />
                                 }
-                                @if (!string.IsNullOrEmpty(Model?.RequestAuthor?.Email))
+                                @if (!string.IsNullOrEmpty(Model?.CreatedByUser?.Email))
                                 {
                                     <i class="icon fas fa-envelope mr-2"></i>
-                                    @Model?.RequestAuthor?.Email
+                                    @Model?.CreatedByUser?.Email
                                     <br />
                                 }
-                                @if (!string.IsNullOrEmpty(Model?.RequestAuthor?.Phone))
+                                @if (!string.IsNullOrEmpty(Model?.CreatedByUser?.Phone))
                                 {
                                     <i class="icon fas fa-phone-square-alt mr-2"></i>
-                                    @Model?.RequestAuthor?.Phone
+                                    @Model?.CreatedByUser?.Phone
                                 }
                             </address>
                         </div>
                     }
-                    @if (Model?.RequestFor != null)
+                    @if (Model?.CreatedForUser != null)
                     {
                         <div class="col-xl-4 col-md-6 col-12 invoice-col">
                             <strong>Felhasználó számára</strong>
                             <address>
-                                @Model?.RequestFor?.DisplayName bv. @Model?.RequestFor?.Rank?.ToLower()<br>
-                                @Model?.RequestFor?.Class?.Name, @Model?.RequestFor?.Position?.Name<br />
-                                @if (!string.IsNullOrEmpty(Model?.RequestFor?.Username))
+                                @Model?.CreatedForUser?.DisplayName bv. @Model?.CreatedForUser?.Rank?.ToLower()<br>
+                                @Model?.CreatedForUser?.Class?.Name, @Model?.CreatedForUser?.Position?.Name<br />
+                                @if (!string.IsNullOrEmpty(Model?.CreatedForUser?.Username))
                                 {
                                     <i class="icon fab fa-windows mr-2"></i>
-                                    @Model?.RequestFor?.Username
+                                    @Model?.CreatedForUser?.Username
                                     <br />
                                 }
-                                @if (!string.IsNullOrEmpty(Model?.RequestFor?.Email))
+                                @if (!string.IsNullOrEmpty(Model?.CreatedForUser?.Email))
                                 {
                                     <i class="icon fas fa-envelope mr-2"></i>
-                                    @Model?.RequestFor?.Email
+                                    @Model?.CreatedForUser?.Email
                                     <br />
                                 }
-                                @if (!string.IsNullOrEmpty(Model?.RequestFor?.Phone))
+                                @if (!string.IsNullOrEmpty(Model?.CreatedForUser?.Phone))
                                 {
                                     <i class="icon fas fa-phone-square-alt mr-2"></i>
-                                    @Model?.RequestFor?.Phone
+                                    @Model?.CreatedForUser?.Phone
                                 }
                             </address>
                         </div>
@@ -88,17 +88,17 @@
                         </div>
                         <div>
                             <span class="font-weight-bold mr-1">Létrehozva:</span>
-                            <span>@Model?.CreationDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+                            <span>@Model?.CreatedDateTime.ToString("yyyy. MMMM dd. HH:mm")</span>
                         </div>
-                        @if (Model?.ResolveDate != new DateTime())
+                        @if (Model?.ClosedDateTime != new DateTime())
                         {
                             <div>
                                 <span class="font-weight-bold mr-1">Lezárva:</span>
-                                <span>@Model?.ResolveDate.ToString("yyyy. MMMM dd. HH:mm")</span>
+                                <span>@Model?.ClosedDateTime.ToString("yyyy. MMMM dd. HH:mm")</span>
                             </div>
                             <div>
                                 <span class="font-weight-bold mr-1">Lezáró személy:</span>
-                                <span>@Model?.Resolver?.DisplayName</span>
+                                <span>@Model?.ClosedByUser?.DisplayName</span>
                             </div>
                         }
                         <div>
@@ -128,13 +128,13 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        @if (Model?.RequestFor?.Class?.Authorizer?.Genre == Genre.Male)
+                        @if (Model?.CreatedForUser?.Class?.Authorizer?.Genre == Genre.Male)
                         {
-                            <span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.RequestFor?.Class?.Authorizer?.Position?.Name Úr!</span>
+                            <span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.CreatedForUser?.Class?.Authorizer?.Position?.Name Úr!</span>
                         }
                         else
                         {
-                            <span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.RequestFor?.Class?.Authorizer?.Position?.Name Asszony!</span>
+                            <span class="font-weight-bold d-none d-print-block">Tisztelt @Model?.CreatedForUser?.Class?.Authorizer?.Position?.Name Asszony!</span>
                         }
                     </div>
                     <div class="col-12 mb-3">
@@ -181,23 +181,23 @@
                 <div class="row mt-5 d-none d-print-block">
                     <div class="col-12">
 
-                        @if (Model?.RequestAuthor != null)
+                        @if (Model?.CreatedByUser != null)
                         {
                             <div class="float-left signature text-center ml-5">
                                 <p class="mb-5 text-left font-weight-bold">Kérelmező:</p>
                                 <hr />
-                                <h5 class="mb-0">@Model?.RequestAuthor?.DisplayName bv. @Model?.RequestAuthor?.Rank?.ToLower()</h5>
-                                @Model?.RequestAuthor?.Position?.Name
+                                <h5 class="mb-0">@Model?.CreatedByUser?.DisplayName bv. @Model?.CreatedByUser?.Rank?.ToLower()</h5>
+                                @Model?.CreatedByUser?.Position?.Name
                             </div>
                         }
 
-                        @if (Model?.RequestFor?.Class?.Authorizer != null)
+                        @if (Model?.CreatedForUser?.Class?.Authorizer != null)
                         {
                             <div class="float-right text-center mr-5">
                                 <p class="mb-5 text-left font-weight-bold">Engedélyezem:</p>
                                 <hr />
-                                <h5 class="mb-0">@Model?.RequestFor?.Class?.Authorizer?.DisplayName bv. @Model?.RequestFor?.Class?.Authorizer?.Rank?.ToLower()</h5>
-                                @Model?.RequestFor?.Class?.Authorizer?.Position?.Name
+                                <h5 class="mb-0">@Model?.CreatedForUser?.Class?.Authorizer?.DisplayName bv. @Model?.CreatedForUser?.Class?.Authorizer?.Rank?.ToLower()</h5>
+                                @Model?.CreatedForUser?.Class?.Authorizer?.Position?.Name
                             </div>
                         }
 
@@ -215,7 +215,7 @@
                                     <form style="display: inline;" asp-action="Details">
                                         <input hidden name="id" value="@Model?.RequestId">
                                         <input hidden name="status" value="Elutasítva">
-                                        <input hidden name="resolverId" value="@Model?.ResolverId">
+                                        <input hidden name="resolverId" value="@Model?.ClosedByUserId">
                                         <button type="submit" class="btn btn-default float-right ml-1">
                                             <span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Igénylés elutasítása
                                         </button>
@@ -227,7 +227,7 @@
                                     <form style="display: inline;" asp-action="Details">
                                         <input hidden name="id" value="@Model?.RequestId">
                                         <input hidden name="status" value="Folyamatban">
-                                        <input hidden name="resolverId" value="@Model?.ResolverId">
+                                        <input hidden name="resolverId" value="@Model?.ClosedByUserId">
                                         <button type="submit" class="btn btn-default float-right ml-1 mr-1">
                                             <span class="text-warning"><i class="fas fa-comment-dots mr-2"></i></span>Igénylés folyamatba helyezése
                                         </button>
@@ -239,7 +239,7 @@
                                     <form style="display: inline;" asp-action="Details">
                                         <input hidden name="id" value="@Model?.RequestId">
                                         <input hidden name="status" value="Végrehajtva">
-                                        <input hidden name="resolverId" value="@Model?.ResolverId">
+                                        <input hidden name="resolverId" value="@Model?.ClosedByUserId">
                                         <button type="submit" class="btn btn-default float-right ml-1 mr-1">
                                             <span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Igénylés végrehajtása
                                         </button>

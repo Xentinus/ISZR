@@ -1,36 +1,47 @@
-﻿@model ISZR.Web.Models.Camera
+﻿@model ISZR.Web.Models.Phone
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Kamera szerkesztése";
+    ViewData["Title"] = "Új PIN kód létrehozása";
 }
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="card card-warning">
+            <div class="card card-success">
                 <div class="card-header">
-                    <h3 class="card-title">Kamerához tartozó adatok szerkesztése</h3>
+                    <h3 class="card-title">Külső telefonáláshoz tartozó PIN kód adatainak beállítása</h3>
                 </div>
-
                 <div class="card-body">
-                    <form asp-action="Edit">
+                    <form asp-action="Create">
                         <div class="row">
                             <div class="col-12">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             </div>
                         </div>
-                        <input type="hidden" asp-for="CameraId" />
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Kamera megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                    <label>PIN kód</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <span asp-validation-for="PhoneCode" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-video"></i></span>
+                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
                                         </div>
-                                        <input type="text" asp-for="Name" class="form-control" placeholder="Kamera megnevezése" spellcheck="false" required>
+                                        <input type="text" asp-for="PhoneCode" class="form-control" placeholder="PIN kód megnevezése" spellcheck="false" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>Tulajdonos</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        <select asp-for="PhoneUserId" asp-items="ViewBag.PhoneUserId" class="form-control select2bs4">
+                                            <option value="">Nincs</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -47,18 +58,19 @@
                                 </div>
                                 <div class="float-right">
                                     <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                    <input type="submit" value="Kamera szerkesztése" class="btn btn-warning ml-1" />
+                                    <input type="submit" value="PIN kód létrehozása" class="btn btn-success ml-1" />
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

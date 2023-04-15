@@ -24,26 +24,6 @@
 									</div>
 									<div class="modal-body">
 										<div>Biztosan szeretnéd <b>@item.Name</b> nevű osztály archiválási állapotát megváltoztatni?</div>
-										<div>
-											Jelenlegi állapota:
-											@if (item.IsArchived)
-											{
-												<span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
-											}
-											else
-											{
-												<span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
-											}
-											<span class="ml-1">Változtatás utánni állapota:</span>
-											@if (!item.IsArchived)
-											{
-												<span class="text-danger font-weight-bold"><i class="icon fas fa-archive ml-1 mr-1"></i>Archivált</span>
-											}
-											else
-											{
-												<span class="text-success font-weight-bold"><i class="icon fas fa-signal ml-1 mr-1"></i>Elérhető</span>
-											}
-										</div>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<ISZR.Web.Models.Parking>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Parkolási engedélyek karbantartása";
+}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header bg-info">
+					<h3 class="card-title"><a asp-action="Create"><input type="button" value="Új parkolási engedély létrehozása" class="btn btn-light"/></a></h3>
+				</div>
+
+				<div class="card-body p-0">
+					@foreach (var item in Model)
+					{
+						<div class="modal fade" id="deleteModal@(item.ParkingId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.ParkingId)" aria-hidden="true">
+							<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header bg-danger">
+										<h5 class="modal-title" id="deleteModalLabel@(item.ParkingId)">Archiválási állapot megváltoztatása</h5>
+									</div>
+									<div class="modal-body">
+										<div>Biztosan szeretnéd <b>@item.LicensePlate</b> rendszámú parkolási engedély archiválási állapotát megváltoztatni?</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
+										<form asp-action="Index" asp-route-id="@item.ParkingId" method="post">
+											<input type="hidden" asp-for="@item.ParkingId" />
+											<button type="submit" class="btn btn-danger">Parkolási engedély állapotának megváltoztatása</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+					<table class="table table-striped">
+						<thead class="bg-info">
+							<tr>
+								<th>Jármű típusa</th>
+								<th>Rendszám</th>
+								<th>Tulajdonos</th>
+								<th>Állapot</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										@Html.DisplayFor(modelItem => item.Brand) @Html.DisplayFor(modelItem => item.Modell)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.LicensePlate)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.OwnerUser.DisplayName)
+									</td>
+									<td>
+										@if (item.IsArchived)
+										{
+											<span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
+										}
+										else
+										{
+											<span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
+										}
+									</td>
+									<td class="float-right">
+										<a asp-action="Edit" asp-route-id="@item.ParkingId"><input type="button" value="Szerkesztés" class="btn btn-warning" /></a>
+										<input type="button" data-toggle="modal" data-target="#deleteModal@(item.ParkingId)" value="Állapot változtatás" class="btn btn-danger ml-1" />
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,83 +1,83 @@
 ﻿@using ISZR.Web.Components;
 
 @{
-	ViewData["Title"] = "Irányítópult";
+    ViewData["Title"] = "Irányítópult";
 }
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-12 col-lg-4">
-			<div class="card card-widget widget-user">
-				<div class="widget-user-header bg-info">
-					<h3 class="widget-user-username">@Model?.DisplayName</h3>
-					<h5 class="widget-user-desc">@Model?.Position.Name</h5>
-				</div>
-				<div class="widget-user-image">
-					<img class="img-circle elevation-2" src="~/img/avatar.png" alt="Profilkép">
-				</div>
-				<div class="card-body">
-					<strong><i class="icon fas fa-medal mr-2"></i>Rendfokozat</strong>
-					<p class="text-muted">@Model?.Rank</p>
-					<hr />
-					<strong><i class="icon fas fa-users mr-2"></i>Osztály</strong>
-					<p class="text-muted">@Model?.Class.Name</p>
-					@if (Model?.Email != null)
-					{
-						<hr />
-						<strong><i class="icon fas fa-envelope mr-2"></i>E-mail elérhetőség</strong>
-						<p class="text-muted">@Model?.Email</p>
-					}
-					@if (Model?.Phone != null)
-					{
-						<hr />
-						<strong><i class="icon fas fa-phone mr-2"></i>NTG elérhetőség</strong>
-						<p class="text-muted">@Model?.Phone</p>
-					}
-				</div>
-			</div>
-		</div>
-		<div class="col-12 col-lg-8">
-			@if (Account.IsUgyintezo())
-			{
-				// Százalékok kiszámítása
-				int donePercent = (int)Math.Round((double)(100 * ViewBag.DoneRequests) / ViewBag.AllRequests);
-				int inProgressPercent = (int)Math.Round((double)(100 * ViewBag.InProgressRequests) / ViewBag.AllRequests);
-				int deniedPercent = (int)Math.Round((double)(100 * ViewBag.DeniedRequests) / ViewBag.AllRequests);
+    <div class="row">
+        <div class="col-12 col-lg-4">
+            <div class="card card-widget widget-user">
+                <div class="widget-user-header bg-info">
+                    <h3 class="widget-user-username">@Model?.DisplayName</h3>
+                    <h5 class="widget-user-desc">@Model?.Position.Name</h5>
+                </div>
+                <div class="widget-user-image">
+                    <img class="img-circle elevation-2" src="~/img/avatar.png" alt="Profilkép">
+                </div>
+                <div class="card-body">
+                    <strong><i class="icon fas fa-medal mr-2"></i>Rendfokozat</strong>
+                    <p class="text-muted">@Model?.Rank</p>
+                    <hr />
+                    <strong><i class="icon fas fa-users mr-2"></i>Osztály</strong>
+                    <p class="text-muted">@Model?.Class.Name</p>
+                    @if (Model?.Email != null)
+                    {
+                        <hr />
+                        <strong><i class="icon fas fa-envelope mr-2"></i>E-mail elérhetőség</strong>
+                        <p class="text-muted">@Model?.Email</p>
+                    }
+                    @if (Model?.Phone != null)
+                    {
+                        <hr />
+                        <strong><i class="icon fas fa-phone mr-2"></i>NTG elérhetőség</strong>
+                        <p class="text-muted">@Model?.Phone</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8">
+            @if (Account.IsUgyintezo())
+            {
+                // Százalékok kiszámítása
+                int donePercent = (int)Math.Round((double)(100 * ViewBag.DoneRequests) / ViewBag.AllRequests);
+                int inProgressPercent = (int)Math.Round((double)(100 * ViewBag.InProgressRequests) / ViewBag.AllRequests);
+                int deniedPercent = (int)Math.Round((double)(100 * ViewBag.DeniedRequests) / ViewBag.AllRequests);
 
-				// Kártya megjelenítése
-				<div class="card card-info">
-					<div class="card-header">
-						<h5 class="card-title">Általad kért igénylések</h5>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col-12">
-								<div class="progress-group">
-									Jováhagyott igénylések
-									<span class="float-right"><b>@ViewBag.DoneRequests darab</b> / @ViewBag.AllRequests darab</span>
-									<div class="progress progress-sm">
-										<div class="progress-bar bg-success" style="width: @donePercent%"></div>
-									</div>
-								</div>
-								<div class="progress-group">
-									Folyamatban lévő igénylések
-									<span class="float-right"><b>@ViewBag.InProgressRequests darab</b> / @ViewBag.AllRequests darab</span>
-									<div class="progress progress-sm">
-										<div class="progress-bar bg-warning" style="width: @inProgressPercent%"></div>
-									</div>
-								</div>
-								<div class="progress-group">
-									Elutasított igénylések
-									<span class="float-right"><b>@ViewBag.DeniedRequests darab</b> / @ViewBag.AllRequests darab</span>
-									<div class="progress progress-sm">
-										<div class="progress-bar bg-danger" style="width: @deniedPercent%"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-		</div>
-	</div>
+                // Kártya megjelenítése
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h5 class="card-title">Általad kért igénylések</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="progress-group">
+                                    Jováhagyott igénylések
+                                    <span class="float-right"><b>@ViewBag.DoneRequests darab</b> / @ViewBag.AllRequests darab</span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-success" style="width: @donePercent%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    Folyamatban lévő igénylések
+                                    <span class="float-right"><b>@ViewBag.InProgressRequests darab</b> / @ViewBag.AllRequests darab</span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-warning" style="width: @inProgressPercent%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    Elutasított igénylések
+                                    <span class="float-right"><b>@ViewBag.DeniedRequests darab</b> / @ViewBag.AllRequests darab</span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-danger" style="width: @deniedPercent%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>

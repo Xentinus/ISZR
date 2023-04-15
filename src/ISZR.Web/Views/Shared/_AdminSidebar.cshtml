@@ -35,6 +35,12 @@
                         <p>Felhasználók</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Parkings" ? "active" : "")" asp-controller="Parkings" asp-action="Index">
+                        <i class="nav-icon fas fa-parking"></i>
+                        <p>Parkolási engedélyek</p>
+                    </a>
+                </li>
                 <li class="nav-header"><b>Informatikai karbantartások</b></li>
                 <li class="nav-item">
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Groups" ? "active" : "")" asp-controller="Groups" asp-action="Index">
@@ -46,6 +52,12 @@
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Permissions" asp-action="Index">
                         <i class="nav-icon fas fa-key"></i>
                         <p>Jogosultságok</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Phones" ? "active" : "")" asp-controller="Phones" asp-action="Index">
+                        <i class="nav-icon fas fa-phone-square-alt"></i>
+                        <p>PIN kódok</p>
                     </a>
                 </li>
                 <li class="nav-header"><b>Biztonságtechnikai karbantartások</b></li>

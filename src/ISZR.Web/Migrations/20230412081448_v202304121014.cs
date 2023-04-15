@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ISZR.Web.Migrations
 {
-    public partial class AddedSexAndEmailPhoneCanNull : Migration
+    public partial class v202304121014 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,12 +16,27 @@ namespace ISZR.Web.Migrations
                     CameraId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     IsArchived = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cameras", x => x.CameraId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Groups",
+                columns: table => new
+                {
+                    GroupId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    WindowsPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FonixPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Groups", x => x.GroupId);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,7 +62,7 @@ namespace ISZR.Web.Migrations
                 {
                     PositionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(48)", maxLength: 48, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     IsArchived = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -71,37 +86,15 @@ namespace ISZR.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
-                {
-                    GroupId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    ClassId = table.Column<int>(type: "int", nullable: false),
-                    WindowsPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FonixPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.GroupId);
-                    table.ForeignKey(
-                        name: "FK_Groups_Classes_ClassId",
-                        column: x => x.ClassId,
-                        principalTable: "Classes",
-                        principalColumn: "ClassId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DisplayName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Rank = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Genre = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: true),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -128,6 +121,48 @@ namespace ISZR.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Parkings",
+                columns: table => new
+                {
+                    ParkingId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Modell = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    LicensePlate = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    OwnerUserId = table.Column<int>(type: "int", nullable: true),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Parkings", x => x.ParkingId);
+                    table.ForeignKey(
+                        name: "FK_Parkings_Users_OwnerUserId",
+                        column: x => x.OwnerUserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Phones",
+                columns: table => new
+                {
+                    PhoneId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PhoneCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    PhoneUserId = table.Column<int>(type: "int", nullable: true),
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Phones", x => x.PhoneId);
+                    table.ForeignKey(
+                        name: "FK_Phones_Users_PhoneUserId",
+                        column: x => x.PhoneUserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Requests",
                 columns: table => new
                 {
@@ -138,28 +173,40 @@ namespace ISZR.Web.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WindowsPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FonixPermissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RequestAuthorId = table.Column<int>(type: "int", nullable: true),
-                    RequestForId = table.Column<int>(type: "int", nullable: true),
-                    ResolveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ResolverId = table.Column<int>(type: "int", nullable: true)
+                    CarId = table.Column<int>(type: "int", nullable: true),
+                    PhoneId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedByUserId = table.Column<int>(type: "int", nullable: true),
+                    CreatedForUserId = table.Column<int>(type: "int", nullable: true),
+                    ClosedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ClosedByUserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Requests", x => x.RequestId);
                     table.ForeignKey(
-                        name: "FK_Requests_Users_RequestAuthorId",
-                        column: x => x.RequestAuthorId,
+                        name: "FK_Requests_Parkings_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Parkings",
+                        principalColumn: "ParkingId");
+                    table.ForeignKey(
+                        name: "FK_Requests_Phones_PhoneId",
+                        column: x => x.PhoneId,
+                        principalTable: "Phones",
+                        principalColumn: "PhoneId");
+                    table.ForeignKey(
+                        name: "FK_Requests_Users_ClosedByUserId",
+                        column: x => x.ClosedByUserId,
                         principalTable: "Users",
                         principalColumn: "UserId");
                     table.ForeignKey(
-                        name: "FK_Requests_Users_RequestForId",
-                        column: x => x.RequestForId,
+                        name: "FK_Requests_Users_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
                         principalTable: "Users",
                         principalColumn: "UserId");
                     table.ForeignKey(
-                        name: "FK_Requests_Users_ResolverId",
-                        column: x => x.ResolverId,
+                        name: "FK_Requests_Users_CreatedForUserId",
+                        column: x => x.CreatedForUserId,
                         principalTable: "Users",
                         principalColumn: "UserId");
                 });
@@ -170,24 +217,39 @@ namespace ISZR.Web.Migrations
                 column: "AuthorizerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Groups_ClassId",
-                table: "Groups",
-                column: "ClassId");
+                name: "IX_Parkings_OwnerUserId",
+                table: "Parkings",
+                column: "OwnerUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Requests_RequestAuthorId",
-                table: "Requests",
-                column: "RequestAuthorId");
+                name: "IX_Phones_PhoneUserId",
+                table: "Phones",
+                column: "PhoneUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Requests_RequestForId",
+                name: "IX_Requests_CarId",
                 table: "Requests",
-                column: "RequestForId");
+                column: "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Requests_ResolverId",
+                name: "IX_Requests_ClosedByUserId",
                 table: "Requests",
-                column: "ResolverId");
+                column: "ClosedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_CreatedByUserId",
+                table: "Requests",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_CreatedForUserId",
+                table: "Requests",
+                column: "CreatedForUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_PhoneId",
+                table: "Requests",
+                column: "PhoneId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_ClassId",
@@ -224,6 +286,12 @@ namespace ISZR.Web.Migrations
 
             migrationBuilder.DropTable(
                 name: "Requests");
+
+            migrationBuilder.DropTable(
+                name: "Parkings");
+
+            migrationBuilder.DropTable(
+                name: "Phones");
 
             migrationBuilder.DropTable(
                 name: "Users");
