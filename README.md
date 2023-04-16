@@ -20,6 +20,8 @@ A web alkalmazás célja, hogy a felhasználók egyszerűen, könnyedén igénye
 - Könnyen áttekinthető és értelmezhető igénylési lap
 - Hivatkozásokkal ellátott igénylési lapok és listák
 - Nyomtatható igénylési és jogosultsági listák
+- Egyhelyen kezelhető parkolási engedélyek
+- Automatikus szabad pin kód lefoglalása illetve felhasználó tájékoztatása ha elfogyott
 
 ## Felhasználói típusok
 
@@ -86,3 +88,21 @@ Nem kell keresni, szimplán csak rá kell kattintani az azonosító számra és 
 </p>
 
 Minden leszűrt igénylési listát vagy jogosultsági listát a felhasználók kitudnak nyomtani.
+
+## Automatikus PIN kód elérhetőség
+
+<p align="center">
+	<img src=".github/autoCheck.png">
+</p>
+
+Igényléskor a felhasználó számára az ügyintézők kitudják választani a szabad kódot amit a rendszer automatikusan hozzáköt a felhasználóhoz igényléskor.
+Amennyiben elfogy a szabad kód, a rendszer automatikusan tájékoztatja az ügykezelőt.
+Ha a felszabadul egy kód akkor ismét elérhetővé válik minden ügykezelő részére.
+
+## Parkolási engedélyek egyhelyen való kezelése
+
+<p align="center">
+	<img src=".github/parking.png">
+</p>
+
+A rendszerben lehetőség nyilik a felhasználókhoz tartozó járművek ellenőrzésére amennyiben igényeltek engedélyt.
