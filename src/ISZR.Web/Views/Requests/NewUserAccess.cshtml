@@ -7,254 +7,263 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-default">
-                <div class="card-header bg-info">
-                    <h3 class="card-title">Igénylés menete</h3>
-                </div>
-                <div class="card-body p-0">
-                    <form asp-action="NewUserAccess" method="post">
-                        <div class="bs-stepper linear">
-                            <div class="bs-stepper-header" role="tablist">
-                                <div class="step active" data-target="#request-info">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
-                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-male"></i></span>
-                                        <span class="bs-stepper-label">Felhasználóval kapcsolatos adatok</span>
-                                    </button>
+            @if (((IEnumerable<dynamic>)ViewBag.GroupId).Count() > 0)
+            {
+                <div class="card card-default">
+                    <div class="card-header bg-info">
+                        <h3 class="card-title">Igénylés menete</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <form asp-action="NewUserAccess" method="post">
+                            <div class="bs-stepper linear">
+                                <div class="bs-stepper-header" role="tablist">
+                                    <div class="step active" data-target="#request-info">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
+                                            <span class="bs-stepper-circle bg-info"><i class="icon fas fa-male"></i></span>
+                                            <span class="bs-stepper-label">Felhasználóval kapcsolatos adatok</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#permissions">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="permissions" id="permissions-trigger" aria-selected="false" disabled="disabled">
+                                            <span class="bs-stepper-circle bg-info"><i class="icon fas fa-users"></i></span>
+                                            <span class="bs-stepper-label">Jogosultsági csoport kiválasztása</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#summary">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
+                                            <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
+                                            <span class="bs-stepper-label">Összesítés</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="line"></div>
-                                <div class="step" data-target="#permissions">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="permissions" id="permissions-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-users"></i></span>
-                                        <span class="bs-stepper-label">Jogosultsági csoport kiválasztása</span>
-                                    </button>
-                                </div>
-                                <div class="line"></div>
-                                <div class="step" data-target="#summary">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
-                                        <span class="bs-stepper-label">Összesítés</span>
-                                    </button>
+                                <div class="bs-stepper-content">
+                                    <div id="request-info" class="content active dstepper-block" role="tabpanel" aria-labelledby="request-info-trigger">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4 class="m-2">Új felhasználó személyes adatai</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Név</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <span asp-validation-for="DisplayName" class="text-danger"></span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                        </div>
+                                                        <input type="text" id="newUser" asp-for="DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-3">
+                                                <div class="form-group">
+                                                    <label>Nem</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                                        </div>
+                                                        <select asp-for="Genre" class="form-control select2bs4" required>
+                                                            <option value="Male">Férfi</option>
+                                                            <option value="Female">Nő</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-3">
+                                                <div class="form-group">
+                                                    <label>Rendfokozat</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-medal"></i></span>
+                                                        </div>
+                                                        <select id="selectedRank" asp-for="Rank" class="form-control select2bs4" required>
+                                                            <option>Munkavállaló</option>
+                                                            <option>Rendvédelmi-alkalmazott</option>
+                                                            <option>Őrmester</option>
+                                                            <option>Törzsörmester</option>
+                                                            <option>Főtörzsörmester</option>
+                                                            <option>Zászlós</option>
+                                                            <option>Törzszászlós</option>
+                                                            <option>Főtörzszászlós</option>
+                                                            <option>Hadnagy</option>
+                                                            <option>Főhadnagy</option>
+                                                            <option>Százados</option>
+                                                            <option>Őrnagy</option>
+                                                            <option>Alezredes</option>
+                                                            <option>Ezredes</option>
+                                                            <option>Dandártábornok</option>
+                                                            <option>Vezérőrnagy</option>
+                                                            <option>Altábornagy</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4 class="m-2">Munkával kapcsolatos adatai</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Osztály / Csoport</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                                        </div>
+                                                        <select id="selectedClass" asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId" required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Beosztás</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
+                                                        </div>
+                                                        <select id="selectedPosition" asp-for="PositionId" class="form-control select2bs4" asp-items="ViewBag.PositionId" required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4 class="m-2">Elérhetősége</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>E-mail cím</label>
+                                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                                        </div>
+                                                        <input type="email" asp-for="Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>NTG elérhetőség</label>
+                                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                                        </div>
+                                                        <input type="text" asp-for="Phone" class="form-control" placeholder="1061234" spellcheck="true">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="float-right">
+                                                    <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Jogosultsági csoport kiválasztása az új felhasználó részére</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                                        </div>
+                                                        <select id="selectedGroup" name="selectedGroup" class="form-control select2bs4" asp-items="ViewBag.GroupId" required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a jogosultsági csoportokról</h5>
+                                                    A csoportok tartalmaznak minden Windows, illetve Főnix 3 jogosultságot, amelyek a munka elvégzéséhez szükségesek.<br />
+                                                    Amennyiben szükséges új csoport létrehozása, küldjön e-mailt az informatika részére annak hozzáadásáról.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="float-right">
+                                                    <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                                    <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
+                                                    <script>
+                                                        function summary() {
+                                                            document.getElementById("summaryUserName").innerHTML = $('#newUser').val();
+                                                            document.getElementById("summaryUserRank").innerHTML = $('#selectedRank option:selected').toArray().map(item => item.text).join();
+                                                            document.getElementById("summaryUserClass").innerHTML = $('#selectedClass option:selected').toArray().map(item => item.text).join();
+                                                            document.getElementById("summaryUserPosition").innerHTML = $('#selectedPosition option:selected').toArray().map(item => item.text).join();
+                                                            document.getElementById("summaryGroup").innerHTML = $('#selectedGroup option:selected').toArray().map(item => item.text).join();
+                                                            stepper.next();
+                                                        }
+                                                    </script>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+                                                    <dl class="row">
+                                                        <dt class="col-sm-4"><i class="icon fas fa-user"></i>Új felhasználó neve</dt>
+                                                        <dd id="summaryUserName" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-medal"></i>Új felhasználó rendfokozata</dt>
+                                                        <dd id="summaryUserRank" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-users"></i>Új felhasználó osztálya</dt>
+                                                        <dd id="summaryUserClass" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-people-arrows"></i>Új felhasználó beosztása</dt>
+                                                        <dd id="summaryUserPosition" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
+                                                        <dd class="col-sm-8">Új felhasználó részére jogosultság igénylés</dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
+                                                        <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
+                                                        <dt class="col-sm-4"><i class="icon fa fa-key"></i>Kiválasztott jogosultsági csoport</dt>
+                                                        <dd id="summaryGroup" class="col-sm-8"></dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 mt-3">
+                                                <div class="float-left">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                                        <label class="custom-control-label" for="agreeToTerms">
+                                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="float-right">
+                                                    <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                                    <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="bs-stepper-content">
-                                <div id="request-info" class="content active dstepper-block" role="tabpanel" aria-labelledby="request-info-trigger">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h4 class="m-2">Új felhasználó személyes adatai</h4>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Név</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <span asp-validation-for="DisplayName" class="text-danger"></span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                                    </div>
-                                                    <input type="text" id="newUser" asp-for="DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-3">
-                                            <div class="form-group">
-                                                <label>Nem</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
-                                                    </div>
-                                                    <select asp-for="Genre" class="form-control select2bs4" required>
-                                                        <option value="Male">Férfi</option>
-                                                        <option value="Female">Nő</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-3">
-                                            <div class="form-group">
-                                                <label>Rendfokozat</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-medal"></i></span>
-                                                    </div>
-                                                    <select id="selectedRank" asp-for="Rank" class="form-control select2bs4" required>
-                                                        <option>Munkavállaló</option>
-                                                        <option>Rendvédelmi-alkalmazott</option>
-                                                        <option>Őrmester</option>
-                                                        <option>Törzsörmester</option>
-                                                        <option>Főtörzsörmester</option>
-                                                        <option>Zászlós</option>
-                                                        <option>Törzszászlós</option>
-                                                        <option>Főtörzszászlós</option>
-                                                        <option>Hadnagy</option>
-                                                        <option>Főhadnagy</option>
-                                                        <option>Százados</option>
-                                                        <option>Őrnagy</option>
-                                                        <option>Alezredes</option>
-                                                        <option>Ezredes</option>
-                                                        <option>Dandártábornok</option>
-                                                        <option>Vezérőrnagy</option>
-                                                        <option>Altábornagy</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h4 class="m-2">Munkával kapcsolatos adatai</h4>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Osztály / Csoport</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-users"></i></span>
-                                                    </div>
-                                                    <select id="selectedClass" asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId" required></select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Beosztás</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
-                                                    </div>
-                                                    <select id="selectedPosition" asp-for="PositionId" class="form-control select2bs4" asp-items="ViewBag.PositionId" required></select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h4 class="m-2">Elérhetősége</h4>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>E-mail cím</label>
-                                                <span asp-validation-for="Email" class="text-danger"></span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                                    </div>
-                                                    <input type="email" asp-for="Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>NTG elérhetőség</label>
-                                                <span asp-validation-for="Phone" class="text-danger"></span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                                    </div>
-                                                    <input type="text" asp-for="Phone" class="form-control" placeholder="1061234" spellcheck="true">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span class="float-right">
-                                                <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Jogosultsági csoport kiválasztása az új felhasználó részére</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-users"></i></span>
-                                                    </div>
-                                                    <select id="selectedGroup" name="selectedGroup" class="form-control select2bs4" asp-items="ViewBag.GroupId" required></select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i>Információ a jogosultsági csoportokról</h5>
-                                                A csoportok tartalmaznak minden Windows, illetve Főnix 3 jogosultságot, amelyek a munka elvégzéséhez szükségesek.<br />
-                                                Amennyiben szükséges új csoport létrehozása, küldjön e-mailt az informatika részére annak hozzáadásáról.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                                <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
-                                                <script>
-                                                    function summary() {
-                                                        document.getElementById("summaryUserName").innerHTML = $('#newUser').val();
-                                                        document.getElementById("summaryUserRank").innerHTML = $('#selectedRank option:selected').toArray().map(item => item.text).join();
-                                                        document.getElementById("summaryUserClass").innerHTML = $('#selectedClass option:selected').toArray().map(item => item.text).join();
-                                                        document.getElementById("summaryUserPosition").innerHTML = $('#selectedPosition option:selected').toArray().map(item => item.text).join();
-                                                        document.getElementById("summaryGroup").innerHTML = $('#selectedGroup option:selected').toArray().map(item => item.text).join();
-                                                        stepper.next();
-                                                    }
-                                                </script>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4"><i class="icon fas fa-user"></i>Új felhasználó neve</dt>
-                                                    <dd id="summaryUserName" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-medal"></i>Új felhasználó rendfokozata</dt>
-                                                    <dd id="summaryUserRank" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-users"></i>Új felhasználó osztálya</dt>
-                                                    <dd id="summaryUserClass" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-people-arrows"></i>Új felhasználó beosztása</dt>
-                                                    <dd id="summaryUserPosition" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
-                                                    <dd class="col-sm-8">Új felhasználó részére jogosultság igénylés</dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
-                                                    <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-                                                    <dt class="col-sm-4"><i class="icon fa fa-key"></i>Kiválasztott jogosultsági csoport</dt>
-                                                    <dd id="summaryGroup" class="col-sm-8"></dd>
-                                                </dl>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 mt-3">
-                                            <div class="float-left">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
-                                                    <label class="custom-control-label" for="agreeToTerms">
-                                                        Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                                <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
+            } else
+            {
+            <div class="alert alert-danger alert-dismissible">
+                <h5><i class="icon fas fa-ban"></i> Figyelem!</h5>
+                A rendszerben jelenleg nem található igényelhető jogosultsági csoport!<br>
+                Az igénylés <b>automatikusan</b> ismét elérhetővé válik, amennyiben hozzáadásra kerül.
             </div>
-
+            }
         </div>
     </div>
 </div>

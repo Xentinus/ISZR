@@ -7,215 +7,225 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-default">
-                <div class="card-header bg-info">
-                    <h3 class="card-title">Igénylés menete</h3>
+            @if (((IEnumerable<dynamic>)ViewBag.Cameras).Count() > 0)
+            {
+                <div class="card card-default">
+                    <div class="card-header bg-info">
+                        <h3 class="card-title">Igénylés menete</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <form asp-action="RecordsByTags">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="bs-stepper linear">
+                                <div class="bs-stepper-header" role="tablist">
+                                    <div class="step active" data-target="#request-info">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
+                                            <span class="bs-stepper-circle bg-info"><i class="fas fa-camera"></i></span>
+                                            <span class="bs-stepper-label">Felvételel kapcsolatos információk</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#recordTags">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="recordTags" id="recordTags-trigger" aria-selected="false" disabled="disabled">
+                                            <span class="bs-stepper-circle bg-info"><i class="fas fa-tags"></i></span>
+                                            <span class="bs-stepper-label">Címkék és azok kamerái</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#summary">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
+                                            <span class="bs-stepper-circle bg-info"><i class="fas fa-list"></i></span>
+                                            <span class="bs-stepper-label">Összesítés</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bs-stepper-content">
+                                    <div id="request-info" class="content active dstepper-block" role="tabpanel" aria-labelledby="request-info-trigger">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Felhasználó, aki részére az igénylés zajlik</label>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                        </div>
+                                                        <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
+                                                    Csak a rendszerben létező felhasználók részére lehet igényelni kamerafelvételt!<br />
+                                                    Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Esemény dátuma</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                                        </div>
+                                                        <input id="inputDate" name="inputDate" type="date" min="@DateTime.Now.AddMonths(-1).AddDays(-14).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a dátumával kapcsolatban</h5>
+                                                    Címke alapú kamerafelvétel igénylésekor csak egy kijelölt nap lehetséges.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Kamerafelvétel lementésének oka</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="far fa-eye"></i></span>
+                                                        </div>
+                                                        <input id="inputWhy" name="inputWhy" type="text" class="form-control" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a felvétel okáról</h5>
+                                                    A megnevezett okkal lesznek elnevezve a felvételek a későbbi könnyebb visszakeresés érdekében.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="float-right">
+                                                    <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="recordTags" class="content" role="tabpanel" aria-labelledby="recordTags-trigger">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Lementeni kívánt címkék megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                                                        </div>
+                                                        <input id="inputTags" name="inputTags" type="text" class="form-control" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a címke megnevezéssel kapcsolatban</h5>
+                                                    A címkék lehetőleg azonosak legyenek, hogy a HikCentral megtalálja a kért címkéket.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Megcímkézett kamerák az adott napon</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-video"></i></span>
+                                                        </div>
+                                                        <select id="selectedCameras" name="selectedCameras" asp-items="ViewBag.Cameras" class="form-control select2bs4stay" multiple="multiple" required>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a kamerákkal kapcsolatban</h5>
+                                                    A HikCentral nem képes az összes kamerán egyszerre címkére keresni, emiatt kell egy megcímkézett kamerák listája.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="float-right">
+                                                    <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                                    <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
+                                                    <script>
+                                                        function summary() {
+                                                            document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
+                                                            document.getElementById("summaryDate").innerHTML = $('#inputDate').val();
+                                                            document.getElementById("summaryWhy").innerHTML = $('#inputWhy').val();
+                                                            document.getElementById("summaryTags").innerHTML = $('#inputTags').val();
+                                                            document.getElementById("summaryCameras").innerHTML = $('#selectedCameras option:selected').toArray().map(item => item.text).join(", ");
+                                                            stepper.next();
+                                                        }
+                                                    </script>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+                                                    <dl class="row">
+                                                        <dt class="col-sm-4"><i class="icon fas fa-user"></i>Kinek a részére</dt>
+                                                        <dd id="summaryUser" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
+                                                        <dd class="col-sm-8">Kamerafelvétel lementése</dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
+                                                        <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-calendar"></i>Esemény dátuma</dt>
+                                                        <dd id="summaryDate" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon far fa-eye"></i>Lementésének oka</dt>
+                                                        <dd id="summaryWhy" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-tags"></i>Címkék megnevezése</dt>
+                                                        <dd id="summaryTags" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-video"></i>Megcímkézett kamerák</dt>
+                                                        <dd id="summaryCameras" class="col-sm-8"></dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 mt-3">
+                                                <div class="float-left">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                                        <label class="custom-control-label" for="agreeToTerms">
+                                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="float-right">
+                                                    <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                                    <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body p-0">
-                    <form asp-action="RecordsByTags">
-                        <div class="row">
-                            <div class="col-12">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            </div>
-                        </div>
-                        <div class="bs-stepper linear">
-                            <div class="bs-stepper-header" role="tablist">
-                                <div class="step active" data-target="#request-info">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-camera"></i></span>
-                                        <span class="bs-stepper-label">Felvételel kapcsolatos információk</span>
-                                    </button>
-                                </div>
-                                <div class="line"></div>
-                                <div class="step" data-target="#recordTags">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="recordTags" id="recordTags-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-tags"></i></span>
-                                        <span class="bs-stepper-label">Címkék és azok kamerái</span>
-                                    </button>
-                                </div>
-                                <div class="line"></div>
-                                <div class="step" data-target="#summary">
-                                    <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
-                                        <span class="bs-stepper-circle bg-info"><i class="fas fa-list"></i></span>
-                                        <span class="bs-stepper-label">Összesítés</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="bs-stepper-content">
-                                <div id="request-info" class="content active dstepper-block" role="tabpanel" aria-labelledby="request-info-trigger">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Felhasználó, aki részére az igénylés zajlik</label>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                                    </div>
-                                                    <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
-                                                Csak a rendszerben létező felhasználók részére lehet igényelni kamerafelvételt!<br />
-                                                Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Esemény dátuma</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                    </div>
-                                                    <input id="inputDate" name="inputDate" type="date" min="@DateTime.Now.AddMonths(-1).AddDays(-14).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i>Információ a dátumával kapcsolatban</h5>
-                                                Címke alapú kamerafelvétel igénylésekor csak egy kijelölt nap lehetséges.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Kamerafelvétel lementésének oka</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="far fa-eye"></i></span>
-                                                    </div>
-                                                    <input id="inputWhy" name="inputWhy" type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i>Információ a felvétel okáról</h5>
-                                                A megnevezett okkal lesznek elnevezve a felvételek a későbbi könnyebb visszakeresés érdekében.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span class="float-right">
-                                                <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="recordTags" class="content" role="tabpanel" aria-labelledby="recordTags-trigger">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Lementeni kívánt címkék megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-tags"></i></span>
-                                                    </div>
-                                                    <input id="inputTags" name="inputTags" type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i>Információ a címke megnevezéssel kapcsolatban</h5>
-                                                A címkék lehetőleg azonosak legyenek, hogy a HikCentral megtalálja a kért címkéket.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <label>Megcímkézett kamerák az adott napon</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-video"></i></span>
-                                                    </div>
-                                                    <select id="selectedCameras" name="selectedCameras" asp-items="ViewBag.Cameras" class="form-control select2bs4stay" multiple="multiple" required>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-info"></i>Információ a kamerákkal kapcsolatban</h5>
-                                                A HikCentral nem képes az összes kamerán egyszerre címkére keresni, emiatt kell egy megcímkézett kamerák listája.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                                <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
-                                                <script>
-                                                    function summary() {
-                                                        document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
-                                                        document.getElementById("summaryDate").innerHTML = $('#inputDate').val();
-                                                        document.getElementById("summaryWhy").innerHTML = $('#inputWhy').val();
-                                                        document.getElementById("summaryTags").innerHTML = $('#inputTags').val();
-                                                        document.getElementById("summaryCameras").innerHTML = $('#selectedCameras option:selected').toArray().map(item => item.text).join(", ");
-                                                        stepper.next();
-                                                    }
-                                                </script>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="alert alert-light alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4"><i class="icon fas fa-user"></i>Kinek a részére</dt>
-                                                    <dd id="summaryUser" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
-                                                    <dd class="col-sm-8">Kamerafelvétel lementése</dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
-                                                    <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-calendar"></i>Esemény dátuma</dt>
-                                                    <dd id="summaryDate" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="icon far fa-eye"></i>Lementésének oka</dt>
-                                                    <dd id="summaryWhy" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-tags"></i>Címkék megnevezése</dt>
-                                                    <dd id="summaryTags" class="col-sm-8"></dd>
-                                                    <dt class="col-sm-4"><i class="icon fas fa-video"></i>Megcímkézett kamerák</dt>
-                                                    <dd id="summaryCameras" class="col-sm-8"></dd>
-                                                </dl>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 mt-3">
-                                            <div class="float-left">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
-                                                    <label class="custom-control-label" for="agreeToTerms">
-                                                        Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="float-right">
-                                                <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                                <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+            }
+            else
+            {
+                <div class="alert alert-danger alert-dismissible">
+                    <h5><i class="icon fas fa-ban"></i> Figyelem!</h5>
+                    A rendszerben jelenleg nem található kamera!<br>
+                    Az igénylés <b>automatikusan</b> ismét elérhetővé válik, amennyiben hozzáadásra kerül.
                 </div>
-            </div>
-
+            }
         </div>
     </div>
 </div>
