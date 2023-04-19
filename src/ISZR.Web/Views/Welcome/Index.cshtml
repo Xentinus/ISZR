@@ -12,7 +12,7 @@
             <img src="~/img/ISZR_Long_Trans.png" alt="ISZR Logo" class="brand-image" width="500">
         </div>
         <div class="card-body">
-            @if (((IEnumerable<dynamic>)ViewBag.ClassId).Count() > 0 || ((IEnumerable<dynamic>)ViewBag.PositionId).Count() > 0)
+            @if (((IEnumerable<dynamic>)ViewBag.ClassId).Count() > 0 && ((IEnumerable<dynamic>)ViewBag.PositionId).Count() > 0)
             {
                 <div class="container-fluid">
                     <div class="row">
