@@ -41,7 +41,8 @@ namespace ISZR.Web.Controllers
             // Amennyiben semmilyen érték nem létezik (vendég felhasználóknak, saját igénylések megtekintése)
             if (string.IsNullOrEmpty(status) && string.IsNullOrEmpty(type) && requestFor == 0)
             {
-                int userId = await Account.GetUserId(_context);
+                int? userId = await Account.GetUserId(_context);
+                if (userId == null) return Forbid();
                 dataContext = dataContext.Where(r => r.CreatedForUserId == userId);
             }
             else
@@ -112,11 +113,9 @@ namespace ISZR.Web.Controllers
             // Ha nem ügyintéző akkor csak a saját ügyeit tekintheti meg
             if (!Account.IsUgyintezo())
             {
-                var userId = await Account.GetUserId(_context);
-                if (request.CreatedForUserId != userId)
-                {
-                    return Forbid();
-                }
+                int? userId = await Account.GetUserId(_context);
+                if (userId == null) return NotFound();
+                if (request.CreatedForUserId != userId) return Forbid();
             }
 
             // Adminisztrátorok részére ClosedByUserId beállítása (adatbázisban nem írja még felül, csak ha státusz módosít)
