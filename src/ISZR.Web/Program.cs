@@ -10,6 +10,7 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
 // Services
+builder.Services.AddResponseCaching();
 builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
    .AddNegotiate();
@@ -43,6 +44,22 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// Response Caching
+app.UseResponseCaching();
+app.Use(async (context, next) =>
+{
+	context.Response.GetTypedHeaders().CacheControl =
+		new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+		{
+			Public = true,
+			MaxAge = TimeSpan.FromSeconds(10)
+		};
+	context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] =
+		new string[] { "Accept-Encoding" };
+
+	await next();
+});
 
 app.UseRouting();
 
