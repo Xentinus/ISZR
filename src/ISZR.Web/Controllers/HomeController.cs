@@ -1,5 +1,6 @@
 ﻿using ISZR.Web.Components;
 using ISZR.Web.Models;
+using ISZR.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
@@ -29,24 +30,26 @@ namespace ISZR.Web.Controllers
             // Amennyiben a felhasználó nem található az adatbázisban, annak továbbirányítása a regisztrációs oldalra
             if (user == null) return RedirectToAction("Index", "Welcome");
 
+            var viewModel = new DashboardViewModel { User = user };
+
             // Amennyiben ügyintéző a felhasználó, annak statisztikáinak megjelenítése
             if (Account.IsUgyintezo())
             {
                 // Felhasználó összes igénylése
-                ViewBag.AllRequests = _context.Requests.Count(r => r.CreatedByUserId == user.UserId);
+                viewModel.AllRequests = _context.Requests.Count(r => r.CreatedByUserId == user.UserId);
 
                 // Felhasználó folyamatban lévő igénylései
-                ViewBag.InProgressRequests = _context.Requests.Count(r => r.Status == "Folyamatban" && r.CreatedByUserId == user.UserId);
+                viewModel.InProgressRequests = _context.Requests.Count(r => r.Status == "Folyamatban" && r.CreatedByUserId == user.UserId);
 
                 // Felhasználó végrehajtott igénylései
-                ViewBag.DoneRequests = _context.Requests.Count(r => r.Status == "Végrehajtva" && r.CreatedByUserId == user.UserId);
+                viewModel.DoneRequests = _context.Requests.Count(r => r.Status == "Végrehajtva" && r.CreatedByUserId == user.UserId);
 
                 // Felhasználó elutasított igénylései
-                ViewBag.DeniedRequests = _context.Requests.Count(r => r.Status == "Elutasítva" && r.CreatedByUserId == user.UserId);
+                viewModel.DeniedRequests = _context.Requests.Count(r => r.Status == "Elutasítva" && r.CreatedByUserId == user.UserId);
             }
 
             // Irányítópult megjelenítése a felhasználónak
-            return View(user);
+            return View(viewModel);
         }
 
         /// <summary>
