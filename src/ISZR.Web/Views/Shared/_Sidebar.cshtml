@@ -21,7 +21,7 @@
                 @if (Account.IsUgyintezo())
                 {
                     <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" || ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")" asp-controller="Requests" asp-action="Index">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" || ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")" asp-controller="Requests" asp-action="Index" asp-route-status="Mind" asp-route-type="Mind">
                             <i class="nav-icon fas fa-tasks"></i>
                             <p>Összes igénylés</p>
                         </a>
