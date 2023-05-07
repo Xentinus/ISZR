@@ -75,7 +75,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                                             </div>
-                                            <select name="requestFor" class="form-control select2bs4" asp-items="ViewBag.RequestForId">
+                                            <select name="requestFor" class="form-control select2bs4" asp-items="ViewBag.CreatedForUserId">
                                                 <option>Mind</option>
                                             </select>
                                         </div>
@@ -104,7 +104,10 @@
                                 <th>Igénylési azonosító</th>
                                 <th class="d-none d-md-table-cell">Létrehozásának és lezárásának ideje</th>
                                 <th class="d-none d-xl-table-cell">Igénylést intéző</th>
-                                <th>Felhasználó számára</th>
+                                @if (Account.IsUgyintezo())
+                                {
+                                    <th>Felhasználó számára</th>
+                                }
                                 <th>Igénylés típusa</th>
                                 <th class="d-print-none"></th>
                             </tr>
@@ -153,12 +156,15 @@
                                             <span>@item.CreatedByUser.DisplayName</span>
                                         }
                                     </td>
-                                    <td>
-                                        @if (item.CreatedForUser != null)
-                                        {
-                                            <span>@item.CreatedForUser.DisplayName</span>
-                                        }
-                                    </td>
+                                    @if (Account.IsUgyintezo())
+                                    {
+                                        <td>
+                                            @if (item.CreatedForUser != null)
+                                            {
+                                                <span>@item.CreatedForUser.DisplayName</span>
+                                            }
+                                        </td>
+                                    }
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Type)
                                     </td>
