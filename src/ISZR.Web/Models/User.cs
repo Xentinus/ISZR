@@ -66,6 +66,15 @@ namespace ISZR.Web.Models
         [MaxLength(7, ErrorMessage = "Az NTG elérhetőség nem lehet nagyobb mint 7 karakter")]
         public string? Phone { get; set; }
 
+
+        /// <summary>
+        /// Felhasználó szolgálati helye
+        /// </summary>
+        [Display(Name = "Szolgálati hely")]
+        [Required(ErrorMessage = "A szolgálati hely megadása kötelező!")]
+        [MaxLength(64, ErrorMessage = "A szolgálati hely megnevezése nem lehet 64 karakternél hosszabb")]
+        public string? Location { get; set; }
+
         /// <summary>
 		/// Felhasználó utolsó bejelentkezésének ideje
 		/// </summary>

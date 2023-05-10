@@ -71,7 +71,7 @@ namespace ISZR.Web.Controllers
         /// <param name="user">Felhasználó megadott értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([Bind("UserId,Username,DisplayName,Email,Phone,Rank,LastLogin,ClassId,PositionId,Genre")] User user)
+        public async Task<IActionResult> Index([Bind("UserId,Username,DisplayName,Email,Location,Phone,Rank,LastLogin,ClassId,PositionId,Genre")] User user)
         {
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
@@ -115,6 +115,7 @@ namespace ISZR.Web.Controllers
                     foundUser.ClassId = user.ClassId;
                     foundUser.Position = user.Position;
                     foundUser.PositionId = user.PositionId;
+                    foundUser.Location = user.Location;
                     foundUser.Phone = user.Phone;
                     foundUser.Email = user.Email;
                     foundUser.Genre = user.Genre;

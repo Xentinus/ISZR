@@ -23,6 +23,9 @@
                     <hr />
                     <strong><i class="icon fas fa-users mr-2"></i>Osztály</strong>
                     <p class="text-muted">@Model?.User?.Class?.Name</p>
+                    <hr />
+                    <strong><i class="icon fas fa-map-marker-alt mr-2"></i>Szolgálati hely</strong>
+                    <p class="text-muted">@Model?.User?.Location</p>
                     @if (Model?.User?.Email != null)
                     {
                         <hr />

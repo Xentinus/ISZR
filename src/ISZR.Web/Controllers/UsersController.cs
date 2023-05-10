@@ -124,7 +124,7 @@ namespace ISZR.Web.Controllers
         /// <param name="user">Felhasználó új megadott értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,Username,DisplayName,Rank,Genre,Email,Phone,LastLogin,LogonCount,ClassId,PositionId,IsArchived")] User user)
+        public async Task<IActionResult> Create([Bind("UserId,Username,DisplayName,Rank,Genre,Location,Email,Phone,LastLogin,LogonCount,ClassId,PositionId,IsArchived")] User user)
         {
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
@@ -198,7 +198,7 @@ namespace ISZR.Web.Controllers
         /// <param name="user">Felhasználó új értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,Username,DisplayName,Rank,Genre,Email,Phone,LastLogin,LogonCount,ClassId,PositionId,IsArchived")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,Username,DisplayName,Rank,Genre,Location,Email,Phone,LastLogin,LogonCount,ClassId,PositionId,IsArchived")] User user)
         {
             // Azonosítók meglétének ellenőrzése
             if (id != user.UserId) return NotFound();

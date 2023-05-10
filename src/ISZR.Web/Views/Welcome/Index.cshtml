@@ -131,6 +131,18 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Szolgálati hely</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                            <span asp-validation-for="Location" class="text-danger"></span>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                                </div>
+                                                <input type="text" asp-for="Location" class="form-control" placeholder="Szolgálati hely" spellcheck="true" required>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>E-mail cím</label>
@@ -193,13 +205,10 @@
                     else
                     {
                         <div class="font-weight-bold">Kedves Felhasználók!</div>
-                        <div class="mt-3">Az alkalmazás jelenleg karbantartás alatt van, kérjük, látogassanak vissza később!</div>
+                        <div class="mt-3">Az alkalmazás jelenleg karbantartás alatt van. Kérjük, látogassanak vissza később!</div>
                         <div class="row">
                             <div class="col-12 mt-3 text-center text-muted font-italic">
-                                További információkért írjon emailt a GEI Informatikai csoportnak!
-                            </div>
-                            <div class="col-12 text-center text-muted font-italic font-weight-bold">
-                                <a class="text-info" href="mailto:skfb-info-informatika@bv.gov.hu">skfb-info-informatika@bv.gov.hu</a>
+                                További információkért írjon emailt a helyi informatikai csoportnak!
                             </div>
                         </div>
                     }
