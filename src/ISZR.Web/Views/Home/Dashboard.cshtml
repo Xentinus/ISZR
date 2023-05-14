@@ -26,13 +26,13 @@
                     <hr />
                     <strong><i class="icon fas fa-map-marker-alt mr-2"></i>Szolgálati hely</strong>
                     <p class="text-muted">@Model?.User?.Location</p>
-                    @if (Model?.User?.Email != null)
+                    @if (!string.IsNullOrEmpty(Model?.User?.Email))
                     {
                         <hr />
                         <strong><i class="icon fas fa-envelope mr-2"></i>E-mail elérhetőség</strong>
                         <p class="text-muted">@Model?.User?.Email</p>
                     }
-                    @if (Model?.User?.Phone != null)
+                    @if (!string.IsNullOrEmpty(Model?.User?.Phone))
                     {
                         <hr />
                         <strong><i class="icon fas fa-phone mr-2"></i>NTG elérhetőség</strong>

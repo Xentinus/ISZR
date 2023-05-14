@@ -32,7 +32,7 @@
                         <div class="col-xl-4 col-md-6 col-12 invoice-col">
                             <strong>Igénylést intéző</strong>
                             <address>
-                                @Model?.CreatedByUser?.DisplayName bv. @Model?.CreatedByUser?.Rank?.ToLower()<br>
+                                @Model?.CreatedByUser?.DisplayName bv. @Model?.CreatedByUser?.Rank?.ToLower()<br />
                                 @Model?.CreatedByUser?.Class?.Name, @Model?.CreatedByUser?.Position?.Name<br />
                                 <i class="icon fas fa-map-marker-alt mr-2"></i>@Model?.CreatedByUser?.Location<br />
                                 @if (!string.IsNullOrEmpty(Model?.CreatedByUser?.Email))
@@ -54,7 +54,7 @@
                         <div class="col-xl-4 col-md-6 col-12 invoice-col">
                             <strong>Felhasználó számára</strong>
                             <address>
-                                @Model?.CreatedForUser?.DisplayName bv. @Model?.CreatedForUser?.Rank?.ToLower()<br>
+                                @Model?.CreatedForUser?.DisplayName bv. @Model?.CreatedForUser?.Rank?.ToLower()<br />
                                 @Model?.CreatedForUser?.Class?.Name, @Model?.CreatedForUser?.Position?.Name<br />
                                 <i class="icon fas fa-map-marker-alt mr-2"></i>@Model?.CreatedForUser?.Location<br />
                                 @if (!string.IsNullOrEmpty(Model?.CreatedForUser?.Email))
