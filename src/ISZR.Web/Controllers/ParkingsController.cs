@@ -22,7 +22,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // Parkolási engedélyek listájának lekérdezése
-            var dataContext = _context.Parkings.Include(p => p.OwnerUser);
+            var dataContext = _context.Parkings.Include(p => p.OwnerUser).OrderBy(p => p.LicensePlate);
 
             // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());

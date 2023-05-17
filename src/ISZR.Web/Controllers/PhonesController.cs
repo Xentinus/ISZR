@@ -23,7 +23,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // PIN kódok listájának lekérdezése
-            var dataContext = _context.Phones.Include(p => p.PhoneUser);
+            var dataContext = _context.Phones.Include(p => p.PhoneUser).OrderBy(p => p.PhoneCode);
 
             // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());
