@@ -217,7 +217,7 @@ namespace ISZR.Web.Controllers
         /// <param name="user">Új felhasználóval kapcsolatos adatok</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewUserAccess(int? selectedGroup, [Bind("UserId,Username,DisplayName,Email,Phone,Rank,LastLogin,ClassId,PositionId,Genre")] User user)
+        public async Task<IActionResult> NewUserAccess(int? selectedGroup, [Bind("UserId,Username,DisplayName,Rank,Genre,Location,Email,Phone,LastLogin,LogonCount,ClassId,PositionId,IsArchived")] User user)
         {
             // Új felhasználó adatainak meglétének ellenőrzése
             if (user == null || selectedGroup == null) return Forbid();
