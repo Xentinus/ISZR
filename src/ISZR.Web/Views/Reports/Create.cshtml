@@ -1,0 +1,82 @@
+﻿@model ISZR.Web.Models.Report
+
+@{
+    ViewData["Title"] = "Hibabejelentés";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-light alert-dismissible">
+                <h5><i class="icon fas fa-info"></i>Információ a hibabejelentésről</h5>
+                Ezen a felületen bejelenthetsz hibákat, illetve igényléseket is, amelyek a szolgálati jegyrendszerrel kapcsolatosak.<br />
+                Például amennyiben új jogosultsági csoport létrehozását szeretnéd igényelni, abban az esetben írd le a nevét (azon a néven lesz megtalálható) és hogy kiről legyen mintázva.
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Hibabejelentéshez tartozó adatok megadása</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div class="row">
+                            <div class="col-12">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Cím</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Title" class="form-control" placeholder="Rövid megnevezés" spellcheck="true" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Részletes leírás</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Description" class="form-control" placeholder="Részletes leírás" spellcheck="true" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="float-left">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                        <label class="custom-control-label" for="agreeToTerms">
+                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                    <input type="submit" value="Észrevétel elküldése" class="btn btn-success ml-1" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

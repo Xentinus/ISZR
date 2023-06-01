@@ -1,0 +1,141 @@
+﻿@model IEnumerable<ISZR.Web.Models.Report>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Hibabejelentések";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <form asp-controller="Requests" asp-action="Index" method="get">
+                <div class="card card-info d-print-none">
+                    <div class="card-header" data-card-widget="collapse">
+                        <h3 class="card-title font-weight-bold"><i class="icon fas fa-filter mr-2"></i>Bejelentések szűrése</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6 col-12">
+                                <div class="form-group">
+                                    <label>Bejelentő</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        <select name="reportUser" class="form-control select2bs4" asp-items="ViewBag.ReportUserId">
+                                            <option>Mind</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-12">
+                                <div class="form-group">
+                                    <label>Szöveg</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-font"></i></span>
+                                        </div>
+										<input name="text" type="text" class="form-control" placeholder="Megadott szó keresése a bejelentésekben">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-12">
+                                <div class="form-group">
+                                    <label>Státusz</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                        </div>
+                                        <select name="status" class="form-control select2bs4">
+                                            <option selected>Folyamatban</option>
+                                            <option>Lezárva</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-print-none">
+                        <span class="float-right">
+                            <a class="btn btn-default ml-1 mr-1" onclick="window.print()"><i class="icon fas fa-print mr-2"></i>Lista nyomtatása</a>
+                            <button type="submit" alt="Megjelenített igénylések szűrése" class="btn btn-info">Szűrés</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body p-0">
+					@foreach (var item in Model)
+					{
+						<div class="modal fade" id="deleteModal@(item.ReportId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.ReportId)" aria-hidden="true">
+							<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header bg-danger">
+										<h5 class="modal-title" id="deleteModalLabel@(item.ReportId)">Állapot megváltoztatása</h5>
+									</div>
+									<div class="modal-body">
+										<div>Biztosan szeretnéd az állapotát megváltoztatni?</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
+										<form asp-action="Index" asp-route-id="@item.ReportId">
+											<input type="hidden" asp-for="@item.ReportId" />
+											<button type="submit" class="btn btn-danger">Állapotának megváltoztatása</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+					<table class="table table-striped">
+						<thead class="bg-info">
+							<tr>
+								<th>Bejelentő</th>
+								<th>Bejelentés</th>
+								<th>Állapot</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										@Html.DisplayFor(modelItem => item.ReportUser.DisplayName)
+									</td>
+									<td>
+										<b>@Html.DisplayFor(modelItem => item.Title)</b><br>
+										@Html.DisplayFor(modelItem => item.Description)
+									</td>
+									<td>
+										@if (item.IsSolved)
+										{
+											<span class="text-danger font-weight-bold"><i class="icon fas fa-lock mr-2"></i>Lezárva</span>
+										}
+										else
+										{
+											<span class="text-success font-weight-bold"><i class="icon fas fa-lock-open mr-2"></i>Folyamatban</span>
+										}
+									</td>
+									<td class="float-right">
+										<input type="button" data-toggle="modal" data-target="#deleteModal@(item.ReportId)" value="Állapot változtatás" class="btn btn-info" />
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
