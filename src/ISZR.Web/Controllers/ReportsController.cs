@@ -1,9 +1,13 @@
-﻿using ISZR.Web.Models;
+﻿using ISZR.Web.Components;
+using ISZR.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISZR.Web.Controllers
 {
+	/// <summary>
+	/// /Reports/? Controller
+	/// </summary>
 	public class ReportsController : Controller
 	{
 		private readonly DataContext _context;
@@ -13,13 +17,58 @@ namespace ISZR.Web.Controllers
 			_context = context;
 		}
 
-		// GET: Reports
-		public async Task<IActionResult> Index()
+        /// <summary>
+        /// Hibabejelentések megjelenítése szűrés alapján
+        /// </summary>
+        /// <param name="reportUser">Bejelentő</param>
+        /// <param name="text">Címben és leírásban keresendő szavak</param>
+        /// <param name="status">Hibabejelentések státusza</param>
+        /// <returns></returns>
+        public async Task<IActionResult> Index(int reportUser, string text, bool status)
 		{
-			// Felhasználó alapú szűréshez lista
-			ViewData["ReportUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            // Az ISZR-ben nem megtalálható személyek kizására
+            if (!await Account.IsUserExists(_context)) return Forbid();
 
-			var dataContext = _context.Reports.Include(r => r.ReportUser);
+            // Hibabejelentések listájának lekérdezése
+            var dataContext = _context.Reports
+                .OrderByDescending(r => r.ReportId)
+                .AsQueryable();
+
+            // Szűrés csak ügyintézők számára engedélyezett
+            if (!Account.IsUgyintezo()) return Forbid();
+
+            // Státusz alapú szűrés
+            if (status)
+            {
+                dataContext = dataContext.Where(r => r.IsSolved);
+                ViewBag.status = status;
+            } else
+			{
+                dataContext = dataContext.Where(r => !r.IsSolved);
+                ViewBag.status = status;
+            }
+
+            // Szöveg alapú szűrés
+            if (!string.IsNullOrEmpty(text))
+            {
+				dataContext = dataContext.Where(r => r.Description.Contains(text));
+                ViewBag.text = text;
+            }
+
+            // Személy alapú szürés
+            if (reportUser != 0 && reportUser.ToString() != "Mind")
+            {
+                dataContext = dataContext.Where(r => r.ReportUserId == reportUser);
+                ViewBag.reportUser = reportUser;
+            }
+
+            // Maximális megengedett lista értéke 50
+            dataContext = dataContext.Take(50);
+
+            // Felhasználó alapú szűréshez lista
+            ViewData["ReportUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+
+			// Az oldal megjelenítése a hibabejelentésekkel
 			return View(await dataContext.ToListAsync());
 		}
 
@@ -65,30 +114,44 @@ namespace ISZR.Web.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		// GET: Reports/Create
+		/// <summary>
+		/// Hibabejelentés felületének megjelenítése
+		/// </summary>
 		public IActionResult Create()
 		{
-			ViewData["ReportUserId"] = new SelectList(_context.Users, "UserId", "DisplayName");
+            // Felhasználó alapú szűréshez lista
+            ViewData["ReportUserId"] = new SelectList(_context.Users, "UserId", "DisplayName");
+
+			// Felület megjelenítése
 			return View();
 		}
 
-		// POST: Reports/Create
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		/// <summary>
+		/// Hibabejelentés létrehozása az adatbázisban
+		/// </summary>
+		/// <param name="report">Hibabejelentés</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create([Bind("ReportId,ReportUserId,Title,Description,IsSolved")] Report report)
 		{
+			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
 			{
 				// Hibabejelentést létrehozó személy azonosítója
 				report.ReportUserId = await GetLoggedUserId();
 
+				// Hibabejelentés hozzáadása az adatbázishoz
 				_context.Add(report);
 				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));
-			}
+
+                // Felhasználó átnavigálása a felhasználói profilba
+                return RedirectToAction("Dashboard", "Home");
+            }
+
+			// Felhasználó alapú szűréshez lista
 			ViewData["ReportUserId"] = new SelectList(_context.Users, "UserId", "DisplayName", report.ReportUserId);
+
+			// Felület megjelenítése
 			return View(report);
 		}
 
