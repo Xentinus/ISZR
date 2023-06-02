@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <form asp-controller="Requests" asp-action="Index" method="get">
+            <form asp-controller="Reports" asp-action="Index" method="get">
                 <div class="card card-info d-print-none">
                     <div class="card-header" data-card-widget="collapse">
                         <h3 class="card-title font-weight-bold"><i class="icon fas fa-filter mr-2"></i>Bejelentések szűrése</h3>
@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12">
                                 <div class="form-group">
-                                    <label>Szöveg</label>
+                                    <label>Keresés a leírásban</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
 											<span class="input-group-text"><i class="fas fa-font"></i></span>
@@ -52,8 +52,8 @@
                                             <span class="input-group-text"><i class="fas fa-tag"></i></span>
                                         </div>
                                         <select name="status" class="form-control select2bs4">
-                                            <option selected>Folyamatban</option>
-                                            <option>Lezárva</option>
+                                            <option value="false" selected>Folyamatban</option>
+                                            <option value="true">Lezárva</option>
                                         </select>
                                     </div>
                                 </div>

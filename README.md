@@ -19,9 +19,9 @@ A web alkalmazás célja, hogy a felhasználók egyszerűen, könnyedén igénye
 - Az adatbázis segítségével egyszerűen lehet elvenni és hozzáadni jogosultságokat a rendszerhez
 - Könnyen áttekinthető és értelmezhető igénylési lap
 - Hivatkozásokkal ellátott igénylési lapok és listák
-- Nyomtatható igénylési és jogosultsági listák
 - Egyhelyen kezelhető parkolási engedélyek
 - Automatikus szabad pin kód lefoglalása illetve felhasználó tájékoztatása ha elfogyott
+- Lehetőség a hibabejelentések/ötletek küldése adminisztrátorok részére
 
 ## Felhasználói típusok
 
@@ -106,3 +106,7 @@ Ha a felszabadul egy kód akkor ismét elérhetővé válik minden ügykezelő r
 </p>
 
 A rendszerben lehetőség nyilik a felhasználókhoz tartozó járművek ellenőrzésére amennyiben igényeltek engedélyt.
+
+## Hibabejelentések
+
+Ügyintézők számára lehetőség nyílik hibákat, illetve igényléseket kérvényezni az adminisztrátorok részére.
