@@ -693,8 +693,35 @@ namespace ISZR.Web.Controllers
 			// Megadott értékek ellenőrzése
 			if (ModelState.IsValid)
 			{
-				// Igénylést létrehozó személy azonosítója
-				request.CreatedByUserId = await GetLoggedUserId();
+				// Új parkolási engedély létrehozása
+				Parking? parking = new Parking();
+
+				// Parkolási engedély adatainak elmentése
+				parking.Brand = brand;
+				parking.Modell = modell;
+				parking.LicensePlate = licensePlate;
+				parking.OwnerUserId = request.CreatedForUserId;
+
+                try
+                {
+                    // Parkolási engedély hozzáadása az adatbázishoz
+                    _context.Add(parking);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ParkingExists(parking.ParkingId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                // Igénylést létrehozó személy azonosítója
+                request.CreatedByUserId = await GetLoggedUserId();
 
 				// Igénylés létrehozásának dátuma
 				request.CreatedDateTime = DateTime.Now;
@@ -1079,5 +1106,15 @@ namespace ISZR.Web.Controllers
 		{
 			return (_context.Phones?.Any(e => e.PhoneId == id)).GetValueOrDefault();
 		}
-	}
+
+        /// <summary>
+        /// Parkolási engedély meglétének ellenőrzése
+        /// </summary>
+        /// <param name="id">Parkolási engedély azonosítója</param>
+        /// <returns>Létezik e az adott parkolási engedély (igaz/hamis)</returns>
+        private bool ParkingExists(int id)
+        {
+            return (_context.Parkings?.Any(e => e.ParkingId == id)).GetValueOrDefault();
+        }
+    }
 }
