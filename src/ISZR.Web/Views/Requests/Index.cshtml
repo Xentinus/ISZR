@@ -169,7 +169,7 @@
                                         @Html.DisplayFor(modelItem => item.Type)
                                     </td>
                                     <td class="float-right d-print-none">
-                                        <a asp-action="Details" asp-route-id="@item.RequestId"><input type="button" value="Részletek" class="btn btn-info" /></a>
+                                        <a class="btn btn-default" asp-action="Details" asp-route-id="@item.RequestId"><i class="fas fa-search text-info mr-2"></i>Megtekintés</a>
                                     </td>
                                 </tr>
                             }

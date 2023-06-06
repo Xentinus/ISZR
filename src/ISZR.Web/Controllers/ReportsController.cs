@@ -34,9 +34,6 @@ namespace ISZR.Web.Controllers
                 .OrderByDescending(r => r.ReportId)
                 .AsQueryable();
 
-            // Szűrés csak ügyintézők számára engedélyezett
-            if (!Account.IsUgyintezo()) return Forbid();
-
             // Státusz alapú szűrés
             if (status)
             {
