@@ -51,7 +51,14 @@
 							{
 								<tr>
 									<td>
-										@Html.DisplayFor(modelItem => item.OwnerUser.DisplayName)
+										@if (item.OwnerUser != null)
+										{
+											<span>@item.OwnerUser?.DisplayName bv. @item.OwnerUser?.Rank?.ToLower()</span>
+										}
+										else
+										{
+											<span class="text-danger font-weight-bold"><i class="icon fas fa-exclamation-triangle mr-2"></i>Engedélyező tulajdonos beállítva</span>
+										}
 									</td>
 									<td>
 										@Html.DisplayFor(modelItem => item.Brand) @Html.DisplayFor(modelItem => item.Modell)

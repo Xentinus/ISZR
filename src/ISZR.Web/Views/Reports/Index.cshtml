@@ -110,7 +110,14 @@
 							{
 								<tr>
 									<td>
-										@Html.DisplayFor(modelItem => item.ReportUser.DisplayName)
+										@if (item.ReportUser != null)
+										{
+											<span>@item.ReportUser?.DisplayName bv. @item.ReportUser?.Rank?.ToLower()</span>
+										}
+										else
+										{
+											<span class="text-danger font-weight-bold"><i class="icon fas fa-exclamation-triangle mr-2"></i>Engedélyező személy beállítva</span>
+										}
 									</td>
 									<td>
 										<b>@Html.DisplayFor(modelItem => item.Title)</b><br>

@@ -25,7 +25,6 @@ namespace ISZR.Web.Models
 		/// </summary>
 		[Display(Name = "Jármű modellje")]
 		[Required(ErrorMessage = "A modell megadása kötelező!")]
-		[MinLength(2, ErrorMessage = "A modell neve nem lehet kevesebb mint 2 karakter")]
 		[MaxLength(64, ErrorMessage = "A modell neve nem lehet nagyobb mint 64 karakter")]
 		public string? Modell { get; set; }
 

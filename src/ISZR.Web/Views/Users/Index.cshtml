@@ -55,7 +55,7 @@
                                         @Html.DisplayFor(modelItem => item.Username)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.DisplayName)
+                                        <span>@item.DisplayName bv. @item.Rank?.ToLower()</span>
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.LastLogin)

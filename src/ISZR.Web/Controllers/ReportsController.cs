@@ -26,9 +26,6 @@ namespace ISZR.Web.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Index(int reportUser, string text, bool status)
 		{
-            // Az ISZR-ben nem megtalálható személyek kizására
-            if (!await Account.IsUserExists(_context)) return Forbid();
-
             // Hibabejelentések listájának lekérdezése
             var dataContext = _context.Reports
                 .OrderByDescending(r => r.ReportId)
