@@ -77,7 +77,7 @@ namespace ISZR.Web.Controllers
 			if (ModelState.IsValid)
 			{
 				// Felhasználó megkeresése az adatbázisban
-				User? foundUser = await CheckUsername(user.Username);
+				User? foundUser = await CheckUsername(GetUsername());
 
 				// Amennyiben a felhasználó még nem létezik az adatbázisban
 				if (foundUser == null)
@@ -113,7 +113,6 @@ namespace ISZR.Web.Controllers
 					foundUser.Rank = user.Rank;
 					foundUser.Class = user.Class;
 					foundUser.ClassId = user.ClassId;
-					foundUser.Position = user.Position;
 					foundUser.PositionId = user.PositionId;
 					foundUser.Location = user.Location;
 					foundUser.Phone = user.Phone;
