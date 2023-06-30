@@ -11,12 +11,16 @@ builder.Logging.AddConsole();
 
 // Services
 builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
+
 builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
-   .AddNegotiate();
+        .AddNegotiate();
 
 builder.Services.AddAuthorization(options =>
 {
-	options.FallbackPolicy = options.DefaultPolicy;
+    options.AddPolicy("Ugyintezo", policy =>
+    {
+        policy.RequireRole("SKFB-ISZR-Ugyintezo");
+    });
 });
 
 builder.Services.AddRazorPages();
@@ -25,21 +29,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 var app = builder.Build();
 
-// Only Show Development Error View when Env is Dev
-if (!app.Environment.IsDevelopment())
-{
-	app.UseExceptionHandler("/Home/Error");
-	app.UseHsts();
-}
-else
-{
-	var options = new DeveloperExceptionPageOptions
-	{
-		SourceCodeLineCount = 2
-	};
-
-	app.UseDeveloperExceptionPage(options);
-}
+// Hiba megjelenítése
+app.UseDeveloperExceptionPage();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -49,9 +40,12 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Default page
+app.UseCors("CorsPolicy");
+
+// Alapértelmezett útvonal beállítása
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=Welcome}/{action=Index}/{id?}");
+	pattern: "{controller=Home}/{action=Dashboard}/{id?}");
 
+// Alkalmazás elindítása
 app.Run();

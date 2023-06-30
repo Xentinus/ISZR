@@ -1,13 +1,15 @@
 ﻿using ISZR.Web.Components;
 using ISZR.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ISZR.Web.Controllers
 {
-	/// <summary>
-	/// /Permissions/? Controller
-	/// </summary>
-	public class PermissionsController : Controller
+    /// <summary>
+    /// /Permissions/? Controller
+    /// </summary>
+    [Authorize]
+    public class PermissionsController : Controller
 	{
 		private readonly DataContext _context;
 

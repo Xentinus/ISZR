@@ -1,13 +1,15 @@
 ﻿using ISZR.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISZR.Web.Controllers
 {
-	/// <summary>
-	/// /Parkings/? Controller
-	/// </summary>
-	public class ParkingsController : Controller
+    /// <summary>
+    /// /Parkings/? Controller
+    /// </summary>
+    [Authorize]
+    public class ParkingsController : Controller
 	{
 		private readonly DataContext _context;
 

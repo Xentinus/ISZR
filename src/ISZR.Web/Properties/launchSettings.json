@@ -1,38 +1,31 @@
 {
-  "iisSettings": {
+  "IIS Express": {
+    "commandName": "IISExpress",
     "windowsAuthentication": true,
-    "anonymousAuthentication": false,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:59481",
-      "sslPort": 44308
-    }
+    "anonymousAuthentication": false
   },
   "profiles": {
-    "ISZR Develolment": {
+    "ISZR - Develolment Environment": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:56347;http://localhost:56348",
+      "applicationUrl": "https://localhost:443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "sqlDebugging": true
+      "sqlDebugging": true,
+      "hotReloadEnabled": true
     },
-    "ISZR Production": {
+    "ISZR - Production Environment": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "http://172.18.135.211:80",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
-      }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "sqlDebugging": true,
+      "hotReloadEnabled": true
     }
   }
 }

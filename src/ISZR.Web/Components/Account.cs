@@ -35,22 +35,19 @@ namespace ISZR.Web.Components
 
 			groupName = $"^.*{groupName}$";
 
-			// Windows felhasználó információinak megszerzése
-			WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            // Windows felhasználó információinak megszerzése
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
 			if (identity == null) return false;
 
-			// Bejelentkezett állapot ellenőrzése
-			if (identity.IsAuthenticated)
-			{
-				// Bejelentkezett windows felhasználó jogosultságainak ellenőrzése
-				if (identity.Groups == null) return false;
 
-				// Szükséges jogosultság keresése a csoportok között
-				foreach (IdentityReference group in identity.Groups)
-				{
-					if (Regex.IsMatch(group.Translate(typeof(NTAccount)).Value, groupName)) return true;
-				}
-			}
+			// Csoportok meglétének ellenőrzése
+            if (identity.Groups == null) return false;
+
+            // Szükséges jogosultság keresése a csoportok között
+            foreach (IdentityReference group in identity.Groups)
+            {
+                if (Regex.IsMatch(group.Translate(typeof(NTAccount)).Value, groupName)) return true;
+            }
 
 			// A személy nem rendelkezik a kért jogosultsággal
 			return false;

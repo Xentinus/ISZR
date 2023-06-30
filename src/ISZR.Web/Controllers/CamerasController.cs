@@ -1,13 +1,15 @@
 ﻿using ISZR.Web.Components;
 using ISZR.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ISZR.Web.Controllers
 {
-	/// <summary>
-	/// /Cameras/? Controller
-	/// </summary>
-	public class CamerasController : Controller
+    /// <summary>
+    /// /Cameras/? Controller
+    /// </summary>
+    [Authorize]
+    public class CamerasController : Controller
 	{
 		private readonly DataContext _context;
 

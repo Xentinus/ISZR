@@ -1,14 +1,16 @@
 ﻿using ISZR.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace ISZR.Web.Controllers
 {
-	/// <summary>
-	/// /Phones/? Controller
-	/// </summary>
-	public class PhonesController : Controller
+    /// <summary>
+    /// /Phones/? Controller
+    /// </summary>
+    [Authorize]
+    public class PhonesController : Controller
 	{
 		private readonly DataContext _context;
 
