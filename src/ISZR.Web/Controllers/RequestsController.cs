@@ -1,5 +1,6 @@
 ﻿using ISZR.Web.Components;
 using ISZR.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CSharp.RuntimeBinder;
@@ -8,10 +9,11 @@ using System.Text;
 
 namespace ISZR.Web.Controllers
 {
-	/// <summary>
-	/// /Requests/? Controller
-	/// </summary>
-	public class RequestsController : Controller
+    /// <summary>
+    /// /Requests/? Controller
+    /// </summary>
+    [Authorize(Policy = "Ugyintezo")]
+    public class RequestsController : Controller
 	{
 		private readonly DataContext _context;
 
@@ -28,9 +30,6 @@ namespace ISZR.Web.Controllers
 		/// <param name="requestFor">Kinek a számára zajlik az igénylés</param>
 		public async Task<IActionResult> Index(string status, string type, int requestFor)
 		{
-			// Az ISZR-ben nem megtalálható személyek kizására
-			if (!await Account.IsUserExists(_context)) return Forbid();
-
 			// Igénylések listájának lekérdezése
 			var dataContext = _context.Requests
 				.Include(r => r.CreatedByUser)

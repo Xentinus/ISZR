@@ -1,13 +1,15 @@
 ﻿using ISZR.Web.Components;
 using ISZR.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ISZR.Web.Controllers
 {
-	/// <summary>
-	/// /Positions/? Controller
-	/// </summary>
-	public class PositionsController : Controller
+    /// <summary>
+    /// /Positions/? Controller
+    /// </summary>
+    [Authorize]
+    public class PositionsController : Controller
 	{
 		private readonly DataContext _context;
 

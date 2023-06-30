@@ -1,14 +1,16 @@
 ﻿using ISZR.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text;
 
 namespace ISZR.Web.Controllers
 {
-	/// <summary>
-	/// /Groups/? Controller
-	/// </summary>
-	public class GroupsController : Controller
+    /// <summary>
+    /// /Groups/? Controller
+    /// </summary>
+    [Authorize]
+    public class GroupsController : Controller
 	{
 		private readonly DataContext _context;
 

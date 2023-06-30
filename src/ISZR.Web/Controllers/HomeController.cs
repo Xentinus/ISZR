@@ -1,6 +1,7 @@
 ﻿using ISZR.Web.Components;
 using ISZR.Web.Models;
 using ISZR.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
@@ -10,7 +11,8 @@ namespace ISZR.Web.Controllers
 	/// <summary>
 	/// /Home/? Controller
 	/// </summary>
-	public class HomeController : Controller
+	[Authorize]
+    public class HomeController : Controller
 	{
 		private readonly DataContext _context;
 
@@ -19,16 +21,17 @@ namespace ISZR.Web.Controllers
 			_context = context;
 		}
 
-		/// <summary>
-		/// Irányítópult megjelenítése a felhasználó értékeivel, statisztikáival.
-		/// </summary>
-		public async Task<IActionResult> Dashboard()
+        /// <summary>
+        /// Irányítópult megjelenítése a felhasználó értékeivel, statisztikáival.
+        /// </summary>
+
+        public async Task<IActionResult> Dashboard()
 		{
 			// Bejelentkezett felhasználó megkeresése
 			User? user = await GetLoggedUser();
 
 			// Amennyiben a felhasználó nem található az adatbázisban, annak továbbirányítása a regisztrációs oldalra
-			if (user == null) return RedirectToAction("Index", "Welcome");
+			if (user == null) return Forbid();
 
 			var viewModel = new DashboardViewModel { User = user };
 
@@ -52,16 +55,16 @@ namespace ISZR.Web.Controllers
 			return View(viewModel);
 		}
 
-		/// <summary>
-		/// Felhasználók beállításainak megjelenítése
-		/// </summary>
-		public async Task<IActionResult> Settings()
+        /// <summary>
+        /// Felhasználók beállításainak megjelenítése
+        /// </summary>
+        public async Task<IActionResult> Settings()
 		{
 			// Bejelentkezett felhasználó megkeresése
 			User? user = await GetLoggedUser();
 
 			// Amennyiben a felhasználó nem található az adatbázisban, annak továbbirányítása a regisztrációs oldalra
-			if (user == null) return RedirectToAction("Index", "Welcome");
+			if (user == null) return Forbid();
 
 			// Lenyíló menük adatainak betöltése
 			ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
@@ -112,21 +115,21 @@ namespace ISZR.Web.Controllers
 			return View(user);
 		}
 
-		/// <summary>
-		/// Felhasználók által gyakran ismételt kérdések megjelenítése a felhasználók részére.
-		/// </summary>
-		public IActionResult FAQ()
+        /// <summary>
+        /// Felhasználók által gyakran ismételt kérdések megjelenítése a felhasználók részére.
+        /// </summary>
+        public IActionResult FAQ()
 		{
 			// Gyakran ismételt kérdések oldalának megjelenítése
 			return View();
 		}
 
-		/// <summary>
-		/// A rendszerben található jogosultságok megjelenítése magyarázattal a felhasználó részére.
-		/// </summary>
-		/// <param name="name">Szűrés név alapján</param>
-		/// <param name="type">Szűrés típus alapján</param>
-		public async Task<IActionResult> Permissions(string name, string type)
+        /// <summary>
+        /// A rendszerben található jogosultságok megjelenítése magyarázattal a felhasználó részére.
+        /// </summary>
+        /// <param name="name">Szűrés név alapján</param>
+        /// <param name="type">Szűrés típus alapján</param>
+        public async Task<IActionResult> Permissions(string name, string type)
 		{
 			// A rendszerben található jogosultságok betöltése
 			var dataContext = _context.Permissions
@@ -159,10 +162,11 @@ namespace ISZR.Web.Controllers
 			return View(await dataContext.ToListAsync());
 		}
 
-		/// <summary>
-		/// Rendszer állapotfelméréséről jelentés
-		/// </summary>
-		public IActionResult HealthCheck()
+        /// <summary>
+        /// Rendszer állapotfelméréséről jelentés
+        /// </summary>
+        [Authorize(Policy = "Administrator")]
+        public IActionResult HealthCheck()
 		{
 			// Felhasználókkal kapcsolatos statisztikák kiszámítása
 			ViewBag.AllUsers = _context.Users.Count();

@@ -1,14 +1,15 @@
-﻿using ISZR.Web.Components;
-using ISZR.Web.Models;
+﻿using ISZR.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISZR.Web.Controllers
 {
-	/// <summary>
-	/// /Reports/? Controller
-	/// </summary>
-	public class ReportsController : Controller
+    /// <summary>
+    /// /Reports/? Controller
+    /// </summary>
+    [Authorize]
+    public class ReportsController : Controller
 	{
 		private readonly DataContext _context;
 
@@ -23,7 +24,6 @@ namespace ISZR.Web.Controllers
         /// <param name="reportUser">Bejelentő</param>
         /// <param name="text">Címben és leírásban keresendő szavak</param>
         /// <param name="status">Hibabejelentések státusza</param>
-        /// <returns></returns>
         public async Task<IActionResult> Index(int reportUser, string text, bool status)
 		{
             // Hibabejelentések listájának lekérdezése
