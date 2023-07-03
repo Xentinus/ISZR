@@ -1,5 +1,4 @@
-﻿@using ISZR.Web.Components;
-@model ISZR.Web.Models.Request
+﻿@model ISZR.Web.Models.Request
 
 @{
     ViewData["Title"] = $"#{Model?.RequestId} számú igénylés részletei";
@@ -198,7 +197,7 @@
                         <div class="float-right">
                             <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
                             <a class="btn btn-default ml-1 mr-1" onclick="window.print()"><i class="fas fa-print mr-2"></i>Igénylés nyomtatása</a>
-                            @if (Account.IsAdmin())
+                            @if (User.IsInRole("SKFB-ISZR-Admin"))
                             {
                                 if (Model?.Status != "Elutasítva")
                                 {

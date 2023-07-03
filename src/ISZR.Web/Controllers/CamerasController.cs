@@ -1,5 +1,4 @@
-﻿using ISZR.Web.Components;
-using ISZR.Web.Models;
+﻿using ISZR.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,194 +7,185 @@ namespace ISZR.Web.Controllers
     /// <summary>
     /// /Cameras/? Controller
     /// </summary>
-    [Authorize]
+    [Authorize(Policy = "Administrator")]
     public class CamerasController : Controller
-	{
-		private readonly DataContext _context;
+    {
+        private readonly DataContext _context;
 
-		public CamerasController(DataContext context)
-		{
-			_context = context;
-		}
+        public CamerasController(DataContext context)
+        {
+            _context = context;
+        }
 
-		/// <summary>
-		/// Kamerák listájának megjelenítése
-		/// </summary>
-		public async Task<IActionResult> Index()
-		{
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
+        /// <summary>
+        /// Kamerák listájának megjelenítése
+        /// </summary>
+        public async Task<IActionResult> Index()
+        {
+            // Kamera lista elkészítése
+            var dataContext = _context.Cameras.OrderBy(u => u.Name);
 
-			// Kamera lista elkészítése
-			var dataContext = _context.Cameras.OrderBy(u => u.Name);
+            // Felület megjelnítése a listával
+            return View(await dataContext.ToListAsync());
+        }
 
-			// Felület megjelnítése a listával
-			return View(await dataContext.ToListAsync());
-		}
+        /// <summary>
+        /// Kamera archiválási állapotának megváltoztatása
+        /// </summary>
+        /// <param name="id">Kamera azonosítójó</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(int? id)
+        {
+            // Azonosító meglétének ellenőrzése
+            if (id == null || _context.Cameras == null) return NotFound();
 
-		/// <summary>
-		/// Kamera archiválási állapotának megváltoztatása
-		/// </summary>
-		/// <param name="id">Kamera azonosítójó</param>
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Index(int? id)
-		{
-			// Azonosító meglétének ellenőrzése
-			if (id == null || _context.Cameras == null) return NotFound();
+            // Kamera megkeresése az adatbázisban
+            var camera = await _context.Cameras
+                .FirstOrDefaultAsync(m => m.CameraId == id);
 
-			// Kamera megkeresése az adatbázisban
-			var camera = await _context.Cameras
-				.FirstOrDefaultAsync(m => m.CameraId == id);
+            // Kamera meglétének ellenőrzése
+            if (camera == null) return NotFound();
 
-			// Kamera meglétének ellenőrzése
-			if (camera == null) return NotFound();
+            try
+            {
+                // Archiválás értékének módosítása
+                camera.IsArchived = !camera.IsArchived;
 
-			try
-			{
-				// Archiválás értékének módosítása
-				camera.IsArchived = !camera.IsArchived;
+                // Kamera értékeinek frissítése az adatbázisban
+                _context.Update(camera);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CameraExists(camera.CameraId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-				// Kamera értékeinek frissítése az adatbázisban
-				_context.Update(camera);
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!CameraExists(camera.CameraId))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
+            // Felület újra megjelenítése
+            return RedirectToAction(nameof(Index));
+        }
 
-			// Felület újra megjelenítése
-			return RedirectToAction(nameof(Index));
-		}
+        /// <summary>
+        /// Kamera hozzáadásának felülete
+        /// </summary>
+        public IActionResult Create()
+        {
+            // Felület megjelenítése
+            return View();
+        }
 
-		/// <summary>
-		/// Kamera hozzáadásának felülete
-		/// </summary>
-		public IActionResult Create()
-		{
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
+        /// <summary>
+        /// Kamera hozzáadása a rendszerhez
+        /// </summary>
+        /// <param name="camera">Kamera új értékei</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("CameraId,Name,IsArchived")] Camera camera)
+        {
+            // Megadott értékek ellenőrzése
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Kamera hozzáadása a rendszerhez
+                    _context.Add(camera);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CameraExists(camera.CameraId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 
-			// Felület megjelenítése
-			return View();
-		}
+                // Felhasználó átírányítása a kamerák listájára
+                return RedirectToAction(nameof(Index));
+            }
 
-		/// <summary>
-		/// Kamera hozzáadása a rendszerhez
-		/// </summary>
-		/// <param name="camera">Kamera új értékei</param>
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("CameraId,Name,IsArchived")] Camera camera)
-		{
-			// Megadott értékek ellenőrzése
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					// Kamera hozzáadása a rendszerhez
-					_context.Add(camera);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!CameraExists(camera.CameraId))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
+            // Hibásan megadott értékek esetén, felület újra megjelenítése
+            return View(camera);
+        }
 
-				// Felhasználó átírányítása a kamerák listájára
-				return RedirectToAction(nameof(Index));
-			}
+        /// <summary>
+        /// Kamera szerkesztésének felülete
+        /// </summary>
+        /// <param name="id">Kamera azonosítója</param>
+        public async Task<IActionResult> Edit(int? id)
+        {
+            // Azonosító meglétének ellenőrzése
+            if (id == null || _context.Cameras == null) return NotFound();
 
-			// Hibásan megadott értékek esetén, felület újra megjelenítése
-			return View(camera);
-		}
+            // Kamera megkeresése az adatbázisban
+            var camera = await _context.Cameras.FindAsync(id);
 
-		/// <summary>
-		/// Kamera szerkesztésének felülete
-		/// </summary>
-		/// <param name="id">Kamera azonosítója</param>
-		public async Task<IActionResult> Edit(int? id)
-		{
-			// Admin jogosultság ellenőrzése
-			if (!Account.IsAdmin()) return Forbid();
+            // Kamera meglétének ellenőrzése
+            if (camera == null) return NotFound();
 
-			// Azonosító meglétének ellenőrzése
-			if (id == null || _context.Cameras == null) return NotFound();
+            // Felület megjelenítése a kért kamerával
+            return View(camera);
+        }
 
-			// Kamera megkeresése az adatbázisban
-			var camera = await _context.Cameras.FindAsync(id);
+        /// <summary>
+        /// Kamera módosítása a megadott értékek alapján
+        /// </summary>
+        /// <param name="id">Kamera azonosítója</param>
+        /// <param name="camera">Kamera megadott új értékei</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("CameraId,Name,IsArchived")] Camera camera)
+        {
+            // Azonosítók ellenőrzése
+            if (id != camera.CameraId) return NotFound();
 
-			// Kamera meglétének ellenőrzése
-			if (camera == null) return NotFound();
+            // Megadott értékek ellenőrzése
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Kamera értékeinek frissítése az adatbázisban
+                    _context.Update(camera);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CameraExists(camera.CameraId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 
-			// Felület megjelenítése a kért kamerával
-			return View(camera);
-		}
+                // Felhasználó átirányítása a kamerák listájára
+                return RedirectToAction(nameof(Index));
+            }
 
-		/// <summary>
-		/// Kamera módosítása a megadott értékek alapján
-		/// </summary>
-		/// <param name="id">Kamera azonosítója</param>
-		/// <param name="camera">Kamera megadott új értékei</param>
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("CameraId,Name,IsArchived")] Camera camera)
-		{
-			// Azonosítók ellenőrzése
-			if (id != camera.CameraId) return NotFound();
+            // Felület megjelenítése
+            return View(camera);
+        }
 
-			// Megadott értékek ellenőrzése
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					// Kamera értékeinek frissítése az adatbázisban
-					_context.Update(camera);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!CameraExists(camera.CameraId))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-
-				// Felhasználó átirányítása a kamerák listájára
-				return RedirectToAction(nameof(Index));
-			}
-
-			// Felület megjelenítése
-			return View(camera);
-		}
-
-		/// <summary>
-		/// Kamera meglétének ellenőrzése
-		/// </summary>
-		/// <param name="id">Kamera azonosítója</param>
-		/// <returns>Létezik e az adott kamera (igaz/hamis)</returns>
-		private bool CameraExists(int id)
-		{
-			return _context.Cameras.Any(e => e.CameraId == id);
-		}
-	}
+        /// <summary>
+        /// Kamera meglétének ellenőrzése
+        /// </summary>
+        /// <param name="id">Kamera azonosítója</param>
+        /// <returns>Létezik e az adott kamera (igaz/hamis)</returns>
+        private bool CameraExists(int id)
+        {
+            return _context.Cameras.Any(e => e.CameraId == id);
+        }
+    }
 }

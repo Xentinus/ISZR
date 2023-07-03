@@ -34,18 +34,18 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
-                            <div class="form-group">
+                                <div class="form-group">
                                     <label>Engedélyező személy</label><span class="text-danger font-weight-bold ml-1">*</span>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-signature"></i></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-signature"></i></span>
+                                        </div>
+                                        <select asp-for="AuthorizerId" class="form-control select2bs4" asp-items="ViewBag.AuthorizerId">
+                                            <option value="">Nincs</option>
+                                        </select>
                                     </div>
-                                    <select asp-for="AuthorizerId" class="form-control select2bs4" asp-items="ViewBag.AuthorizerId">
-                                        <option value="">Nincs</option>
-                                    </select>
                                 </div>
                             </div>
-                        </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
@@ -71,5 +71,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
