@@ -1,6 +1,4 @@
-﻿@using ISZR.Web.Components;
-
-<aside class="main-sidebar main-sidebar-custom sidebar-dark-info elevation-4 ">
+﻿<aside class="main-sidebar main-sidebar-custom sidebar-dark-info elevation-4 ">
     <a class="brand-link" asp-controller="Home" asp-action="Dashboard">
         <img src="~/img/ISZR.svg" alt="ISZR Logo" class="brand-image">
         <span class="brand-text">ISZR</span>
@@ -18,7 +16,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header"><b>Igénylések</b></li>
-                @if (Account.IsUgyintezo())
+                @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
                 {
                     <li class="nav-item">
                         <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Requests" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" || ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")" asp-controller="Requests" asp-action="Index" asp-route-status="Mind" asp-route-type="Mind">
@@ -116,7 +114,7 @@
                         <p>Jogosultsági magyarázat</p>
                     </a>
                 </li>
-                @if (Account.IsUgyintezo())
+                @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
                 {
                     <li class="nav-item">
                         <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Reports" && ViewContext.RouteData.Values["Action"]?.ToString() == "Create" ? "active" : "")" asp-controller="Reports" asp-action="Create">

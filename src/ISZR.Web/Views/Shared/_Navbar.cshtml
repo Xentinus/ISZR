@@ -1,5 +1,5 @@
-﻿@using ISZR.Web.Components;
-@using System.Text.RegularExpressions;
+﻿@using System.Text.RegularExpressions;
+@using Microsoft.AspNetCore.Authorization;
 
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <ul class="navbar-nav">
@@ -8,7 +8,7 @@
         </li>
     </ul>
 
-    @if (Account.IsAdmin())
+    @if (User.IsInRole("SKFB-ISZR-Admin"))
     {
         <ul class="navbar-nav ml-auto">
             <li class="nav-item ml-2">

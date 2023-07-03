@@ -1,94 +1,95 @@
 ﻿@model IEnumerable<ISZR.Web.Models.Class>
 
 @{
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
-	ViewData["Title"] = "Osztályok karbantartása";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Osztályok karbantartása";
 }
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-12">
-			<div class="card">
-				<div class="card-header bg-info d-print-none">
-					<h3 class="card-title"><a asp-action="Create"><input type="button" value="Új osztály létrehozása" class="btn btn-light" /></a></h3>
-				</div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info d-print-none">
+                    <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új osztály létrehozása" class="btn btn-light" /></a></h3>
+                </div>
 
-				<div class="card-body p-0">
-					@foreach (var item in Model)
-					{
-						<div class="modal fade" id="deleteModal@(item.ClassId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.ClassId)" aria-hidden="true">
-							<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-								<div class="modal-content">
-									<div class="modal-header bg-danger">
-										<h5 class="modal-title" id="deleteModalLabel@(item.ClassId)"><i class="fas fa-archive mr-2"></i>Archiválási állapot megváltoztatása</h5>
-									</div>
-									<div class="modal-body">
-										<div>Biztosan szeretnéd <b>@item.Name</b> nevű osztály archiválási állapotát megváltoztatni?</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
-										<form asp-action="Index" asp-route-id="@item.ClassId" method="post">
-											<input type="hidden" asp-for="@item.ClassId" />
-											<button type="submit" class="btn btn-danger"><i class="fas fa-archive mr-2"></i>Megváltoztatás</button>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					}
-					<table class="table table-striped">
-						<thead class="bg-info">
-							<tr>
-								<th>Név</th>
-								<th>Engedélyező személy</th>
-								<th>Állapot</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach (var item in Model)
-							{
-								<tr>
-									<td>
-										@Html.DisplayFor(modelItem => item.Name)
-									</td>
-									<td>
-										@if (item.Authorizer != null)
-										{
-											<span>@item.Authorizer?.DisplayName bv. @item.Authorizer?.Rank?.ToLower()</span>
-										} else
-										{
-											<span class="text-danger font-weight-bold"><i class="icon fas fa-exclamation-triangle mr-2"></i>Engedélyező nincs beállítva</span>
-										}
-									</td>
-									<td>
-										@if (item.IsArchived)
-										{
-											<span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
-										}
-										else
-										{
-											<span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
-										}
-									</td>
-									<td class="float-right d-print-none">
-										<div class="btn-group">
-											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-												<i class="fas fa-book mr-2"></i>Műveletek
-											</button>
-											<div class="dropdown-menu">
-												<a asp-action="Edit" asp-route-id="@item.ClassId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
-												<div class="dropdown-divider"></div>
-												<a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#deleteModal@(item.ClassId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
-											</div>
-										</div>
-									</td>
-								</tr>
-							}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+                <div class="card-body p-0">
+                    @foreach (var item in Model)
+                    {
+                        <div class="modal fade" id="deleteModal@(item.ClassId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.ClassId)" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-danger">
+                                        <h5 class="modal-title" id="deleteModalLabel@(item.ClassId)"><i class="fas fa-archive mr-2"></i>Archiválási állapot megváltoztatása</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div>Biztosan szeretnéd <b>@item.Name</b> nevű osztály archiválási állapotát megváltoztatni?</div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
+                                        <form asp-action="Index" asp-route-id="@item.ClassId" method="post">
+                                            <input type="hidden" asp-for="@item.ClassId" />
+                                            <button type="submit" class="btn btn-danger"><i class="fas fa-archive mr-2"></i>Megváltoztatás</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <table class="table table-striped">
+                        <thead class="bg-info">
+                            <tr>
+                                <th>Név</th>
+                                <th>Engedélyező személy</th>
+                                <th>Állapot</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @if (item.Authorizer != null)
+                                        {
+                                            <span>@item.Authorizer?.DisplayName bv. @item.Authorizer?.Rank?.ToLower()</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-exclamation-triangle mr-2"></i>Engedélyező nincs beállítva</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.IsArchived)
+                                        {
+                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
+                                        }
+                                    </td>
+                                    <td class="float-right d-print-none">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-book mr-2"></i>Műveletek
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a asp-action="Edit" asp-route-id="@item.ClassId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#deleteModal@(item.ClassId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

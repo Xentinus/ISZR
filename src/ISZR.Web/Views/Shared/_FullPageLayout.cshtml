@@ -1,54 +1,54 @@
 ﻿<!DOCTYPE html>
 <html lang="hu">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>ISZR - @ViewData["Title"]</title>
-	<meta name="description" content="Informatikai Szolgálati jegy Rendszer" />
-	<meta name="keywords" content="iszr, permission, permissions, request, jogosultság, igénylés, informatika, szolgálati jegy" />
-	<meta name="author" content="Béla Kellner" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ISZR - @ViewData["Title"]</title>
+    <meta name="description" content="Informatikai Szolgálati jegy Rendszer" />
+    <meta name="keywords" content="iszr, permission, permissions, request, jogosultság, igénylés, informatika, szolgálati jegy" />
+    <meta name="author" content="Béla Kellner" />
 
-	<!-- Google Font: Source Sans Pro -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-	<!-- Font Awesome Icons -->
-	<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
-	<!-- Theme style -->
-	<link rel="stylesheet" href="~/css/adminlte.min.css">
-	<!-- Select2 -->
-	<link rel="stylesheet" href="~/plugins/select2/css/select2.min.css" />
-	<link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" />
-	<!-- Favicon -->
-	<link rel="shortcut icon" href="~/img/favicon.ico" type="image/x-icon">
-	<link rel="icon" href="~/img/favicon.ico" type="image/x-icon">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/css/adminlte.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="~/img/favicon.ico" type="image/x-icon">
 </head>
 <body class="login-page" style="min-height: 466px;">
-	<div class="mt-5">
-		@RenderBody()
-	</div>
+    <div class="mt-5">
+        @RenderBody()
+    </div>
 
-	<!-- jQuery -->
-	<script src="~/plugins/jquery/jquery.min.js"></script>
-	<!-- Bootstrap 4 -->
-	<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<!-- AdminLTE App -->
-	<script src="~/js/adminlte.min.js"></script>
-	<!-- Select2  -->
-	<script src="~/plugins/select2/js/select2.min.js"></script>
-	<script src="~/plugins/select2/js/i18n/hu.js"></script>
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/js/adminlte.min.js"></script>
+    <!-- Select2  -->
+    <script src="~/plugins/select2/js/select2.min.js"></script>
+    <script src="~/plugins/select2/js/i18n/hu.js"></script>
 
-	<script type="text/javascript">
-		document.addEventListener('DOMContentLoaded', function () {
-			$('.select2bs4').select2({
-				closeOnSelect: true,
-				theme: 'bootstrap4'
-			});
-			$('.select2bs4stay').select2({
-				closeOnSelect: false,
-				theme: 'bootstrap4'
-			});
-		})
-	</script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            $('.select2bs4').select2({
+                closeOnSelect: true,
+                theme: 'bootstrap4'
+            });
+            $('.select2bs4stay').select2({
+                closeOnSelect: false,
+                theme: 'bootstrap4'
+            });
+        })
+    </script>
 
-	@await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

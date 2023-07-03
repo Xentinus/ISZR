@@ -1,95 +1,95 @@
 ﻿@model ISZR.Web.Models.Permission
 
 @{
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Új jogosultság létrehozása";
 }
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-12">
-			<div class="card card-success">
-				<div class="card-header">
-					<h3 class="card-title">Jogosultsághoz tartozó adatok beállítása</h3>
-				</div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Jogosultsághoz tartozó adatok beállítása</h3>
+                </div>
 
-				<div class="card-body">
-					<form asp-action="Create">
-						<div class="row">
-							<div class="col-12">
-								<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-							</div>
-						</div>
-						@Html.HiddenFor(model => model.Type, new { @Value = ViewData["type"] })
-						<div class="row">
-							<div class="col-12">
-								<div class="form-group">
-									<label>Jogosultság megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
-									<span asp-validation-for="Name" class="text-danger"></span>
-									<div class="input-group mb-3">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fas fa-key"></i></span>
-										</div>
-										<input type="text" asp-for="Name" class="form-control" placeholder="Jogosultság megnevezése" spellcheck="true" required>
-									</div>
-								</div>
-							</div>
-							<div class="col-12">
-								<div class="form-group">
-									<label>Jogosultság leírása</label><span class="text-danger font-weight-bold ml-1">*</span>
-									<span asp-validation-for="Description" class="text-danger"></span>
-									<div class="input-group mb-3">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
-										</div>
-										<input type="text" asp-for="Description" class="form-control" placeholder="Jogosultság leírása" spellcheck="true" required />
-									</div>
-								</div>
-							</div>
-						</div>
-						@if (ViewData["type"]?.ToString() == "Windows")
-						{
-							<div class="row">
-								<div class="col-12">
-									<div class="form-group">
-										<label>Active Directory jogosultságok megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
-										<span asp-validation-for="ActiveDirectoryPermissions" class="text-danger"></span>
-										<div class="input-group mb-3">
-											<div class="input-group-prepend">
-												<span class="input-group-text"><i class="fas fa-database"></i></span>
-											</div>
-											<input type="text" asp-for="ActiveDirectoryPermissions" class="form-control" placeholder="Legalább egy darab Active Directory jogosultság megnevezése (pl.: XXXX-TESZT)" spellcheck="false" required>
-										</div>
-									</div>
-								</div>
-							</div>
-						}
-						<div class="row">
-							<div class="col-12">
-								<div class="float-left">
-									<div class="custom-control custom-checkbox">
-										<input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
-										<label class="custom-control-label" for="agreeToTerms">
-											Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
-										</label>
-									</div>
-								</div>
-								<div class="float-right">
-									<a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
-									<input type="submit" value="Jogosultság létrehozása" class="btn btn-success ml-1" />
-								</div>
-							</div>
-						</div>
-					</form>
-				</div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div class="row">
+                            <div class="col-12">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </div>
+                        </div>
+                        @Html.HiddenFor(model => model.Type, new { @Value = ViewData["type"] })
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Jogosultság megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultság megnevezése" spellcheck="true" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Jogosultság leírása</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="Description" class="form-control" placeholder="Jogosultság leírása" spellcheck="true" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (ViewData["type"]?.ToString() == "Windows")
+                        {
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Active Directory jogosultságok megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                        <span asp-validation-for="ActiveDirectoryPermissions" class="text-danger"></span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-database"></i></span>
+                                            </div>
+                                            <input type="text" asp-for="ActiveDirectoryPermissions" class="form-control" placeholder="Legalább egy darab Active Directory jogosultság megnevezése (pl.: XXXX-TESZT)" spellcheck="false" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="float-left">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                        <label class="custom-control-label" for="agreeToTerms">
+                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                    <input type="submit" value="Jogosultság létrehozása" class="btn btn-success ml-1" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-	@{
-		await Html.RenderPartialAsync("_ValidationScriptsPartial");
-	}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

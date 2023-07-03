@@ -1,66 +1,66 @@
 ﻿@model ISZR.Web.Models.Group
 
 @{
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
-	ViewData["Title"] = $"{Model?.Name} jogosultsági csoport részletei";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = $"{Model?.Name} jogosultsági csoport részletei";
 }
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-12">
-			<div class="card card-info">
-				<div class="card-header">
-					<h3 class="card-title">Jogosultsági csoport adatainak megtekintése</h3>
-				</div>
-				<div class="card-body">
-					<div class="row">
-						<div class="col-12">
-							<div class="form-group">
-								<label>Jogosultsági csoport megnevezése</label>
-								<span asp-validation-for="Name" class="text-danger"></span>
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="fas fa-key"></i></span>
-									</div>
-									<input type="text" asp-for="Name" class="form-control" placeholder="Jogosultsági csoport megnevezése" spellcheck="true" disabled="disabled">
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-12">
-							<div class="form-group">
-								<label>Jogosultsági csoporthoz tartozó Windows jogosultságok</label>
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="fab fa-windows"></i></span>
-									</div>
-									<input type="text" asp-for="WindowsPermissions" class="form-control" disabled="disabled" />
-								</div>
-							</div>
-						</div>
-						<div class="col-12">
-							<div class="form-group">
-								<label>Jogosultsági csoporthoz tartozó Főnix 3 jogosultságok</label>
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="fas fa-dove"></i></span>
-									</div>
-									<input type="text" asp-for="FonixPermissions" class="form-control" disabled="disabled" />
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-12 float-right">
-							<span class="float-right">
-								<a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
-								<a asp-action="Edit" asp-route-id="@Model?.GroupId"><input type="button" value="Jogosultsági csoport szerkesztése" class="btn btn-info ml-1" /></a>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Jogosultsági csoport adatainak megtekintése</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Jogosultsági csoport megnevezése</label>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                    </div>
+                                    <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultsági csoport megnevezése" spellcheck="true" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Jogosultsági csoporthoz tartozó Windows jogosultságok</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fab fa-windows"></i></span>
+                                    </div>
+                                    <input type="text" asp-for="WindowsPermissions" class="form-control" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Jogosultsági csoporthoz tartozó Főnix 3 jogosultságok</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-dove"></i></span>
+                                    </div>
+                                    <input type="text" asp-for="FonixPermissions" class="form-control" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 float-right">
+                            <span class="float-right">
+                                <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                <a asp-action="Edit" asp-route-id="@Model?.GroupId"><input type="button" value="Jogosultsági csoport szerkesztése" class="btn btn-info ml-1" /></a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

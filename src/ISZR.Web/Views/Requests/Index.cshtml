@@ -1,12 +1,12 @@
-﻿@using ISZR.Web.Components;
-@model IEnumerable<ISZR.Web.Models.Request>
+﻿@model IEnumerable<ISZR.Web.Models.Request>
 
 @{
 
-    if(Account.IsUgyintezo())
+    if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
     {
         ViewData["Title"] = "Igénylések";
-    } else
+    }
+    else
     {
         ViewData["Title"] = "Számomra kért igénylések";
     }
@@ -15,7 +15,7 @@
 }
 
 <div class="container-fluid">
-    @if (Account.IsUgyintezo())
+    @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
     {
         <div class="row">
             <div class="col-12">
@@ -104,7 +104,7 @@
                                 <th>Igénylési azonosító</th>
                                 <th class="d-none d-md-table-cell">Létrehozásának és lezárásának ideje</th>
                                 <th class="d-none d-xl-table-cell">Igénylést intéző</th>
-                                @if (Account.IsUgyintezo())
+                                @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
                                 {
                                     <th>Felhasználó számára</th>
                                 }
@@ -156,7 +156,7 @@
                                             <span>@item.CreatedByUser.DisplayName</span>
                                         }
                                     </td>
-                                    @if (Account.IsUgyintezo())
+                                    @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
                                     {
                                         <td>
                                             @if (item.CreatedForUser != null)

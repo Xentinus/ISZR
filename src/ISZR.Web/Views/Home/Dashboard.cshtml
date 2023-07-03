@@ -1,5 +1,5 @@
 ﻿@using ISZR.Web.ViewModels;
-@using ISZR.Web.Components;
+
 @model DashboardViewModel;
 
 @{
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="col-12 col-md-6 col-xl-8">
-            @if (Account.IsUgyintezo())
+            @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
             {
                 // Százalékok kiszámítása
                 int? donePercent = (int)Math.Round((double)(100 * Model.DoneRequests) / Model.AllRequests);

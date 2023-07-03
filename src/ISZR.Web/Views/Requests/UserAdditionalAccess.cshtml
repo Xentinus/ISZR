@@ -1,200 +1,200 @@
 ﻿@model ISZR.Web.Models.Request
 
 @{
-	ViewData["Title"] = "Meglévő felhasználó részére többletjogosultság";
+    ViewData["Title"] = "Meglévő felhasználó részére többletjogosultság";
 }
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
-			@if (((IEnumerable<dynamic>)ViewBag.Windows).Count() > 0 || ((IEnumerable<dynamic>)ViewBag.Fonix3).Count() > 0)
-			{
-				<div class="card card-default">
-					<div class="card-header bg-info">
-						<h3 class="card-title">Igénylés menete</h3>
-					</div>
-					<div class="card-body p-0">
-						<form asp-action="UserAdditionalAccess">
-							<div class="row">
-								<div class="col-12">
-									<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-								</div>
-							</div>
-							<div class="bs-stepper linear">
-								<div class="bs-stepper-header" role="tablist">
-									<div class="step active" data-target="#request-info">
-										<button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
-											<span class="bs-stepper-circle bg-info"><i class="icon fas fa-male"></i></span>
-											<span class="bs-stepper-label">Felhasználóval kapcsolatos adatok</span>
-										</button>
-									</div>
-									<div class="line"></div>
-									<div class="step" data-target="#permissions">
-										<button type="button" class="step-trigger" role="tab" aria-controls="permissions" id="permissions-trigger" aria-selected="false" disabled="disabled">
-											<span class="bs-stepper-circle bg-info"><i class="icon fas fa-key"></i></span>
-											<span class="bs-stepper-label">Kivánt jogosultságok kiválasztása</span>
-										</button>
-									</div>
-									<div class="line"></div>
-									<div class="step" data-target="#summary">
-										<button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
-											<span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
-											<span class="bs-stepper-label">Összesítés</span>
-										</button>
-									</div>
-								</div>
-								<div class="bs-stepper-content">
-									<div id="request-info" class="content active dstepper-block" role="tabpanel" aria-labelledby="request-info-trigger">
-										<div class="row">
-											<div class="col-12 col-md-6">
-												<div class="form-group">
-													<label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
-													<div class="input-group mb-3">
-														<div class="input-group-prepend">
-															<span class="input-group-text"><i class="fas fa-user"></i></span>
-														</div>
-														<select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4" required>
-														</select>
-													</div>
-												</div>
-											</div>
-											<div class="col-12 col-md-6">
-												<div class="alert alert-light alert-dismissible">
-													<h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
-													Csak a rendszerben létező felhasználók részére lehet igényelni többletjogosultságot!<br />
-													Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-12">
-												<span class="float-right">
-													<a class="btn btn-info" onclick="stepper.next()">Tovább</a>
-												</span>
-											</div>
-										</div>
-									</div>
-									<div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
-										<div class="row">
-											<div class="col-12">
-												<div class="alert alert-light alert-dismissible">
-													<h5><i class="icon fas fa-info"></i>Információ a jogosultságok kiválasztásához</h5>
-													Amennyiben további információkra van szükséged a megfelelő jogosultság kiválasztásában, a <a class="text-dark font-weight-bold text-decoration-none ml-1 mr-1" asp-controller="Home" asp-action="Permissions"><i class="fas fa-key"></i> Jogosultsági magyarázat</a> menüpontban találsz leírásokat minden jogosultsághoz.
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-12">
-												<div class="form-group">
-													<label>Windows többletjogosultságok a felhasználó számára</label>
-													<div class="input-group mb-3">
-														<div class="input-group-prepend">
-															<span class="input-group-text"><i class="fab fa-windows"></i></span>
-														</div>
-														<select id="selectedWindows" name="windowsPermissions" asp-items="ViewBag.Windows" class="form-control select2bs4stay" multiple="multiple">
-														</select>
-													</div>
-												</div>
-											</div>
-											<div class="col-12">
-												<div class="form-group">
-													<label>Főnix 3 többletjogosultságok a felhasználó számára</label>
-													<div class="input-group mb-3">
-														<div class="input-group-prepend">
-															<span class="input-group-text"><i class="fas fa-dove"></i></span>
-														</div>
-														<select id="selectedFonix" name="fonix3Permissions" asp-items="ViewBag.Fonix3" class="form-control select2bs4stay" multiple="multiple">
-														</select>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-12">
-												<span class="float-right">
-													<a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-													<a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
-													<script>
-														function summary() {
-															document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
-															document.getElementById("summaryWindows").innerHTML = $('#selectedWindows option:selected').toArray().map(item => item.text).join(", ");
-															document.getElementById("summaryFonix").innerHTML = $('#selectedFonix option:selected').toArray().map(item => item.text).join(", ");
-															stepper.next();
-														}
-													</script>
-												</span>
-											</div>
-										</div>
-									</div>
-									<div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
-										<div class="row">
-											<div class="col-12">
-												<div class="alert alert-light alert-dismissible">
-													<h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
-													<dl class="row">
-														<dt class="col-sm-4"><i class="icon fas fa-user"></i>Felhasználó részére</dt>
-														<dd id="summaryUser" class="col-sm-8"></dd>
-														<dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
-														<dd class="col-sm-8">Meglévő felhasználó részére többletjogosultság</dd>
-														<dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
-														<dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
-													</dl>
-												</div>
-												<div class="row">
-													<div class="col-12">
-														<div class="alert alert-info alert-dismissible">
-															<h5><i class="icon fab fa-windows"></i>Windows jogosultságok</h5>
-															<div id="summaryWindows"></div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-12">
-														<div class="alert alert-warning alert-dismissible">
-															<h5><i class="icon fas fa-dove"></i>Főnix 3 jogosultságok</h5>
-															<div id="summaryFonix"></div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-12">
-												<div class="float-left">
-													<div class="custom-control custom-checkbox">
-														<input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
-														<label class="custom-control-label" for="agreeToTerms">
-															Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
-														</label>
-													</div>
-												</div>
-												<div class="float-right">
-													<a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-													<button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			}
-			else
-			{
-				<div class="alert alert-danger alert-dismissible">
-					<h5><i class="icon fas fa-ban"></i> Figyelem!</h5>
-					A rendszerben jelenleg nem található igényelhető jogosultság!<br />
-					Az igénylés <b>automatikusan</b> ismét elérhetővé válik, amennyiben hozzáadásra kerül.
-				</div>
-			}
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-md-12">
+            @if (((IEnumerable<dynamic>)ViewBag.Windows).Count() > 0 || ((IEnumerable<dynamic>)ViewBag.Fonix3).Count() > 0)
+            {
+                <div class="card card-default">
+                    <div class="card-header bg-info">
+                        <h3 class="card-title">Igénylés menete</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <form asp-action="UserAdditionalAccess">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="bs-stepper linear">
+                                <div class="bs-stepper-header" role="tablist">
+                                    <div class="step active" data-target="#request-info">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="request-info" id="request-info-trigger" aria-selected="true">
+                                            <span class="bs-stepper-circle bg-info"><i class="icon fas fa-male"></i></span>
+                                            <span class="bs-stepper-label">Felhasználóval kapcsolatos adatok</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#permissions">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="permissions" id="permissions-trigger" aria-selected="false" disabled="disabled">
+                                            <span class="bs-stepper-circle bg-info"><i class="icon fas fa-key"></i></span>
+                                            <span class="bs-stepper-label">Kivánt jogosultságok kiválasztása</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#summary">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
+                                            <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
+                                            <span class="bs-stepper-label">Összesítés</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bs-stepper-content">
+                                    <div id="request-info" class="content active dstepper-block" role="tabpanel" aria-labelledby="request-info-trigger">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                        </div>
+                                                        <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4" required>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
+                                                    Csak a rendszerben létező felhasználók részére lehet igényelni többletjogosultságot!<br />
+                                                    Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="float-right">
+                                                    <a class="btn btn-info" onclick="stepper.next()">Tovább</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a jogosultságok kiválasztásához</h5>
+                                                    Amennyiben további információkra van szükséged a megfelelő jogosultság kiválasztásában, a <a class="text-dark font-weight-bold text-decoration-none ml-1 mr-1" asp-controller="Home" asp-action="Permissions"><i class="fas fa-key"></i> Jogosultsági magyarázat</a> menüpontban találsz leírásokat minden jogosultsághoz.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Windows többletjogosultságok a felhasználó számára</label>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fab fa-windows"></i></span>
+                                                        </div>
+                                                        <select id="selectedWindows" name="windowsPermissions" asp-items="ViewBag.Windows" class="form-control select2bs4stay" multiple="multiple">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Főnix 3 többletjogosultságok a felhasználó számára</label>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-dove"></i></span>
+                                                        </div>
+                                                        <select id="selectedFonix" name="fonix3Permissions" asp-items="ViewBag.Fonix3" class="form-control select2bs4stay" multiple="multiple">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="float-right">
+                                                    <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                                    <a class="btn btn-info ml-1" onclick="summary()">Tovább</a>
+                                                    <script>
+                                                        function summary() {
+                                                            document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
+                                                            document.getElementById("summaryWindows").innerHTML = $('#selectedWindows option:selected').toArray().map(item => item.text).join(", ");
+                                                            document.getElementById("summaryFonix").innerHTML = $('#selectedFonix option:selected').toArray().map(item => item.text).join(", ");
+                                                            stepper.next();
+                                                        }
+                                                    </script>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="summary" class="content" role="tabpanel" aria-labelledby="summary-trigger">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
+                                                    <dl class="row">
+                                                        <dt class="col-sm-4"><i class="icon fas fa-user"></i>Felhasználó részére</dt>
+                                                        <dd id="summaryUser" class="col-sm-8"></dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
+                                                        <dd class="col-sm-8">Meglévő felhasználó részére többletjogosultság</dd>
+                                                        <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
+                                                        <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
+                                                    </dl>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="alert alert-info alert-dismissible">
+                                                            <h5><i class="icon fab fa-windows"></i>Windows jogosultságok</h5>
+                                                            <div id="summaryWindows"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="alert alert-warning alert-dismissible">
+                                                            <h5><i class="icon fas fa-dove"></i>Főnix 3 jogosultságok</h5>
+                                                            <div id="summaryFonix"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="float-left">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                                        <label class="custom-control-label" for="agreeToTerms">
+                                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="float-right">
+                                                    <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                                    <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger alert-dismissible">
+                    <h5><i class="icon fas fa-ban"></i> Figyelem!</h5>
+                    A rendszerben jelenleg nem található igényelhető jogosultság!<br />
+                    Az igénylés <b>automatikusan</b> ismét elérhetővé válik, amennyiben hozzáadásra kerül.
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function () {
-		window.stepper = new Stepper(document.querySelector('.bs-stepper'));
-	});
+    document.addEventListener('DOMContentLoaded', function () {
+        window.stepper = new Stepper(document.querySelector('.bs-stepper'));
+    });
 </script>
