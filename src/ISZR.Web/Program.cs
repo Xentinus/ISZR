@@ -1,4 +1,5 @@
 global using ISZR.Web.Data;
+global using ISZR.Web.Middleware;
 global using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Server.IIS;
 
@@ -12,8 +13,13 @@ builder.Logging.AddConsole();
 // Services
 builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
+// Felhasználó utolsó látógatás idejének frissítése
+builder.Services.AddScoped<UpdateUserUptime>();
+
+// IIS Server alapú felhasználó beazonosítás
 builder.Services.AddAuthentication(IISServerDefaults.AuthenticationScheme);
 
+// Policyk létrehozása Windows Jogosultságok alapján
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Administrator", policy =>
@@ -28,18 +34,25 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddRazorPages();
+
+// Adatbázishoz való csatlakozás
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DataContext") ?? throw new InvalidOperationException("Adatbázis elérési útvonala nem található!")));
 
+// Alkalmazás elkészítése
 var app = builder.Build();
 
 // Hiba megjelenítése
 app.UseDeveloperExceptionPage();
 
+// Csak HTTTPS fogralom engedélyezése
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Felhasználó utolsó látógatás idejének frissítése
+app.UseMiddleware<UpdateUserUptime>();
 
 app.UseAuthentication();
 app.UseAuthorization();
