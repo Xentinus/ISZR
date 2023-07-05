@@ -17,7 +17,7 @@ namespace ISZR.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.16")
+                .HasAnnotation("ProductVersion", "6.0.19")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -329,9 +329,6 @@ namespace ISZR.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("LogonCount")
-                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(7)

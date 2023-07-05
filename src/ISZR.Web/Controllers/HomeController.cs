@@ -84,15 +84,29 @@ namespace ISZR.Web.Controllers
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
+                // Bejelentkezett felhasználó megkeresése
+                User? loggedUser = await GetLoggedUser();
+                if (loggedUser == null) { return Forbid(); }
+
                 try
                 {
+                    // Felhasználó értékeinek felülírása
+                    loggedUser.DisplayName = user.DisplayName;
+                    loggedUser.Rank = user.Rank;
+                    loggedUser.Genre = user.Genre;
+                    loggedUser.Location = user.Location;
+                    loggedUser.Email = user.Email;
+                    loggedUser.Phone = user.Phone;
+                    loggedUser.ClassId = user.ClassId;
+                    loggedUser.PositionId = user.PositionId;
+
                     // Felhasználó értékeinek frissítése az adatbázisban
-                    _context.Update(user);
+                    _context.Update(loggedUser);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserId))
+                    if (!UserExists(loggedUser.UserId))
                     {
                         return NotFound();
                     }

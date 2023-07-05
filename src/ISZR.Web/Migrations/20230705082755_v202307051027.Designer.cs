@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISZR.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230510124617_202305101446")]
-    partial class _202305101446
+    [Migration("20230705082755_v202307051027")]
+    partial class v202307051027
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.16")
+                .HasAnnotation("ProductVersion", "6.0.19")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -211,6 +211,34 @@ namespace ISZR.Web.Migrations
                     b.ToTable("Positions");
                 });
 
+            modelBuilder.Entity("ISZR.Web.Models.Report", b =>
+                {
+                    b.Property<int>("ReportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportId"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSolved")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ReportUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(48)
+                        .HasColumnType("nvarchar(48)");
+
+                    b.HasKey("ReportId");
+
+                    b.HasIndex("ReportUserId");
+
+                    b.ToTable("Reports");
+                });
+
             modelBuilder.Entity("ISZR.Web.Models.Request", b =>
                 {
                     b.Property<int>("RequestId")
@@ -304,9 +332,6 @@ namespace ISZR.Web.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("LogonCount")
-                        .HasColumnType("int");
-
                     b.Property<string>("Phone")
                         .HasMaxLength(7)
                         .HasColumnType("nvarchar(7)");
@@ -356,6 +381,15 @@ namespace ISZR.Web.Migrations
                         .HasForeignKey("PhoneUserId");
 
                     b.Navigation("PhoneUser");
+                });
+
+            modelBuilder.Entity("ISZR.Web.Models.Report", b =>
+                {
+                    b.HasOne("ISZR.Web.Models.User", "ReportUser")
+                        .WithMany("Reports")
+                        .HasForeignKey("ReportUserId");
+
+                    b.Navigation("ReportUser");
                 });
 
             modelBuilder.Entity("ISZR.Web.Models.Request", b =>
@@ -433,6 +467,8 @@ namespace ISZR.Web.Migrations
                     b.Navigation("CreatedForUser");
 
                     b.Navigation("Phones");
+
+                    b.Navigation("Reports");
                 });
 #pragma warning restore 612, 618
         }

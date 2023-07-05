@@ -195,15 +195,32 @@ namespace ISZR.Web.Controllers
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
+
+                // Felhasználó megkeresése
+                User? selectedUser = await GetUserById(id);
+                if (selectedUser == null) { return Forbid(); }
+
                 try
                 {
+                    // Felhasználó értékeinek felülírása
+                    selectedUser.Username = user.Username;
+                    selectedUser.DisplayName = user.DisplayName;
+                    selectedUser.Rank = user.Rank;
+                    selectedUser.Genre = user.Genre;
+                    selectedUser.Location = user.Location;
+                    selectedUser.Email = user.Email;
+                    selectedUser.Phone = user.Phone;
+                    selectedUser.LastLogin = user.LastLogin;
+                    selectedUser.ClassId = user.ClassId;
+                    selectedUser.PositionId = user.PositionId;
+
                     // Felhasználó értékeinek frissítése az adatbázisban
-                    _context.Update(user);
+                    _context.Update(selectedUser);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserId))
+                    if (!UserExists(selectedUser.UserId))
                     {
                         return NotFound();
                     }
@@ -247,6 +264,22 @@ namespace ISZR.Web.Controllers
 
             // Megtalált felhasználó visszaadása (amennyiben nem talált, nul értéket fog visszaadni
             return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        }
+
+        /// <summary>
+        /// Bejelentkezett felhasználó megkeresése a rendszerben
+        /// </summary>
+        /// <returns>Bejelentkezett felhasználó adatai</returns>
+        private async Task<User?> GetUserById(int? id)
+        {
+            // Amennyiben nem érkezik id
+            if (id == null) return null;
+
+            // Felhasználó megkeresése a lekért id által
+            return await _context.Users
+                .Include(u => u.Class)
+                .Include(u => u.Position)
+                .FirstOrDefaultAsync(m => m.UserId == id);
         }
     }
 }

@@ -83,12 +83,6 @@ namespace ISZR.Web.Models
         public DateTime LastLogin { get; set; } = DateTime.Now;
 
         /// <summary>
-        /// Felhasználó bejelentkezésének mennyisége
-        /// </summary>
-        [Display(Name = "Bejelentkezések mennyisége")]
-        public int LogonCount { get; set; } = 0;
-
-        /// <summary>
         /// Felhasználóhoz osztálya
         /// </summary>
         [Display(Name = "Felhasználó osztálya")]
