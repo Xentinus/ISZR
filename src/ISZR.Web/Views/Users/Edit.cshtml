@@ -38,27 +38,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-3">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Utolsó bejelentkezés ideje</label>
+                                    <label>Utolsó használatának ideje</label>
                                     <span asp-validation-for="LastLogin" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-history"></i></span>
                                         </div>
                                         <input type="datetime-local" asp-for="LastLogin" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group">
-                                    <label>Bejelentkezések mennyisége</label>
-                                    <span asp-validation-for="LogonCount" class="text-danger"></span>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-history"></i></span>
-                                        </div>
-                                        <input type="number" asp-for="LogonCount" class="form-control">
                                     </div>
                                 </div>
                             </div>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ISZR.Web.Migrations
 {
-    public partial class v202304121014 : Migration
+    public partial class v202307051027 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -97,8 +97,8 @@ namespace ISZR.Web.Migrations
                     Genre = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LogonCount = table.Column<int>(type: "int", nullable: false),
                     ClassId = table.Column<int>(type: "int", nullable: false),
                     PositionId = table.Column<int>(type: "int", nullable: false),
                     IsArchived = table.Column<bool>(type: "bit", nullable: false)
@@ -158,6 +158,27 @@ namespace ISZR.Web.Migrations
                     table.ForeignKey(
                         name: "FK_Phones_Users_PhoneUserId",
                         column: x => x.PhoneUserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    ReportId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReportUserId = table.Column<int>(type: "int", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(48)", maxLength: 48, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsSolved = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.ReportId);
+                    table.ForeignKey(
+                        name: "FK_Reports_Users_ReportUserId",
+                        column: x => x.ReportUserId,
                         principalTable: "Users",
                         principalColumn: "UserId");
                 });
@@ -227,6 +248,11 @@ namespace ISZR.Web.Migrations
                 column: "PhoneUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reports_ReportUserId",
+                table: "Reports",
+                column: "ReportUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Requests_CarId",
                 table: "Requests",
                 column: "CarId");
@@ -283,6 +309,9 @@ namespace ISZR.Web.Migrations
 
             migrationBuilder.DropTable(
                 name: "Permissions");
+
+            migrationBuilder.DropTable(
+                name: "Reports");
 
             migrationBuilder.DropTable(
                 name: "Requests");
