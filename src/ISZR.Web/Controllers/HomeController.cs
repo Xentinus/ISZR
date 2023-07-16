@@ -50,6 +50,9 @@ namespace ISZR.Web.Controllers
                 viewModel.DeniedRequests = _context.Requests.Count(r => r.Status == "Elutasítva" && r.CreatedByUserId == user.UserId);
             }
 
+            // Felhasználó aktív parkolási engedélyeinek összeszedése
+            viewModel.Parkings = _context.Parkings.Where(p => p.OwnerUserId == user.UserId && !p.IsArchived).ToList();
+
             // Irányítópult megjelenítése a felhasználónak
             return View(viewModel);
         }

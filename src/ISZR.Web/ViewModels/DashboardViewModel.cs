@@ -28,5 +28,14 @@ namespace ISZR.Web.ViewModels
         /// Felhasználó által kért igénylések amelyek el lettek utasítva
         /// </summary>
         public int DeniedRequests { get; set; }
+
+        /// <summary>
+        /// Felhasználó parkolási igényei
+        /// </summary>
+        public List<Parking>? Parkings { get; set; }
+        public DashboardViewModel()
+        {
+            Parkings = new List<Parking>();
+        }
     }
 }

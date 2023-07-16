@@ -46,47 +46,70 @@
             </div>
         </div>
         <div class="col-12 col-md-6 col-xl-8">
-            @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
-            {
-                // Százalékok kiszámítása
-                int? donePercent = (int)Math.Round((double)(100 * Model.DoneRequests) / Model.AllRequests);
-                int? inProgressPercent = (int)Math.Round((double)(100 * Model.InProgressRequests) / Model.AllRequests);
-                int? deniedPercent = (int)Math.Round((double)(100 * Model.DeniedRequests) / Model.AllRequests);
+            <div class="row">
+                <div class="col-12">
+                    @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
+                    {
+                        // Százalékok kiszámítása
+                        int? donePercent = (int)Math.Round((double)(100 * Model.DoneRequests) / Model.AllRequests);
+                        int? inProgressPercent = (int)Math.Round((double)(100 * Model.InProgressRequests) / Model.AllRequests);
+                        int? deniedPercent = (int)Math.Round((double)(100 * Model.DeniedRequests) / Model.AllRequests);
 
-                // Kártya megjelenítése
-                <div class="card card-info">
-                    <div class="card-header">
-                        <h5 class="card-title">Általad kért igénylések</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="progress-group">
-                                    Jováhagyott igénylések
-                                    <span class="float-right"><b>@Model?.DoneRequests darab</b> / @Model?.AllRequests darab</span>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-success" style="width: @donePercent%"></div>
-                                    </div>
-                                </div>
-                                <div class="progress-group">
-                                    Folyamatban lévő igénylések
-                                    <span class="float-right"><b>@Model?.InProgressRequests darab</b> / @Model?.AllRequests darab</span>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-warning" style="width: @inProgressPercent%"></div>
-                                    </div>
-                                </div>
-                                <div class="progress-group">
-                                    Elutasított igénylések
-                                    <span class="float-right"><b>@Model?.DeniedRequests darab</b> / @Model?.AllRequests darab</span>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-danger" style="width: @deniedPercent%"></div>
+                        // Kártya megjelenítése
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h5 class="card-title">Általad kért igénylések</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="progress-group">
+                                            Jováhagyott igénylések
+                                            <span class="float-right"><b>@Model?.DoneRequests darab</b> / @Model?.AllRequests darab</span>
+                                            <div class="progress progress-sm">
+                                                <div class="progress-bar bg-success" style="width: @donePercent%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="progress-group">
+                                            Folyamatban lévő igénylések
+                                            <span class="float-right"><b>@Model?.InProgressRequests darab</b> / @Model?.AllRequests darab</span>
+                                            <div class="progress progress-sm">
+                                                <div class="progress-bar bg-warning" style="width: @inProgressPercent%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="progress-group">
+                                            Elutasított igénylések
+                                            <span class="float-right"><b>@Model?.DeniedRequests darab</b> / @Model?.AllRequests darab</span>
+                                            <div class="progress progress-sm">
+                                                <div class="progress-bar bg-danger" style="width: @deniedPercent%"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
-            }
+            </div>
+            <div class="row">
+                @foreach (var vehicle in Model.Parkings)
+                {
+                    <div class="col-12 col-xl-4">
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>@vehicle.LicensePlate</h3>
+                                <p>@vehicle.Brand @vehicle.Modell</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="small-box-footer">
+                                <abbr title="Amennyiben már nem tartozik hozzád, írj e-mail a helyi GEI informatikai csoportnak!" class="text-decoration-none">Aktív parkolási engedélyed</abbr>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
