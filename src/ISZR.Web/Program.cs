@@ -3,7 +3,7 @@ global using ISZR.Web.Middleware;
 global using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Server.IIS;
 
-// Builder
+// Alkalmazás felépítése
 var builder = WebApplication.CreateBuilder(args);
 
 // Loggings
@@ -22,13 +22,23 @@ builder.Services.AddAuthentication(IISServerDefaults.AuthenticationScheme);
 // Policyk létrehozása Windows Jogosultságok alapján
 builder.Services.AddAuthorization(options =>
 {
+    // Adminisztrátori jogosultság
     options.AddPolicy("Administrator", policy =>
     {
         policy.RequireRole("BV.HU\\SKFB-ISZR-Admin");
         policy.RequireAuthenticatedUser();
     });
+
+    // Ügyintézői jogosultság
     options.AddPolicy("Ugyintezo", policy => {
         policy.RequireRole("BV.HU\\SKFB-ISZR-Ugyintezo");
+        policy.RequireAuthenticatedUser();
+    });
+
+    // Megtekintői jogosultság
+    options.AddPolicy("Megtekinto", policy =>
+    {
+        policy.RequireRole("BV.HU\\SKFB-ISZR");
         policy.RequireAuthenticatedUser();
     });
 });

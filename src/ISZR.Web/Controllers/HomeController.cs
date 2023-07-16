@@ -10,7 +10,7 @@ namespace ISZR.Web.Controllers
     /// <summary>
     /// /Home/? Controller
     /// </summary>
-    [AllowAnonymous]
+    [Authorize(Policy = "Megtekinto")]
     public class HomeController : Controller
     {
         private readonly DataContext _context;
