@@ -58,7 +58,7 @@
                         // Kártya megjelenítése
                         <div class="card card-info">
                             <div class="card-header">
-                                <h5 class="card-title">Általad kért igénylések</h5>
+                                <h5 class="card-title">Általad létrehozott igénylések <abbr title="Általad létrehozott igénylések összesítve" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -92,19 +92,58 @@
                 </div>
             </div>
             <div class="row">
-                @foreach (var vehicle in Model.Parkings)
+                @if (Model?.Parkings?.Count > 0)
                 {
-                    <div class="col-12 col-xl-4">
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>@vehicle.LicensePlate</h3>
-                                <p>@vehicle.Brand @vehicle.Modell</p>
+                    <div class="col-12 col-xl-6">
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h5 class="card-title">Aktív parkolási engedélyeid <abbr title="Amennyiben a jármű már nem tartozik hozzád, írj e-mail a helyi informatikai csoportnak annak archiválásáról!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
                             </div>
-                            <div class="icon">
-                                <i class="fas fa-car"></i>
+                            <div class="card-body p-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rendszám</th>
+                                            <th>Hozzá tartozó jármű</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var vehicle in Model?.Parkings)
+                                        {
+                                            <tr>
+                                                <td><h4><span class="badge bg-info">@vehicle.LicensePlate</span></h4></td>
+                                                <td>@vehicle.Brand @vehicle.Modell</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="small-box-footer">
-                                <abbr title="Amennyiben már nem tartozik hozzád, írj e-mail a helyi GEI informatikai csoportnak!" class="text-decoration-none">Aktív parkolási engedélyed</abbr>
+                        </div>
+                    </div>
+                }
+                @if (Model?.Phones?.Count > 0)
+                {
+                    <div class="col-12 col-xl-6">
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h5 class="card-title">Hozzád kapcsolodó PIN kódok külső telefonáláshoz <abbr title="Ezekkel a PIN kódokkal tudsz külső hívást indítani irodai telefonokon!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table">
+                                    <tbody>
+                                        @foreach (var code in Model?.Phones)
+                                        {
+                                            <tr>
+                                                <td><h4><span class="badge bg-info">@code.PhoneCode</span></h4></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <h5 class="text-info"><i class="fas fa-info mr-2"></i>Emlékeztető a használatáról</h5>
+                                <div class="mb-2">0-ás gomb lenyomása után a fenti azonosítók közül kell egyet beírni. Ezután ki kell választani a típust, ami lehet <span class="text-info font-weight-bold">50 (hivatali)</span> vagy <span class="text-info font-weight-bold">51 (magán)</span>. Ezek után már csak a kívánt telefonszámot kell beírnunk.</div>
+                                <div class="blockquote-footer">Amennyiben magán telefonálást hajtunk végre, azt az intézet pénztárában minden hónap elején be kell fizetni.</div>
                             </div>
                         </div>
                     </div>
