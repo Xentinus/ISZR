@@ -32,10 +32,11 @@ namespace ISZR.Web.ViewModels
         /// <summary>
         /// Felhasználó parkolási igényei
         /// </summary>
-        public List<Parking>? Parkings { get; set; }
-        public DashboardViewModel()
-        {
-            Parkings = new List<Parking>();
-        }
+        public List<Parking>? Parkings { get; set; } = new List<Parking>();
+
+        /// <summary>
+        /// Felhasználó által használt PIN kódok
+        /// </summary>
+        public List<Phone>? Phones { get; set; } = new List<Phone>();
     }
 }

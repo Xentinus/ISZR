@@ -51,7 +51,10 @@ namespace ISZR.Web.Controllers
             }
 
             // Felhasználó aktív parkolási engedélyeinek összeszedése
-            viewModel.Parkings = _context.Parkings.Where(p => p.OwnerUserId == user.UserId && !p.IsArchived).ToList();
+            viewModel.Parkings = _context.Parkings.Where(p => p.OwnerUserId == user.UserId && !p.IsArchived).OrderBy(p => p.LicensePlate).ToList();
+
+            // Felhasználó által használt aktív PIN kódok
+            viewModel.Phones = _context.Phones.Where(p => p.PhoneUserId == user.UserId && !p.IsArchived).OrderBy(p => p.PhoneCode).ToList();
 
             // Irányítópult megjelenítése a felhasználónak
             return View(viewModel);
