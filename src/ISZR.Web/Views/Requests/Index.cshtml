@@ -8,7 +8,7 @@
     }
     else
     {
-        ViewData["Title"] = "Számomra kért igénylések";
+        ViewData["Title"] = "Számodra kért igénylések";
     }
 
     var baseUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.PathBase}";
@@ -22,7 +22,7 @@
                 <form asp-controller="Requests" asp-action="Index" method="get">
                     <div class="card card-info d-print-none">
                         <div class="card-header" data-card-widget="collapse">
-                            <h3 class="card-title font-weight-bold"><i class="icon fas fa-filter mr-2"></i>Igénylések szűrése</h3>
+                            <h3 class="card-title font-weight-bold"><i class="icon fas fa-filter mr-2"></i>Igénylések szűrése <abbr title="A beállított szűrők alapján fog megjelenni a lekért lista" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>

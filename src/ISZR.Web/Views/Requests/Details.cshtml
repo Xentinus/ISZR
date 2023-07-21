@@ -1,7 +1,7 @@
 ﻿@model ISZR.Web.Models.Request
 
 @{
-    ViewData["Title"] = $"#{Model?.RequestId} számú igénylés részletei";
+    ViewData["Title"] = $"#{Model?.RequestId} számú igénylés";
 }
 
 <div class="container-fluid">
@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-12">
                         <h4>
-                            <span class="d-print-none"><i class="icon fas fa-paperclip mr-2"></i>Digitális Szolgálati jegy</span>
+                            <span class="d-print-none"><i class="icon fas fa-paperclip mr-2"></i>Digitális szolgálati jegy</span>
                             <small class="float-right">ISZR <a href="@Url.Content(Context.Request.Path)" class="text-info font-weight-bold text-decoration-none">#@Model?.RequestId</a></small>
                         </h4>
                     </div>

@@ -4,7 +4,7 @@
 
 # Informatikai Szolgálati jegy Rendszer
 
-Röviden **ISZR**, egy **C# nyelven** készült **ASP.NET MVC keretrendszerű web alkalmazás** amely segítsévégel a felhasználók jogosultságokat, kamerafelvételek lementéseket igényelhetnek a helyi Informatikai csoporttól.
+Röviden **ISZR**, egy **C# nyelven** készült **ASP.NET CORE 6 MVC keretrendszerű web alkalmazás** amely segítsévégel a felhasználók jogosultságokat, kamerafelvétel lementéseket igényelhetnek a helyi informatikai csoporttól.
 
 A web alkalmazás célja, hogy a felhasználók egyszerűen, könnyedén igényelhessenek és az igénylések folyamatát is követni tudják.
 
@@ -12,15 +12,14 @@ A web alkalmazás célja, hogy a felhasználók egyszerűen, könnyedén igénye
 
 - Reszponzív felület
 - Regisztráció mentes, Intranet elven műkődik
-- Első bejelentkezéskor a felhasználó beállítja elérhetőségeit és már használható is
-- Elérhetőség változtatása bármikor bármire
+- Felhasználók elérhetőségeinek változtatása bármikor bármire
 - Igénylések státuszait a felhasználók és ügyintézők követni tudják
 - Külön adminisztrativ felület rendszer karbantartóknak
 - Az adatbázis segítségével egyszerűen lehet elvenni és hozzáadni jogosultságokat a rendszerhez
 - Könnyen áttekinthető és értelmezhető igénylési lap
-- Hivatkozásokkal ellátott igénylési lapok és listák
+- Hivatkozásokkal ellátott igénylési lapok és listák (gyorslink a rendszerben található oldalhoz)
 - Egyhelyen kezelhető parkolási engedélyek
-- Automatikus szabad pin kód lefoglalása illetve felhasználó tájékoztatása ha elfogyott
+- Automatikus tájékoztatás a felhasználó felé amennyiben nem igényelhető valami mert pl elfogyott
 - Lehetőség a hibabejelentések/ötletek küldése adminisztrátorok részére
 
 ## Felhasználói típusok
@@ -43,22 +42,16 @@ Az igénylések megtekintésén kivül képesek még a saját elérhetőségüke
 
 Az ügyintézők az összes igénylést látják amenyek a rendszerben találhatóak. Ezen kivül csak **ők képesek igényléseket lérehozni** maguk vagy más felhasználók részére.
 
-<p align="center">
-	<img src=".github/ugyintezoRequests.png">
-</p>
-
-Továbbá az írányítópulton láthatják a saját igényléseinek statisztikáját is.
-
 ### Adminisztrátorok
 
 <p align="center">
-	<img src=".github/healthcheck.png">
+	<img src=".github/admin.png">
 	<img src=".github/statusChange.png">
 </p>
 
-Adminisztrátori jogosultsággal az igénylések státuszait képesek módosítani, valamint csak ők képesek létrehozni (regisztráción kivül) új felhasználókat, osztályokat, csoportokat, beosztásokat, jogosultságokat, kamerákat.
+Adminisztrátori jogosultsággal az igénylések státuszait képesek módosítani, valamint csak ők képesek létrehozni új osztályokat, csoportokat, beosztásokat, jogosultságokat, kamerákat.
 
-Részükre egy teljesen elkülönített felület látható, bármikor képesek az igénylő rendszerbe és az admin felület között mozogni. Valamint ki lett alakítva egy rendszerállapotot összegző felület, ahol könnyedén megtudhatják, a rendszerrel kapcsolatos fontosabb információkat.
+Részükre egy teljesen elkülönített felület található, amelyre bármikor képesek átlépni és visszalépni az igénylő rendszerbe. Valamint ki lett alakítva egy rendszerállapotot összegző felület, ahol könnyedén megtudhatják, a rendszerrel kapcsolatos fontosabb információkat.
 
 ## Felhasználók adatainak karbantartása
 
