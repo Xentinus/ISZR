@@ -45,6 +45,14 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddRazorPages();
 
+/// HSTS - HTTPS-forgalom biztonságossá tétele
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromHours(2);
+});
+
 // Adatbázishoz való csatlakozás
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DataContext") ?? throw new InvalidOperationException("Adatbázis elérési útvonala nem található!")));
