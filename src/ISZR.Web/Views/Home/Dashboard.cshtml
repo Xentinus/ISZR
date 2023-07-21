@@ -92,14 +92,14 @@
                 </div>
             </div>
             <div class="row">
-                @if (Model?.Parkings?.Count > 0)
-                {
-                    <div class="col-12 col-xl-6">
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h5 class="card-title">Aktív parkolási engedélyeid <abbr title="Amennyiben a jármű már nem tartozik hozzád, írj e-mail a helyi informatikai csoportnak annak archiválásáról!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
-                            </div>
-                            <div class="card-body p-0">
+                <div class="col-12 col-xl-6">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h5 class="card-title">Parkolási engedélyeid <abbr title="Amennyiben a jármű már nem tartozik hozzád, írj e-mail a helyi informatikai csoportnak annak archiválásáról!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
+                        </div>
+                        <div class="card-body p-0">
+                            @if (Model?.Parkings?.Count > 0)
+                            {
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -117,17 +117,24 @@
                                         }
                                     </tbody>
                                 </table>
-                            </div>
+                            }
+                            else
+                            {
+                                <div class="text-center text-muted font-italic mt-2 mb-3">
+                                    Nem rendelkezel parkolási engedéllyel.
+                                </div>
+                            }
+
                         </div>
                     </div>
-                }
-                @if (Model?.Phones?.Count > 0)
-                {
-                    <div class="col-12 col-xl-6">
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h5 class="card-title">Hozzád kapcsolodó PIN kódok külső telefonáláshoz <abbr title="Ezekkel a PIN kódokkal tudsz külső hívást indítani irodai telefonokon!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
-                            </div>
+                </div>
+                <div class="col-12 col-xl-6">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h5 class="card-title">PIN kódjaid külső telefonáláshoz <abbr title="Ezekkel a PIN kódokkal tudsz külső hívást indítani irodai telefonokon!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
+                        </div>
+                        @if (Model?.Phones?.Count > 0)
+                        {
                             <div class="card-body p-0">
                                 <table class="table">
                                     <tbody>
@@ -145,9 +152,16 @@
                                 <div class="mb-2">0-ás gomb lenyomása után a fenti azonosítók közül kell egyet beírni. Ezután ki kell választani a típust, ami lehet <span class="text-info font-weight-bold">50 (hivatali)</span> vagy <span class="text-info font-weight-bold">51 (magán)</span>. Ezek után már csak a kívánt telefonszámot kell beírnunk.</div>
                                 <div class="blockquote-footer">Amennyiben magán telefonálást hajtunk végre, azt az intézet pénztárában minden hónap elején be kell fizetni.</div>
                             </div>
-                        </div>
+                        } else
+                        {
+                            <div class="card-body p-0">
+                                <div class="text-center text-muted font-italic mt-2 mb-3">
+                                    Nem rendelkezel külső telefonáláshoz használható PIN kóddal.
+                                </div>
+                            </div>
+                        }
                     </div>
-                }
+                </div>
             </div>
         </div>
     </div>
