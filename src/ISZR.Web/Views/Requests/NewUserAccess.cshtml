@@ -6,6 +6,16 @@
 
 <div class="container-fluid">
     <div class="row">
+        <div class="col-12">
+            <div class="alert alert-light alert-dismissible">
+                <h5><i class="icon fas fa-info"></i>Információ az új felhasználó létrehozásáról</h5>
+                Az itt található adatokkal fog elkészülni a fiók az új felhasználó részére.<br />
+                Amennyiben a felhasználó nem fog számítógépet kezelni, abban az esetben is <b>létre kell hozni részére egy fiókot alap jogosultsági csoporttal</b>!<br />
+                Erre azért van szükség, hogy a Navigátorban és egyéb alkalmazásokban ki lehessen választani a nevét!
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             @if (((IEnumerable<dynamic>)ViewBag.GroupId).Count() > 0)
             {
