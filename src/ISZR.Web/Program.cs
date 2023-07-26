@@ -1,6 +1,8 @@
 global using ISZR.Web.Data;
 global using ISZR.Web.Middleware;
+global using ISZR.Web.Services;
 global using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Server.IIS;
 
 // Alkalmazás felépítése
@@ -30,7 +32,8 @@ builder.Services.AddAuthorization(options =>
     });
 
     // Ügyintézői jogosultság
-    options.AddPolicy("Ugyintezo", policy => {
+    options.AddPolicy("Ugyintezo", policy =>
+    {
         policy.RequireRole("BV.HU\\SKFB-ISZR-Ugyintezo");
         policy.RequireAuthenticatedUser();
     });
@@ -45,6 +48,10 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddRazorPages();
 
+// Életjel ellenőrző rendszer
+builder.Services.AddHealthChecks();
+
+
 /// HSTS - HTTPS-forgalom biztonságossá tétele
 builder.Services.AddHsts(options =>
 {
@@ -56,6 +63,7 @@ builder.Services.AddHsts(options =>
 // Adatbázishoz való csatlakozás
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DataContext") ?? throw new InvalidOperationException("Adatbázis elérési útvonala nem található!")));
+builder.Services.AddSingleton<IDatabaseStatusService, DatabaseStatusService>();
 
 // Alkalmazás elkészítése
 var app = builder.Build();
@@ -81,6 +89,12 @@ app.UseCors("CorsPolicy");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Dashboard}/{id?}");
+
+// Életjel ellenőrző rendszer elérése
+app.MapHealthChecks("/healthz", new HealthCheckOptions
+{
+    Predicate = _ => true // teljes health check
+}).RequireAuthorization();
 
 // Alkalmazás elindítása
 app.Run();

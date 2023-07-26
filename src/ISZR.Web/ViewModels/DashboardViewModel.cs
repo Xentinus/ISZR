@@ -12,22 +12,22 @@ namespace ISZR.Web.ViewModels
         /// <summary>
         /// Felhasználó által kért igénylések összesen
         /// </summary>
-        public int AllRequests { get; set; }
+        public int AllRequests { get; set; } = 0;
 
         /// <summary>
         /// Felhasználó által kért igénylések amelyek végre lettek hajtva
         /// </summary>
-        public int DoneRequests { get; set; }
+        public int DoneRequests { get; set; } = 0;
 
         /// <summary>
         /// Felhasználó által kért igénylések amelyek még folyamatban vannak
         /// </summary>
-        public int InProgressRequests { get; set; }
+        public int InProgressRequests { get; set; } = 0;
 
         /// <summary>
         /// Felhasználó által kért igénylések amelyek el lettek utasítva
         /// </summary>
-        public int DeniedRequests { get; set; }
+        public int DeniedRequests { get; set; } = 0;
 
         /// <summary>
         /// Felhasználó parkolási igényei
