@@ -2,6 +2,7 @@ global using ISZR.Web.Data;
 global using ISZR.Web.Middleware;
 global using ISZR.Web.Services;
 global using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Server.IIS;
 
@@ -18,8 +19,17 @@ builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequ
 // Felhasználó utolsó látógatás idejének frissítése
 builder.Services.AddScoped<UpdateUserUptime>();
 
-// IIS Server alapú felhasználó beazonosítás
-builder.Services.AddAuthentication(IISServerDefaults.AuthenticationScheme);
+// Autentikáció beállítása Environment alapján
+if (builder.Environment.IsDevelopment())
+{
+    // IIS Express (Development)
+    builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+}
+else
+{
+    // IIS Server (Staging, Production)
+    builder.Services.AddAuthentication(IISServerDefaults.AuthenticationScheme);
+}
 
 // Policyk létrehozása Windows Jogosultságok alapján
 builder.Services.AddAuthorization(options =>

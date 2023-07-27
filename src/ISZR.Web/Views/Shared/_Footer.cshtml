@@ -1,14 +1,22 @@
-﻿<footer class="main-footer font-weight-normal d-print-none">
+﻿@using Microsoft.Extensions.Hosting
+
+<footer class="main-footer font-weight-normal d-print-none">
     <div class="float-left">
         &copy; 2021-@DateTime.Now.Year
-        <abbr title="Az webalkalmazás készítője" class="text-decoration-none text-info font-weight-bold ml-1 mr-1">Kellner Béla</abbr>
+        <abbr title="Alkalmazás készítője és karbantartója" class="text-decoration-none text-info font-weight-bold ml-1 mr-1">Kellner Béla</abbr>
         Minden jog fenntartva.
     </div>
     <div class="float-right ml-3">
         <span>Informatikai Szolgálati jegy Rendszer</span>
-        <span class="text-info font-weight-bold ml-1">
+        @if (!Context.RequestServices.GetRequiredService<IWebHostEnvironment>().IsProduction())
+        {
+            <abbr title="Az alkalmazás ezen verziójában tekinthetőek meg az új fejlesztések amelyek még nincsenek publikálva" class="badge badge-danger text-decoration-none font-weight-bold ml-1">
+                <i class="icon fas fa-toolbox mr-1"></i>FEJLESZTÉSI VERZIÓ
+            </abbr>
+        }
+        <abbr title="Alkalmazás verziószáma" class="badge badge-info text-decoration-none font-weight-bold ml-1">
             @System.Reflection.Assembly.GetExecutingAssembly().GetName().Version
-            <i class="fas fa-code-branch"></i>
-        </span>
+            <i class="icon fas fa-code-branch ml-1"></i>
+        </abbr>
     </div>
 </footer>
