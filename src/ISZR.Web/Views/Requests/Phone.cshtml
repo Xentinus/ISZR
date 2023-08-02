@@ -14,7 +14,7 @@
                         <h3 class="card-title">Igénylés menete</h3>
                     </div>
                     <div class="card-body p-0">
-                        <form asp-action="Phone">
+                        <form asp-action="Phone" onsubmit="submitButton.disabled = true; return true;">
                             <div class="row">
                                 <div class="col-12">
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -142,7 +142,7 @@
                                                 </div>
                                                 <div class="float-right">
                                                     <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                                    <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+                                                    <button name="submitButton" type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
                                                 </div>
                                             </div>
                                         </div>

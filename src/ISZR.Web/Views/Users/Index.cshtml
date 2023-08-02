@@ -13,82 +13,132 @@
                     <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új felhasználó hozzáadása" class="btn btn-light" /></a></h3>
                 </div>
                 <div class="card-body p-0">
-                    @foreach (var item in Model)
-                    {
-                        <div class="modal fade" id="deleteModal@(item.UserId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.UserId)" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-danger">
-                                        <h5 class="modal-title" id="deleteModalLabel@(item.UserId)"><i class="fas fa-archive mr-2"></i>Archiválási állapot megváltoztatása</h5>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div>Biztosan szeretnéd <b>@item.DisplayName</b> nevű felhasználó archiválási állapotát megváltoztatni?</div>
-                                        <div>Felhasználónév: @item.Username</div>
-                                        <div>Utolsó bejelentkezés: @Html.DisplayFor(modelItem => item.LastLogin)</div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
-                                        <form asp-action="Index" asp-route-id="@item.UserId">
-                                            <input type="hidden" asp-for="@item.UserId" />
-                                            <button type="submit" class="btn btn-danger"><i class="fas fa-archive mr-2"></i>Megváltoztatás</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
                     <table class="table table-striped">
                         <thead class="bg-info">
                             <tr>
-                                <th>Felhasználónév</th>
-                                <th>Név</th>
-                                <th>Utolsó használat</th>
-                                <th>Állapot</th>
+                                <th>Új felhasználók a rendszerben</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Username)
-                                    </td>
-                                    <td>
-                                        <span>@item.DisplayName bv. @item.Rank?.ToLower()</span>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.LastLogin)
-                                    </td>
-                                    <td>
-                                        @if (item.IsArchived)
-                                        {
-                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
-                                        }
-                                    </td>
-                                    <td class="float-right d-print-none">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                <i class="fas fa-book mr-2"></i>Műveletek
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a asp-action="Details" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-search mr-2"></i>Megtekintés</a>
-                                                <a asp-action="Edit" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#deleteModal@(item.UserId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                @if (item.Username == null)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span>@item.DisplayName bv. @item.Rank?.ToLower()</span>
+                                            <br />
+                                            <span class="badge badge-info">@item.Position?.Name</span>
+                                        </td>
+                                        <td class="float-right d-print-none">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-book mr-2"></i>Adminisztratív müveletek
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a asp-action="Details" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-search mr-2"></i>Megtekintés</a>
+                                                    <a asp-action="Edit" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>
                 </div>
-
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    @foreach (var item in Model)
+                    {
+                        @if (item.Username != null)
+                        {
+                            <div class="modal fade" id="deleteModal@(item.UserId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.UserId)" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-danger">
+                                            <h5 class="modal-title" id="deleteModalLabel@(item.UserId)"><i class="fas fa-archive mr-2"></i>Archiválási állapot megváltoztatása</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>Biztosan szeretnéd <b>@item.DisplayName</b> nevű felhasználó archiválási állapotát megváltoztatni?</div>
+                                            <div>Felhasználónév: @item.Username</div>
+                                            <div>Utolsó bejelentkezés: @Html.DisplayFor(modelItem => item.LastLogin)</div>
+                                            <br />
+                                            <div class="text-danger font-weight-bold">FIGYELEM!</div>
+                                            <div class="text-muted">Archivált felhasználó számára nem lehet igényelni, illetve a felhasználó se használhatja az alkalmazást!</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
+                                            <form asp-action="Index" asp-route-id="@item.UserId">
+                                                <input type="hidden" asp-for="@item.UserId" />
+                                                <button type="submit" class="btn btn-danger"><i class="fas fa-archive mr-2"></i>Megváltoztatás</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    <table class="table table-striped">
+                        <thead class="bg-info">
+                            <tr>
+                                <th>Név</th>
+                                <th>Felhasználónév</th>
+                                <th>Utolsó rendszerhasználat</th>
+                                <th class="d-print-none"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                @if (item.Username != null)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span>@item.DisplayName bv. @item.Rank?.ToLower()</span>
+                                            <br />
+                                            <span class="badge badge-info">@item.Position?.Name</span>
+                                        </td>
+                                        <td>
+                                            <span>@item.Username</span>
+                                            <br />
+                                            @if (item.IsArchived)
+                                            {
+                                                <span class="badge badge-danger"><i class="icon fas fa-user-times mr-2"></i>Archivált felhasználó</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-success"><i class="icon fas fa-user-check mr-2"></i>Aktív felhasználó</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LastLogin)
+                                        </td>
+                                        <td class="float-right d-print-none">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-book mr-2"></i>Adminisztratív müveletek
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a asp-action="Details" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-search mr-2"></i>Megtekintés</a>
+                                                    <a asp-action="Edit" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item bg-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal@(item.UserId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

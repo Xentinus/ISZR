@@ -195,45 +195,53 @@
                 <div class="row d-print-none">
                     <div class="col-12">
                         <div class="float-right">
-                            <a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                            @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
+                            {
+                                <a asp-controller="Requests" asp-action="Index" asp-route-status="Mind" asp-route-type="Mind" class="btn btn-secondary"><i class="fas fa-sign-out-alt mr-2"></i>Vissza az igénylésekhez</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Requests" asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt mr-2"></i>Vissza az igényléseidhez</a>
+                            }
                             <a class="btn btn-default ml-1 mr-1" onclick="window.print()"><i class="fas fa-print mr-2"></i>Igénylés nyomtatása</a>
                             @if (User.IsInRole("SKFB-ISZR-Admin"))
                             {
-                                if (Model?.Status != "Elutasítva")
-                                {
-                                    <form style="display: inline;" asp-action="Details">
-                                        <input hidden name="id" value="@Model?.RequestId">
-                                        <input hidden name="status" value="Elutasítva">
-                                        <input hidden name="resolverId" value="@Model?.ClosedByUserId">
-                                        <button type="submit" class="btn btn-default float-right ml-1">
-                                            <span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Igénylés elutasítása
-                                        </button>
-                                    </form>
-                                }
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-book mr-2"></i>Adminisztratív müveletek
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        @if (Model?.Status != "Végrehajtva")
+                                        {
+                                            <form style="display: inline;" asp-action="Details">
+                                                <input hidden name="id" value="@Model?.RequestId">
+                                                <input hidden name="status" value="Végrehajtva">
+                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId">
+                                                <button type="submit" class="dropdown-item"><i class="fas fa-check-circle text-success mr-2"></i>Végrehajtás</button>
+                                            </form>
+                                        }
 
-                                if (Model?.Status != "Folyamatban")
-                                {
-                                    <form style="display: inline;" asp-action="Details">
-                                        <input hidden name="id" value="@Model?.RequestId">
-                                        <input hidden name="status" value="Folyamatban">
-                                        <input hidden name="resolverId" value="@Model?.ClosedByUserId">
-                                        <button type="submit" class="btn btn-default float-right ml-1 mr-1">
-                                            <span class="text-warning"><i class="fas fa-comment-dots mr-2"></i></span>Igénylés folyamatba helyezése
-                                        </button>
-                                    </form>
-                                }
+                                        @if (Model?.Status != "Folyamatban")
+                                        {
+                                            <form style="display: inline;" asp-action="Details">
+                                                <input hidden name="id" value="@Model?.RequestId">
+                                                <input hidden name="status" value="Folyamatban">
+                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId">
+                                                <button type="submit" class="dropdown-item"><i class="fas fa-comment-dots text-warning mr-2"></i>Folyamatba helyezés</button>
+                                            </form>
+                                        }
 
-                                if (Model?.Status != "Végrehajtva")
-                                {
-                                    <form style="display: inline;" asp-action="Details">
-                                        <input hidden name="id" value="@Model?.RequestId">
-                                        <input hidden name="status" value="Végrehajtva">
-                                        <input hidden name="resolverId" value="@Model?.ClosedByUserId">
-                                        <button type="submit" class="btn btn-default float-right ml-1 mr-1">
-                                            <span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Igénylés végrehajtása
-                                        </button>
-                                    </form>
-                                }
+                                        @if (Model?.Status != "Elutasítva")
+                                        {
+                                            <form style="display: inline;" asp-action="Details">
+                                                <input hidden name="id" value="@Model?.RequestId">
+                                                <input hidden name="status" value="Elutasítva">
+                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId">
+                                                <button type="submit" class="dropdown-item"><i class="fas fa-times-circle text-danger mr-2"></i>Elutasítás</button>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
                             }
                         </div>
                     </div>

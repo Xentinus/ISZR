@@ -73,14 +73,14 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)<br />
+                                        <span>@item.Name</span><br />
                                         @if (item.Type == "Windows")
                                         {
-                                            <span class="text-info font-weight-bold"><i class="icon fab fa-windows mr-2"></i>Windows jogosultság</span>
+                                            <span class="badge badge-info"><i class="icon fab fa-windows mr-2"></i>Windows jogosultság</span>
                                         }
                                         @if (item.Type == "Főnix 3")
                                         {
-                                            <span class="text-warning font-weight-bold"><i class="icon fas fa-dove mr-2"></i>Főnix 3 jogosultság</span>
+                                            <span class="badge badge-warning"><i class="icon fas fa-dove mr-2"></i>Főnix 3 jogosultság</span>
                                         }
                                     </td>
                                     <td>

@@ -23,7 +23,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // Beosztások listájának lekérdezése
-            var dataContext = _context.Positions.OrderBy(u => u.Name);
+            var dataContext = _context.Positions.Where(p => !p.IsArchived).OrderBy(p => p.Name);
 
             // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());

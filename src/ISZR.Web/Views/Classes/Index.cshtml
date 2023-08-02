@@ -24,6 +24,9 @@
                                     </div>
                                     <div class="modal-body">
                                         <div>Biztosan szeretnéd <b>@item.Name</b> nevű osztály archiválási állapotát megváltoztatni?</div>
+                                        <br />
+                                        <div class="text-danger font-weight-bold">FIGYELEM!</div>
+                                        <div class="text-muted">Archivált osztályt a felhasználók nem tudnak kiválasztani, azonban aki már használja annak nem kerül törlésre!</div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
@@ -41,7 +44,6 @@
                             <tr>
                                 <th>Név</th>
                                 <th>Engedélyező személy</th>
-                                <th>Állapot</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -50,37 +52,37 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
+                                        <span>@item.Name</span><br/>
+                                        @if (item.IsArchived)
+                                        {
+                                            <span class="badge badge-danger"><i class="icon fas fa-archive mr-2"></i>Archivált osztály</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-success"><i class="icon fas fa-user-friends mr-2"></i>Kiválasztható osztály</span>
+                                        }
                                     </td>
                                     <td>
                                         @if (item.Authorizer != null)
                                         {
                                             <span>@item.Authorizer?.DisplayName bv. @item.Authorizer?.Rank?.ToLower()</span>
+                                            <br/>
+                                            <span class="badge badge-info">@item.Authorizer?.Position?.Name</span>
                                         }
                                         else
                                         {
                                             <span class="text-danger font-weight-bold"><i class="icon fas fa-exclamation-triangle mr-2"></i>Engedélyező nincs beállítva</span>
                                         }
                                     </td>
-                                    <td>
-                                        @if (item.IsArchived)
-                                        {
-                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
-                                        }
-                                    </td>
                                     <td class="float-right d-print-none">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                <i class="fas fa-book mr-2"></i>Műveletek
+                                                <i class="fas fa-book mr-2"></i>Adminisztratív müveletek
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a asp-action="Edit" asp-route-id="@item.ClassId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#deleteModal@(item.ClassId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                                <a class="dropdown-item bg-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal@(item.ClassId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
                                             </div>
                                         </div>
                                     </td>

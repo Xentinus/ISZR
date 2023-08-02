@@ -40,9 +40,8 @@
                         <thead class="bg-info">
                             <tr>
                                 <th>Tulajdonos</th>
-                                <th>Jármű típusa</th>
                                 <th>Rendszám</th>
-                                <th>Állapot</th>
+                                <th>Jármű márkája és típusa</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>
@@ -51,40 +50,35 @@
                             {
                                 <tr>
                                     <td>
-                                        @if (item.OwnerUser != null)
-                                        {
-                                            <span>@item.OwnerUser?.DisplayName bv. @item.OwnerUser?.Rank?.ToLower()</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-exclamation-triangle mr-2"></i>Engedélyező tulajdonos beállítva</span>
-                                        }
+                                        <span>@item.OwnerUser?.DisplayName bv. @item.OwnerUser?.Rank?.ToLower()</span>
+
+                                        <br />
+                                        <span class="badge badge-info">@item.OwnerUser?.Position?.Name</span>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Brand) @Html.DisplayFor(modelItem => item.Modell)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.LicensePlate)
-                                    </td>
-                                    <td>
+                                        <span>@item.LicensePlate</span>
+                                        <br />
                                         @if (item.IsArchived)
                                         {
-                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
+                                            <span class="badge badge-danger"><i class="icon fas fa-car-side mr-2"></i>Archivált parkolási engedély</span>
                                         }
                                         else
                                         {
-                                            <span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
+                                            <span class="badge badge-success"><i class="icon fas fa-car-side mr-2"></i>Aktív parkolási engedély</span>
                                         }
+                                    </td>
+                                    <td>
+                                        <span>@item.Brand @item.Modell</span>
                                     </td>
                                     <td class="float-right d-print-none">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                <i class="fas fa-book mr-2"></i>Műveletek
+                                                <i class="fas fa-book mr-2"></i>Adminisztratív müveletek
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a asp-action="Edit" asp-route-id="@item.ParkingId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#deleteModal@(item.ParkingId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                                <a class="dropdown-item bg-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal@(item.ParkingId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
                                             </div>
                                         </div>
                                     </td>

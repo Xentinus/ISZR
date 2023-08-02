@@ -13,7 +13,7 @@
                     <h3 class="card-title">Felhasználóhoz tartozó adatok</h3>
                 </div>
                 <div class="card-body">
-                    <form asp-action="Create">
+                    <form asp-action="Create" onsubmit="submitButton.disabled = true; return true;">
                         <div class="row">
                             <div class="col-12">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -185,7 +185,7 @@
                                 </div>
                                 <div class="float-right">
                                     <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                    <input type="submit" value="Felhasználó létrehozása" class="btn btn-success ml-1" />
+                                    <input name="submitButton" type="submit" value="Felhasználó létrehozása" class="btn btn-success ml-1" />
                                 </div>
                             </div>
                         </div>

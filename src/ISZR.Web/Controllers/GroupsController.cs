@@ -25,7 +25,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // Csoportok listájának lekérdezése
-            var dataContext = _context.Groups.OrderBy(g => g.Name);
+            var dataContext = _context.Groups.Where(g => !g.IsArchived).OrderBy(g => g.Name);
 
             // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());

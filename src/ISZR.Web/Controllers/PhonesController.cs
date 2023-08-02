@@ -25,7 +25,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // PIN kódok listájának lekérdezése
-            var dataContext = _context.Phones.Include(p => p.PhoneUser).OrderBy(p => p.PhoneCode);
+            var dataContext = _context.Phones.Where(p => !p.IsArchived).Include(p => p.PhoneUser).Include(p => p.PhoneUser.Position).OrderBy(p => p.PhoneCode);
 
             // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());
@@ -81,7 +81,11 @@ namespace ISZR.Web.Controllers
             // Lista elemek betöltése
             try
             {
-                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+                {
+                    u.UserId,
+                    DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+                }), "UserId", "DisplayText");
             }
             catch (RuntimeBinderException ex)
             {
@@ -127,7 +131,11 @@ namespace ISZR.Web.Controllers
             // Lista elemek betöltése
             try
             {
-                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+                {
+                    u.UserId,
+                    DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+                }), "UserId", "DisplayText");
             }
             catch (RuntimeBinderException ex)
             {
@@ -156,7 +164,11 @@ namespace ISZR.Web.Controllers
             // Lista elemek betöltése
             try
             {
-                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+                {
+                    u.UserId,
+                    DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+                }), "UserId", "DisplayText");
             }
             catch (RuntimeBinderException ex)
             {
@@ -207,7 +219,11 @@ namespace ISZR.Web.Controllers
             // Lista elemek betöltése
             try
             {
-                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+                ViewData["PhoneUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+                {
+                    u.UserId,
+                    DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+                }), "UserId", "DisplayText");
             }
             catch (RuntimeBinderException ex)
             {

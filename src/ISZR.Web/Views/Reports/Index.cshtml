@@ -80,7 +80,7 @@
                             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header bg-danger">
-                                        <h5 class="modal-title" id="deleteModalLabel@(item.ReportId)"><i class="fas fa-archive mr-2"></i>Archiválási állapot megváltoztatása</h5>
+                                        <h5 class="modal-title" id="deleteModalLabel@(item.ReportId)"><i class="fas fa-archive mr-2"></i>Státusz módosítás</h5>
                                     </div>
                                     <div class="modal-body">
                                         <div>Biztosan szeretnéd <b>@item.Title</b> című bejelentés állapotát megváltoztatni?</div>
@@ -101,7 +101,7 @@
                             <tr>
                                 <th>Bejelentő</th>
                                 <th>Bejelentés</th>
-                                <th>Állapot</th>
+                                <th>Leírás</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>
@@ -113,33 +113,36 @@
                                         @if (item.ReportUser != null)
                                         {
                                             <span>@item.ReportUser?.DisplayName bv. @item.ReportUser?.Rank?.ToLower()</span>
+                                            <br />
+                                            <span class="badge badge-info">@item.ReportUser?.Position?.Name</span>
                                         }
                                         else
                                         {
-                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-exclamation-triangle mr-2"></i>Engedélyező személy beállítva</span>
+                                            <span class="badge badge-danger"><i class="icon fas fa-exclamation-triangle mr-2"></i>Engedélyező személy beállítva</span>
                                         }
                                     </td>
                                     <td>
-                                        <b>@Html.DisplayFor(modelItem => item.Title)</b><br>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td>
+                                        <span>@item.Title</span>
+                                        <br />
                                         @if (item.IsSolved)
                                         {
-                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-lock mr-2"></i>Lezárva</span>
+                                            <span class="badge badge-danger"><i class="icon fas fa-lock mr-2"></i>Lezárva</span>
                                         }
                                         else
                                         {
-                                            <span class="text-success font-weight-bold"><i class="icon fas fa-lock-open mr-2"></i>Folyamatban</span>
+                                            <span class="badge badge-success"><i class="icon fas fa-lock-open mr-2"></i>Folyamatban</span>
                                         }
+                                    </td>
+                                    <td>
+                                        <span>@item.Description</span>
                                     </td>
                                     <td class="float-right d-print-none">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                <i class="fas fa-book mr-2"></i>Műveletek
+                                                <i class="fas fa-book mr-2"></i>Adminisztratív müveletek
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#deleteModal@(item.ReportId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal@(item.ReportId)"><i class="fas fa-exchange-alt mr-2"></i>Státusz módosítás</a>
                                             </div>
                                         </div>
                                     </td>
@@ -148,7 +151,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>

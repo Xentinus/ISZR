@@ -28,12 +28,12 @@ namespace ISZR.Web.Controllers
         /// <param name="type">Igénylés típusa</param>
         /// <param name="requestFor">Kinek a számára zajlik az igénylés</param>
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string status, string type, int requestFor)
+        public async Task<IActionResult> Index(string status, string type, int requestFor, int? pageNumber)
         {
             // Igénylések listájának lekérdezése
             var dataContext = _context.Requests
-                .Include(r => r.CreatedByUser)
                 .Include(r => r.CreatedForUser)
+                .Include(r => r.CreatedForUser.Position)
                 .OrderByDescending(r => r.RequestId)
                 .AsQueryable();
 
@@ -68,14 +68,18 @@ namespace ISZR.Web.Controllers
                 }
             }
 
-            // Maximális megengedett lista értéke 50
-            dataContext = dataContext.Take(50);
+            // Lista összeállítása
+            await dataContext.ToListAsync();
 
             // Felhasználó alapú szűréshez lista
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Az oldal megjelenítése az igénylésekkel
-            return View(await dataContext.ToListAsync());
+            return View(await PaginatedList<Request>.CreateAsync(dataContext, pageNumber ?? 1));
         }
 
         /// <summary>
@@ -276,7 +280,12 @@ namespace ISZR.Web.Controllers
         {
 
             // Lista elemek betöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
+
             ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows" && !p.IsArchived).OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
             ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3" && !p.IsArchived).OrderBy(p => p.Name), "Name", "Name");
 
@@ -351,7 +360,11 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület újra megjelenítése, amennyiben az értékek hibásak voltak
             return View();
@@ -363,7 +376,12 @@ namespace ISZR.Web.Controllers
         public IActionResult UserChangePosition()
         {
             // Lista elemek betöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
+
             ViewData["GroupId"] = new SelectList(_context.Groups.Where(g => !g.IsArchived).OrderBy(g => g.Name), "GroupId", "Name");
 
             // Oldal megjelenítése
@@ -430,7 +448,12 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
+
             ViewData["GroupId"] = new SelectList(_context.Groups.Where(g => !g.IsArchived).OrderBy(g => g.Name), "GroupId", "Name");
 
             // Felület újra megjelenítése, amennyiben az értékek hibásak voltak
@@ -443,7 +466,11 @@ namespace ISZR.Web.Controllers
         public IActionResult Email()
         {
             // Lista elemek betöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Az oldal megjelenítése
             return View();
@@ -498,7 +525,11 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület újra megjelenítése, amennyiben az értékeket hibásan adták meg
             return View();
@@ -512,7 +543,12 @@ namespace ISZR.Web.Controllers
             // Lista elemek betöltése
             try
             {
-                ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+                ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+                {
+                    u.UserId,
+                    DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+                }), "UserId", "DisplayText");
+
                 ViewData["PhoneId"] = new SelectList(_context.Phones.Where(p => !p.IsArchived).Where(p => p.PhoneUserId == null).OrderBy(p => p.PhoneCode), "PhoneId", "PhoneCode");
             }
             catch (RuntimeBinderException ex)
@@ -602,7 +638,12 @@ namespace ISZR.Web.Controllers
             // Amennyiben nem jók az értékek az oldal újratöltése
             try
             {
-                ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+                ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+                {
+                    u.UserId,
+                    DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+                }), "UserId", "DisplayText");
+
                 ViewData["PhoneId"] = new SelectList(_context.Phones.Where(p => !p.IsArchived).Where(p => p.PhoneUserId == null).OrderBy(p => p.PhoneCode), "PhoneId", "PhoneCode");
             }
             catch (RuntimeBinderException ex)
@@ -620,7 +661,11 @@ namespace ISZR.Web.Controllers
         public IActionResult Parking()
         {
             // Lista elemek betöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();
@@ -710,7 +755,11 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();
@@ -722,7 +771,11 @@ namespace ISZR.Web.Controllers
         public IActionResult HikcentralPermission()
         {
             // Lista elemek betöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();
@@ -781,7 +834,11 @@ namespace ISZR.Web.Controllers
             }
 
             // Amennyiben nem jók az értékek az oldal újratöltése
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();
@@ -794,7 +851,11 @@ namespace ISZR.Web.Controllers
         {
             // Lista elemek betöltése
             ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();
@@ -864,7 +925,11 @@ namespace ISZR.Web.Controllers
 
             // Amennyiben nem jók az értékek az oldal újratöltése
             ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();
@@ -877,7 +942,11 @@ namespace ISZR.Web.Controllers
         {
             // Lenyíló menü elemeinek lekérdezése
             ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();
@@ -952,7 +1021,11 @@ namespace ISZR.Web.Controllers
 
             // Amennyiben nem jók az értékek az oldal újratöltése
             ViewData["Cameras"] = new MultiSelectList(_context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name), "Name", "Name");
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();

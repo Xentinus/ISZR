@@ -24,7 +24,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // Parkolási engedélyek listájának lekérdezése
-            var dataContext = _context.Parkings.Include(p => p.OwnerUser).OrderBy(p => p.OwnerUser.DisplayName);
+            var dataContext = _context.Parkings.Where(p => !p.IsArchived).Include(p => p.OwnerUser).Include(p => p.OwnerUser.Position).OrderBy(p => p.OwnerUser.DisplayName);
 
             // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());
@@ -78,7 +78,11 @@ namespace ISZR.Web.Controllers
         public IActionResult Create()
         {
             // Lista elemek betöltése
-            ViewData["OwnerUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["OwnerUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();
@@ -117,7 +121,11 @@ namespace ISZR.Web.Controllers
             }
 
             // Lista elemek betöltése
-            ViewData["OwnerUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["OwnerUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése amennyiben hibásan lettek megadva az adatok
             return View(parking);
@@ -139,7 +147,11 @@ namespace ISZR.Web.Controllers
             if (parking == null) return NotFound();
 
             // Lista elemek betöltése
-            ViewData["OwnerUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["OwnerUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése a kért parkolási engedély adataival
             return View(parking);
@@ -183,7 +195,11 @@ namespace ISZR.Web.Controllers
             }
 
             // Lista elemek betöltése
-            ViewData["OwnerUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["OwnerUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése amennyiben hibás adatokat tartalmaz
             return View(parking);

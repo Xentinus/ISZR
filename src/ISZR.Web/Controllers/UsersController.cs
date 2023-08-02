@@ -24,10 +24,10 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // Felhasználók listájának lekérdezése
-            var dataContext = _context.Users.Include(u => u.Class).Include(u => u.Position).OrderBy(u => u.DisplayName);
+            var users = _context.Users.Where(p => !p.IsArchived).Include(u => u.Class).Include(u => u.Position).OrderBy(u => u.DisplayName);
 
             // Felület megjelenítése a kért listával
-            return View(await dataContext.ToListAsync());
+            return View(await users.ToListAsync());
         }
 
         /// <summary>

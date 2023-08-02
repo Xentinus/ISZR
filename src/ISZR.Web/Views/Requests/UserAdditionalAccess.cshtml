@@ -14,7 +14,7 @@
                         <h3 class="card-title">Igénylés menete</h3>
                     </div>
                     <div class="card-body p-0">
-                        <form asp-action="UserAdditionalAccess">
+                        <form asp-action="UserAdditionalAccess" onsubmit="submitButton.disabled = true; return true;">
                             <div class="row">
                                 <div class="col-12">
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -80,6 +80,8 @@
                                                 <div class="alert alert-light alert-dismissible">
                                                     <h5><i class="icon fas fa-info"></i>Információ a jogosultságok kiválasztásához</h5>
                                                     Amennyiben további információkra van szükséged a megfelelő jogosultság kiválasztásában, a <a class="text-dark font-weight-bold text-decoration-none ml-1 mr-1" asp-controller="Home" asp-action="Permissions"><i class="fas fa-key"></i> Jogosultsági magyarázat</a> menüpontban találsz leírásokat minden jogosultsághoz.
+                                                    <br />
+                                                    <b>Minden országos jogosultság igénylést meg kell indokolni amit a BVOP fog elbírálni és hozzáadni!</b>
                                                 </div>
                                             </div>
                                         </div>
@@ -107,6 +109,16 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                            </div><div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Országos jogosultság igénylése esetén indoklás</label>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-exclamation-triangle"></i></span>
+                                                        </div>
+                                                        <input id="inputWhy" name="inputWhy" type="text" class="form-control" spellcheck="true" />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -119,6 +131,7 @@
                                                             document.getElementById("summaryUser").innerHTML = $('#selectedUser option:selected').toArray().map(item => item.text).join();
                                                             document.getElementById("summaryWindows").innerHTML = $('#selectedWindows option:selected').toArray().map(item => item.text).join(", ");
                                                             document.getElementById("summaryFonix").innerHTML = $('#selectedFonix option:selected').toArray().map(item => item.text).join(", ");
+                                                            document.getElementById("summaryWhy").innerHTML = $('#inputWhy').val();
                                                             stepper.next();
                                                         }
                                                     </script>
@@ -133,11 +146,13 @@
                                                     <h5><i class="icon fas fa-exclamation-triangle"></i>Összefoglaló áttekintése az igénylés létrehozása előtt</h5>
                                                     <dl class="row">
                                                         <dt class="col-sm-4"><i class="icon fas fa-user"></i>Felhasználó részére</dt>
-                                                        <dd id="summaryUser" class="col-sm-8"></dd>
+                                                        <dd id="summaryWhy" class="col-sm-8"></dd>
                                                         <dt class="col-sm-4"><i class="icon fas fa-tag"></i>Igénylés típusa</dt>
                                                         <dd class="col-sm-8">Meglévő felhasználó részére többletjogosultság</dd>
                                                         <dt class="col-sm-4"><i class="icon fas fa-history"></i>Igénylés létrehozásának ideje</dt>
                                                         <dd class="col-sm-8">@DateTime.Now.ToString("yyyy. MMMM dd. HH:mm")</dd>
+                                                        <dt class="col-sm-4"><i class="fas fa-exclamation-triangle"></i>Országos igénylés oka</dt>
+                                                        <dd id="summaryWhy" class="col-sm-8"></dd>
                                                     </dl>
                                                 </div>
                                                 <div class="row">
@@ -170,7 +185,7 @@
                                                 </div>
                                                 <div class="float-right">
                                                     <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                                    <button type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+                                                    <button name="submitButton" type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
                                                 </div>
                                             </div>
                                         </div>

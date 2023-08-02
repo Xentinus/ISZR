@@ -28,6 +28,7 @@ namespace ISZR.Web.Controllers
         {
             // Hibabejelentések listájának lekérdezése
             var dataContext = _context.Reports
+                .Include(r => r.ReportUser.Position)
                 .OrderByDescending(r => r.ReportId)
                 .AsQueryable();
 
@@ -61,7 +62,11 @@ namespace ISZR.Web.Controllers
             dataContext = dataContext.Take(50);
 
             // Felhasználó alapú szűréshez lista
-            ViewData["ReportUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["ReportUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Az oldal megjelenítése a hibabejelentésekkel
             return View(await dataContext.ToListAsync());
@@ -115,9 +120,6 @@ namespace ISZR.Web.Controllers
         [Authorize(Policy = "Ugyintezo")]
         public IActionResult Create()
         {
-            // Felhasználó alapú szűréshez lista
-            ViewData["ReportUserId"] = new SelectList(_context.Users, "UserId", "DisplayName");
-
             // Felület megjelenítése
             return View();
         }
@@ -143,9 +145,6 @@ namespace ISZR.Web.Controllers
                 // Felhasználó átnavigálása a felhasználói profilba
                 return RedirectToAction("Dashboard", "Home");
             }
-
-            // Felhasználó alapú szűréshez lista
-            ViewData["ReportUserId"] = new SelectList(_context.Users, "UserId", "DisplayName", report.ReportUserId);
 
             // Felület megjelenítése
             return View(report);
