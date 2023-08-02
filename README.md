@@ -46,7 +46,6 @@ Az ügyintézők az összes igénylést látják amenyek a rendszerben találhat
 
 <p align="center">
 	<img src=".github/admin.png">
-	<img src=".github/statusChange.png">
 </p>
 
 Adminisztrátori jogosultsággal az igénylések státuszait képesek módosítani, valamint csak ők képesek létrehozni új osztályokat, csoportokat, beosztásokat, jogosultságokat, kamerákat.

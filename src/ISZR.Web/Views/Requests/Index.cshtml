@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ISZR.Web.Models.Request>
+﻿@model PaginatedList<ISZR.Web.Models.Request>
 
 @{
 
@@ -102,13 +102,12 @@
                         <thead class="bg-info">
                             <tr>
                                 <th>Igénylési azonosító</th>
-                                <th class="d-none d-md-table-cell">Létrehozásának és lezárásának ideje</th>
-                                <th class="d-none d-xl-table-cell">Igénylést intéző</th>
                                 @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
                                 {
                                     <th>Felhasználó számára</th>
                                 }
                                 <th>Igénylés típusa</th>
+                                <th>Utolsó módosítás ideje</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>
@@ -121,39 +120,17 @@
                                         @{
                                             if (item.Status == "Végrehajtva")
                                             {
-                                                <span class="text-success font-weight-bold"><i class="fas fa-check mr-2"></i>Végrehajtva</span>
+                                                <span class="badge badge-success"><i class="fas fa-check mr-2"></i>Végrehajtva</span>
                                             }
                                             else if (item.Status == "Elutasítva")
                                             {
-                                                <span class="text-danger font-weight-bold"><i class="fas fa-ban mr-2"></i>Elutasítva</span>
+                                                <span class="badge badge-danger"><i class="fas fa-ban mr-2"></i>Elutasítva</span>
                                             }
                                             else
                                             {
-                                                <span class="text-info font-weight-bold"><i class="fas fa-comment-dots mr-2"></i>Folyamatban</span>
+                                                <span class="badge badge-info"><i class="fas fa-comment-dots mr-2"></i>Folyamatban</span>
                                             }
 
-                                        }
-                                    </td>
-                                    <td class="d-none d-md-table-cell">
-                                        @Html.DisplayFor(modelItem => item.CreatedDateTime)
-                                        @if (item.ClosedDateTime != new DateTime())
-                                        {
-                                            if (item.Status == "Végrehajtva")
-                                            {
-                                                <br />
-                                                <span class="text-success font-weight-bold">@item.ClosedDateTime.ToString("yyyy. MMMM dd. HH:mm")</span>
-                                            }
-                                            else if (item.Status == "Elutasítva")
-                                            {
-                                                <br />
-                                                <span class="text-danger font-weight-bold">@item.ClosedDateTime.ToString("yyyy. MMMM dd. HH:mm")</span>
-                                            }
-                                        }
-                                    </td>
-                                    <td class="d-none d-xl-table-cell">
-                                        @if (item.CreatedByUser != null)
-                                        {
-                                            <span>@item.CreatedByUser.DisplayName</span>
                                         }
                                     </td>
                                     @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
@@ -161,12 +138,25 @@
                                         <td>
                                             @if (item.CreatedForUser != null)
                                             {
-                                                <span>@item.CreatedForUser.DisplayName</span>
+                                                <span>@item.CreatedForUser?.DisplayName bv.@item.CreatedForUser?.Rank.ToLower()</span>
+
+                                                <br />
+                                                <span class="badge badge-info">@item.CreatedForUser?.Position?.Name</span>
                                             }
                                         </td>
                                     }
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Type)
+                                    </td>
+                                    <td>
+                                        @if (item.ClosedDateTime != new DateTime())
+                                        {
+                                            <span>@item.ClosedDateTime.ToString("yyyy. MMMM. dd. HH:mm")</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@item.CreatedDateTime.ToString("yyyy. MMMM. dd. HH:mm")</span>
+                                        }
                                     </td>
                                     <td class="float-right d-print-none">
                                         <a class="btn btn-default" asp-action="Details" asp-route-id="@item.RequestId"><i class="fas fa-search text-info mr-2"></i>Megtekintés</a>
@@ -176,6 +166,33 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row d-print-none">
+        <div class="col-12 mt-2">
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <div class="float-left">
+                <p class="text-muted">Aktuális oldal: <b>@Model.PageIndex</b>/@Model.TotalPages</p>
+            </div>
+
+            <div class="float-right">
+                <a class="btn btn-default mr-2 @prevDisabled"
+                   asp-action="Index"
+                   asp-route-status="Mind"
+                   asp-route-type="Mind"
+                   asp-route-requestfor="Mind"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
+
+                <a class="btn btn-default @nextDisabled"
+                   asp-action="Index"
+                   asp-route-status="Mind"
+                   asp-route-type="Mind"
+                   asp-route-requestfor="Mind"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
             </div>
         </div>
     </div>

@@ -36,6 +36,9 @@
                                                 <span class="text-warning font-weight-bold"><i class="icon fas fa-dove ml-1 mr-2"></i>Főnix 3 jogosultság</span>
                                             }
                                         </div>
+                                        <br />
+                                        <div class="text-danger font-weight-bold">FIGYELEM!</div>
+                                        <div class="text-muted">Archivált jogosultságot a felhasználók már nem tudnak igényelni!</div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</button>
@@ -53,7 +56,6 @@
                             <tr>
                                 <th>Név</th>
                                 <th>Leírás</th>
-                                <th>Állapot</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>
@@ -62,39 +64,38 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)<br />
+                                        <span>@item.Name</span>
+                                        <br />
                                         @if (item.Type == "Windows")
                                         {
-                                            <span class="text-info font-weight-bold"><i class="icon fab fa-windows mr-2"></i>Windows jogosultság</span>
+                                            <span class="badge badge-info"><i class="icon fab fa-windows mr-2"></i>Windows jogosultság</span>
                                         }
                                         @if (item.Type == "Főnix 3")
                                         {
-                                            <span class="text-warning font-weight-bold"><i class="icon fas fa-dove mr-2"></i>Főnix 3 jogosultság</span>
+                                            <span class="badge badge-warning"><i class="icon fas fa-dove mr-2"></i>Főnix 3 jogosultság</span>
                                         }
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td>
                                         @if (item.IsArchived)
                                         {
-                                            <span class="text-danger font-weight-bold"><i class="icon fas fa-archive mr-2"></i>Archivált</span>
+                                            <span class="badge badge-danger ml-1"><i class="icon fas fa-archive mr-2"></i>Archivált jogosultság</span>
                                         }
                                         else
                                         {
-                                            <span class="text-success font-weight-bold"><i class="icon fas fa-signal mr-2"></i>Elérhető</span>
+                                            <span class="badge badge-success ml-1"><i class="icon fas fa-puzzle-piece mr-2"></i>Igényelhető jogosultság</span>
                                         }
+                                    </td>
+                                    <td>
+                                        <span class="text-muted">@item.Description</span>
                                     </td>
                                     <td class="float-right d-print-none">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                <i class="fas fa-book mr-2"></i>Műveletek
+                                                <i class="fas fa-book mr-2"></i>Adminisztratív müveletek
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a asp-action="Details" asp-route-id="@item.PermissionId" class="dropdown-item"><i class="fas fa-search mr-2"></i>Megtekintés</a>
                                                 <a asp-action="Edit" asp-route-id="@item.PermissionId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#deleteModal@(item.PermissionId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                                <a class="dropdown-item bg-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal@(item.PermissionId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
                                             </div>
                                         </div>
                                     </td>

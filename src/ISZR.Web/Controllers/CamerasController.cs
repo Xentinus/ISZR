@@ -23,7 +23,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // Kamera lista elkészítése
-            var dataContext = _context.Cameras.OrderBy(u => u.Name);
+            var dataContext = _context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name);
 
             // Felület megjelnítése a listával
             return View(await dataContext.ToListAsync());

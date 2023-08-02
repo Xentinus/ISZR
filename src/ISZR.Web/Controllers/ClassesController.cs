@@ -25,7 +25,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Index()
         {
             // Osztályok listájának lekérdezése
-            var dataContext = _context.Classes.Include(c => c.Authorizer).OrderBy(c => c.Name);
+            var dataContext = _context.Classes.Where(c => !c.IsArchived).Include(c => c.Authorizer).Include(c => c.Authorizer.Position).OrderBy(c => c.Name);
 
             // Felület megjelenítése a kért listával
             return View(await dataContext.ToListAsync());
@@ -80,7 +80,11 @@ namespace ISZR.Web.Controllers
         public IActionResult Create()
         {
             // Lista elem betöltése
-            ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése
             return View();
@@ -120,7 +124,11 @@ namespace ISZR.Web.Controllers
             }
 
             // Lista elem betöltése
-            ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület újra megjelenítése, amennyiben hibás értékeket adott meg
             return View(@class);
@@ -142,7 +150,11 @@ namespace ISZR.Web.Controllers
             if (@class == null) return NotFound();
 
             // Lista elem betöltése
-            ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület megjelenítése a kért osztály adataival
             return View(@class);
@@ -186,7 +198,11 @@ namespace ISZR.Web.Controllers
             }
 
             // Lista elem betöltése
-            ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName), "UserId", "DisplayName");
+            ViewData["AuthorizerId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
+            {
+                u.UserId,
+                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
+            }), "UserId", "DisplayText");
 
             // Felület újra megjelenítése, amennyiben hibás értékeket adott meg
             return View(@class);
