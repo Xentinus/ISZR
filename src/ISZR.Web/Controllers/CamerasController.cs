@@ -20,13 +20,17 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Kamerák listájának megjelenítése
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             // Kamera lista elkészítése
             var dataContext = _context.Cameras.Where(c => !c.IsArchived).OrderBy(c => c.Name);
 
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
             // Felület megjelnítése a listával
-            return View(await dataContext.ToListAsync());
+            return View(await PaginatedList<Camera>.CreateAsync(dataContext, pageNumber ?? 1));
         }
 
         /// <summary>
@@ -35,7 +39,7 @@ namespace ISZR.Web.Controllers
         /// <param name="id">Kamera azonosítójó</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? pageNumber, int? id)
         {
             // Azonosító meglétének ellenőrzése
             if (id == null || _context.Cameras == null) return NotFound();

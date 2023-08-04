@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ISZR.Web.Models.Report>
+﻿@model PaginatedList<ISZR.Web.Models.Report>
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -11,7 +11,7 @@
             <form asp-controller="Reports" asp-action="Index" method="get">
                 <div class="card card-info d-print-none">
                     <div class="card-header" data-card-widget="collapse">
-                        <h3 class="card-title font-weight-bold"><i class="icon fas fa-filter mr-2"></i>Bejelentések szűrése</h3>
+                        <h3 class="card-title"><i class="icon fas fa-filter mr-2"></i>Bejelentések szűrése</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -35,12 +35,12 @@
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12">
                                 <div class="form-group">
-                                    <label>Keresés a leírásban</label>
+                                    <label>Leírás</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-font"></i></span>
                                         </div>
-                                        <input name="text" type="text" class="form-control" placeholder="Megadott szó keresése a bejelentésekben">
+                                        <input name="text" type="text" class="form-control" placeholder="Megadott szó keresése a leírásban" value="@ViewBag.text">
                                     </div>
                                 </div>
                             </div>
@@ -51,10 +51,14 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-tag"></i></span>
                                         </div>
-                                        <select name="status" class="form-control select2bs4">
-                                            <option value="false" selected>Folyamatban</option>
-                                            <option value="true">Lezárva</option>
-                                        </select>
+                                        @{
+                                            var statusList = new List<SelectListItem>
+                                        {
+                                        new SelectListItem{ Value = "true", Text = "Folyamatban"},
+                                        new SelectListItem{ Value = "false", Text = "Lezárva"}
+                                        };
+                                        }
+                                        @Html.DropDownList("status", statusList, new { @class = "form-control select2bs4" })
                                     </div>
                                 </div>
                             </div>
@@ -151,6 +155,36 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-2 mb-3">
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <div class="float-left ml-1">
+                <div class="text-muted font-italic">
+                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model.PageIndex</span>/<span class="ml-1 mr-1">@Model.TotalPages</span><br />
+                    <span class="mr-1">@ViewData["dataLength"]</span> darab hibabejelentés
+                </div>
+            </div>
+
+            <div class="float-right d-print-none">
+                <a class="btn btn-default mr-2 @prevDisabled"
+                   asp-action="Index"
+                   asp-route-status="@ViewData["status"]"
+                   asp-route-text="@ViewData["text"]"
+                   asp-route-reportUser="@ViewData["reportUser"]"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
+
+                <a class="btn btn-default @nextDisabled"
+                   asp-action="Index"
+                   asp-route-status="@ViewData["status"]"
+                   asp-route-text="@ViewData["text"]"
+                   asp-route-reportUser="@ViewData["reportUser"]"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
             </div>
         </div>
     </div>

@@ -21,13 +21,17 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Parkolási engedélyek megjelenítése
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             // Parkolási engedélyek listájának lekérdezése
             var dataContext = _context.Parkings.Where(p => !p.IsArchived).Include(p => p.OwnerUser).Include(p => p.OwnerUser.Position).OrderBy(p => p.OwnerUser.DisplayName);
 
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
             // Felület megjelenítése a kért listával
-            return View(await dataContext.ToListAsync());
+            return View(await PaginatedList<Parking>.CreateAsync(dataContext, pageNumber ?? 1));
         }
 
         /// <summary>
@@ -36,7 +40,7 @@ namespace ISZR.Web.Controllers
         /// <param name="id">Parkolási engedélyhez tartozó azonosító</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? pageNumber, int? id)
         {
             // Azonosító meglétének ellenőrzése
             if (id == null || _context.Parkings == null) return NotFound();

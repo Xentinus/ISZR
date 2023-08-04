@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ISZR.Web.Controllers
 {
@@ -149,8 +150,12 @@ namespace ISZR.Web.Controllers
         /// </summary>
         /// <param name="name">Szűrés név alapján</param>
         /// <param name="type">Szűrés típus alapján</param>
-        public async Task<IActionResult> Permissions(string name, string type)
+        public async Task<IActionResult> Permissions(string name, string type, int? pageNumber)
         {
+            // Kapott értékek beállítása
+            ViewData["name"] = name;
+            ViewData["type"] = type;
+
             // A rendszerben található jogosultságok betöltése
             var dataContext = _context.Permissions
                 .Where(p => !p.IsArchived)
@@ -158,28 +163,33 @@ namespace ISZR.Web.Controllers
                 .AsQueryable();
 
             // Jogosultságok szűrése név alapján, amennyiben a felhasználó szűrt név alapján
-            if (name != null && name != "")
+            if (!string.IsNullOrEmpty(name))
             {
-                dataContext = dataContext.Where(p => p.Name.ToLower().Contains(name.ToLower()));
+                dataContext = dataContext.Where(r => r.Name.Contains(name));
             }
 
             // Jogosultságok szűrése típus alapján, amennyiben a felhasználó szűrt típus alapján
             if (type != null && type != "Mind")
             {
-                if (type == "Windows jogosultság")
-                {
-                    // Windows jogosultságok szűrése
-                    dataContext = dataContext.Where(p => p.Type == "Windows");
-                }
-                else
-                {
-                    // Főnix 3 jogosultságok szűrése
-                    dataContext = dataContext.Where(p => p.Type == "Főnix 3");
-                }
+                dataContext = dataContext.Where(p => p.Type == type);
             }
 
+            // Típus lista összeállítása
+            List<string?> permissionTypes = _context.Permissions.Select(r => r.Type).Distinct().OrderBy(r => r).ToList();
+            permissionTypes.Insert(0, "Mind");
+
+            ViewData["TypeList"] = permissionTypes.Select(type => new SelectListItem
+            {
+                Text = type,
+                Value = type
+            }).ToList();
+
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
             // Jogosultsági magyarázat megjelnítése
-            return View(await dataContext.ToListAsync());
+            return View(await PaginatedList<Permission>.CreateAsync(dataContext, pageNumber ?? 1, 25));
         }
 
         /// <summary>

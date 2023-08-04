@@ -21,13 +21,17 @@ namespace ISZR.Web.Controllers
         /// Jogosultságok listájának megjelenítése
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             // Jogosultságok listájának lekérdezése
             var dataContext = _context.Permissions.Where(p => !p.IsArchived).OrderBy(p => p.Name);
 
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
             // Felület megjelenítése a kért listával
-            return View(await dataContext.ToListAsync());
+            return View(await PaginatedList<Permission>.CreateAsync(dataContext, pageNumber ?? 1));
         }
 
         /// <summary>
@@ -36,7 +40,7 @@ namespace ISZR.Web.Controllers
         /// <param name="id">Jogosultság azonosítója</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? pageNumber, int? id)
         {
             // Azonosító meglétének ellenőrzése
             if (id == null || _context.Permissions == null) return NotFound();

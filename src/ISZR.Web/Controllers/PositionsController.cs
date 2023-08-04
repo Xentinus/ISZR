@@ -20,13 +20,17 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Beosztások listájának megjelenítése
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             // Beosztások listájának lekérdezése
             var dataContext = _context.Positions.Where(p => !p.IsArchived).OrderBy(p => p.Name);
 
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
             // Felület megjelenítése a kért listával
-            return View(await dataContext.ToListAsync());
+            return View(await PaginatedList<Position>.CreateAsync(dataContext, pageNumber ?? 1));
         }
 
         /// <summary>
@@ -35,7 +39,7 @@ namespace ISZR.Web.Controllers
         /// <param name="id">Beosztás azonosítója</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? pageNumber, int? id)
         {
             // Azonosító meglétének ellenőrzése
             if (id == null || _context.Positions == null) return NotFound();

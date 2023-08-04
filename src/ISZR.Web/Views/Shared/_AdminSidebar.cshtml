@@ -17,58 +17,58 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Reports" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Reports" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Reports" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Reports" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-bullhorn"></i>
                         <p>Hibabejelentések</p>
                     </a>
                 </li>
                 <li class="nav-header"><b>Személyi karbantartások</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Classes" ? "active" : "")" asp-controller="Classes" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Classes" ? "active" : "")" asp-controller="Classes" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Osztályok</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Positions" ? "active" : "")" asp-controller="Positions" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Positions" ? "active" : "")" asp-controller="Positions" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-people-arrows"></i>
                         <p>Beosztások</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" ? "active" : "")" asp-controller="Users" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" ? "active" : "")" asp-controller="Users" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-user"></i>
                         <p>Felhasználók</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Parkings" ? "active" : "")" asp-controller="Parkings" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Parkings" ? "active" : "")" asp-controller="Parkings" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-parking"></i>
                         <p>Parkolási engedélyek</p>
                     </a>
                 </li>
                 <li class="nav-header"><b>Informatikai karbantartások</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Groups" ? "active" : "")" asp-controller="Groups" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Groups" ? "active" : "")" asp-controller="Groups" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-users-cog"></i>
                         <p>Jogosultsági csoportok</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Permissions" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Permissions" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-key"></i>
                         <p>Jogosultságok</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Phones" ? "active" : "")" asp-controller="Phones" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Phones" ? "active" : "")" asp-controller="Phones" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-phone-square-alt"></i>
                         <p>PIN kódok</p>
                     </a>
                 </li>
                 <li class="nav-header"><b>Biztonságtechnikai karbantartások</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cameras" ? "active" : "")" asp-controller="Cameras" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cameras" ? "active" : "")" asp-controller="Cameras" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-video"></i>
                         <p>Kamerák</p>
                     </a>

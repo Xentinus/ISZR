@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ISZR.Web.Models.Group>
+﻿@model PaginatedList<ISZR.Web.Models.Group>
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -99,6 +99,30 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-2 mb-3">
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <div class="float-left ml-1">
+                <div class="text-muted font-italic">
+                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model.PageIndex</span>/<span class="ml-1 mr-1">@Model.TotalPages</span><br />
+                    <span class="mr-1">@ViewData["dataLength"]</span> darab jogosultsági csoport
+                </div>
+            </div>
+
+            <div class="float-right d-print-none">
+                <a class="btn btn-default mr-2 @prevDisabled"
+                   asp-action="Index"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
+
+                <a class="btn btn-default @nextDisabled"
+                   asp-action="Index"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
             </div>
         </div>
     </div>

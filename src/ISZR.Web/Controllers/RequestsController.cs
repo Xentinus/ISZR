@@ -30,6 +30,11 @@ namespace ISZR.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(string status, string type, int requestFor, int? pageNumber)
         {
+            // Értékek beállítása
+            ViewData["status"] = status;
+            ViewData["type"] = type;
+            ViewData["requestFor"] = requestFor;
+
             // Igénylések listájának lekérdezése
             var dataContext = _context.Requests
                 .Include(r => r.CreatedForUser)
@@ -50,33 +55,53 @@ namespace ISZR.Web.Controllers
                 if (!string.IsNullOrEmpty(status) && status != "Mind")
                 {
                     dataContext = dataContext.Where(r => r.Status == status);
-                    ViewBag.status = status;
                 }
 
                 // Típus alapú szürés
                 if (!string.IsNullOrEmpty(type) && type != "Mind")
                 {
                     dataContext = dataContext.Where(r => r.Type == type);
-                    ViewBag.type = type;
                 }
+
 
                 // Személy alapú szürés
                 if (requestFor != 0 && requestFor.ToString() != "Mind")
                 {
                     dataContext = dataContext.Where(r => r.CreatedForUserId == requestFor);
-                    ViewBag.requestForId = requestFor;
                 }
             }
 
-            // Lista összeállítása
-            await dataContext.ToListAsync();
+            // Állapot lista összeállítása
+            List<string?> requestStatus = _context.Requests.Select(r => r.Status).Distinct().OrderBy(r => r).ToList();
+            requestStatus.Insert(0, "Mind");
 
-            // Felhasználó alapú szűréshez lista
+            ViewData["StatusList"] = requestStatus.Select(status => new SelectListItem
+            {
+                Text = status,
+                Value = status
+            }).ToList();
+
+            // Típus lista összeállítása
+            List<string?> requestTypes = _context.Requests.Select(r => r.Type).Distinct().OrderBy(r => r).ToList();
+            requestTypes.Insert(0, "Mind");
+
+            ViewData["TypeList"] = requestTypes.Select(type => new SelectListItem
+            {
+                Text = type,
+                Value = type
+            }).ToList();
+
+            // Felhasználói lista összeállítása
             ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
             {
                 u.UserId,
                 DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
             }), "UserId", "DisplayText");
+
+
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
 
             // Az oldal megjelenítése az igénylésekkel
             return View(await PaginatedList<Request>.CreateAsync(dataContext, pageNumber ?? 1));

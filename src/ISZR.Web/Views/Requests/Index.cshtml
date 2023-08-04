@@ -22,7 +22,7 @@
                 <form asp-controller="Requests" asp-action="Index" method="get">
                     <div class="card card-info d-print-none">
                         <div class="card-header" data-card-widget="collapse">
-                            <h3 class="card-title font-weight-bold"><i class="icon fas fa-filter mr-2"></i>Igénylések szűrése <abbr title="A beállított szűrők alapján fog megjelenni a lekért lista" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h3>
+                            <h3 class="card-title"><i class="icon fas fa-filter mr-2"></i>Igénylések szűrése <abbr title="A beállított szűrők alapján fog megjelenni a lekért lista" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
@@ -38,12 +38,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-tag"></i></span>
                                             </div>
-                                            <select name="status" class="form-control select2bs4">
-                                                <option selected>Mind</option>
-                                                <option>Folyamatban</option>
-                                                <option>Végrehajtva</option>
-                                                <option>Elutasítva</option>
-                                            </select>
+                                            @Html.DropDownList("status", (List<SelectListItem>)ViewBag.StatusList, new { @class = "form-control select2bs4" })
                                         </div>
                                     </div>
                                 </div>
@@ -54,17 +49,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-paperclip"></i></span>
                                             </div>
-                                            <select name="type" class="form-control select2bs4">
-                                                <option selected>Mind</option>
-                                                <option>Új felhasználó részére jogosultság igénylés</option>
-                                                <option>Meglévő felhasználó részére többletjogosultság</option>
-                                                <option>Meglévő felhasználó új beosztásának jogosultságai</option>
-                                                <option>E-mail cím igénylése</option>
-                                                <option>Telefonos PIN kód igénylése</option>
-                                                <option>Parkolási engedély igénylése</option>
-                                                <option>HikCentral jogosultság igénylése</option>
-                                                <option>Kamerafelvétel lementése</option>
-                                            </select>
+                                            @Html.DropDownList("type", (List<SelectListItem>)ViewBag.TypeList, new { @class = "form-control select2bs4" })
                                         </div>
                                     </div>
                                 </div>
@@ -94,6 +79,11 @@
             </div>
         </div>
     }
+    <div class="row">
+        <div class="col-12">
+            @ViewBag.random
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -169,29 +159,32 @@
             </div>
         </div>
     </div>
-    <div class="row d-print-none">
-        <div class="col-12 mt-2">
+    <div class="row">
+        <div class="col-12 mt-2 mb-3">
             @{
                 var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                 var nextDisabled = !Model.HasNextPage ? "disabled" : "";
             }
-            <div class="float-left">
-                <p class="text-muted">Aktuális oldal: <b>@Model.PageIndex</b>/@Model.TotalPages</p>
+            <div class="float-left ml-1">
+                <div class="text-muted font-italic">
+                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model.PageIndex</span>/<span class="ml-1 mr-1">@Model.TotalPages</span><br />
+                    <span class="mr-1">@ViewData["dataLength"]</span> darab igénylés
+                </div>
             </div>
 
-            <div class="float-right">
+            <div class="float-right d-print-none">
                 <a class="btn btn-default mr-2 @prevDisabled"
                    asp-action="Index"
-                   asp-route-status="Mind"
-                   asp-route-type="Mind"
-                   asp-route-requestfor="Mind"
+                   asp-route-status="@ViewData["status"]"
+                   asp-route-type="@ViewData["type"]"
+                   asp-route-requestFor="@ViewData["requestFor"]"
                    asp-route-pageNumber="@(Model.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
 
                 <a class="btn btn-default @nextDisabled"
                    asp-action="Index"
-                   asp-route-status="Mind"
-                   asp-route-type="Mind"
-                   asp-route-requestfor="Mind"
+                   asp-route-status="@ViewData["status"]"
+                   asp-route-type="@ViewData["type"]"
+                   asp-route-requestFor="@ViewData["requestFor"]"
                    asp-route-pageNumber="@(Model.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
             </div>
         </div>
