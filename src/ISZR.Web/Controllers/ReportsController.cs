@@ -24,8 +24,13 @@ namespace ISZR.Web.Controllers
         /// <param name="reportUser">Bejelentő</param>
         /// <param name="text">Címben és leírásban keresendő szavak</param>
         /// <param name="status">Hibabejelentések státusza</param>
-        public async Task<IActionResult> Index(int reportUser, string text, bool status)
+        public async Task<IActionResult> Index(int reportUser, string text, bool status, int? pageNumber)
         {
+            // Értékek beállítása
+            ViewData["reportUser"] = reportUser;
+            ViewData["text"] = text;
+            ViewData["status"] = status;
+
             // Hibabejelentések listájának lekérdezése
             var dataContext = _context.Reports
                 .Include(r => r.ReportUser.Position)
@@ -35,31 +40,24 @@ namespace ISZR.Web.Controllers
             // Státusz alapú szűrés
             if (status)
             {
-                dataContext = dataContext.Where(r => r.IsSolved);
-                ViewBag.status = status;
+                dataContext = dataContext.Where(r => !r.IsSolved);
             }
             else
             {
-                dataContext = dataContext.Where(r => !r.IsSolved);
-                ViewBag.status = status;
+                dataContext = dataContext.Where(r => r.IsSolved);
             }
 
             // Szöveg alapú szűrés
             if (!string.IsNullOrEmpty(text))
             {
                 dataContext = dataContext.Where(r => r.Description.Contains(text));
-                ViewBag.text = text;
             }
 
             // Személy alapú szürés
             if (reportUser != 0 && reportUser.ToString() != "Mind")
             {
                 dataContext = dataContext.Where(r => r.ReportUserId == reportUser);
-                ViewBag.reportUser = reportUser;
             }
-
-            // Maximális megengedett lista értéke 50
-            dataContext = dataContext.Take(50);
 
             // Felhasználó alapú szűréshez lista
             ViewData["ReportUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
@@ -68,8 +66,12 @@ namespace ISZR.Web.Controllers
                 DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
             }), "UserId", "DisplayText");
 
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
             // Az oldal megjelenítése a hibabejelentésekkel
-            return View(await dataContext.ToListAsync());
+            return View(await PaginatedList<Report>.CreateAsync(dataContext, pageNumber ?? 1));
         }
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace ISZR.Web.Controllers
         /// <param name="id">Hibabejelentés azonosítója</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? pageNumber, int? id)
         {
             // Azonosító meglétének ellenőrzése
             if (id == null || _context.Reports == null) return NotFound();

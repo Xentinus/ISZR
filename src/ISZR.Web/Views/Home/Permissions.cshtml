@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ISZR.Web.Models.Permission>;
+﻿@model PaginatedList<ISZR.Web.Models.Permission>;
 
 @{
     ViewData["Title"] = "Igényelhető jogosultságok";
@@ -10,7 +10,7 @@
             <form asp-controller="Home" asp-action="Permissions" method="get">
                 <div class="card card-info d-print-none">
                     <div class="card-header" data-card-widget="collapse">
-                        <h3 class="card-title font-weight-bold"><i class="fas fa-filter mr-2"></i>Jogosultságok szűrése <abbr title="A beállított szűrők alapján fog megjelenni a lekért lista" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h3>
+                        <h3 class="card-title"><i class="fas fa-filter mr-2"></i>Jogosultságok szűrése <abbr title="A beállított szűrők alapján fog megjelenni a lekért lista" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -21,27 +21,23 @@
                         <div class="row">
                             <div class="col-lg-6 col-12">
                                 <div class="form-group">
-                                    <label>Név alapján</label>
+                                    <label>Név</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-font"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" name="name" />
+                                        <input type="text" class="form-control" name="name" placeholder="Keresés név alapján" value="@ViewBag.name" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-12">
                                 <div class="form-group">
-                                    <label>Típus alapján</label>
+                                    <label>Típus</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-tag"></i></span>
                                         </div>
-                                        <select name="type" class="form-control select2bs4">
-                                            <option>Mind</option>
-                                            <option>Windows jogosultság</option>
-                                            <option>Főnix 3 jogosultság</option>
-                                        </select>
+                                        @Html.DropDownList("type", (List<SelectListItem>)ViewBag.TypeList, new { @class = "form-control select2bs4" })
                                     </div>
                                 </div>
                             </div>
@@ -96,6 +92,34 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-2 mb-3">
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <div class="float-left ml-1">
+                <div class="text-muted font-italic">
+                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model.PageIndex</span>/<span class="ml-1 mr-1">@Model.TotalPages</span><br />
+                    <span class="mr-1">@ViewData["dataLength"]</span> darab jogosultság
+                </div>
+            </div>
+
+            <div class="float-right d-print-none">
+                <a class="btn btn-default mr-2 @prevDisabled"
+                   asp-action="Index"
+                   asp-route-name="@ViewBag.name"
+                   asp-route-type="@ViewBag.type"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
+
+                <a class="btn btn-default @nextDisabled"
+                   asp-action="Index"
+                   asp-route-name="@ViewBag.name"
+                   asp-route-type="@ViewBag.type"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
             </div>
         </div>
     </div>

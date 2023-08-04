@@ -1,7 +1,9 @@
-﻿using ISZR.Web.Models;
+﻿using ISZR.Web.Data;
+using ISZR.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ISZR.Web.Controllers
 {
@@ -21,13 +23,41 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Felhasználók listájának megjelenítése
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string name, bool status, int? pageNumber)
         {
+            // Értékek beállítása
+            ViewData["name"] = name;
+            ViewData["status"] = status;
+
             // Felhasználók listájának lekérdezése
-            var users = _context.Users.Where(p => !p.IsArchived).Include(u => u.Class).Include(u => u.Position).OrderBy(u => u.DisplayName);
+            var dataContext = _context.Users
+                .Include(u => u.Class)
+                .Include(u => u.Position)
+                .OrderBy(u => u.DisplayName)
+                .AsQueryable();
+
+            // Státusz alapú szűrés
+            if (status)
+            {
+                dataContext = dataContext.Where(r => !r.IsArchived);
+            }
+            else
+            {
+                dataContext = dataContext.Where(r => r.IsArchived);
+            }
+
+            // Név alapú szürés
+            if (!string.IsNullOrEmpty(name))
+            {
+                dataContext = dataContext.Where(r => r.DisplayName.Contains(name));
+            }
+
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
 
             // Felület megjelenítése a kért listával
-            return View(await users.ToListAsync());
+            return View(await PaginatedList<User>.CreateAsync(dataContext, pageNumber ?? 1, 25));
         }
 
         /// <summary>
@@ -36,7 +66,7 @@ namespace ISZR.Web.Controllers
         /// <param name="id">Felhasználói azonosító</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? pageNumber, int? id)
         {
             // Azonosító meglétének ellenőrzése
             if (id == null || _context.Users == null) return NotFound();

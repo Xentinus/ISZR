@@ -20,7 +20,7 @@
         public bool HasNextPage => PageIndex < TotalPages;
 
         // Aktuális lapon szereplők hozzáadása a megjelenítési listához
-        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize = 5)
+        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize = 10)
         {
             if (pageIndex < 1) { pageIndex = 1; }
             var count = await source.CountAsync();

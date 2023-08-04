@@ -22,13 +22,17 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Csoportok megjelenítése
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             // Csoportok listájának lekérdezése
             var dataContext = _context.Groups.Where(g => !g.IsArchived).OrderBy(g => g.Name);
 
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
             // Felület megjelenítése a kért listával
-            return View(await dataContext.ToListAsync());
+            return View(await PaginatedList<Group>.CreateAsync(dataContext, pageNumber ?? 1));
         }
 
         /// <summary>
@@ -37,7 +41,7 @@ namespace ISZR.Web.Controllers
         /// <param name="id">Csoport azonosító</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? pageNumber, int? id)
         {
             // Azonosító meglétének ellenőrzése
             if (id == null || _context.Groups == null) return NotFound();

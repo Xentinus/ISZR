@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ISZR.Web.Models.User>
+﻿@model PaginatedList<ISZR.Web.Models.User>
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -7,19 +7,61 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-info d-print-none">
-                    <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új felhasználó hozzáadása" class="btn btn-light" /></a></h3>
+        <div class="col-lg-6 col-12">
+            <form asp-controller="Users" asp-action="Index" method="get">
+                <div class="card card-info d-print-none">
+                    <div class="card-header" data-card-widget="collapse">
+                        <h3 class="card-title"><i class="icon fas fa-filter mr-2"></i>Felhasználók szűrése</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-6 col-12">
+                                <div class="form-group">
+                                    <label>Név</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                        </div>
+                                        <input name="name" type="text" class="form-control" placeholder="Keresés név alapján" value="@ViewBag.name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-12">
+                                <div class="form-group">
+                                    <label>Státusz</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                        </div>
+                                        @{
+                                            var statusList = new List<SelectListItem>
+                                        {
+                                        new SelectListItem{ Value = "true", Text = "Aktív felhasználó"},
+                                        new SelectListItem{ Value = "false", Text = "Archivált felhasználó"}
+                                        };
+                                        }
+                                        @Html.DropDownList("status", statusList, new { @class = "form-control select2bs4" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-print-none">
+                        <span class="float-right">
+                            <a class="btn btn-default ml-1 mr-1" onclick="window.print()"><i class="icon fas fa-print mr-2"></i>Lista nyomtatása</a>
+                            <button type="submit" alt="Megjelenített igénylések szűrése" class="btn btn-info">Szűrés</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-6 col-12">
+            <div class="card card-info">
+                <div class="card-header d-print-none" data-card-widget="collapse">
+                    <h3 class="card-title"><i class="icon fas fa-user-plus mr-2"></i>Új felhasználók karbantartása <abbr title="Minden új igényelt felhasználónak be kell állítani a felhasználónevét" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h3>
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-striped">
-                        <thead class="bg-info">
-                            <tr>
-                                <th>Új felhasználók a rendszerben</th>
-                                <th class="d-print-none"></th>
-                            </tr>
-                        </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
@@ -47,6 +89,11 @@
                             }
                         </tbody>
                     </table>
+                </div>
+                <div class="card-footer d-print-none">
+                    <span class="float-right">
+                        <a asp-action="Create" class="btn btn-default"><i class="icon fas fa-user-plus mr-2"></i> Új felhasználó hozzáadása</a>
+                    </span>
                 </div>
             </div>
         </div>
@@ -139,6 +186,34 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-2 mb-3">
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <div class="float-left ml-1">
+                <div class="text-muted font-italic">
+                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model.PageIndex</span>/<span class="ml-1 mr-1">@Model.TotalPages</span><br />
+                    <span class="mr-1">@ViewData["dataLength"]</span> darab felhasználó
+                </div>
+            </div>
+
+            <div class="float-right d-print-none">
+                <a class="btn btn-default mr-2 @prevDisabled"
+                   asp-action="Index"
+                   asp-route-name="@ViewBag.name"
+                   asp-route-status="@ViewBag.status"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
+
+                <a class="btn btn-default @nextDisabled"
+                   asp-action="Index"
+                   asp-route-name="@ViewBag.name"
+                   asp-route-status="@ViewBag.status"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
             </div>
         </div>
     </div>

@@ -22,13 +22,17 @@ namespace ISZR.Web.Controllers
         /// Osztályok listájának megjelenítése
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             // Osztályok listájának lekérdezése
             var dataContext = _context.Classes.Where(c => !c.IsArchived).Include(c => c.Authorizer).Include(c => c.Authorizer.Position).OrderBy(c => c.Name);
 
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
             // Felület megjelenítése a kért listával
-            return View(await dataContext.ToListAsync());
+            return View(await PaginatedList<Class>.CreateAsync(dataContext, pageNumber ?? 1));
         }
 
         /// <summary>
@@ -37,7 +41,7 @@ namespace ISZR.Web.Controllers
         /// <param name="id">Osztály azonosítója</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? pageNumber, int? id)
         {
             // Azonosító meglétének ellenőrzése
             if (id == null || _context.Classes == null) return NotFound();
