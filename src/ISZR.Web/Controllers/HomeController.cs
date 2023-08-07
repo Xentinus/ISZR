@@ -213,8 +213,8 @@ namespace ISZR.Web.Controllers
             viewModel.RequestAllDenied = viewModel.RequestAll - (viewModel.RequestAllDone + viewModel.RequestAllProgress);
             viewModel.RequestClosedToday = _context.Requests.Count(r => r.ClosedDateTime.Date == DateTime.Now.Date);
             viewModel.RequestClosedMonth = _context.Requests.Count(r => r.ClosedDateTime.Year == DateTime.Now.Year && r.ClosedDateTime.Month == DateTime.Now.Month);
-            viewModel.RequestClosedYear = _context.Requests.Count(r => r.ClosedDateTime.Year == DateTime.Now.Year);
             viewModel.RequestOpenToday = _context.Requests.Count(r => r.CreatedDateTime.Date == DateTime.Now.Date);
+            viewModel.RequestOpenMonth = _context.Requests.Count(r => r.CreatedDateTime.Year == DateTime.Now.Year && r.CreatedDateTime.Month == DateTime.Now.Month);
 
             // Adat statisztika
             viewModel.ActiveUsers = _context.Users.Count(u => !u.IsArchived);

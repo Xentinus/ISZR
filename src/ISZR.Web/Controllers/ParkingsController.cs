@@ -21,10 +21,41 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Parkolási engedélyek megjelenítése
         /// </summary>
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(string name, string license, bool status, int? pageNumber)
         {
+            // Értékek beállítása
+            ViewData["name"] = name;
+            ViewData["license"] = license;
+            ViewData["status"] = status;
+
             // Parkolási engedélyek listájának lekérdezése
-            var dataContext = _context.Parkings.Where(p => !p.IsArchived).Include(p => p.OwnerUser).Include(p => p.OwnerUser.Position).OrderBy(p => p.OwnerUser.DisplayName);
+            var dataContext = _context.Parkings
+                .Include(p => p.OwnerUser)
+                .Include(p => p.OwnerUser.Position)
+                .OrderBy(p => p.OwnerUser.DisplayName)
+                .AsQueryable();
+
+            // Státusz alapú szűrés
+            if (status)
+            {
+                dataContext = dataContext.Where(r => !r.IsArchived);
+            }
+            else
+            {
+                dataContext = dataContext.Where(r => r.IsArchived);
+            }
+
+            // Név alapú szürés
+            if (!string.IsNullOrEmpty(name))
+            {
+                dataContext = dataContext.Where(r => r.OwnerUser.DisplayName.Contains(name));
+            }
+
+            // Rendszám alapú szürés
+            if (!string.IsNullOrEmpty(license))
+            {
+                dataContext = dataContext.Where(r => r.LicensePlate.Contains(license));
+            }
 
             // Igénylési lista összeállítása
             await dataContext.ToListAsync();

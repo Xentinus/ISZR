@@ -1,6 +1,8 @@
 ﻿using ISZR.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
 
 namespace ISZR.Web.Controllers
 {
@@ -21,14 +23,53 @@ namespace ISZR.Web.Controllers
         /// Jogosultságok listájának megjelenítése
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(string name, string type, bool status, int? pageNumber)
         {
+            // Értékek beállítása
+            ViewData["name"] = name;
+            ViewData["type"] = type;
+            ViewData["status"] = status;
+
             // Jogosultságok listájának lekérdezése
-            var dataContext = _context.Permissions.Where(p => !p.IsArchived).OrderBy(p => p.Name);
+            var dataContext = _context.Permissions
+                .OrderBy(p => p.Name)
+                .AsQueryable();
+
+            // Státusz alapú szűrés
+            if (status)
+            {
+                dataContext = dataContext.Where(r => !r.IsArchived);
+            }
+            else
+            {
+                dataContext = dataContext.Where(r => r.IsArchived);
+            }
+
+            // Típus alapú szürés
+            if (!string.IsNullOrEmpty(type) && type != "Mind")
+            {
+                dataContext = dataContext.Where(r => r.Type == type);
+            }
+
+            // Név alapú szürés
+            if (!string.IsNullOrEmpty(name))
+            {
+                dataContext = dataContext.Where(r => r.Name.Contains(name));
+            }
 
             // Igénylési lista összeállítása
             await dataContext.ToListAsync();
             ViewData["dataLength"] = dataContext.Count();
+
+            // Típus lista összeállítása
+            List<string?> requestTypes = _context.Permissions.Select(r => r.Type).Distinct().OrderBy(r => r).ToList();
+            requestTypes.Insert(0, "Mind");
+
+            ViewData["TypeList"] = requestTypes.Select(type => new SelectListItem
+            {
+                Text = type,
+                Value = type
+            }).ToList();
 
             // Felület megjelenítése a kért listával
             return View(await PaginatedList<Permission>.CreateAsync(dataContext, pageNumber ?? 1));

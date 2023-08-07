@@ -20,10 +20,32 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Beosztások listájának megjelenítése
         /// </summary>
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(string name, bool status, int? pageNumber)
         {
+            // Értékek beállítása
+            ViewData["name"] = name;
+            ViewData["status"] = status;
+
             // Beosztások listájának lekérdezése
-            var dataContext = _context.Positions.Where(p => !p.IsArchived).OrderBy(p => p.Name);
+            var dataContext = _context.Positions
+                .OrderBy(p => p.Name)
+                .AsQueryable();
+
+            // Státusz alapú szűrés
+            if (status)
+            {
+                dataContext = dataContext.Where(r => !r.IsArchived);
+            }
+            else
+            {
+                dataContext = dataContext.Where(r => r.IsArchived);
+            }
+
+            // Név alapú szürés
+            if (!string.IsNullOrEmpty(name))
+            {
+                dataContext = dataContext.Where(r => r.Name.Contains(name));
+            }
 
             // Igénylési lista összeállítása
             await dataContext.ToListAsync();

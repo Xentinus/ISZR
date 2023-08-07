@@ -8,10 +8,60 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-info d-print-none">
-                    <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új beosztás létrehozása" class="btn btn-light" /></a></h3>
+            <form asp-controller="Positions" asp-action="Index" method="get">
+                <div class="card card-info d-print-none">
+                    <div class="card-header" data-card-widget="collapse">
+                        <h3 class="card-title"><i class="icon fas fa-filter mr-2"></i>Beosztások szűrése</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 col-12">
+                                <div class="form-group">
+                                    <label>Név</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                        </div>
+                                        <input name="name" type="text" class="form-control" placeholder="Keresés név alapján" value="@ViewBag.name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-12">
+                                <div class="form-group">
+                                    <label>Státusz</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                        </div>
+                                        @{
+                                            var statusList = new List<SelectListItem>
+                                        {
+                                        new SelectListItem{ Value = "true", Text = "Kiválasztható beosztás"},
+                                        new SelectListItem{ Value = "false", Text = "Archivált beosztás"}
+                                        };
+                                        }
+                                        @Html.DropDownList("status", statusList, new { @class = "form-control select2bs4" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-print-none">
+                        <span class="float-left">
+                            <a class="btn btn-default" asp-action="Create"><i class="icon fas fa-people-arrows mr-2"></i>Új beosztás létrehozása</a>
+                        </span>
+                        <span class="float-right">
+                            <a class="btn btn-default mr-2" onclick="window.print()"><i class="icon fas fa-print mr-2"></i>Lista nyomtatása</a>
+                            <button type="submit" alt="Megjelenített igénylések szűrése" class="btn btn-info">Szűrés</button>
+                        </span>
+                    </div>
                 </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
                 <div class="card-body p-0">
                     @foreach (var item in Model)
                     {
