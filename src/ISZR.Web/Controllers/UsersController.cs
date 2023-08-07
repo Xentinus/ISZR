@@ -102,7 +102,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Felület újra megjelenítése
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new {status = !user.IsArchived});
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Adminisztrátor átirányítása a felhasználók listájához
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = true});
             }
 
             // Lenyíló menük értékeinek betöltése
@@ -261,7 +261,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Adminisztrátor átirányítása a felhasználók listájához
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = !user.IsArchived});
             }
 
             // Lenyíló menük értékeinek lekérdezése

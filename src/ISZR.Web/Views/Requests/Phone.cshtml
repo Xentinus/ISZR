@@ -2,12 +2,16 @@
 
 @{
     ViewData["Title"] = "Telefonos PIN kód igénylése";
+
+    // Elérhető mennyiség kiszámítása
+    var dataList = ViewData["PhoneId"] as SelectList;
+    int requestableData = (dataList != null) ? dataList.Count() : 0;
 }
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            @if (((IEnumerable<dynamic>)ViewBag.PhoneId).Count() > 0)
+            @if (requestableData > 0)
             {
                 <div class="card card-default">
                     <div class="card-header bg-info">

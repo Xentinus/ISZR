@@ -104,7 +104,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Felület újra megjelenítése
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new {status = !vehicle.IsArchived});
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átirányítása a parkolási engedélyek listájára
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = true});
             }
 
             // Lista elemek betöltése
@@ -226,7 +226,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átirányítása a parkolási engedélyek listájára
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = !parking.IsArchived});
             }
 
             // Lista elemek betöltése

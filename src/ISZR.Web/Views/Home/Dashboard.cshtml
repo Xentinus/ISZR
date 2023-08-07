@@ -50,11 +50,6 @@
                 <div class="col-12">
                     @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
                     {
-                        // Százalékok kiszámítása
-                        int? donePercent = (int)Math.Round((double)(100 * Model.DoneRequests) / Model.AllRequests);
-                        int? inProgressPercent = (int)Math.Round((double)(100 * Model.InProgressRequests) / Model.AllRequests);
-                        int? deniedPercent = (int)Math.Round((double)(100 * Model.DeniedRequests) / Model.AllRequests);
-
                         // Kártya megjelenítése
                         <div class="card card-info">
                             <div class="card-header">
@@ -67,21 +62,21 @@
                                             Jováhagyott igénylések
                                             <span class="float-right"><b>@Model?.DoneRequests darab</b> / @Model?.AllRequests darab</span>
                                             <div class="progress progress-sm">
-                                                <div class="progress-bar bg-success" style="width: @donePercent%"></div>
+                                                <div class="progress-bar bg-success" style="width: @ViewData["donePercent"]%"></div>
                                             </div>
                                         </div>
                                         <div class="progress-group">
                                             Folyamatban lévő igénylések
                                             <span class="float-right"><b>@Model?.InProgressRequests darab</b> / @Model?.AllRequests darab</span>
                                             <div class="progress progress-sm">
-                                                <div class="progress-bar bg-warning" style="width: @inProgressPercent%"></div>
+                                                <div class="progress-bar bg-warning" style="width: @ViewData["inProgressPercent"]%"></div>
                                             </div>
                                         </div>
                                         <div class="progress-group">
                                             Elutasított igénylések
                                             <span class="float-right"><b>@Model?.DeniedRequests darab</b> / @Model?.AllRequests darab</span>
                                             <div class="progress progress-sm">
-                                                <div class="progress-bar bg-danger" style="width: @deniedPercent%"></div>
+                                                <div class="progress-bar bg-danger" style="width: @ViewData["deniedPercent"]%"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -108,7 +103,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var vehicle in Model?.Parkings)
+                                        @foreach (var vehicle in Model?.Parkings ?? new List<Parking>())
                                         {
                                             <tr>
                                                 <td><h4><span class="badge bg-info">@vehicle.LicensePlate</span></h4></td>
@@ -138,7 +133,7 @@
                             <div class="card-body p-0">
                                 <table class="table">
                                     <tbody>
-                                        @foreach (var code in Model?.Phones)
+                                        @foreach (var code in Model?.Phones ?? new List<Phone>())
                                         {
                                             <tr>
                                                 <td><h4><span class="badge bg-info">@code.PhoneCode</span></h4></td>

@@ -115,7 +115,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Felület újra megjelenítése
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new {status = !permission.IsArchived});
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása a jogosultságok listájához
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = true});
             }
 
             // Felület újra megjelenítése, amennyiben a megadott értékek hibásak
@@ -243,7 +243,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása a jogosultságok listájára
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = !permission.IsArchived});
             }
 
             // Felület újra megjelenítése, amennyiben a kért értékek hibásak

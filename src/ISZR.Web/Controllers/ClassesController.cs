@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel;
 
 namespace ISZR.Web.Controllers
 {
@@ -107,7 +106,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Felület újra megjelenítése
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new {status = !@class.IsArchived});
         }
 
         /// <summary>
@@ -156,7 +155,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása az osztályok listájára
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = true});
             }
 
             // Lista elem betöltése
@@ -230,7 +229,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása az osztályok listájára
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = !@class.IsArchived});
             }
 
             // Lista elem betöltése
