@@ -4,10 +4,10 @@
     <div class="float-left">
         &copy; 2021-@DateTime.Now.Year
         <abbr title="Alkalmazás készítője és karbantartója" class="text-decoration-none text-info font-weight-bold ml-1 mr-1">Kellner Béla</abbr>
-        Minden jog fenntartva.
+        <span class="d-none d-md-inline">Minden jog fenntartva.</span>
     </div>
-    <div class="float-right ml-3">
-        <span>Informatikai Szolgálati jegy Rendszer</span>
+    <div class="float-right">
+        <span class="d-none d-xl-inline">Informatikai Szolgálati jegy Rendszer</span>
         @if (!Context.RequestServices.GetRequiredService<IWebHostEnvironment>().IsProduction())
         {
             <abbr title="Az alkalmazás ezen verziójában tekinthetőek meg az új fejlesztések amelyek még nincsenek publikálva" class="badge badge-danger text-decoration-none font-weight-bold ml-1">

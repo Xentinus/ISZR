@@ -58,6 +58,11 @@ namespace ISZR.Web.Controllers
             // Felhasználó által használt aktív PIN kódok
             viewModel.Phones = _context.Phones.Where(p => p.PhoneUserId == user.UserId && !p.IsArchived).OrderBy(p => p.PhoneCode).ToList();
 
+            // Százalékok kiszámítása
+            ViewData["donePercent"] = CalculatePercent(viewModel.DoneRequests, viewModel.AllRequests);
+            ViewData["inProgressPercent"] = CalculatePercent(viewModel.InProgressRequests, viewModel.AllRequests);
+            ViewData["deniedPercent"] = CalculatePercent(viewModel.DeniedRequests, viewModel.AllRequests);
+
             // Irányítópult megjelenítése a felhasználónak
             return View(viewModel);
         }
@@ -225,6 +230,11 @@ namespace ISZR.Web.Controllers
             viewModel.ActivePhones = _context.Phones.Count(p => !p.IsArchived);
             viewModel.ActiveNotUsedPhone = _context.Phones.Count(p => !p.IsArchived && p.PhoneUserId == null);
 
+            // Százalékok kiszámítása
+            ViewData["donePercent"] = CalculatePercent(viewModel.RequestAllDone, viewModel.RequestAll);
+            ViewData["inProgressPercent"] = CalculatePercent(viewModel.RequestAllProgress, viewModel.RequestAll);
+            ViewData["deniedPercent"] = CalculatePercent(viewModel.RequestAllDenied, viewModel.RequestAll);
+
             // Felület megjelenítése
             return View(viewModel);
         }
@@ -269,6 +279,16 @@ namespace ISZR.Web.Controllers
 
             // Megtalált felhasználó visszaadása (amennyiben nem talált, null értéket fog visszaadni)
             return foundUser;
+        }
+
+        /// <summary>
+        /// Százalék kiszámítása
+        /// </summary>
+        /// <param name="count">Megadott érték</param>
+        /// <param name="max">Maximális mennyiség</param>
+        private int? CalculatePercent(int count, int max)
+        {
+            return (int)Math.Round((double)(100 * count) / max);
         }
     }
 }

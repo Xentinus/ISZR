@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using System.Net.NetworkInformation;
+using System.Security.Claims;
 using System.Text;
 using System.Xml.Linq;
 
@@ -99,7 +100,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Felület újra megjelenítése
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { status = !group.IsArchived });
         }
 
         /// <summary>
@@ -172,7 +173,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása a csoportok listájára
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = true});
             }
 
             // Lista elemek betöltése
@@ -240,7 +241,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása a csoportok listájára
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = !group.IsArchived});
             }
 
             // Felület megjelenítése amennyiben hibás adatokat tartalmaz

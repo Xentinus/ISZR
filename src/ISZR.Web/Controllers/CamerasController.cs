@@ -1,6 +1,7 @@
 ﻿using ISZR.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ISZR.Web.Controllers
 {
@@ -95,7 +96,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Felület újra megjelenítése
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { status = !camera.IsArchived });
         }
 
         /// <summary>
@@ -137,7 +138,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása a kamerák listájára
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = true});
             }
 
             // Hibásan megadott értékek esetén, felület újra megjelenítése
@@ -197,7 +198,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átirányítása a kamerák listájára
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {status = !camera.IsArchived});
             }
 
             // Felület megjelenítése

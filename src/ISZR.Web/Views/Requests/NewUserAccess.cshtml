@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Új felhasználó részére jogosultság igénylés";
+
+    // Elérhető mennyiség kiszámítása
+    var dataList = ViewData["GroupId"] as SelectList;
+    int requestableData = (dataList != null) ? dataList.Count() : 0;
 }
 
 <div class="container-fluid">
@@ -17,7 +21,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            @if (((IEnumerable<dynamic>)ViewBag.GroupId).Count() > 0)
+            @if (requestableData > 0)
             {
                 <div class="card card-default">
                     <div class="card-header bg-info">

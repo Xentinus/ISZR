@@ -5,6 +5,10 @@
     ViewData["Title"] = "Összes igénylés";
 
     var baseUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.PathBase}";
+
+    // Lista elemek betöltése
+    var typeList = ViewData["TypeList"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var statusList = ViewData["StatusList"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
 
 <div class="container-fluid">
@@ -29,7 +33,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                                         </div>
-                                        <input name="user" type="text" class="form-control" placeholder="Keresés a felhasználó neve alapján" value="@ViewBag.user">
+                                        <input name="user" type="text" class="form-control" placeholder="Keresés a felhasználó neve alapján" value="@ViewData["user"]" />
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +44,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-paperclip"></i></span>
                                         </div>
-                                        @Html.DropDownList("type", (List<SelectListItem>)ViewBag.TypeList, new { @class = "form-control select2bs4" })
+                                        @Html.DropDownList("type", typeList, new { @class = "form-control select2bs4" })
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +55,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-tag"></i></span>
                                         </div>
-                                        @Html.DropDownList("status", (List<SelectListItem>)ViewBag.StatusList, new { @class = "form-control select2bs4" })
+                                        @Html.DropDownList("status", statusList, new { @class = "form-control select2bs4" })
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +110,7 @@
                                     <td>
                                         @if (item.CreatedForUser != null)
                                         {
-                                            <span>@item.CreatedForUser?.DisplayName bv.@item.CreatedForUser?.Rank.ToLower()</span>
+                                            <span>@item.CreatedForUser?.DisplayName bv.@item.CreatedForUser?.Rank?.ToLower()</span>
 
                                             <br />
                                             <span class="badge badge-info">@item.CreatedForUser?.Position?.Name</span>
@@ -144,7 +148,7 @@
             }
             <div class="float-left ml-1">
                 <div class="text-muted font-italic">
-                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model.PageIndex</span>/<span class="ml-1 mr-1">@Model.TotalPages</span><br />
+                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model?.PageIndex</span>/<span class="ml-1 mr-1">@Model?.TotalPages</span><br />
                     <span class="mr-1">@ViewData["dataLength"]</span> darab igénylés
                 </div>
             </div>
@@ -155,14 +159,14 @@
                    asp-route-user="@ViewData["user"]"
                    asp-route-type="@ViewData["type"]"
                    asp-route-status="@ViewData["status"]"
-                   asp-route-pageNumber="@(Model.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
+                   asp-route-pageNumber="@(Model?.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
 
                 <a class="btn btn-default @nextDisabled"
                    asp-action="Index"
                    asp-route-user="@ViewData["user"]"
                    asp-route-type="@ViewData["type"]"
                    asp-route-status="@ViewData["status"]"
-                   asp-route-pageNumber="@(Model.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
+                   asp-route-pageNumber="@(Model?.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
             </div>
         </div>
     </div>

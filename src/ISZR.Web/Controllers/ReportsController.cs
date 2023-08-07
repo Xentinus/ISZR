@@ -106,7 +106,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Felület újra megjelenítése
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new {status = !report.IsSolved});
         }
 
         /// <summary>

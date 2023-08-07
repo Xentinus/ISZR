@@ -22,7 +22,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-font"></i></span>
                                         </div>
-                                        <input name="name" type="text" class="form-control" placeholder="Keresés név alapján" value="@ViewBag.name">
+                                        <input name="name" type="text" class="form-control" placeholder="Keresés név alapján" value="@ViewData["name"]" />
                                     </div>
                                 </div>
                             </div>
@@ -33,7 +33,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-font"></i></span>
                                         </div>
-                                        <input name="user" type="text" class="form-control" placeholder="Keresés engedélyező neve alapján" value="@ViewBag.user">
+                                        <input name="user" type="text" class="form-control" placeholder="Keresés engedélyező neve alapján" value="@ViewData["user"]" />
                                     </div>
                                 </div>
                             </div>
@@ -162,7 +162,7 @@
             }
             <div class="float-left ml-1">
                 <div class="text-muted font-italic">
-                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model.PageIndex</span>/<span class="ml-1 mr-1">@Model.TotalPages</span><br />
+                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model?.PageIndex</span>/<span class="ml-1 mr-1">@Model?.TotalPages</span><br />
                     <span class="mr-1">@ViewData["dataLength"]</span> darab osztály
                 </div>
             </div>
@@ -170,11 +170,17 @@
             <div class="float-right d-print-none">
                 <a class="btn btn-default mr-2 @prevDisabled"
                    asp-action="Index"
-                   asp-route-pageNumber="@(Model.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
+                   asp-route-name="@ViewData["name"]"
+                   asp-route-user="@ViewData["user"]"
+                   asp-route-status="@ViewData["status"]"
+                   asp-route-pageNumber="@(Model?.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
 
                 <a class="btn btn-default @nextDisabled"
                    asp-action="Index"
-                   asp-route-pageNumber="@(Model.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
+                   asp-route-name="@ViewData["name"]"
+                   asp-route-user="@ViewData["user"]"
+                   asp-route-status="@ViewData["status"]"
+                   asp-route-pageNumber="@(Model?.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
             </div>
         </div>
     </div>

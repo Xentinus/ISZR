@@ -61,20 +61,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-3">
-                            <div class="form-group">
-                                <label>Megszólítás</label>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                        @if (Model != null)
+                        {
+                            <div class="col-12 col-md-3">
+                                <div class="form-group">
+                                    <label>Megszólítás</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                        </div>
+                                        <select asp-for="@Model.Genre" class="form-control select2bs4" disabled>
+                                            <option value="Male">Úr</option>
+                                            <option value="Female">Hölgy</option>
+                                        </select>
                                     </div>
-                                    <select asp-for="@Model.Genre" class="form-control select2bs4" disabled>
-                                        <option value="Male">Úr</option>
-                                        <option value="Female">Hölgy</option>
-                                    </select>
                                 </div>
                             </div>
-                        </div>
+                        }
                         <div class="col-12 col-md-3">
                             <div class="form-group">
                                 <label>Rendfokozat</label>
