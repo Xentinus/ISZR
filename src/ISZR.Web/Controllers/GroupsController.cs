@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Xml.Linq;
 
 namespace ISZR.Web.Controllers
 {
@@ -22,10 +25,32 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Csoportok megjelenítése
         /// </summary>
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(string name, bool status, int? pageNumber)
         {
+            // Értékek beállítása
+            ViewData["name"] = name;
+            ViewData["status"] = status;
+
             // Csoportok listájának lekérdezése
-            var dataContext = _context.Groups.Where(g => !g.IsArchived).OrderBy(g => g.Name);
+            var dataContext = _context.Groups
+                .OrderBy(g => g.Name)
+                .AsQueryable();
+
+            // Státusz alapú szűrés
+            if (status)
+            {
+                dataContext = dataContext.Where(r => !r.IsArchived);
+            }
+            else
+            {
+                dataContext = dataContext.Where(r => r.IsArchived);
+            }
+
+            // Név alapú szürés
+            if (!string.IsNullOrEmpty(name))
+            {
+                dataContext = dataContext.Where(r => r.Name.Contains(name));
+            }
 
             // Igénylési lista összeállítása
             await dataContext.ToListAsync();

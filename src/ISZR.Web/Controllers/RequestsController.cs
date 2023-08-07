@@ -26,14 +26,14 @@ namespace ISZR.Web.Controllers
         /// </summary>
         /// <param name="status">Igénylés státusza</param>
         /// <param name="type">Igénylés típusa</param>
-        /// <param name="requestFor">Kinek a számára zajlik az igénylés</param>
-        [AllowAnonymous]
-        public async Task<IActionResult> Index(string status, string type, int requestFor, int? pageNumber)
+        /// <param name="user">Kinek a számára zajlik az igénylés</param>
+        public async Task<IActionResult> Index(string user, string type, string status, int? pageNumber)
         {
             // Értékek beállítása
-            ViewData["status"] = status;
+            ViewData["user"] = user;
             ViewData["type"] = type;
-            ViewData["requestFor"] = requestFor;
+            ViewData["status"] = status;
+
 
             // Igénylések listájának lekérdezése
             var dataContext = _context.Requests
@@ -42,33 +42,22 @@ namespace ISZR.Web.Controllers
                 .OrderByDescending(r => r.RequestId)
                 .AsQueryable();
 
-            // Amennyiben semmilyen érték nem létezik (vendég felhasználóknak, saját igénylések megtekintése)
-            if (string.IsNullOrEmpty(status) && string.IsNullOrEmpty(type) && requestFor == 0)
+            // Státusz alapú szürés
+            if (!string.IsNullOrEmpty(status) && status != "Mind")
             {
-                int? userId = await GetUserIdAsync(_context);
-                if (userId == null) return Forbid();
-                dataContext = dataContext.Where(r => r.CreatedForUserId == userId);
+                dataContext = dataContext.Where(r => r.Status == status);
             }
-            else
+
+            // Típus alapú szürés
+            if (!string.IsNullOrEmpty(type) && type != "Mind")
             {
-                // Státusz alapú szürés
-                if (!string.IsNullOrEmpty(status) && status != "Mind")
-                {
-                    dataContext = dataContext.Where(r => r.Status == status);
-                }
+                dataContext = dataContext.Where(r => r.Type == type);
+            }
 
-                // Típus alapú szürés
-                if (!string.IsNullOrEmpty(type) && type != "Mind")
-                {
-                    dataContext = dataContext.Where(r => r.Type == type);
-                }
-
-
-                // Személy alapú szürés
-                if (requestFor != 0 && requestFor.ToString() != "Mind")
-                {
-                    dataContext = dataContext.Where(r => r.CreatedForUserId == requestFor);
-                }
+            // Személy alapú szürés
+            if (!string.IsNullOrEmpty(user))
+            {
+                dataContext = dataContext.Where(r => r.CreatedForUser.DisplayName.Contains(user));
             }
 
             // Állapot lista összeállítása
@@ -90,13 +79,6 @@ namespace ISZR.Web.Controllers
                 Text = type,
                 Value = type
             }).ToList();
-
-            // Felhasználói lista összeállítása
-            ViewData["CreatedForUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
-            {
-                u.UserId,
-                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
-            }), "UserId", "DisplayText");
 
 
             // Igénylési lista összeállítása
@@ -148,6 +130,7 @@ namespace ISZR.Web.Controllers
         /// <param name="resolverId">Igénylést lezáró személy azonosítója</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Details(int? id, string? status, int? resolverId)
         {
             // Igényléssel kapcsolat
@@ -203,6 +186,151 @@ namespace ISZR.Web.Controllers
 
             // Igénylés megjelenítése
             return View(request);
+        }
+
+        /// <summary>
+        /// Igénylések megjelenítése szűrés alapján
+        /// </summary>
+        /// <param name="status">Igénylés státusza</param>
+        /// <param name="type">Igénylés típusa</param>
+        [AllowAnonymous]
+        public async Task<IActionResult> ForYou(string type, string status, int? pageNumber)
+        {
+            // Értékek beállítása
+            ViewData["type"] = type;
+            ViewData["status"] = status;
+
+            // Megtekintő felhasználó azonosítójának elmentése
+            int? viewerId = await GetUserIdAsync(_context);
+            if (viewerId == null) return Forbid();
+
+            // Igénylések listájának lekérdezése
+            var dataContext = _context.Requests
+                .Where(r => r.CreatedForUserId == viewerId)
+                .OrderByDescending(r => r.RequestId)
+                .AsQueryable();
+
+            // Státusz alapú szürés
+            if (!string.IsNullOrEmpty(status) && status != "Mind")
+            {
+                dataContext = dataContext.Where(r => r.Status == status);
+            }
+
+            // Típus alapú szürés
+            if (!string.IsNullOrEmpty(type) && type != "Mind")
+            {
+                dataContext = dataContext.Where(r => r.Type == type);
+            }
+
+            // Állapot lista összeállítása
+            List<string?> requestStatus = _context.Requests.Select(r => r.Status).Distinct().OrderBy(r => r).ToList();
+            requestStatus.Insert(0, "Mind");
+
+            ViewData["StatusList"] = requestStatus.Select(status => new SelectListItem
+            {
+                Text = status,
+                Value = status
+            }).ToList();
+
+            // Típus lista összeállítása
+            List<string?> requestTypes = _context.Requests.Select(r => r.Type).Distinct().OrderBy(r => r).ToList();
+            requestTypes.Insert(0, "Mind");
+
+            ViewData["TypeList"] = requestTypes.Select(type => new SelectListItem
+            {
+                Text = type,
+                Value = type
+            }).ToList();
+
+
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
+            // Az oldal megjelenítése az igénylésekkel
+            return View(await PaginatedList<Request>.CreateAsync(dataContext, pageNumber ?? 1));
+        }
+
+        /// <summary>
+        /// Végrehajtásra váró igénylések
+        /// </summary>
+        [Authorize(Policy = "Administrator")]
+        public async Task<IActionResult> ToDo(int? pageNumber)
+        {
+            // Igénylések listájának lekérdezése
+            var dataContext = _context.Requests
+                .Where(r => r.Status == "Folyamatban")
+                .Include(r => r.CreatedForUser)
+                .Include(r => r.CreatedForUser.Position)
+                .OrderByDescending(r => r.RequestId)
+                .AsQueryable();
+
+            // Lezáró személy beállítása
+            ViewData["ClosedByUserId"] = await GetUserIdAsync(_context);
+
+            // Igénylési lista összeállítása
+            await dataContext.ToListAsync();
+            ViewData["dataLength"] = dataContext.Count();
+
+            // Az oldal megjelenítése az igénylésekkel
+            return View(await PaginatedList<Request>.CreateAsync(dataContext, pageNumber ?? 1));
+        }
+
+        /// <summary>
+        /// Adott igénylés státuszának módosítása
+        /// </summary>
+        /// <param name="id">Igénylés azonosítója</param>
+        /// <param name="status">Igénylés státusza</param>
+        /// <param name="closedByUserId">Igénylést lezáró személy azonosítója</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrator")]
+        public async Task<IActionResult> ToDo(int? id, string? status, int? closedByUserId)
+        {
+            // Igényléssel kapcsolat
+            if (id == null || string.IsNullOrEmpty(status) || _context.Requests == null) return NotFound();
+
+            // Adott azonosítójú kérelem kikeresése
+            var request = await _context.Requests
+                .FirstOrDefaultAsync(m => m.RequestId == id);
+
+            // Amennyiben a kért kérelem nem létezik, az oldal megjelenítésének elutasítása
+            if (request == null) return NotFound();
+
+            // Igénylés státuszának megváltoztatása
+            request.Status = status;
+            if (status == "Folyamatban")
+            {
+                // Folyamatban esetén időpont átírása
+                request.ClosedDateTime = new DateTime();
+            }
+            else
+            {
+                // Más státusz alapján aktuális idő, és személy beállítása
+                request.ClosedDateTime = DateTime.Now;
+                request.ClosedByUserId = closedByUserId;
+            }
+
+            try
+            {
+                // Igénylés státuszának frissítése
+                _context.Update(request);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RequestExists(request.RequestId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            // Végrehajtásokra váró feladatok frissítése
+            return RedirectToAction(nameof(ToDo));
         }
 
         /// <summary>

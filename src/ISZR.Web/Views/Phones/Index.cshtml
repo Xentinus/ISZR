@@ -8,11 +8,71 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-info d-print-none">
-                    <h3 class="card-title"><a asp-action="Create"><input type="button" value="Új PIN kód létrehozása" class="btn btn-light" /></a></h3>
+            <form asp-controller="Phones" asp-action="Index" method="get">
+                <div class="card card-info d-print-none">
+                    <div class="card-header" data-card-widget="collapse">
+                        <h3 class="card-title"><i class="icon fas fa-filter mr-2"></i>PIN kódok szűrése</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label>PIN kód</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                        </div>
+                                        <input name="code" type="text" class="form-control" placeholder="Keresés PIN kód alapján" value="@ViewBag.code">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label>Aktuális felhasználó</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        <input name="user" type="text" class="form-control" placeholder="Keresés aktuális felhasználó neve alapján" value="@ViewBag.user">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label>Státusz</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                        </div>
+                                        @{
+                                            var statusList = new List<SelectListItem>
+                                        {
+                                        new SelectListItem{ Value = "true", Text = "Használható telefonos PIN kód"},
+                                        new SelectListItem{ Value = "false", Text = "Archivált telefonos PIN kód"}
+                                        };
+                                        }
+                                        @Html.DropDownList("status", statusList, new { @class = "form-control select2bs4" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-print-none">
+                        <span class="float-left">
+                            <a class="btn btn-default" asp-action="Create"><i class="icon fas fa-phone mr-2"></i>Új PIN kód létrehozása</a>
+                        </span>
+                        <span class="float-right">
+                            <a class="btn btn-default mr-2" onclick="window.print()"><i class="icon fas fa-print mr-2"></i>Lista nyomtatása</a>
+                            <button type="submit" alt="Megjelenített igénylések szűrése" class="btn btn-info">Szűrés</button>
+                        </span>
+                    </div>
                 </div>
-
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
                 <div class="card-body p-0">
                     @foreach (var item in Model)
                     {
@@ -43,7 +103,7 @@
                         <thead class="bg-info">
                             <tr>
                                 <th>PIN kód</th>
-                                <th>Aktuális használó</th>
+                                <th>Aktuális felhasználó</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>

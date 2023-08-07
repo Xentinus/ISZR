@@ -21,8 +21,8 @@
         public int RequestAllDenied { get; set; } = 0;
         public int RequestClosedToday { get; set; } = 0;
         public int RequestClosedMonth { get; set; } = 0;
-        public int RequestClosedYear { get; set; } = 0;
         public int RequestOpenToday { get; set; } = 0;
+        public int RequestOpenMonth { get; set; } = 0;
 
         /// <summary>
         /// Adat statisztika

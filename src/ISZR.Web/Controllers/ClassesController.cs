@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
 
 namespace ISZR.Web.Controllers
 {
@@ -22,10 +23,41 @@ namespace ISZR.Web.Controllers
         /// Osztályok listájának megjelenítése
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(string name, string user, bool status, int? pageNumber)
         {
+            // Értékek beállítása
+            ViewData["name"] = name;
+            ViewData["user"] = user;
+            ViewData["status"] = status;
+
             // Osztályok listájának lekérdezése
-            var dataContext = _context.Classes.Where(c => !c.IsArchived).Include(c => c.Authorizer).Include(c => c.Authorizer.Position).OrderBy(c => c.Name);
+            var dataContext = _context.Classes
+                .Include(c => c.Authorizer)
+                .Include(c => c.Authorizer.Position)
+                .OrderBy(c => c.Name)
+                .AsQueryable();
+
+            // Státusz alapú szűrés
+            if (status)
+            {
+                dataContext = dataContext.Where(r => !r.IsArchived);
+            }
+            else
+            {
+                dataContext = dataContext.Where(r => r.IsArchived);
+            }
+
+            // Név alapú szürés
+            if (!string.IsNullOrEmpty(name))
+            {
+                dataContext = dataContext.Where(r => r.Name.Contains(name));
+            }
+
+            // Engedélyező neve alapú szürés
+            if (!string.IsNullOrEmpty(user))
+            {
+                dataContext = dataContext.Where(r => r.Authorizer.DisplayName.Contains(user));
+            }
 
             // Igénylési lista összeállítása
             await dataContext.ToListAsync();

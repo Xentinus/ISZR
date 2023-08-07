@@ -24,10 +24,10 @@ namespace ISZR.Web.Controllers
         /// <param name="reportUser">Bejelentő</param>
         /// <param name="text">Címben és leírásban keresendő szavak</param>
         /// <param name="status">Hibabejelentések státusza</param>
-        public async Task<IActionResult> Index(int reportUser, string text, bool status, int? pageNumber)
+        public async Task<IActionResult> Index(string user, string text, bool status, int? pageNumber)
         {
             // Értékek beállítása
-            ViewData["reportUser"] = reportUser;
+            ViewData["user"] = user;
             ViewData["text"] = text;
             ViewData["status"] = status;
 
@@ -54,17 +54,10 @@ namespace ISZR.Web.Controllers
             }
 
             // Személy alapú szürés
-            if (reportUser != 0 && reportUser.ToString() != "Mind")
+            if (!string.IsNullOrEmpty(user))
             {
-                dataContext = dataContext.Where(r => r.ReportUserId == reportUser);
+                dataContext = dataContext.Where(r => r.ReportUser.DisplayName.Contains(user));
             }
-
-            // Felhasználó alapú szűréshez lista
-            ViewData["ReportUserId"] = new SelectList(_context.Users.Where(u => !u.IsArchived).OrderBy(u => u.DisplayName).Select(u => new
-            {
-                u.UserId,
-                DisplayText = $"{u.DisplayName} bv.{u.Rank.ToLower()} ({u.Position.Name})"
-            }), "UserId", "DisplayText");
 
             // Igénylési lista összeállítása
             await dataContext.ToListAsync();
