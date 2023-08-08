@@ -103,7 +103,7 @@
                         <thead class="bg-info">
                             <tr>
                                 <th>PIN kód</th>
-                                <th>Aktuális felhasználó</th>
+                                <th class="d-none d-md-table-cell">Aktuális felhasználó</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>
@@ -123,7 +123,7 @@
                                             <span class="badge badge-success"><i class="icon fas fa-phone mr-2"></i>Használható telefonos PIN kód</span>
                                         }
                                     </td>
-                                    <td>
+                                    <td class="d-none d-md-table-cell">
                                         @if (item.PhoneUser != null)
                                         {
                                             <span>@item.PhoneUser?.DisplayName bv. @item.PhoneUser?.Rank?.ToLower()</span>
@@ -135,15 +135,17 @@
                                             <span class="badge badge-danger"><i class="icon fas fa-exclamation-triangle mr-2"></i>Nincs használatban</span>
                                         }
                                     </td>
-                                    <td class="float-right d-print-none">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                <i class="fas fa-book mr-2"></i>Adminisztratív müveletek
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a asp-action="Edit" asp-route-id="@item.PhoneId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item bg-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal@(item.PhoneId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                    <td class="d-print-none">
+                                        <div class="float-right">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-book mr-2"></i><span class="d-none d-xl-inline">Adminisztratív müveletek</span>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a asp-action="Edit" asp-route-id="@item.PhoneId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item bg-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal@(item.PhoneId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -161,7 +163,7 @@
                 var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                 var nextDisabled = !Model.HasNextPage ? "disabled" : "";
             }
-            <div class="float-left ml-1">
+            <div class="float-left ml-1 d-none d-sm-inline">
                 <div class="text-muted font-italic">
                     Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model?.PageIndex</span>/<span class="ml-1 mr-1">@Model?.TotalPages</span><br />
                     <span class="mr-1">@ViewData["dataLength"]</span> darab PIN kód
