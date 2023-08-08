@@ -47,46 +47,6 @@
         </div>
         <div class="col-12 col-md-6 col-xl-8">
             <div class="row">
-                <div class="col-12">
-                    @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
-                    {
-                        // Kártya megjelenítése
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h5 class="card-title">Általad létrehozott igénylések <abbr title="Általad létrehozott igénylések összesítve" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="progress-group">
-                                            Jováhagyott igénylések
-                                            <span class="float-right"><b>@Model?.DoneRequests darab</b> / @Model?.AllRequests darab</span>
-                                            <div class="progress progress-sm">
-                                                <div class="progress-bar bg-success" style="width: @ViewData["donePercent"]%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-group">
-                                            Folyamatban lévő igénylések
-                                            <span class="float-right"><b>@Model?.InProgressRequests darab</b> / @Model?.AllRequests darab</span>
-                                            <div class="progress progress-sm">
-                                                <div class="progress-bar bg-warning" style="width: @ViewData["inProgressPercent"]%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-group">
-                                            Elutasított igénylések
-                                            <span class="float-right"><b>@Model?.DeniedRequests darab</b> / @Model?.AllRequests darab</span>
-                                            <div class="progress progress-sm">
-                                                <div class="progress-bar bg-danger" style="width: @ViewData["deniedPercent"]%"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-12 col-xl-6">
                     <div class="card card-info">
                         <div class="card-header">
