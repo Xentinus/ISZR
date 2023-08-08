@@ -104,7 +104,7 @@
                 var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                 var nextDisabled = !Model.HasNextPage ? "disabled" : "";
             }
-            <div class="float-left ml-1">
+            <div class="float-left ml-1 d-none d-sm-inline">
                 <div class="text-muted font-italic">
                     Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model?.PageIndex</span>/<span class="ml-1 mr-1">@Model?.TotalPages</span><br />
                     <span class="mr-1">@ViewData["dataLength"]</span> darab jogosultság

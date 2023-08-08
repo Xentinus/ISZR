@@ -79,9 +79,9 @@
                         <thead class="bg-info">
                             <tr>
                                 <th>Igénylési azonosító</th>
-                                <th>Felhasználó</th>
+                                <th class="d-none d-md-table-cell">Felhasználó</th>
                                 <th>Igénylés típusa</th>
-                                <th>Utolsó módosítás ideje</th>
+                                <th class="d-none d-md-table-cell">Utolsó módosítás ideje</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>
@@ -107,7 +107,7 @@
 
                                         }
                                     </td>
-                                    <td>
+                                    <td class="d-none d-md-table-cell">
                                         @if (item.CreatedForUser != null)
                                         {
                                             <span>@item.CreatedForUser?.DisplayName bv.@item.CreatedForUser?.Rank?.ToLower()</span>
@@ -119,7 +119,7 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Type)
                                     </td>
-                                    <td>
+                                    <td class="d-none d-md-table-cell">
                                         @if (item.ClosedDateTime != new DateTime())
                                         {
                                             <span>@item.ClosedDateTime.ToString("yyyy. MMMM. dd. HH:mm")</span>
@@ -129,8 +129,10 @@
                                             <span>@item.CreatedDateTime.ToString("yyyy. MMMM. dd. HH:mm")</span>
                                         }
                                     </td>
-                                    <td class="float-right d-print-none">
-                                        <a class="btn btn-default" asp-action="Details" asp-route-id="@item.RequestId"><i class="fas fa-search text-info mr-2"></i>Megtekintés</a>
+                                    <td class="d-print-none">
+                                        <div class="float-right">
+                                            <a class="btn btn-default" asp-action="Details" asp-route-id="@item.RequestId"><i class="fas fa-search text-info"></i><span class="d-none d-xl-inline ml-2">Megtekintés</span></a>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -146,7 +148,7 @@
                 var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                 var nextDisabled = !Model.HasNextPage ? "disabled" : "";
             }
-            <div class="float-left ml-1">
+            <div class="float-left ml-1 d-none d-sm-inline">
                 <div class="text-muted font-italic">
                     Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model?.PageIndex</span>/<span class="ml-1 mr-1">@Model?.TotalPages</span><br />
                     <span class="mr-1">@ViewData["dataLength"]</span> darab igénylés
