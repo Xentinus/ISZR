@@ -454,7 +454,7 @@ namespace ISZR.Web.Controllers
         /// <param name="request">Igénylés értékei</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserAdditionalAccess(string[]? windowsPermissions, string[]? fonix3Permissions, [Bind("RequestId,Type,Status,Description,CreatedByUserId,CreatedForUserId")] Request request)
+        public async Task<IActionResult> UserAdditionalAccess(string[]? windowsPermissions, string[]? fonix3Permissions, string inputWhy, [Bind("RequestId,Type,Status,Description,CreatedByUserId,CreatedForUserId")] Request request)
         {
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)

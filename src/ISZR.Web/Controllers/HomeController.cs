@@ -38,30 +38,11 @@ namespace ISZR.Web.Controllers
 
             var viewModel = new DashboardViewModel { User = user };
 
-            // Amennyiben ügyintéző a felhasználó, annak statisztikáinak megjelenítése
-
-            // Felhasználó összes igénylése
-            viewModel.AllRequests = _context.Requests.Count(r => r.CreatedByUserId == user.UserId);
-
-            // Felhasználó folyamatban lévő igénylései
-            viewModel.InProgressRequests = _context.Requests.Count(r => r.Status == "Folyamatban" && r.CreatedByUserId == user.UserId);
-
-            // Felhasználó végrehajtott igénylései
-            viewModel.DoneRequests = _context.Requests.Count(r => r.Status == "Végrehajtva" && r.CreatedByUserId == user.UserId);
-
-            // Felhasználó elutasított igénylései
-            viewModel.DeniedRequests = _context.Requests.Count(r => r.Status == "Elutasítva" && r.CreatedByUserId == user.UserId);
-
             // Felhasználó aktív parkolási engedélyeinek összeszedése
             viewModel.Parkings = _context.Parkings.Where(p => p.OwnerUserId == user.UserId && !p.IsArchived).OrderBy(p => p.LicensePlate).ToList();
 
             // Felhasználó által használt aktív PIN kódok
             viewModel.Phones = _context.Phones.Where(p => p.PhoneUserId == user.UserId && !p.IsArchived).OrderBy(p => p.PhoneCode).ToList();
-
-            // Százalékok kiszámítása
-            ViewData["donePercent"] = CalculatePercent(viewModel.DoneRequests, viewModel.AllRequests);
-            ViewData["inProgressPercent"] = CalculatePercent(viewModel.InProgressRequests, viewModel.AllRequests);
-            ViewData["deniedPercent"] = CalculatePercent(viewModel.DeniedRequests, viewModel.AllRequests);
 
             // Irányítópult megjelenítése a felhasználónak
             return View(viewModel);
