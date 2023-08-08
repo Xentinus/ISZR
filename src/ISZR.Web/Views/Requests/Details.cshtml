@@ -195,16 +195,16 @@
                 <div class="row d-print-none">
                     <div class="col-12">
                         <div class="float-right">
-                            @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
+                            @if (User.IsInRole("Everyone"))
                             {
                                 <a asp-controller="Requests" asp-action="Index" asp-route-status="Mind" asp-route-type="Mind" class="btn btn-secondary"><i class="fas fa-sign-out-alt mr-2"></i>Vissza az igénylésekhez</a>
                             }
                             else
                             {
-                                <a asp-controller="Requests" asp-action="Index" class="btn btn-secondary"><i class="fas fa-sign-out-alt mr-2"></i>Vissza az igényléseidhez</a>
+                                <a asp-controller="Requests" asp-action="ForYou" class="btn btn-secondary"><i class="fas fa-sign-out-alt mr-2"></i>Vissza az igényléseidhez</a>
                             }
                             <a class="btn btn-default ml-1 mr-1" onclick="window.print()"><i class="fas fa-print mr-2"></i>Igénylés nyomtatása</a>
-                            @if (User.IsInRole("SKFB-ISZR-Admin"))
+                            @if (User.IsInRole("Everyone"))
                             {
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -214,9 +214,9 @@
                                         @if (Model?.Status != "Végrehajtva")
                                         {
                                             <form style="display: inline;" asp-action="Details">
-                                                <input hidden name="id" value="@Model?.RequestId">
-                                                <input hidden name="status" value="Végrehajtva">
-                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId">
+                                                <input hidden name="id" value="@Model?.RequestId" />
+                                                <input hidden name="status" value="Végrehajtva" />
+                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId" />
                                                 <button type="submit" class="dropdown-item"><i class="fas fa-check-circle text-success mr-2"></i>Végrehajtás</button>
                                             </form>
                                         }
@@ -224,9 +224,9 @@
                                         @if (Model?.Status != "Folyamatban")
                                         {
                                             <form style="display: inline;" asp-action="Details">
-                                                <input hidden name="id" value="@Model?.RequestId">
-                                                <input hidden name="status" value="Folyamatban">
-                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId">
+                                                <input hidden name="id" value="@Model?.RequestId" />
+                                                <input hidden name="status" value="Folyamatban" />
+                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId" />
                                                 <button type="submit" class="dropdown-item"><i class="fas fa-comment-dots text-warning mr-2"></i>Folyamatba helyezés</button>
                                             </form>
                                         }
@@ -234,9 +234,9 @@
                                         @if (Model?.Status != "Elutasítva")
                                         {
                                             <form style="display: inline;" asp-action="Details">
-                                                <input hidden name="id" value="@Model?.RequestId">
-                                                <input hidden name="status" value="Elutasítva">
-                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId">
+                                                <input hidden name="id" value="@Model?.RequestId" />
+                                                <input hidden name="status" value="Elutasítva" />
+                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId" />
                                                 <button type="submit" class="dropdown-item"><i class="fas fa-times-circle text-danger mr-2"></i>Elutasítás</button>
                                             </form>
                                         }

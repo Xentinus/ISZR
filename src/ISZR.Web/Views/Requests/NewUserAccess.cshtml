@@ -39,14 +39,14 @@
                                     </div>
                                     <div class="line"></div>
                                     <div class="step" data-target="#permissions">
-                                        <button type="button" class="step-trigger" role="tab" aria-controls="permissions" id="permissions-trigger" aria-selected="false" disabled="disabled">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="permissions" id="permissions-trigger" aria-selected="false" disabled>
                                             <span class="bs-stepper-circle bg-info"><i class="icon fas fa-users"></i></span>
                                             <span class="bs-stepper-label">Jogosultsági csoport kiválasztása</span>
                                         </button>
                                     </div>
                                     <div class="line"></div>
                                     <div class="step" data-target="#summary">
-                                        <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled="disabled">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="summary" id="summary-trigger" aria-selected="false" disabled>
                                             <span class="bs-stepper-circle bg-info"><i class="icon fas fa-list"></i></span>
                                             <span class="bs-stepper-label">Összesítés</span>
                                         </button>
@@ -68,7 +68,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                                                         </div>
-                                                        <input type="text" id="newUser" asp-for="DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true" required>
+                                                        <input type="text" id="newUser" asp-for="DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,7 +159,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                                                         </div>
-                                                        <input type="text" asp-for="Location" class="form-control" placeholder="Szolgálati hely" spellcheck="true" required>
+                                                        <input type="text" asp-for="Location" class="form-control" placeholder="Szolgálati hely" spellcheck="true" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -171,7 +171,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                                         </div>
-                                                        <input type="email" asp-for="Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)">
+                                                        <input type="email" asp-for="Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -183,7 +183,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                                         </div>
-                                                        <input type="text" asp-for="Phone" class="form-control" placeholder="1061234" spellcheck="true">
+                                                        <input type="text" asp-for="Phone" class="form-control" placeholder="1061234" spellcheck="true" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -264,7 +264,7 @@
                                             <div class="col-12 mt-3">
                                                 <div class="float-left">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required />
                                                         <label class="custom-control-label" for="agreeToTerms">
                                                             Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
                                                         </label>
@@ -272,7 +272,7 @@
                                                 </div>
                                                 <div class="float-right">
                                                     <a class="btn btn-secondary" onclick="stepper.previous()"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                                    <button name="submitButton" type="submit" class="btn btn-info ml-1">Igénylés létrehozása</button>
+                                                    <button id="submitButton" name="submitButton" type="submit" class="btn btn-info ml-1" disabled>Igénylés létrehozása</button>
                                                 </div>
                                             </div>
                                         </div>

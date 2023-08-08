@@ -30,7 +30,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                                         </div>
-                                        <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultság megnevezése" spellcheck="true" required>
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultság megnevezése" spellcheck="true" required />
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-database"></i></span>
                                             </div>
-                                            <input type="text" asp-for="ActiveDirectoryPermissions" class="form-control" placeholder="Legalább egy darab Active Directory jogosultság megnevezése (pl.: XXXX-TESZT)" spellcheck="false" required>
+                                            <input type="text" asp-for="ActiveDirectoryPermissions" class="form-control" placeholder="Legalább egy darab Active Directory jogosultság megnevezése (pl.: XXXX-TESZT)" spellcheck="false" required />
                                         </div>
                                     </div>
                                 </div>
@@ -68,7 +68,7 @@
                             <div class="col-12">
                                 <div class="float-left">
                                     <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required />
                                         <label class="custom-control-label" for="agreeToTerms">
                                             Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
                                         </label>
@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="float-right">
                                     <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                    <input name="submitButton" type="submit" value="Jogosultság létrehozása" class="btn btn-success ml-1" />
+                                    <input id="submitButton" name="submitButton" type="submit" value="Jogosultság létrehozása" class="btn btn-success ml-1" disabled />
                                 </div>
                             </div>
                         </div>

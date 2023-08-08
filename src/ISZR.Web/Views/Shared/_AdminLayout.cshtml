@@ -93,7 +93,18 @@
                 closeOnSelect: false,
                 theme: 'bootstrap4'
             });
-        })
+        });
+
+        // Checkbox ellenőrő
+        $(document).ready(function () {
+            $('#agreeToTerms').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#submitButton').prop('disabled', false);
+                } else {
+                    $('#submitButton').prop('disabled', true);
+                }
+            });
+        });
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

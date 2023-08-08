@@ -12,9 +12,8 @@
                 <div class="card-header">
                     <h3 class="card-title">Kamerához tartozó adatok szerkesztése</h3>
                 </div>
-
                 <div class="card-body">
-                    <form asp-action="Edit">
+                    <form asp-action="Edit" onsubmit="submitButton.disabled = true; return true;">
                         <div class="row">
                             <div class="col-12">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -30,7 +29,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-video"></i></span>
                                         </div>
-                                        <input type="text" asp-for="Name" class="form-control" placeholder="Kamera megnevezése" spellcheck="false" required>
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Kamera megnevezése" spellcheck="false" required />
                                     </div>
                                 </div>
                             </div>
@@ -39,7 +38,7 @@
                             <div class="col-12">
                                 <div class="float-left">
                                     <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required />
                                         <label class="custom-control-label" for="agreeToTerms">
                                             Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
                                         </label>
@@ -47,7 +46,7 @@
                                 </div>
                                 <div class="float-right">
                                     <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                    <input type="submit" value="Kamera szerkesztése" class="btn btn-warning ml-1" />
+                                    <input id="submitButton" name="submitButton" type="submit" value="Kamera szerkesztése" class="btn btn-warning ml-1" disabled />
                                 </div>
                             </div>
                         </div>
