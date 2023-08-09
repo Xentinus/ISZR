@@ -4,7 +4,7 @@
     ViewData["Title"] = "Kamerafelvétel lementése címkék alapján";
 
     // Elérhető mennyiség kiszámítása
-    var dataList = ViewData["Cameras"] as SelectList;
+    var dataList = ViewData["Cameras"] as MultiSelectList;
     int requestableData = (dataList != null) ? dataList.Count() : 0;
 }
 

@@ -127,9 +127,41 @@
                         }
                     </div>
                     <div class="col-12 mb-3">
-                        @Html.Raw(@Model?.Description)
+                        @ViewData["desc"]
                     </div>
+                    @if (!string.IsNullOrEmpty(Model?.Description))
+                    {
+                        <div class="col-12 mb-3">
+                            @Html.Raw(@Model?.Description)
+                        </div>
+                    }
                 </div>
+
+                @if (Model?.CarId != null)
+                {
+                    <div class="row">
+                        <div class="col-12">
+                            <dl>
+                                <dt><i class="icon fas fa-car mr-2"></i>Jármű típusa</dt>
+                                <dd>@Model?.Car?.Brand @Model?.Car?.Modell</dd>
+                                <dt><i class="icon fas fa-parking mr-2"></i>Jármű rendszáma</dt>
+                                <dd>@Model?.Car?.LicensePlate</dd>
+                            </dl>
+                        </div>
+                    </div>
+                }
+
+                @if (Model?.PhoneId != null)
+                {
+                    <div class="row">
+                        <div class="col-12">
+                            <dl>
+                                <dt><i class="icon fas fa-phone mr-2"></i>Telefonos PIN kód</dt>
+                                <dd>@Model?.Phone?.PhoneCode</dd>
+                            </dl>
+                        </div>
+                    </div>
+                }
 
                 @if (!string.IsNullOrEmpty(Model?.WindowsPermissions))
                 {
@@ -216,7 +248,7 @@
                                             <form style="display: inline;" asp-action="Details">
                                                 <input hidden name="id" value="@Model?.RequestId" />
                                                 <input hidden name="status" value="Végrehajtva" />
-                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId" />
+                                                <input hidden name="resolverId" value="@ViewData["ClosedByUserId"]" />
                                                 <button type="submit" class="dropdown-item"><i class="fas fa-check-circle text-success mr-2"></i>Végrehajtás</button>
                                             </form>
                                         }
@@ -226,7 +258,7 @@
                                             <form style="display: inline;" asp-action="Details">
                                                 <input hidden name="id" value="@Model?.RequestId" />
                                                 <input hidden name="status" value="Folyamatban" />
-                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId" />
+                                                <input hidden name="resolverId" value="@ViewData["ClosedByUserId"]" />
                                                 <button type="submit" class="dropdown-item"><i class="fas fa-comment-dots text-warning mr-2"></i>Folyamatba helyezés</button>
                                             </form>
                                         }
@@ -236,7 +268,7 @@
                                             <form style="display: inline;" asp-action="Details">
                                                 <input hidden name="id" value="@Model?.RequestId" />
                                                 <input hidden name="status" value="Elutasítva" />
-                                                <input hidden name="resolverId" value="@Model?.ClosedByUserId" />
+                                                <input hidden name="resolverId" value="@ViewData["ClosedByUserId"]" />
                                                 <button type="submit" class="dropdown-item"><i class="fas fa-times-circle text-danger mr-2"></i>Elutasítás</button>
                                             </form>
                                         }
