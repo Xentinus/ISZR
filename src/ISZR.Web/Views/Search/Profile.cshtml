@@ -1,0 +1,145 @@
+﻿@using ISZR.Web.ViewModels;
+
+@model DashboardViewModel;
+
+@{
+    ViewData["Title"] = $"{Model?.User?.DisplayName} felhasználói profilja";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="card card-widget widget-user">
+                @if (Model.User.IsArchived)
+                {
+                    <div class="widget-user-header bg-danger">
+                        <h3 class="widget-user-username">@Model?.User?.DisplayName</h3>
+                        <h5 class="widget-user-desc">@Model?.User?.Position?.Name</h5>
+                    </div>
+                } else
+                {
+                    <div class="widget-user-header bg-info">
+                        <h3 class="widget-user-username">@Model?.User?.DisplayName</h3>
+                        <h5 class="widget-user-desc">@Model?.User?.Position?.Name</h5>
+                    </div>
+                }
+
+                <div class="widget-user-image">
+                    <img class="img-circle elevation-2" src="~/img/avatar.png" alt="Profilkép">
+                </div>
+                <div class="card-body">
+                    <strong><i class="icon fas fa-medal mr-2"></i>Rendfokozat</strong>
+                    <p class="text-muted">@Model?.User?.Rank</p>
+                    <hr />
+                    <strong><i class="icon fas fa-users mr-2"></i>Osztály</strong>
+                    <p class="text-muted">@Model?.User?.Class?.Name</p>
+                    <hr />
+                    <strong><i class="icon fas fa-map-marker-alt mr-2"></i>Szolgálati hely</strong>
+                    <p class="text-muted">@Model?.User?.Location</p>
+                    @if (!string.IsNullOrEmpty(Model?.User?.Email))
+                    {
+                        <hr />
+                        <strong><i class="icon fas fa-envelope mr-2"></i>E-mail elérhetőség</strong>
+                        <p class="text-muted">@Model?.User?.Email</p>
+                    }
+                    @if (!string.IsNullOrEmpty(Model?.User?.Phone))
+                    {
+                        <hr />
+                        <strong><i class="icon fas fa-phone mr-2"></i>NTG elérhetőség</strong>
+                        <p class="text-muted">@Model?.User?.Phone</p>
+                    }
+                    @if (!Model.User.IsArchived)
+                    {
+                        <hr />
+                        <a class="nav-link btn btn-info" href="#">
+                            <i class="nav-icon fas fa-id-card mr-2"></i>Elérhetőség módosítása
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-8">
+            <div class="row">
+                @if (Model.User.IsArchived)
+                {
+                    <div class="col-12">
+                        <div class="card card-danger">
+                            <div class="card-header">
+                                <h5 class="card-title"><i class="icon fas fa-archive mr-2"></i> Felhasználó archiválva!</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 col-xl-6">
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h5 class="card-title">Parkolási engedélyek <abbr title="Amennyiben a jármű már nem tartozik hozzá, írj e-mail a helyi informatikai csoportnak annak archiválásáról!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
+                            </div>
+                            <div class="card-body p-0">
+                                @if (Model?.Parkings?.Count > 0)
+                                {
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Rendszám</th>
+                                                <th>Hozzá tartozó jármű</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var vehicle in Model?.Parkings ?? new List<Parking>())
+                                            {
+                                                <tr>
+                                                    <td><h4><span class="badge bg-info">@vehicle.LicensePlate</span></h4></td>
+                                                    <td>@vehicle.Brand @vehicle.Modell</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div class="text-center text-muted font-italic mt-4 mb-4 ml-2 mr-2">
+                                        Nem rendelkezik parkolási engedéllyel.
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h5 class="card-title">PIN kódjaid külső telefonáláshoz <abbr title="Ezekkel a PIN kódokkal tudsz külső hívást indítani irodai telefonokon!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
+                            </div>
+                            @if (Model?.Phones?.Count > 0)
+                            {
+                                <div class="card-body p-0">
+                                    <table class="table">
+                                        <tbody>
+                                            @foreach (var code in Model?.Phones ?? new List<Phone>())
+                                            {
+                                                <tr>
+                                                    <td><h4><span class="badge bg-info">@code.PhoneCode</span></h4></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="card-body p-0">
+                                    <div class="text-center text-muted font-italic mt-4 mb-4 ml-2 mr-2">
+                                        Nem rendelkezik külső telefonáláshoz használható PIN kóddal.
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

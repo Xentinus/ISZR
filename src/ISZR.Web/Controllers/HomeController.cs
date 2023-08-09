@@ -151,7 +151,7 @@ namespace ISZR.Web.Controllers
             // Jogosultságok szűrése név alapján, amennyiben a felhasználó szűrt név alapján
             if (!string.IsNullOrEmpty(name))
             {
-                dataContext = dataContext.Where(r => r.Name.Contains(name));
+                dataContext = dataContext.Where(r => r.Name.Contains(name) || r.Description.Contains(name));
             }
 
             // Jogosultságok szűrése típus alapján, amennyiben a felhasználó szűrt típus alapján

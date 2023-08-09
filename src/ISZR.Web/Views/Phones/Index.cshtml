@@ -22,7 +22,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-font"></i></span>
                                         </div>
-                                        <input name="code" type="text" class="form-control" placeholder="Keresés PIN kód alapján" value="@ViewData["code"]" />
+                                        <input name="code" type="number" class="form-control" placeholder="Keresés PIN kód alapján" value="@ViewData["code"]" min="1" max="999999" />
                                     </div>
                                 </div>
                             </div>
@@ -33,7 +33,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                                         </div>
-                                        <input name="user" type="text" class="form-control" placeholder="Keresés aktuális felhasználó neve alapján" value="@ViewData["user"]" />
+                                        <input name="user" type="search" class="form-control" placeholder="Keresés aktuális felhasználó neve alapján" value="@ViewData["user"]" />
                                     </div>
                                 </div>
                             </div>
