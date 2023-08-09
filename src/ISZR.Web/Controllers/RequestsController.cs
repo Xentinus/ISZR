@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using System.Text;
+using System.Resources;
 
 namespace ISZR.Web.Controllers
 {
@@ -110,13 +111,20 @@ namespace ISZR.Web.Controllers
                 .Include(r => r.CreatedForUser.Class.Authorizer)
                 .Include(r => r.CreatedForUser.Class.Authorizer.Position)
                 .Include(r => r.CreatedForUser.Position)
+                .Include(r => r.Car)
+                .Include(r => r.Phone)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
 
             // Amennyiben a kért kérelem nem létezik, az oldal megjelenítésének elutasítása
             if (request == null) return NotFound();
+            if (request.Type == null) return NotFound(request);
+
+            ResourceManager resourceManager = new ResourceManager(typeof(RequestMessages));
+
+            ViewData["desc"] = resourceManager.GetString(request.Type) ?? "";
 
             // Adminisztrátorok részére ClosedByUserId beállítása (adatbázisban nem írja még felül, csak ha státusz módosít)
-            request.ClosedByUserId = await GetUserIdAsync(_context);
+            ViewData["ClosedByUserId"] = await GetUserIdAsync(_context);
 
             // Oldal megjelenítése a kért igényléssel
             return View(request);
@@ -384,9 +392,6 @@ namespace ISZR.Web.Controllers
                 // Alapértelmezett státusz
                 request.Status = "Folyamatban";
 
-                // Igénylés leírása
-                request.Description = "Kérem engedélyezni új felhasználó részére jogosultság kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
-
                 // Csoport jogosultságainak hozzáadása
                 request.WindowsPermissions = !string.IsNullOrEmpty(group.WindowsPermissions) ? group.WindowsPermissions : null;
                 request.FonixPermissions = !string.IsNullOrEmpty(group.FonixPermissions) ? group.FonixPermissions : null;
@@ -470,9 +475,6 @@ namespace ISZR.Web.Controllers
 
                 // Alapértelmezett státusz
                 request.Status = "Folyamatban";
-
-                // Igénylés leírása
-                request.Description = "Kérem engedélyezni a felhasználó részére többletjogosultság kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
 
                 // Windows jogosultságok Active-Directory értékeinek sorrendbe helyezése
                 if (windowsPermissions.Length > 0)
@@ -571,8 +573,7 @@ namespace ISZR.Web.Controllers
                 request.Status = "Folyamatban";
 
                 // Igénylés leírása
-                request.Description = "Kérem engedélyezni a felhasználó részére új beosztásának jogosultságainak kiadását, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.<br /><br />" +
-                    $"<dl>\r\n<dt><i class=\"icon fas fa-people-arrows mr-2\"></i>Teendő a felhasználó jelenlegi jogosultságaival</dt>\r\n<dd>{currentPermissions}</dd>\r\n</dl>";
+                request.Description = $"<dl>\r\n<dt><i class=\"icon fas fa-people-arrows mr-2\"></i>Teendő a felhasználó jelenlegi jogosultságaival</dt>\r\n<dd>{currentPermissions}</dd>\r\n</dl>";
 
                 // Csoport jogosultságainak hozzáadása
                 request.WindowsPermissions = !string.IsNullOrEmpty(group.WindowsPermissions) ? group.WindowsPermissions : null;
@@ -651,9 +652,6 @@ namespace ISZR.Web.Controllers
 
                 // Alapértelmezett státusz
                 request.Status = "Folyamatban";
-
-                // Igénylés leírása
-                request.Description = "Kérem engedélyezni a felhasználó részére e-mail cím elkészítését, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
 
                 try
                 {
@@ -763,8 +761,8 @@ namespace ISZR.Web.Controllers
                 // Alapértelmezett státusz
                 request.Status = "Folyamatban";
 
-                // Igénylés leírása
-                request.Description = $"Kérem engedélyezni <b>{phone.PhoneCode}</b> számú telefonos PIN kód kiadását a felhasználó részére, a bv.hu tartományi rendszerben üzemelő szolgáltatások használatához.";
+                // Kiválasztott pin kód hozzárendelése az igényléshez
+                request.PhoneId = selectedPIN;
 
                 try
                 {
@@ -881,9 +879,8 @@ namespace ISZR.Web.Controllers
                 // Alapértelmezett státusz
                 request.Status = "Folyamatban";
 
-                // Igénylés leírása
-                request.Description = $"Kérem engedélyezni a felhasználó részére, az alábbi jármű parkolási engedélyének kiállítását.<br /><br />" +
-                    $"<dl>\r\n<dt><i class=\"icon fas fa-car mr-2\"></i>Jármű típusa</dt>\r\n<dd>{brand} {modell}</dd>\r\n<dt><i class=\"icon fas fa-parking mr-2\"></i>Jármű rendszáma</dt>\r\n<dd>{licensePlate}</dd>\r\n</dl>";
+                // Parkolási engedély hozzárendelése az igényléshez
+                request.CarId = parking.ParkingId;
 
                 try
                 {
@@ -962,7 +959,7 @@ namespace ISZR.Web.Controllers
                 request.Status = "Folyamatban";
 
                 // Igénylés leírása
-                request.Description = $"Kérem engedélyezni a felhasználó részére {permissionType.ToLower()} típusú jogosultságot bíztosítani a Hikcentral programon belül, a kamerarendszer használatához.";
+                request.Description = $"<dl>\r\n<dt><i class=\"icon fas fa-people-arrows mr-2\"></i>HikCentral jgoosultsági típus</dt>\r\n<dd>{permissionType}</dd>\r\n</dl>";
 
                 try
                 {
@@ -1051,8 +1048,7 @@ namespace ISZR.Web.Controllers
                 string inputDateString = inputDate.ToString("yyyy.MM.dd");
 
                 // Igénylés leírása
-                request.Description = $"Kérem engedélyezni a kamerarendszerben rögzített adatok külső adattárolón történő tárolását, illetve felhasználását megkeresés alapján Bűnügyi vagy Felügyeleti szerv részére.<br /><br />" +
-                    $"<dl>\r\n<dt><i class=\"icon far fa-eye mr-2\"></i>Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n<dt><i class=\"icon fas fa-calendar mr-2\"></i>Esemény dátuma</dt>\r\n<dd>{inputDateString}</dd>\r\n<dt><i class=\"icon fas fa-tags mr-2\"></i>Címkék megnevezése</dt>\r\n<dd>{inputTags}</dd>\r\n<dt><i class=\"icon fas fa-video mr-2\"></i>Megcímkézett kamerák</dt>\r\n<dd>{cameras}</dd>\r\n</dl>";
+                request.Description = $"<dl>\r\n<dt><i class=\"icon far fa-eye mr-2\"></i>Lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n<dt><i class=\"icon fas fa-calendar mr-2\"></i>Esemény dátuma</dt>\r\n<dd>{inputDateString}</dd>\r\n<dt><i class=\"icon fas fa-tags mr-2\"></i>Címkék megnevezése</dt>\r\n<dd>{inputTags}</dd>\r\n<dt><i class=\"icon fas fa-video mr-2\"></i>Megcímkézett kamerák</dt>\r\n<dd>{cameras}</dd>\r\n</dl>";
 
                 try
                 {
@@ -1138,8 +1134,7 @@ namespace ISZR.Web.Controllers
                 request.Status = "Folyamatban";
 
                 // Igénylés leírása
-                request.Description = $"Kérem engedélyezni a kamerarendszerben rögzített adatok külső adattárolón történő tárolását, illetve felhasználását megkeresés alapján Bűnügyi vagy Felügyeleti szerv részére.<br /><br />" +
-                    $"<dl>\r\n<dt><i class=\"icon far fa-eye mr-2\"></i>Kamerafelvétel lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n</dl><br />" +
+                request.Description = $"<dl>\r\n<dt><i class=\"icon far fa-eye mr-2\"></i>Kamerafelvétel lementésének oka</dt>\r\n<dd>{inputWhy}</dd>\r\n</dl><br />" +
                     $"<div class=\"card\">\r\n<div class=\"card-body p-0\">\r\n<table class=\"table\">\r\n<thead class=\"bg-light\">\r\n<tr>\r\n<th><i class=\"icon fas fa-video mr-2\"></i>Kamera</th>\r\n<th><i class=\"icon fas fa-play mr-2\"></i>Felvétel kezdete</th>\r\n<th><i class=\"icon fas fa-stop mr-2\"></i>Felvétel vége</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n";
 
                 // Kamerafelvételek hozzáadása a táblázhoz
@@ -1187,6 +1182,7 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Igénylés meglétének ellenőrzése
         /// </summary>
+        /// <param name="id">Igénylés azonosítója</param>
         /// <param name="id">Igénylés azonosítója</param>
         /// <returns>Létezik e az adott igénylés (igaz/hamis)</returns>
         private bool RequestExists(int id)
