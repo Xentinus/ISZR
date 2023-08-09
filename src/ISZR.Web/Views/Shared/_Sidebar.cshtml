@@ -144,4 +144,18 @@
             </ul>
         </nav>
     </div>
+    <div class="sidebar-custom">
+        <form asp-controller="Search" asp-action="Index" method="get">
+            <div class="form-inline">
+                <div class="input-group">
+                    <input name="searching" class="form-control form-control-sidebar" type="text" placeholder="Keresés" spellcheck="false">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-sidebar">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </aside>
