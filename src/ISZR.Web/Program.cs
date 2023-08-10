@@ -64,7 +64,10 @@ builder.Services.AddHealthChecks();
 // Adatbázishoz való csatlakozás
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DataContext") ?? throw new InvalidOperationException("Adatbázis elérési útvonala nem található!")));
+
+// Services
 builder.Services.AddSingleton<IDatabaseStatusService, DatabaseStatusService>();
+builder.Services.AddSingleton<IUserService, UserService>();
 
 // Alkalmazás elkészítése
 var app = builder.Build();

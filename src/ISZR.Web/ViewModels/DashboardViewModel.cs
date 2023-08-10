@@ -18,5 +18,10 @@ namespace ISZR.Web.ViewModels
         /// Felhasználó által használt PIN kódok
         /// </summary>
         public List<Phone>? Phones { get; set; } = new List<Phone>();
+
+        /// <summary>
+        /// Felhasználó utolsó igénylései
+        /// </summary>
+        public List<Request>? LastRequests { get; set; } = new List<Request>();
     }
 }

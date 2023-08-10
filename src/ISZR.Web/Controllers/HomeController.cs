@@ -39,87 +39,80 @@ namespace ISZR.Web.Controllers
             var viewModel = new DashboardViewModel { User = user };
 
             // Felhasználó aktív parkolási engedélyeinek összeszedése
-            viewModel.Parkings = _context.Parkings.Where(p => p.OwnerUserId == user.UserId && !p.IsArchived).OrderBy(p => p.LicensePlate).ToList();
+            viewModel.Parkings = await _context.Parkings
+                .Where(p => p.OwnerUserId == user.UserId && !p.IsArchived)
+                .OrderBy(p => p.LicensePlate)
+                .ToListAsync();
 
             // Felhasználó által használt aktív PIN kódok
-            viewModel.Phones = _context.Phones.Where(p => p.PhoneUserId == user.UserId && !p.IsArchived).OrderBy(p => p.PhoneCode).ToList();
+            viewModel.Phones = await _context.Phones
+                .Where(p => p.PhoneUserId == user.UserId && !p.IsArchived)
+                .OrderBy(p => p.PhoneCode)
+                .ToListAsync();
+
+            // Felhasználó utolsó igénylései
+            viewModel.LastRequests = await _context.Requests
+                .Where(r => r.CreatedForUser == user || r.CreatedByUser == user)
+                .OrderByDescending(r => r.RequestId)
+                .Take(8)
+                .ToListAsync();
+
+            // Lenyíló menük adatainak betöltése
+            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+            ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name");
 
             // Irányítópult megjelenítése a felhasználónak
             return View(viewModel);
         }
 
         /// <summary>
-        /// Felhasználók beállításainak megjelenítése
+        /// Felhasználó elérhetőségének módosítása
         /// </summary>
-        public async Task<IActionResult> Settings()
-        {
-            // Bejelentkezett felhasználó megkeresése
-            User? user = await GetLoggedUser();
-
-            // Amennyiben a felhasználó nem található az adatbázisban, annak továbbirányítása a regisztrációs oldalra
-            if (user == null) return Forbid();
-
-            // Lenyíló menük adatainak betöltése
-            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
-            ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name");
-
-            // Felhasználó beállításainak megjelenítése
-            return View(user);
-        }
-
-        /// <summary>
-        /// Felhasználó által megadott felhasználói beállítások felülírása.
-        /// </summary>
-        /// <param name="user">Felhasználó</param>
+        /// <param name="user">Megadott új felhasználói értékek</param>
+        /// <param name="id">Felhasználó azonosítója</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Settings([Bind("UserId,Username,DisplayName,Rank,Genre,Location,Email,Phone,LastLogin,ClassId,PositionId,IsArchived")] User user)
+        public async Task<IActionResult> Dashboard([Bind("UserId,Username,DisplayName,Rank,Genre,Location,Email,Phone,LastLogin,ClassId,PositionId,IsArchived")] User user, int? id)
         {
-            // Megadott értékek ellenőrzése
-            if (ModelState.IsValid)
+            // Azonosító meglétének ellenőrzése
+            if (id == null || user.UserId != id || _context.Users == null) return NotFound();
+
+            // Felhasználó megkeresése az adatbázisban
+            var foundUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserId == id);
+
+            // Felhasználó meglétének ellenőrzése
+            if (foundUser == null) return NotFound();
+
+            try
             {
-                // Bejelentkezett felhasználó megkeresése
-                User? loggedUser = await GetLoggedUser();
-                if (loggedUser == null) { return Forbid(); }
+                // Felhasználó adatainak felülírása a megadott értékekkel
+                foundUser.DisplayName = user.DisplayName;
+                foundUser.Genre = user.Genre;
+                foundUser.Rank = user.Rank;
+                foundUser.ClassId = user.ClassId;
+                foundUser.PositionId = user.PositionId;
+                foundUser.Location = user.Location;
+                foundUser.Email = user.Email;
+                foundUser.Phone = user.Phone;
 
-                try
+                _context.Update(foundUser);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(foundUser.UserId))
                 {
-                    // Felhasználó értékeinek felülírása
-                    loggedUser.DisplayName = user.DisplayName;
-                    loggedUser.Rank = user.Rank;
-                    loggedUser.Genre = user.Genre;
-                    loggedUser.Location = user.Location;
-                    loggedUser.Email = user.Email;
-                    loggedUser.Phone = user.Phone;
-                    loggedUser.ClassId = user.ClassId;
-                    loggedUser.PositionId = user.PositionId;
-
-                    // Felhasználó értékeinek frissítése az adatbázisban
-                    _context.Update(loggedUser);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!UserExists(loggedUser.UserId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-
-                // Felhasználó visszairányítása az irányítópultba
-                return RedirectToAction(nameof(Dashboard));
             }
 
-            // Lenyíló menük adatainak betöltése
-            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
-            ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name", user.PositionId);
-
-            // Felhasználó beállításainak megjelenítése
-            return View(user);
+            // Felület újra megjelenítése
+            return RedirectToAction(nameof(Dashboard));
         }
 
         /// <summary>
