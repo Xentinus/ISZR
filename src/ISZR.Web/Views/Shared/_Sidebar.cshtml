@@ -1,16 +1,19 @@
-﻿<aside class="main-sidebar main-sidebar-custom sidebar-dark-info elevation-4 ">
+﻿@inject IUserService UserService
+
+<aside class="main-sidebar main-sidebar-custom sidebar-dark-info elevation-4 ">
     <a class="brand-link" asp-controller="Home" asp-action="Dashboard">
         <img src="~/img/ISZR.svg" alt="ISZR Logo" class="brand-image">
         <span class="brand-text">ISZR</span>
     </a>
-
     <div class="sidebar">
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
             <div class="image">
                 <img src="~/img/avatar.png" class="img-circle elevation-2" alt="Profile Picture">
             </div>
-            <div class="info">
-                <a class="d-block" asp-controller="Home" asp-action="Dashboard">Felhasználói profil</a>
+            <div class="info ml-3">
+                <a class="d-block" asp-controller="Home" asp-action="Dashboard">
+                    <span class="text-wrap">@UserService.GetUsername()</span>
+                </a>
             </div>
         </div>
         <nav class="mt-2">
@@ -144,18 +147,21 @@
             </ul>
         </nav>
     </div>
-    <div class="sidebar-custom">
-        <form asp-controller="Search" asp-action="Index" method="get">
-            <div class="form-inline">
-                <div class="input-group">
-                    <input name="searching" class="form-control form-control-sidebar" type="text" placeholder="Keresés" spellcheck="false">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-sidebar">
-                            <i class="fas fa-search"></i>
-                        </button>
+    @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
+    {
+        <div class="sidebar-custom">
+            <form asp-controller="Search" asp-action="Index" method="get">
+                <div class="form-inline">
+                    <div class="input-group">
+                        <input name="searching" class="form-control form-control-sidebar" type="text" placeholder="Keresés" spellcheck="false">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-sidebar">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+    }
 </aside>

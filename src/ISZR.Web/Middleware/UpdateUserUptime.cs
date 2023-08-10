@@ -6,10 +6,12 @@
     public class UpdateUserUptime : IMiddleware
     {
         private readonly DataContext _context;
+        private readonly IUserService _userService;
 
-        public UpdateUserUptime(DataContext context)
+        public UpdateUserUptime(DataContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         /// <summary>
@@ -39,6 +41,9 @@
                     }
                 }
             }
+
+            // Felhasználó mentése
+            _userService.SetUsername(user?.DisplayName);
 
             // A rendszer továbbléptetése
             await next(context);

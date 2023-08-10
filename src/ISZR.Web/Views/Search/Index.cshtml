@@ -19,90 +19,141 @@
             </form>
         </div>
     </div>
+
+
     @if (ViewData["searching"] != null)
     {
         <div class="timeline mt-5">
-            @foreach (var request in ViewData["foundRequests"] as List<Request>)
-            {
-                <div>
-                    <i class="far fa-file bg-warning"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fas fa-search mr-2"></i>Találat a igénylések adati között</span>
-                        <h3 class="timeline-header"><a class="text-warning font-weight-bold" href="@($"{baseUrl}/Requests/Details/{request.RequestId}")">#@request?.RequestId</a> számú igénylés</h3>
-                        <div class="timeline-body">
-                            <dl>
-                                <dt>Igénylés típusa</dt>
-                                <dd>@request?.Type</dd>
-                                <dt>Igénylés állapota</dt>
-                                <dd>@request?.Status</dd>
-                                <dt>Felhasználó számára</dt>
-                                <dd>@request?.CreatedForUser?.DisplayName bv.@request?.CreatedForUser?.Rank.ToLower()</dd>
-                            </dl>
+            @{
+                // Igénylések
+                var foundRequests = ViewData["foundRequests"] as List<Request>;
+                if (foundRequests != null)
+                {
+                    foreach (var request in foundRequests)
+                    {
+                        <div>
+                            <i class="far fa-file bg-warning"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fas fa-search mr-2"></i>Találat a igénylések adati között</span>
+                                <h3 class="timeline-header"><a class="text-warning font-weight-bold" href="@($"{baseUrl}/Requests/Details/{request.RequestId}")">#@request?.RequestId</a> számú igénylés</h3>
+                                <div class="timeline-body">
+                                    <dl>
+                                        <dt>Igénylés típusa</dt>
+                                        <dd>@request?.Type</dd>
+                                        <dt>Igénylés állapota</dt>
+                                        <dd>@request?.Status</dd>
+                                        <dt>Felhasználó számára</dt>
+                                        <dd>@request?.CreatedForUser?.DisplayName bv.@request?.CreatedForUser?.Rank.ToLower()</dd>
+                                    </dl>
+                                </div>
+                                <div class="timeline-footer d-print-none">
+                                    <a class="btn btn-default text-dark" href="@($"{baseUrl}/Requests/Details/{request.RequestId}")"><i class="icon fas fa-search text-warning mr-2"></i>Igénylés megtekintése</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+                // Felhasználók
+                var foundUsers = ViewData["foundUsers"] as List<User>;
+                if (foundUsers != null)
+                {
+                    foreach (var user in foundUsers)
+                    {
+                        <div>
+                            <i class="fas fa-user-circle bg-info"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fas fa-search mr-2"></i>Találat a felhaszálói adatok között</span>
+                                <h3 class="timeline-header"><a class="text-info font-weight-bold" href="@($"{baseUrl}/Search/Profile?userId={user.UserId}")">@user?.DisplayName</a> bv.@user?.Rank.ToLower()</h3>
+                                <div class="timeline-body">
+                                    <dl>
+                                        <dt>Osztály</dt>
+                                        <dd>@user?.Class.Name</dd>
+                                        <dt>Beosztás</dt>
+                                        <dd>@user?.Position.Name</dd>
+                                        <dt>Szolgálati hely</dt>
+                                        <dd>@user?.Location</dd>
+                                        @if (!string.IsNullOrEmpty(user?.Email))
+                                        {
+                                            <dt>E-mail elérhetőség</dt>
+                                            <dd><a class="text-info" href="mailto:@user.Email">@user?.Email</a></dd>
+                                        }
+                                        @if (!string.IsNullOrEmpty(user?.Phone))
+                                        {
+                                            <dt>NTG elérhetőség</dt>
+                                            <dd>@user?.Phone</dd>
+                                        }
+                                    </dl>
+                                </div>
+                                <div class="timeline-footer d-print-none">
+                                    <a class="btn btn-default text-dark" href="@($"{baseUrl}/Search/Profile?userId={user.UserId}")"><i class="icon fas fa-search text-info mr-2"></i>Felhasználó megtekintése</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                }
+
+                // Parkolási engedélyek
+                var foundParkings = ViewData["foundParkings"] as List<Parking>;
+                if (foundParkings != null)
+                {
+                    foreach (var vehicle in foundParkings)
+                    {
+                        <div>
+                            <i class="fas fa-car bg-danger"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fas fa-search mr-2"></i>Találat a parkolási engedélyek között</span>
+                                <h3 class="timeline-header"><span class="text-danger font-weight-bold">@vehicle?.LicensePlate</span> azonosítójú rendszám</h3>
+                                <div class="timeline-body">
+                                    <dl>
+                                        <dt>Jármű típusa</dt>
+                                        <dd>@vehicle?.Brand @vehicle?.Modell</dd>
+                                        <dt>Tulajdonos</dt>
+                                        <dd>@vehicle?.OwnerUser?.DisplayName bv.@vehicle?.OwnerUser?.Rank.ToLower()</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+                // Jogosultságok
+                var foundPermissions = ViewData["foundPermissions"] as List<Permission>;
+                if (foundPermissions != null)
+                {
+                    foreach (var permission in foundPermissions)
+                    {
+                        <div>
+                            <i class="fas fa-key bg-primary"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fas fa-search mr-2"></i>Találat a jogosultságok között</span>
+                                <h3 class="timeline-header"><span class="text-primary font-weight-bold">@permission.Name</span> nevű jogosultság</h3>
+                                <div class="timeline-body">
+                                    <dl>
+                                        <dt>Jogosultság típusa</dt>
+                                        <dd>@permission.Type</dd>
+                                        <dt>Leírása</dt>
+                                        <dd>@permission.Description</dd>
+                                        <dt>Jogosultsági kód</dt>
+                                        <dd>@permission.ActiveDirectoryPermissions</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                }
+
+                if (foundRequests.Count == 0 && foundUsers.Count == 0 && foundParkings.Count == 0 && foundPermissions.Count == 0)
+                {
+                    <div>
+                        <i class="fas fa-ban bg-danger"></i>
+                        <div class="timeline-item">
+                            <h3 class="timeline-header"><span class="font-weight-bold text-danger">Nem található eredmény.</span></h3>
                         </div>
                     </div>
-                </div>
-            }
-            @foreach (var user in ViewData["foundUsers"] as List<User>)
-            {
-                <div>
-                    <i class="fas fa-user-circle bg-info"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fas fa-search mr-2"></i>Találat a felhaszálói adatok között</span>
-                        <h3 class="timeline-header"><a class="text-info font-weight-bold" href="@($"{baseUrl}/Search/Profile?userId={user.UserId}")">@user?.DisplayName</a> bv.@user?.Rank.ToLower()</h3>
-                        <div class="timeline-body">
-                            <dl>
-                                <dt>Osztály</dt>
-                                <dd>@user?.Class.Name</dd>
-                                <dt>Beosztás</dt>
-                                <dd>@user?.Position.Name</dd>
-                                <dt>Szolgálati hely</dt>
-                                <dd>@user?.Location</dd>
-                                <dt>E-mail elérhetőség</dt>
-                                <dd><a class="text-info" href="mailto:@user.Email">@user?.Email</a></dd>
-                                <dt>NTG elérhetőség</dt>
-                                <dd>@user?.Phone</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-            }
-            @foreach (var vehicle in ViewData["foundParkings"] as List<Parking>)
-            {
-                <div>
-                    <i class="fas fa-car bg-danger"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fas fa-search mr-2"></i>Találat a parkolási engedélyek között</span>
-                        <h3 class="timeline-header"><span class="text-danger font-weight-bold">@vehicle?.LicensePlate</span> azonosítójú rendszám</h3>
-                        <div class="timeline-body">
-                            <dl>
-                                <dt>Jármű típusa</dt>
-                                <dd>@vehicle?.Brand @vehicle?.Modell</dd>
-                                <dt>Tulajdonos</dt>
-                                <dd>@vehicle?.OwnerUser?.DisplayName bv.@vehicle?.OwnerUser?.Rank.ToLower()</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-            }
-            @foreach (var permission in ViewData["foundPermissions"] as List<Permission>)
-            {
-                <div>
-                    <i class="fas fa-key bg-primary"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fas fa-search mr-2"></i>Találat a jogosultságok között</span>
-                        <h3 class="timeline-header"><span class="text-primary font-weight-bold">@permission.Name</span> nevű jogosultság</h3>
-                        <div class="timeline-body">
-                            <dl>
-                                <dt>Jogosultság típusa</dt>
-                                <dd>@permission.Type</dd>
-                                <dt>Leírása</dt>
-                                <dd>@permission.Description</dd>
-                                <dt>Jogosultsági kód</dt>
-                                <dd>@permission.ActiveDirectoryPermissions</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
+                }
             }
             <div>
                 <i class="fas fa-search bg-gray"></i>

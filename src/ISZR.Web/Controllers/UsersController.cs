@@ -228,7 +228,7 @@ namespace ISZR.Web.Controllers
 
                 // Felhasználó megkeresése
                 User? selectedUser = await GetUserById(id);
-                if (selectedUser == null) { return Forbid(); }
+                if (selectedUser == null) { return NotFound(); }
 
                 try
                 {

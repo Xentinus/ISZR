@@ -3,6 +3,7 @@ using ISZR.Web.Models;
 using ISZR.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 
@@ -59,25 +60,92 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Profile(int? userId)
         {
             // Amennyiben az oldal nem tartalmaz azonosítót
-            if (userId == null) return Forbid();
+            if (userId == null) return NotFound();
 
             // Felhasználó megkeresése a rendszerben
             User? user = await GetUserById(userId);
 
             // Amennyiben a felhasználó nem található az adatbázisban
-            if (user == null) return Forbid();
+            if (user == null) return NotFound();
 
             // Felület elkészítése
             var viewModel = new DashboardViewModel { User = user };
 
             // Felhasználó aktív parkolási engedélyeinek összeszedése
-            viewModel.Parkings = _context.Parkings.Where(p => p.OwnerUserId == user.UserId && !p.IsArchived).OrderBy(p => p.LicensePlate).ToList();
+            viewModel.Parkings = await _context.Parkings
+                .Where(p => p.OwnerUserId == user.UserId && !p.IsArchived)
+                .OrderBy(p => p.LicensePlate)
+                .ToListAsync();
 
             // Felhasználó által használt aktív PIN kódok
-            viewModel.Phones = _context.Phones.Where(p => p.PhoneUserId == user.UserId && !p.IsArchived).OrderBy(p => p.PhoneCode).ToList();
+            viewModel.Phones = await _context.Phones
+                .Where(p => p.PhoneUserId == user.UserId && !p.IsArchived)
+                .OrderBy(p => p.PhoneCode)
+                .ToListAsync();
+
+            // Felhasználó utolsó igénylései
+            viewModel.LastRequests = await _context.Requests
+                .Where(r => r.CreatedForUser == user || r.CreatedByUser == user)
+                .OrderByDescending(r => r.RequestId)
+                .Take(8)
+                .ToListAsync();
+
+            // Lenyíló menük adatainak betöltése
+            ViewData["ClassId"] = new SelectList(_context.Classes.Where(u => !u.IsArchived).OrderBy(u => u.Name), "ClassId", "Name");
+            ViewData["PositionId"] = new SelectList(_context.Positions.Where(u => !u.IsArchived).OrderBy(u => u.Name), "PositionId", "Name");
 
             // Irányítópult megjelenítése a felhasználónak
             return View(viewModel);
+        }
+
+        /// <summary>
+        /// Felhasználó elérhetőségének módosítása
+        /// </summary>
+        /// <param name="user">Megadott új felhasználói értékek</param>
+        /// <param name="id">Felhasználó azonosítója</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile([Bind("UserId,Username,DisplayName,Rank,Genre,Location,Email,Phone,LastLogin,ClassId,PositionId,IsArchived")] User user, int? id)
+        {
+            // Azonosító meglétének ellenőrzése
+            if (id == null || user.UserId != id || _context.Users == null) return NotFound();
+
+            // Felhasználó megkeresése az adatbázisban
+            var foundUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserId == id);
+
+            // Felhasználó meglétének ellenőrzése
+            if (foundUser == null) return NotFound();
+
+            try
+            {
+                // Felhasználó adatainak felülírása a megadott értékekkel
+                foundUser.DisplayName = user.DisplayName;
+                foundUser.Genre = user.Genre;
+                foundUser.Rank = user.Rank;
+                foundUser.ClassId = user.ClassId;
+                foundUser.PositionId = user.PositionId;
+                foundUser.Location = user.Location;
+                foundUser.Email = user.Email;
+                foundUser.Phone = user.Phone;
+
+                _context.Update(foundUser);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(foundUser.UserId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            // Felület újra megjelenítése
+            return RedirectToAction(nameof(Profile), new { userId = foundUser.UserId });
         }
 
         /// <summary>
@@ -94,6 +162,16 @@ namespace ISZR.Web.Controllers
                 .Include(u => u.Class)
                 .Include(u => u.Position)
                 .FirstOrDefaultAsync(m => m.UserId == id);
+        }
+
+        /// <summary>
+        /// Felhasználói azonosító megkeresése a rendszerben
+        /// </summary>
+        /// <param name="id">Felhasználói azonosító</param>
+        /// <returns>Létezik e a felhasználói azonosító (igaz/hamis)</returns>
+        private bool UserExists(int id)
+        {
+            return _context.Users.Any(e => e.UserId == id);
         }
     }
 }

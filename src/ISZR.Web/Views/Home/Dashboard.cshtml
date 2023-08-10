@@ -4,9 +4,179 @@
 
 @{
     ViewData["Title"] = "Felhasználói profil";
+
+    var baseUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.PathBase}";
 }
 
 <div class="container-fluid">
+    <div class="modal fade" id="deleteModal@(Model?.User?.UserId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(Model?.User?.UserId)" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form asp-controller="Home" asp-action="Dashboard" onsubmit="submitButton.disabled = true; return true;" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="@Model.User.UserId" />
+                    <input type="hidden" asp-for="@Model.User.Username" />
+                    <input type="hidden" asp-for="@Model.User.LastLogin" />
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title" id="deleteModalLabel@(Model?.User?.UserId)"><i class="fas fa-edit mr-2"></i>Elérhetőség módosítása</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="m-2">Személyes adatok</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Név</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <span asp-validation-for="@Model.User.DisplayName" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="@Model.User.DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <div class="form-group">
+                                    <label>Megszólítás</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                        </div>
+                                        <select asp-for="@Model.User.Genre" class="form-control select2bs4" required>
+                                            <option value="Male">Úr</option>
+                                            <option value="Female">Hölgy</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <div class="form-group">
+                                    <label>Rendfokozat</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <span asp-validation-for="@Model.User.Rank" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-medal"></i></span>
+                                        </div>
+                                        <select asp-for="@Model.User.Rank" class="form-control select2bs4" required>
+                                            <option>Munkavállaló</option>
+                                            <option>Rendvédelmi-alkalmazott</option>
+                                            <option>Őrmester</option>
+                                            <option>Törzsőrmester</option>
+                                            <option>Főtörzsőrmester</option>
+                                            <option>Zászlós</option>
+                                            <option>Törzszászlós</option>
+                                            <option>Főtörzszászlós</option>
+                                            <option>Hadnagy</option>
+                                            <option>Főhadnagy</option>
+                                            <option>Százados</option>
+                                            <option>Őrnagy</option>
+                                            <option>Alezredes</option>
+                                            <option>Ezredes</option>
+                                            <option>Dandártábornok</option>
+                                            <option>Vezérőrnagy</option>
+                                            <option>Altábornagy</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="m-2">Munkával kapcsolatos adatok</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Osztály</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                        </div>
+                                        <select asp-for="@Model.User.ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Beosztás</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
+                                        </div>
+                                        <select asp-for="@Model.User.PositionId" class="form-control select2bs4" asp-items="ViewBag.PositionId" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="m-2">Elérhetőség</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Szolgálati hely</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <span asp-validation-for="@Model.User.Location" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="@Model.User.Location" class="form-control" placeholder="Szolgálati hely" spellcheck="true" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>E-mail cím</label>
+                                    <span asp-validation-for="@Model.User.Email" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        </div>
+                                        <input type="email" asp-for="@Model.User.Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>NTG elérhetőség</label>
+                                    <span asp-validation-for="@Model.User.Phone" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        </div>
+                                        <input type="text" asp-for="@Model.User.Phone" class="form-control" placeholder="1061234" spellcheck="true" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mt-3 mb-2">
+                                <div class="float-left">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required />
+                                        <label class="custom-control-label" for="agreeToTerms">
+                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-sign-out-alt mr-2"></i>Vissza</button>
+                        <input asp-route-id="@Model?.User?.UserId" id="submitButton" type="submit" value="Megváltoztatás" class="btn btn-info" disabled />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12 col-md-6 col-xl-4">
             <div class="card card-widget widget-user">
@@ -39,8 +209,8 @@
                         <p class="text-muted">@Model?.User?.Phone</p>
                     }
                     <hr />
-                    <a class="nav-link btn btn-info" asp-controller="Home" asp-action="Settings">
-                        <i class="nav-icon fas fa-id-card mr-2"></i>Elérhetőség módosítása
+                    <a class="nav-link btn btn-info" href="#" data-toggle="modal" data-target="#deleteModal@(Model?.User?.UserId)">
+                        <i class="nav-icon fas fa-edit mr-2"></i>Elérhetőséged módosítása
                     </a>
                 </div>
             </div>
@@ -48,76 +218,149 @@
         <div class="col-12 col-md-6 col-xl-8">
             <div class="row">
                 <div class="col-12 col-xl-6">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h5 class="card-title">Parkolási engedélyeid <abbr title="Amennyiben a jármű már nem tartozik hozzád, írj e-mail a helyi informatikai csoportnak annak archiválásáról!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
-                        </div>
-                        <div class="card-body p-0">
-                            @if (Model?.Parkings?.Count > 0)
-                            {
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Rendszám</th>
-                                            <th>Hozzá tartozó jármű</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var vehicle in Model?.Parkings ?? new List<Parking>())
-                                        {
-                                            <tr>
-                                                <td><h4><span class="badge bg-info">@vehicle.LicensePlate</span></h4></td>
-                                                <td>@vehicle.Brand @vehicle.Modell</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            }
-                            else
-                            {
-                                <div class="text-center text-muted font-italic mt-4 mb-4 ml-2 mr-2">
-                                    Nem rendelkezel parkolási engedéllyel.
+                    @if (Model.Parkings != null)
+                    {
+                        <div class="col-12">
+                            <div class="card card-info">
+                                <div class="card-header">
+                                    <h5 class="card-title">Parkolási engedélyeid <abbr title="Amennyiben a jármű már nem tartozik hozzád, írj e-mail a helyi informatikai csoportnak annak archiválásáról!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
                                 </div>
-                            }
+                                <div class="card-body p-0">
+                                    @if (Model?.Parkings?.Count > 0)
+                                    {
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Rendszám</th>
+                                                    <th>Hozzá tartozó jármű</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var vehicle in Model?.Parkings ?? new List<Parking>())
+                                                {
+                                                    <tr>
+                                                        <td><h4><span class="badge bg-info">@vehicle.LicensePlate</span></h4></td>
+                                                        <td>@vehicle.Brand @vehicle.Modell</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center text-muted font-italic mt-4 mb-4 ml-2 mr-2">
+                                            Nem rendelkezel parkolási engedéllyel.
+                                        </div>
+                                    }
 
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                    }
+                    @if (Model.Phones != null)
+                    {
+                        <div class="col-12">
+                            <div class="card card-info">
+                                <div class="card-header">
+                                    <h5 class="card-title">PIN kódjaid külső telefonáláshoz <abbr title="Ezekkel a PIN kódokkal tudsz külső hívást indítani irodai telefonokon!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
+                                </div>
+                                @if (Model?.Phones?.Count > 0)
+                                {
+                                    <div class="card-body p-0">
+                                        <table class="table">
+                                            <tbody>
+                                                @foreach (var code in Model?.Phones ?? new List<Phone>())
+                                                {
+                                                    <tr>
+                                                        <td><h4><span class="badge bg-info">@code.PhoneCode</span></h4></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer">
+                                        <h5 class="text-info"><i class="fas fa-info mr-2"></i>Emlékeztető a használatáról</h5>
+                                        <div class="mb-2">0-ás gomb lenyomása után a fenti azonosítók közül kell egyet beírni. Ezután ki kell választani a típust, ami lehet <span class="text-info font-weight-bold">50 (hivatali)</span> vagy <span class="text-info font-weight-bold">51 (magán)</span>. Ezek után már csak a kívánt telefonszámot kell beírnunk.</div>
+                                        <div class="blockquote-footer">Amennyiben magán telefonálást hajtunk végre, azt az intézet pénztárában minden hónap elején be kell fizetni.</div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="card-body p-0">
+                                        <div class="text-center text-muted font-italic mt-4 mb-4 ml-2 mr-2">
+                                            Nem rendelkezel külső telefonáláshoz használható PIN kóddal.
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
                 <div class="col-12 col-xl-6">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h5 class="card-title">PIN kódjaid külső telefonáláshoz <abbr title="Ezekkel a PIN kódokkal tudsz külső hívást indítani irodai telefonokon!" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
-                        </div>
-                        @if (Model?.Phones?.Count > 0)
-                        {
+                    <div class="col-12">
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h5 class="card-title">Utolsó veled kapcsolatos igénylések <abbr title="Minden igénylés amely a részedre lett igényelve vagy te igényeltél más számára" class="text-decoration-none text-white ml-1"><i class="fas fa-question-circle"></i></abbr></h5>
+                            </div>
                             <div class="card-body p-0">
-                                <table class="table">
-                                    <tbody>
-                                        @foreach (var code in Model?.Phones ?? new List<Phone>())
-                                        {
+                                @if (Model?.LastRequests?.Count > 0)
+                                {
+                                    <table class="table">
+                                        <thead>
                                             <tr>
-                                                <td><h4><span class="badge bg-info">@code.PhoneCode</span></h4></td>
+                                                <th>Igénylési azonosító</th>
+                                                <th class="w-75">Igénylés típusa</th>
                                             </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var request in Model?.LastRequests ?? new List<Request>())
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        ISZR <a href="@($"{baseUrl}/Requests/Details/{request.RequestId}")" class="text-info font-weight-bold text-decoration-none">#@request.RequestId</a><br />
+                                                        @{
+                                                            if (request.Status == "Végrehajtva")
+                                                            {
+                                                                <span class="badge badge-success"><i class="fas fa-check mr-2"></i>Végrehajtva</span>
+                                                            }
+                                                            else if (request.Status == "Elutasítva")
+                                                            {
+                                                                <span class="badge badge-danger"><i class="fas fa-ban mr-2"></i>Elutasítva</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="badge badge-info"><i class="fas fa-comment-dots mr-2"></i>Folyamatban</span>
+                                                            }
+
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => request.Type)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div class="text-center text-muted font-italic mt-4 mb-4 ml-2 mr-2">
+                                        Nem található igénylés.
+                                    </div>
+                                }
+
                             </div>
-                            <div class="card-footer">
-                                <h5 class="text-info"><i class="fas fa-info mr-2"></i>Emlékeztető a használatáról</h5>
-                                <div class="mb-2">0-ás gomb lenyomása után a fenti azonosítók közül kell egyet beírni. Ezután ki kell választani a típust, ami lehet <span class="text-info font-weight-bold">50 (hivatali)</span> vagy <span class="text-info font-weight-bold">51 (magán)</span>. Ezek után már csak a kívánt telefonszámot kell beírnunk.</div>
-                                <div class="blockquote-footer">Amennyiben magán telefonálást hajtunk végre, azt az intézet pénztárában minden hónap elején be kell fizetni.</div>
-                            </div>
-                        } else
-                        {
-                            <div class="card-body p-0">
-                                <div class="text-center text-muted font-italic mt-4 mb-4 ml-2 mr-2">
-                                    Nem rendelkezel külső telefonáláshoz használható PIN kóddal.
-                                </div>
-                            </div>
-                        }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

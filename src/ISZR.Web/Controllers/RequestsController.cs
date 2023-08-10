@@ -210,7 +210,7 @@ namespace ISZR.Web.Controllers
 
             // Megtekintő felhasználó azonosítójának elmentése
             int? viewerId = await GetUserIdAsync(_context);
-            if (viewerId == null) return Forbid();
+            if (viewerId == null) return NotFound();
 
             // Igénylések listájának lekérdezése
             var dataContext = _context.Requests
@@ -365,7 +365,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> NewUserAccess(int? selectedGroup, [Bind("UserId,Username,DisplayName,Rank,Genre,Location,Email,Phone,LastLogin,ClassId,PositionId,IsArchived")] User user)
         {
             // Új felhasználó adatainak meglétének ellenőrzése
-            if (user == null || selectedGroup == null) return Forbid();
+            if (user == null || selectedGroup == null) return NotFound();
 
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
@@ -552,7 +552,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> UserChangePosition(string? currentPermissions, int? selectedGroup, [Bind("RequestId,Type,Status,Description,CreatedByUserId,CreatedForUserId")] Request request)
         {
             // Kötelező adatok meglétének ellenőrzése
-            if (string.IsNullOrEmpty(currentPermissions) || selectedGroup == null || request == null) return Forbid();
+            if (string.IsNullOrEmpty(currentPermissions) || selectedGroup == null || request == null) return NotFound();
 
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
@@ -726,7 +726,7 @@ namespace ISZR.Web.Controllers
                 Phone? phone = await GetPhoneById(selectedPIN);
 
                 // PIN kód meglétének ellenőrzése
-                if (phone == null) return Forbid();
+                if (phone == null) return NotFound();
 
                 // Személy beállítása
                 phone.PhoneUserId = request.CreatedForUserId;
@@ -835,7 +835,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> Parking(string? brand, string? modell, string? licensePlate, [Bind("RequestId,Type,Status,Description,CreatedByUserId,CreatedForUserId")] Request request)
         {
             // Autóval kapcsolatos adatok meglétének ellenőrzése
-            if (string.IsNullOrEmpty(brand) || string.IsNullOrEmpty(modell) || string.IsNullOrEmpty(licensePlate)) return Forbid();
+            if (string.IsNullOrEmpty(brand) || string.IsNullOrEmpty(modell) || string.IsNullOrEmpty(licensePlate)) return NotFound();
 
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
@@ -941,7 +941,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> HikcentralPermission(string? permissionType, [Bind("RequestId,Type,Status,Description,CreatedByUserId,CreatedForUserId")] Request request)
         {
             // Autóval kapcsolatos adatok meglétének ellenőrzése
-            if (string.IsNullOrEmpty(permissionType)) return Forbid();
+            if (string.IsNullOrEmpty(permissionType)) return NotFound();
 
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
@@ -1024,7 +1024,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> RecordsByTags(DateTime inputDate, string? inputWhy, string? inputTags, string[]? selectedCameras, [Bind("RequestId,Type,Status,Description,CreatedByUserId,CreatedForUserId")] Request request)
         {
             // Adatok meglétének ellenőrzése
-            if (string.IsNullOrEmpty(inputWhy) || string.IsNullOrEmpty(inputTags) || selectedCameras == null) return Forbid();
+            if (string.IsNullOrEmpty(inputWhy) || string.IsNullOrEmpty(inputTags) || selectedCameras == null) return NotFound();
 
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
@@ -1113,7 +1113,7 @@ namespace ISZR.Web.Controllers
         public async Task<IActionResult> RecordsByTime(string? inputWhy, string? recordsArray, [Bind("RequestId,Type,Status,Description,CreatedByUserId,CreatedForUserId")] Request request)
         {
             // Adatok meglétének ellenőrzése
-            if (string.IsNullOrEmpty(inputWhy) || string.IsNullOrEmpty(recordsArray)) return Forbid();
+            if (string.IsNullOrEmpty(inputWhy) || string.IsNullOrEmpty(recordsArray)) return NotFound();
 
             // Felvételek tömbösítése
             string[][]? records = JsonConvert.DeserializeObject<string[][]?>(recordsArray);
