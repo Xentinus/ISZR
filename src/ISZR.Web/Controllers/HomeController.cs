@@ -118,6 +118,7 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Felhasználók által gyakran ismételt kérdések megjelenítése a felhasználók részére.
         /// </summary>
+        [Authorize(Policy = "Ugyintezo")]
         public IActionResult FAQ()
         {
             // Gyakran ismételt kérdések oldalának megjelenítése

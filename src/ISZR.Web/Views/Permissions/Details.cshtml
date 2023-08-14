@@ -59,7 +59,7 @@
                     <div class="row">
                         <div class="col-12 float-right">
                             <span class="float-right">
-                                <a asp-action="Index" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
+                                <a onclick="history.back()" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
                                 <a asp-action="Edit" asp-route-id="@Model?.PermissionId"><input type="button" value="Jogosultság szerkesztése" class="btn btn-info ml-1" /></a>
                             </span>
                         </div>

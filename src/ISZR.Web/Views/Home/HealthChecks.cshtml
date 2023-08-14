@@ -48,7 +48,7 @@
                 <span class="info-box-icon"><i class="fas fa-door-open"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Mai napon bejelentkezett felhasználók</span>
-                    <a class="info-box-number text-muted" asp-controller="Users" asp-action="Index">
+                    <a class="info-box-number text-muted" asp-controller="Users" asp-action="Index" asp-route-status="True">
                         <span class="mr-2 text-success font-weight-bold"><i class="icon fas fa-user mr-2"></i>@Model.LoggedUserToday</span>
                         <span class="mr-2 text-muted">/</span>
                         <span class="text-muted"><i class="icon fas fa-users mr-2"></i>@Model.ActiveUsers</span>
@@ -61,7 +61,7 @@
                 <span class="info-box-icon"><i class="fas fa-parking"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Jelenleg aktív parkolási engedélyek</span>
-                    <a class="info-box-number" asp-controller="Parkings" asp-action="Index">
+                    <a class="info-box-number" asp-controller="Parkings" asp-action="Index" asp-route-status="True">
                         <span class="text-success font-weight-bold"><i class="icon fas fa-car-side mr-2"></i>@Model.ActiveParkings</span>
                     </a>
                 </div>
@@ -79,7 +79,7 @@
                 <span class="info-box-icon"><i class="fas fa-users-cog"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Jogosultsági csoport</span>
-                    <a class="info-box-number" asp-controller="Groups" asp-action="Index">
+                    <a class="info-box-number" asp-controller="Groups" asp-action="Index" asp-route-status="True">
                         <span class="text-success font-weight-bold"><i class="icon fas fa-user-friends mr-2"></i>@Model.ActiveGroups</span>
                     </a>
                 </div>
@@ -90,7 +90,7 @@
                 <span class="info-box-icon"><i class="fas fa-key"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Jogosultság</span>
-                    <a class="info-box-number font-weight-bold text-muted" asp-controller="Permissions" asp-action="Index">
+                    <a class="info-box-number font-weight-bold text-muted" asp-controller="Permissions" asp-action="Index" asp-route-status="True">
                         <span class="mr-2 text-info"><i class="icon fab fa-windows mr-2"></i>@Model.ActiveWindowsPermission</span>
                         <span class="mr-2 text-muted">/</span>
                         <span class="text-warning"><i class="icon fas fa-dove mr-2"></i>@Model.ActiveFonixPermission</span>
@@ -103,7 +103,7 @@
                 <span class="info-box-icon"><i class="fas fa-phone-square-alt"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text text-muted">PIN Kód</span>
-                    <a class="info-box-number" asp-controller="Phones" asp-action="Index">
+                    <a class="info-box-number" asp-controller="Phones" asp-action="Index" asp-route-status="True">
                         <span class="text-success font-weight-bold"><i class="icon fas fa-phone mr-2"></i>@Model.ActiveNotUsedPhone</span>
                     </a>
                 </div>
