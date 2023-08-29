@@ -5,11 +5,16 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12" id="accordion">
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="m-2">Általános kérdések</h4>
+                </div>
+            </div>
             <div class="card card-info card-outline">
                 <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseZero">
                     <div class="card-header bg-info">
                         <h4 class="card-title w-100">
-                            1. Hogyan lehet lementeni a szolgálati jegyeket?
+                            Hogyan lehet lementeni a szolgálati jegyeket?
                         </h4>
                     </div>
                 </a>
@@ -22,10 +27,53 @@
                 </div>
             </div>
             <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseFour">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            Az adott személy honnan tudhatja meg, hogy jogosultságot kapott?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseFour" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Az ISZR-ben lehetőség nyílik rá, hogy <b>sima felhasználóként a részére elkészült igényléseket és azok állapotát láthassa</b> azonban másokét nem.
+                    </div>
+                </div>
+            </div>
+            <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseSix">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            Mennyi idő míg a jogosultságok beállítása illetve a kamerafelvétel lementése megtörténik?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseSix" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <h4>Parkolási engedély igénylése esetén</h4>
+                        Az igénylés létrehozásakor <b>azonnal hozzáadásra kerül a rendszerhez</b>, így akár azonnal kérhető a parkolási engedély kártya amelyet <b>csak személyes megjelenés</b> esetén nyomtatunk ki!
+                        <h4 class="mt-4">Kamerafelvétel igénylése esetén</h4>
+                        Az aláírt szolgálati jegy <b>e-mailben való megérkezésekor, azonnal megtörténik</b> a kamerafelvétel lementése külső adattárolókra.
+                        <h4 class="mt-4">Minden más igénylés esetén</h4>
+                        Amint megérkezik Szombathelyről a <b>robotzsaru feladat a részünkre</b>, az hozzáadásra kerül a felhasználónak.<br />
+                        Ez alól <b>kivétel az E-mail cím igénylése</b> amelyet nem a helyi informatika végez, tehát ennek átfutási ideje akár több nap is lehet.
+                        <hr />
+                        A hozzáadott jogosultságokat a felhasználó <b>nem látja illetve nem tudja használni azonnal</b>, meg kell várnia a szinkronizálást a BVOP szerverrel ami körülbelül 10 perc.<br/>
+                        Ezt követő ki-be jelentkezés után használható az igényelt jogosultság.<br />
+                        Ez alól kivételt képeznek a <b>Főnix 3 jogosultságok</b> amelyeket <b>a felhasználók azonnal használni tudnak</b>.
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="m-2">Robotzsaruzással kapcsolatos kérdések</h4>
+                </div>
+            </div>
+            <div class="card card-info card-outline">
                 <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseOne">
                     <div class="card-header bg-info">
                         <h4 class="card-title w-100">
-                            2. Robotzsaruban hova kell feltölteni az elkészült szolgálati jegyeket?
+                            Hova kell feltölteni az elkészült szolgálati jegyeket?
                         </h4>
                     </div>
                 </a>
@@ -39,15 +87,15 @@
                 <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseTwo">
                     <div class="card-header bg-info">
                         <h4 class="card-title w-100">
-                            3. Kivel kell aláíratni az elkészült szolgálati jegyet?
+                            Kivel kell aláíratni az elkészült szolgálati jegyet?
                         </h4>
                     </div>
                 </a>
                 <div id="collapseTwo" class="collapse" data-parent="#accordion">
                     <div class="card-body">
-                        A dokumentumban <b>előre beállított személyeknek</b> kell aláírnia.<br />
-                        Minden esetben az igénylés létrehozónak, azaz az ügyintézőnek kell aláírnia úgy, hogy <b>nem készít alszámot vele!</b><br />
-                        Ezután az ügyintéző aláírásával elkészült dokumentumot kell <b>vezetői jóváhagyásra</b> küldeni a <b>dokumentumban szereplő engedélyező</b> számára.<br />
+                        A dokumentumban <b>előre beállított személyeknek</b> kell csak aláírnia.<br />
+                        Minden esetben az igénylés létrehozójának, azaz az <b>ügyintézőnek kell aláírnia</b> úgy, hogy <b>nem készít alszámot vele!</b><br />
+                        Ezután az ügyintéző aláírásával elkészült dokumentumot <b>vezetői jóváhagyásra</b> kell küldeni a <b>dokumentumban szereplő engedélyező</b> számára.<br />
                     </div>
                 </div>
             </div>
@@ -55,7 +103,7 @@
                 <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseThree">
                     <div class="card-header bg-info">
                         <h4 class="card-title w-100">
-                            4. Szükséges e expediálni a vezetői jováhagyásra felajánlott szolgálati jegyeket?
+                            Szükséges e expediálni a vezetői jováhagyásra felajánlott szolgálati jegyeket?
                         </h4>
                     </div>
                 </a>
@@ -72,17 +120,23 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="m-2">A rendszerrel kapcsolatos kérdések</h4>
+                </div>
+            </div>
             <div class="card card-info card-outline">
-                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseFour">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseSeven">
                     <div class="card-header bg-info">
                         <h4 class="card-title w-100">
-                            5. Az adott személy honnan tudhatja meg, hogy jogosultságot kapott?
+                            Hogyan lehet módosítani más felhasználók elérhetőségeit?
                         </h4>
                     </div>
                 </a>
-                <div id="collapseFour" class="collapse" data-parent="#accordion">
+                <div id="collapseSeven" class="collapse" data-parent="#accordion">
                     <div class="card-body">
-                        Az ISZR-ben lehetőség nyílik rá, hogy <b>sima felhasználóként a részére elkészült igényléseket és azok állapotát láthassa</b> azonban másokét nem.
+                        Ügyintézőként lehetőség nyílik rá, hogy más felhasználók elérhetőségeit módosítsa.<br />
+                        Nincs más teendő csak a <b>bal oldalt megtalálható keresésnél rákeresni</b> az adott felhasználóra, ott megnyitni a felhasználói profilt ahol a felhasználóról több részletes adat is megjelenik. majd módosítani az elérhetőségeit.
                     </div>
                 </div>
             </div>
