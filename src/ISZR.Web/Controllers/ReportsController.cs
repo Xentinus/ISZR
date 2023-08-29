@@ -8,7 +8,7 @@ namespace ISZR.Web.Controllers
     /// <summary>
     /// /Reports/? Controller
     /// </summary>
-    [Authorize(Policy = "Administrator")]
+    [Authorize(Policy = "Ugyintezo")]
     public class ReportsController : Controller
     {
         private readonly DataContext _context;
@@ -21,9 +21,10 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Hibabejelentések megjelenítése szűrés alapján
         /// </summary>
-        /// <param name="reportUser">Bejelentő</param>
+        /// <param name="user">Bejelentő</param>
         /// <param name="text">Címben és leírásban keresendő szavak</param>
         /// <param name="status">Hibabejelentések státusza</param>
+        [Authorize(Policy = "Administrator")]
         public async Task<IActionResult> Index(string user, string text, bool status, int? pageNumber)
         {
             // Értékek beállítása
@@ -112,7 +113,6 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// Hibabejelentés felületének megjelenítése
         /// </summary>
-        [Authorize(Policy = "Ugyintezo")]
         public IActionResult Create()
         {
             // Felület megjelenítése
