@@ -92,43 +92,23 @@
                         <thead class="bg-info">
                             <tr>
                                 <th>Csoport megnevezése</th>
-                                <th class="d-none d-md-table-cell">Alapértelmezett jogosultságok</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @foreach (var group in Model)
                             {
                                 <tr>
                                     <td>
-                                        <span>@item.Name</span>
+                                        <span>@group.Name</span>
                                         <br />
-                                        @if (item.IsArchived)
+                                        @if (group.IsArchived)
                                         {
                                             <span class="badge badge-danger"><i class="icon fas fa-archive mr-2"></i>Archivált jogosultság csoport</span>
                                         }
                                         else
                                         {
                                             <span class="badge badge-success"><i class="icon fas fa-puzzle-piece mr-2"></i>Igényelhető jogosultsági csoport</span>
-                                        }
-                                    </td>
-                                    <td class="d-none d-md-table-cell">
-                                        @if (item.WindowsPermissions == null || item.WindowsPermissions == "")
-                                        {
-                                            <span class="badge badge-danger"><i class="icon fas fa-exclamation mr-2"></i>Windows jogosultságot nem tartalmaz</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge badge-success"><i class="icon fas fa-check mr-2"></i>Windows jogosultságot tartalmaz</span>
-                                        }
-                                        <br />
-                                        @if (item.FonixPermissions == null || item.FonixPermissions == "")
-                                        {
-                                            <span class="badge badge-danger"><i class="icon fas fa-exclamation mr-2"></i>Főnix 3 jogosultságot nem tartalmaz</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge badge-success"><i class="icon fas fa-check mr-2"></i>Főnix 3 jogosultságot tartalmaz</span>
                                         }
                                     </td>
                                     <td class="d-print-none">
@@ -138,10 +118,10 @@
                                                     <i class="fas fa-book mr-2"></i><span class="d-none d-xl-inline">Adminisztratív müveletek</span>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a asp-action="Details" asp-route-id="@item.GroupId" class="dropdown-item"><i class="fas fa-search mr-2"></i>Megtekintés</a>
-                                                    <a asp-action="Edit" asp-route-id="@item.GroupId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
+                                                    <a asp-action="Details" asp-route-id="@group.GroupId" class="dropdown-item"><i class="fas fa-search mr-2"></i>Megtekintés</a>
+                                                    <a asp-action="Edit" asp-route-id="@group.GroupId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
                                                     <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item bg-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal@(item.GroupId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
+                                                    <a class="dropdown-item bg-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal@(group.GroupId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
                                                 </div>
                                             </div>
                                         </div>

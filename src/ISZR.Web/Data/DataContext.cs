@@ -28,5 +28,24 @@ namespace ISZR.Web.Data
         public DbSet<Parking> Parkings { get; set; } = default!;
 
         public DbSet<Report> Reports { get; set; } = default!;
+        public DbSet<GroupPermission> GroupPermissions { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<GroupPermission>()
+                .HasKey(gp => new { gp.GroupId, gp.PermissionId });
+
+            modelBuilder.Entity<GroupPermission>()
+                .HasOne(gp => gp.Group)
+                .WithMany(g => g.GroupPermissions)
+                .HasForeignKey(gp => gp.GroupId);
+
+            modelBuilder.Entity<GroupPermission>()
+                .HasOne(gp => gp.Permission)
+                .WithMany(p => p.GroupPermissions)
+                .HasForeignKey(gp => gp.PermissionId);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

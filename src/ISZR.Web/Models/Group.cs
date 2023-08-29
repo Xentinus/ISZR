@@ -23,23 +23,14 @@ namespace ISZR.Web.Models
         public string? Name { get; set; }
 
         /// <summary>
-        /// Csoporthoz hozzátartozó Windows jogosultságok
-        /// </summary>
-        [Display(Name = "Csoporthoz hozzátartozó Windows jogosultságok")]
-        [DataType(DataType.MultilineText)]
-        public string? WindowsPermissions { get; set; }
-
-        /// <summary>
-        /// Csoporthoz hozzátartozó Főnix 3 jogosultságok
-        /// </summary>
-        [Display(Name = "Csoporthoz hozzátartozó Főnix 3 jogosultságok")]
-        [DataType(DataType.MultilineText)]
-        public string? FonixPermissions { get; set; }
-
-        /// <summary>
         /// Archiválva
         /// </summary>
         [Display(Name = "Archiválva")]
         public bool IsArchived { get; set; } = false;
+
+        /// <summary>
+        /// Csoporthoz hozzátartozó jogosultságok
+        /// </summary>
+        public ICollection<GroupPermission> GroupPermissions { get; set; } = new List<GroupPermission>();
     }
 }

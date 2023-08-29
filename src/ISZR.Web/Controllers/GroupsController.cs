@@ -1,4 +1,5 @@
 ﻿using ISZR.Web.Models;
+using ISZR.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -113,7 +114,10 @@ namespace ISZR.Web.Controllers
             if (id == null || _context.Groups == null) return NotFound();
 
             // Kért csoport kikeresése az adatbázisból
-            var group = await _context.Groups.FirstOrDefaultAsync(m => m.GroupId == id);
+            var group = await _context.Groups
+                .Include(g => g.GroupPermissions)
+                .ThenInclude(gp => gp.Permission)
+                .FirstOrDefaultAsync(g => g.GroupId == id);
 
             // Csoport meglétének ellenőrzése
             if (group == null) return NotFound();
@@ -127,32 +131,36 @@ namespace ISZR.Web.Controllers
         /// </summary>
         public IActionResult Create()
         {
-            // Lista elemek betöltése
-            ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows" && !p.IsArchived).OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
-            ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3" && !p.IsArchived).OrderBy(p => p.Name), "Name", "Name");
+            // Igényelhető jogosultságok kilistázása
+            var viewModel = new GroupViewModel
+            {
+                PermissionItems = _context.Permissions
+                    .Where(p => !p.IsArchived)
+                    .Select(p => new SelectListItem { Value = p.PermissionId.ToString(), Text = p.Name })
+            };
 
             // Felület megjelenítése
-            return View();
+            return View(viewModel);
         }
 
         /// <summary>
         /// Csoport létrehozása a rendszerben
         /// </summary>
-        /// <param name="windowsPermissions">Kért windows jogosultságok tömbben</param>
-        /// <param name="fonix3Permissions">Kért főnix 3 jogosultságok tömbben</param>
-        /// <param name="group">Megadott csoport adatai</param>
+        /// <param name="viewModel">Megadott csoport adatai</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string[] windowsPermissions, string[] fonix3Permissions, [Bind("GroupId,Name,WindowsPermissions,FonixPermissions,IsArchived")] Group group)
+        public async Task<IActionResult> Create(GroupViewModel viewModel)
         {
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
-                // Windows jogosultságok Active-Directory értékeinek sorrendbe helyezése
-                if (windowsPermissions.Length > 0) group.WindowsPermissions = PermissionList(windowsPermissions);
-
-                // Főnix 3 jogosultságok neveinek sorrendbe helyezése
-                if (fonix3Permissions.Length > 0) group.FonixPermissions = PermissionList(fonix3Permissions);
+                var group = new Group
+                {
+                    Name = viewModel.Name,
+                    GroupPermissions = viewModel.SelectedPermissionIds
+                        .Select(permissionId => new GroupPermission { PermissionId = permissionId })
+                        .ToList()
+                };
 
                 try
                 {
@@ -173,15 +181,16 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása a csoportok listájára
-                return RedirectToAction(nameof(Index), new {status = true});
+                return RedirectToAction(nameof(Index), new { status = true });
             }
 
-            // Lista elemek betöltése
-            ViewData["Windows"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Windows" && !p.IsArchived).OrderBy(p => p.Name), "ActiveDirectoryPermissions", "Name");
-            ViewData["Fonix3"] = new MultiSelectList(_context.Permissions.Where(p => p.Type == "Főnix 3" && !p.IsArchived).OrderBy(p => p.Name), "Name", "Name");
+            // Kiválaszható jogosultságok
+            viewModel.PermissionItems = _context.Permissions
+                .Where(p => !p.IsArchived)
+                .Select(p => new SelectListItem { Value = p.PermissionId.ToString(), Text = p.Name });
 
             // Felület megjelenítése amennyiben hibásan lettek megadva az adatok
-            return View(group);
+            return View(viewModel);
         }
 
         /// <summary>
@@ -194,43 +203,60 @@ namespace ISZR.Web.Controllers
             if (id == null || _context.Groups == null) return NotFound();
 
             // Kért csoport megkeresése az adatbázisban
-            var group = await _context.Groups.FindAsync(id);
+            var group = await _context.Groups
+                .Include(g => g.GroupPermissions)
+                .FirstOrDefaultAsync(g => g.GroupId == id);
 
             // Csoport meglétének ellenőrzése
             if (group == null) return NotFound();
 
+            var viewModel = new GroupViewModel
+            {
+                GroupId = group.GroupId,
+                Name = group.Name,
+                SelectedPermissionIds = group.GroupPermissions.Select(gp => gp.PermissionId).ToList(),
+                PermissionItems = _context.Permissions
+                    .Select(p => new SelectListItem { Value = p.PermissionId.ToString(), Text = p.Name })
+            };
+
             // Felület megjelenítése a kért csoport adataival
-            return View(group);
+            return View(viewModel);
         }
 
         /// <summary>
         /// Csoport adatainak szerkesztése
         /// </summary>
-        /// <param name="id">Csoport azonosítója</param>
-        /// <param name="group">Csoport megadott új értékei</param>
+        /// <param name="viewModel">Megadott csoport adatok</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GroupId,Name,WindowsPermissions,FonixPermissions,IsArchived")] Group group)
+        public async Task<IActionResult> Edit(GroupViewModel viewModel)
         {
-            // Azonosító meglétének ellenőrzése
-            if (id != group.GroupId) return NotFound();
+            var group = await _context.Groups
+                        .Include(g => g.GroupPermissions)
+                        .FirstOrDefaultAsync(g => g.GroupId == viewModel.GroupId);
+
+            if (group == null)
+            {
+                return NotFound();
+            }
 
             // Megadott értékek ellenőrzése
             if (ModelState.IsValid)
             {
-                // Null érték megtartása amennyiben üres a mező
-                group.WindowsPermissions = group.WindowsPermissions == "" ? null : group.WindowsPermissions;
-                group.FonixPermissions = group.FonixPermissions == "" ? null : group.FonixPermissions;
-
                 try
                 {
+                    group.Name = viewModel.Name;
+                    group.GroupPermissions = viewModel.SelectedPermissionIds
+                        .Select(permissionId => new GroupPermission { PermissionId = permissionId })
+                        .ToList();
+
                     // Csoport adatainak felülírása
                     _context.Update(group);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GroupExists(group.GroupId))
+                    if (!GroupExists(viewModel.GroupId))
                     {
                         return NotFound();
                     }
@@ -241,23 +267,15 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása a csoportok listájára
-                return RedirectToAction(nameof(Index), new {status = !group.IsArchived});
+                return RedirectToAction(nameof(Index), new { status = !group.IsArchived });
             }
 
-            // Felület megjelenítése amennyiben hibás adatokat tartalmaz
-            return View(group);
-        }
+            viewModel.PermissionItems = _context.Permissions
+                .Where(p => !p.IsArchived)
+                .Select(p => new SelectListItem { Value = p.PermissionId.ToString(), Text = p.Name });
 
-        /// <summary>
-        /// Jogosultságok sorrendbe helyezése elválasztással
-        /// </summary>
-        /// <param name="permissions">Jogosultságokat tartalmazó string tömb</param>
-        /// <returns>Egy stringként adja vissza ;-al elválasztva a jogosutlságokat</returns>
-        private string PermissionList(string[] permissions)
-        {
-            StringBuilder permissionList = new StringBuilder();
-            foreach (string permission in permissions) permissionList.Append(permission[permission.Length - 1] == ';' ? $"{permission} " : $"{permission}; ");
-            return permissionList.ToString();
+            // Felület megjelenítése amennyiben hibás adatokat tartalmaz
+            return View(viewModel);
         }
 
         /// <summary>

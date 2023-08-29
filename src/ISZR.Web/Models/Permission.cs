@@ -51,5 +51,10 @@ namespace ISZR.Web.Models
         /// </summary>
         [Display(Name = "Archiválva")]
         public bool IsArchived { get; set; } = false;
+
+        /// <summary>
+        /// Jogosultság csoportjai
+        /// </summary>
+        public ICollection<GroupPermission> GroupPermissions { get; set; } = new List<GroupPermission>();
     }
 }
