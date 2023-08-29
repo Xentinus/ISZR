@@ -12,7 +12,7 @@
         <div class="col-12">
             <div class="card card-info">
                 <div class="card-header">
-                    <h3 class="card-title">Active Directory jogosultságok átkonvertálása</h3>
+                    <h3 class="card-title">Jogosultságok összehasonlítása a rendszerrel</h3>
                 </div>
 
                 <div class="card-body">
@@ -25,13 +25,13 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Active Directory jogosultságok</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Konvertálásra szánt jogosultságok</label>
                                     <span asp-validation-for="UserInput" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-font"></i></span>
                                         </div>
-                                        <input type="text" asp-for="UserInput" class="form-control" placeholder="Jogosultságok ; -al elválasztva" spellcheck="false" required />
+                                        <input type="text" asp-for="UserInput" class="form-control" placeholder="Másold be az Active Directory jogosultságokat, amelyeket össze szeretnél hasonlítani a rendszerrel ( ;-al elválasztva )" spellcheck="false" required />
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                             <thead class="bg-success">
                                 <tr>
                                     <th>Talált jogosultságok a rendszerben</th>
-                                    <th>Státusz</th>
+                                    <th>Hozzátartozó jogosultság</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,8 +69,7 @@
                                     <tr>
                                         <td>
                                             <span>@permission.Name</span>
-                                        </td>
-                                        <td>
+                                            <br>
                                             @if (permission.IsArchived)
                                             {
                                                 <span class="badge badge-danger"><i class="icon fas fa-archive mr-2"></i>Archivált jogosultság</span>
@@ -79,6 +78,9 @@
                                             {
                                                 <span class="badge badge-success"><i class="icon fas fa-puzzle-piece mr-2"></i>Igényelhető jogosultság</span>
                                             }
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">@permission.ActiveDirectoryPermissions</span>
                                         </td>
                                     </tr>
                                 }
