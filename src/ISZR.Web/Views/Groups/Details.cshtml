@@ -17,36 +17,11 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Jogosultsági csoport megnevezése</label>
-                                <span asp-validation-for="Name" class="text-danger"></span>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                                     </div>
                                     <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultsági csoport megnevezése" spellcheck="true" disabled />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Jogosultsági csoporthoz tartozó Windows jogosultságok</label>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fab fa-windows"></i></span>
-                                    </div>
-                                    <input type="text" asp-for="WindowsPermissions" class="form-control" disabled />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Jogosultsági csoporthoz tartozó Főnix 3 jogosultságok</label>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-dove"></i></span>
-                                    </div>
-                                    <input type="text" asp-for="FonixPermissions" class="form-control" disabled />
                                 </div>
                             </div>
                         </div>
@@ -59,6 +34,50 @@
                             </span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h4 class="m-2">Csoporthoz tartozó jogosultságok</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <table class="table table-striped">
+                        <thead class="bg-info">
+                            <tr>
+                                <th>Név</th>
+                                <th>Hozzátartozó Active Directory jogosultság</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model?.GroupPermissions != null)
+                            {
+                                @foreach (var permission in Model?.GroupPermissions.Select(gp => gp.Permission).Where(p => !p.IsArchived))
+                                {
+                                    <tr>
+                                        <td>
+                                            @permission.Name
+                                            <br />
+                                            @if (permission.Type == "Windows")
+                                            {
+                                                <span class="badge badge-info"><i class="icon fab fa-windows mr-2"></i>Windows jogosultság</span>
+                                            }
+                                            @if (permission.Type == "Főnix 3")
+                                            {
+                                                <span class="badge badge-warning"><i class="icon fas fa-dove mr-2"></i>Főnix 3 jogosultság</span>
+                                            }
+                                        </td>
+                                        <td class="text-muted">@permission.ActiveDirectoryPermissions</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

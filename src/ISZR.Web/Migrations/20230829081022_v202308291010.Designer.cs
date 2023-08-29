@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISZR.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230705082755_v202307051027")]
-    partial class v202307051027
+    [Migration("20230829081022_v202308291010")]
+    partial class v202308291010
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,9 +79,6 @@ namespace ISZR.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupId"), 1L, 1);
 
-                    b.Property<string>("FonixPermissions")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
@@ -90,12 +87,24 @@ namespace ISZR.Web.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<string>("WindowsPermissions")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("GroupId");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("ISZR.Web.Models.GroupPermission", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("GroupPermissions");
                 });
 
             modelBuilder.Entity("ISZR.Web.Models.Parking", b =>
@@ -365,6 +374,25 @@ namespace ISZR.Web.Migrations
                     b.Navigation("Authorizer");
                 });
 
+            modelBuilder.Entity("ISZR.Web.Models.GroupPermission", b =>
+                {
+                    b.HasOne("ISZR.Web.Models.Group", "Group")
+                        .WithMany("GroupPermissions")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ISZR.Web.Models.Permission", "Permission")
+                        .WithMany("GroupPermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Permission");
+                });
+
             modelBuilder.Entity("ISZR.Web.Models.Parking", b =>
                 {
                     b.HasOne("ISZR.Web.Models.User", "OwnerUser")
@@ -447,6 +475,16 @@ namespace ISZR.Web.Migrations
             modelBuilder.Entity("ISZR.Web.Models.Class", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ISZR.Web.Models.Group", b =>
+                {
+                    b.Navigation("GroupPermissions");
+                });
+
+            modelBuilder.Entity("ISZR.Web.Models.Permission", b =>
+                {
+                    b.Navigation("GroupPermissions");
                 });
 
             modelBuilder.Entity("ISZR.Web.Models.Position", b =>

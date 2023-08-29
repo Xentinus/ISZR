@@ -34,7 +34,7 @@
                         <div>
                             <i class="far fa-file bg-warning"></i>
                             <div class="timeline-item">
-                                <span class="time"><i class="fas fa-search mr-2"></i>Találat a igénylések adati között</span>
+                                <span class="time"><i class="fas fa-search mr-2"></i>Találat a igénylések adatai között</span>
                                 <h3 class="timeline-header"><a class="text-warning font-weight-bold" href="@($"{baseUrl}/Requests/Details/{request.RequestId}")">#@request?.RequestId</a> számú igénylés</h3>
                                 <div class="timeline-body">
                                     <dl>
@@ -118,6 +118,43 @@
                     }
                 }
 
+                // Jogosultsági csoportok
+                var foundGroups = ViewData["foundGroups"] as List<Group>;
+                if (foundGroups != null)
+                {
+                    foreach (var group in foundGroups)
+                    {
+                        <div>
+                            <i class="fas fa-users-cog bg-secondary"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fas fa-search mr-2"></i>Találat a jogosultsági csoportok adatai között</span>
+                                <h3 class="timeline-header"><a class="text-secondary font-weight-bold">@group.Name</a> nevű jogosultsági csoport</h3>
+                                <div class="timeline-body">
+                                    <dl>
+                                        @{
+                                            string groupWindowsPermissions = string.Join("; ", group.GroupPermissions.Where(gp => gp.Permission.Type == "Windows" && !gp.Permission.IsArchived).Select(gp => gp.Permission.Name));
+
+                                            if (!string.IsNullOrEmpty(groupWindowsPermissions))
+                                            {
+                                                <dt>Csoport Windows jogosultságai</dt>
+                                                <dd>@groupWindowsPermissions</dd>
+                                            }
+
+                                            string groupFonixPermissions = string.Join("; ", group.GroupPermissions.Where(gp => gp.Permission.Type == "Főnix 3" && !gp.Permission.IsArchived).Select(gp => gp.Permission.Name));
+
+                                            if (!string.IsNullOrEmpty(groupFonixPermissions))
+                                            {
+                                                <dt>Csoport Főnix 3 jogosultságai</dt>
+                                                <dd>@groupFonixPermissions</dd>
+                                            }
+                                        }
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
                 // Jogosultságok
                 var foundPermissions = ViewData["foundPermissions"] as List<Permission>;
                 if (foundPermissions != null)
@@ -135,8 +172,11 @@
                                         <dd>@permission.Type</dd>
                                         <dt>Leírása</dt>
                                         <dd>@permission.Description</dd>
-                                        <dt>Jogosultsági kód</dt>
-                                        <dd>@permission.ActiveDirectoryPermissions</dd>
+                                        @if (!string.IsNullOrEmpty(permission.ActiveDirectoryPermissions))
+                                        {
+                                            <dt>Jogosultsági kód</dt>
+                                            <dd>@permission.ActiveDirectoryPermissions</dd>
+                                        }
                                     </dl>
                                 </div>
                             </div>
@@ -145,7 +185,7 @@
                     }
                 }
 
-                if (foundRequests.Count == 0 && foundUsers.Count == 0 && foundParkings.Count == 0 && foundPermissions.Count == 0)
+                if (foundRequests.Count == 0 && foundUsers.Count == 0 && foundParkings.Count == 0 && foundGroups.Count == 0 && foundPermissions.Count == 0)
                 {
                     <div>
                         <i class="fas fa-ban bg-danger"></i>

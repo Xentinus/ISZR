@@ -1,4 +1,6 @@
-﻿@model ISZR.Web.Models.Group
+﻿@using ISZR.Web.ViewModels;
+
+@model GroupViewModel;
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -27,36 +29,27 @@
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
                                         </div>
                                         <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultsági csoport megnevezése" spellcheck="true" required />
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Jogosultsági csoporthoz tartozó Windows jogosultságok</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fab fa-windows"></i></span>
+                            @if (Model?.PermissionItems != null)
+                            {
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Jogosultsági csoporthoz tartozó jogosultságok</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                        <span asp-validation-for="SelectedPermissionIds" class="text-danger"></span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                            </div>
+                                            <select asp-for="SelectedPermissionIds" asp-items="Model?.PermissionItems" class="form-control select2bs4stay" multiple="multiple" required></select>
                                         </div>
-                                        <input type="text" asp-for="WindowsPermissions" class="form-control" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Jogosultsági csoporthoz tartozó Főnix 3 jogosultságok</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-dove"></i></span>
-                                        </div>
-                                        <input type="text" asp-for="FonixPermissions" class="form-control" />
-                                    </div>
-                                </div>
-                            </div>
+                            }
                         </div>
                         <div class="row">
                             <div class="col-12">

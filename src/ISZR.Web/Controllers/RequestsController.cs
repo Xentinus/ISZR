@@ -393,8 +393,11 @@ namespace ISZR.Web.Controllers
                 request.Status = "Folyamatban";
 
                 // Csoport jogosultságainak hozzáadása
-                request.WindowsPermissions = !string.IsNullOrEmpty(group.WindowsPermissions) ? group.WindowsPermissions : null;
-                request.FonixPermissions = !string.IsNullOrEmpty(group.FonixPermissions) ? group.FonixPermissions : null;
+                string groupWindowsPermissions = string.Join("; ", group.GroupPermissions.Where(gp => gp.Permission.Type == "Windows" && !gp.Permission.IsArchived).Select(gp => gp.Permission.ActiveDirectoryPermissions));
+                request.WindowsPermissions = !string.IsNullOrEmpty(groupWindowsPermissions) ? groupWindowsPermissions : null;
+
+                string groupFonixPermissions = string.Join("; ", group.GroupPermissions.Where(gp => gp.Permission.Type == "Főnix 3" && !gp.Permission.IsArchived).Select(gp => gp.Permission.Name));
+                request.FonixPermissions = !string.IsNullOrEmpty(groupFonixPermissions) ? groupFonixPermissions : null;
 
                 try
                 {
@@ -560,6 +563,9 @@ namespace ISZR.Web.Controllers
                 // Kért csoport jogosultságainak lekérdezése
                 Group? group = await GetGroupById(selectedGroup);
 
+                // Amennyiben a kiválasztott jogosultsági csoport nem létezik
+                if (group == null) return NotFound();
+
                 // Igénylést létrehozó személy azonosítója
                 request.CreatedByUserId = await GetLoggedUserId();
 
@@ -576,8 +582,11 @@ namespace ISZR.Web.Controllers
                 request.Description = $"<dl>\r\n<dt><i class=\"icon fas fa-people-arrows mr-2\"></i>Teendő a felhasználó jelenlegi jogosultságaival</dt>\r\n<dd>{currentPermissions}</dd>\r\n</dl>";
 
                 // Csoport jogosultságainak hozzáadása
-                request.WindowsPermissions = !string.IsNullOrEmpty(group.WindowsPermissions) ? group.WindowsPermissions : null;
-                request.FonixPermissions = !string.IsNullOrEmpty(group.FonixPermissions) ? group.FonixPermissions : null;
+                string groupWindowsPermissions = string.Join("; ", group.GroupPermissions.Where(gp => gp.Permission.Type == "Windows" && !gp.Permission.IsArchived).Select(gp => gp.Permission.ActiveDirectoryPermissions));
+                request.WindowsPermissions = !string.IsNullOrEmpty(groupWindowsPermissions) ? groupWindowsPermissions : null;
+
+                string groupFonixPermissions = string.Join("; ", group.GroupPermissions.Where(gp => gp.Permission.Type == "Főnix 3" && !gp.Permission.IsArchived).Select(gp => gp.Permission.Name));
+                request.FonixPermissions = !string.IsNullOrEmpty(groupFonixPermissions) ? groupFonixPermissions : null;
 
                 try
                 {
@@ -1207,7 +1216,7 @@ namespace ISZR.Web.Controllers
         /// <returns>Csoport</returns>
         private async Task<Group?> GetGroupById(int? id)
         {
-            return await _context.Groups.FirstOrDefaultAsync(g => g.GroupId == id);
+            return await _context.Groups.Include(g => g.GroupPermissions).ThenInclude(gp => gp.Permission).FirstOrDefaultAsync(g => g.GroupId == id);
         }
 
         /// <summary>

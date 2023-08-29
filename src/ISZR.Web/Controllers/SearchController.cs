@@ -54,6 +54,12 @@ namespace ISZR.Web.Controllers
                 .Include(p => p.OwnerUser.Position)
                 .ToListAsync();
 
+            ViewData["foundGroups"] = await _context.Groups
+                .Where(g => g.Name.Contains(searching))
+                .Include(g => g.GroupPermissions)
+                .ThenInclude(gp => gp.Permission)
+                .ToListAsync();
+
             return View();
         }
 
