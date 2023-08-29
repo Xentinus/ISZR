@@ -1,10 +1,21 @@
 {
   "profiles": {
-    "IIS Express": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "IIS Development": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Production": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     }
   },
