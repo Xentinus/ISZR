@@ -55,7 +55,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Permissions" asp-action="Index" asp-route-status="true">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" && ViewContext.RouteData.Values["Action"]?.ToString() != "Convert" ? "active" : "")" asp-controller="Permissions" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-key"></i>
                         <p>Jogosultságok</p>
                     </a>
@@ -71,6 +71,13 @@
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cameras" ? "active" : "")" asp-controller="Cameras" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-video"></i>
                         <p>Kamerák</p>
+                    </a>
+                </li>
+                <li class="nav-header"><b>Eszközök</b></li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" && ViewContext.RouteData.Values["Action"]?.ToString() == "Convert" ? "active" : "")" asp-controller="Permissions" asp-action="Convert">
+                        <i class="nav-icon fas fa-sync-alt"></i>
+                        <p>Jogosultság konvertálás</p>
                     </a>
                 </li>
             </ul>

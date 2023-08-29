@@ -1,8 +1,10 @@
 ﻿using ISZR.Web.Models;
+using ISZR.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
+using System.Linq;
 
 namespace ISZR.Web.Controllers
 {
@@ -115,7 +117,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Felület újra megjelenítése
-            return RedirectToAction(nameof(Index), new {status = !permission.IsArchived});
+            return RedirectToAction(nameof(Index), new { status = !permission.IsArchived });
         }
 
         /// <summary>
@@ -183,7 +185,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása a jogosultságok listájához
-                return RedirectToAction(nameof(Index), new {status = true});
+                return RedirectToAction(nameof(Index), new { status = true });
             }
 
             // Felület újra megjelenítése, amennyiben a megadott értékek hibásak
@@ -243,11 +245,67 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Felhasználó átírányítása a jogosultságok listájára
-                return RedirectToAction(nameof(Index), new {status = !permission.IsArchived});
+                return RedirectToAction(nameof(Index), new { status = !permission.IsArchived });
             }
 
             // Felület újra megjelenítése, amennyiben a kért értékek hibásak
             return View(permission);
+        }
+
+        /// <summary>
+        /// Jogosultságok konvertálásának felületének megjelenítése
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Convert()
+        {
+            return View(new PermissionConverterViewModel());
+        }
+
+        /// <summary>
+        /// Bevitt szöveg jogosultságokká alakítása
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Convert(PermissionConverterViewModel model)
+        {
+            // Megadott értékek ellenőrzése
+            if (ModelState.IsValid)
+            {
+                // Beviteli mező feldolgozása
+                string[] inputPermissions = model.UserInput
+                    .Split(';')
+                    .Select(item => item.Trim())
+                    .Where(item => !string.IsNullOrEmpty(item))
+                    .ToArray();
+
+                // Listák létrehozása
+                HashSet<Permission> foundPermissions = new HashSet<Permission>();
+
+                List<string> notFoundPermissions = new List<string>();
+
+                // Bevitt értékek feldolgozása
+                foreach (string inputPermission in inputPermissions)
+                {
+                    var permission = await _context.Permissions
+                        .FirstOrDefaultAsync(p => p.ActiveDirectoryPermissions.ToLower().Contains(inputPermission.ToLower()));
+
+                    if (permission != null)
+                    {
+                        foundPermissions.Add(permission);
+                    }
+                    else
+                    {
+                        notFoundPermissions.Add(inputPermission);
+                    }
+                }
+
+                // Találatok megjelenítése
+                model.FoundPermissions = foundPermissions;
+                model.NotFoundPermissions = notFoundPermissions;
+            }
+
+            // Felület újra megjelenítése
+            return View("Convert", model);
         }
 
         /// <summary>
