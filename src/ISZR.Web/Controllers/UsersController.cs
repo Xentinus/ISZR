@@ -3,6 +3,8 @@ using ISZR.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.NetworkInformation;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ISZR.Web.Controllers
@@ -102,7 +104,7 @@ namespace ISZR.Web.Controllers
             }
 
             // Felület újra megjelenítése
-            return RedirectToAction(nameof(Index), new {status = !user.IsArchived});
+            return RedirectToAction(nameof(Index), new { status = !user.IsArchived });
         }
 
         /// <summary>
@@ -176,7 +178,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Adminisztrátor átirányítása a felhasználók listájához
-                return RedirectToAction(nameof(Index), new {status = true});
+                return RedirectToAction(nameof(Index), new { status = true });
             }
 
             // Lenyíló menük értékeinek betöltése
@@ -261,7 +263,7 @@ namespace ISZR.Web.Controllers
                 }
 
                 // Adminisztrátor átirányítása a felhasználók listájához
-                return RedirectToAction(nameof(Index), new {status = !user.IsArchived});
+                return RedirectToAction(nameof(Index), new { status = !user.IsArchived });
             }
 
             // Lenyíló menük értékeinek lekérdezése
@@ -270,6 +272,30 @@ namespace ISZR.Web.Controllers
 
             // Felület újra megjelenítése, amennyiben a kért értékeket hibásan adták meg
             return View(user);
+        }
+
+        /// <summary>
+        /// Aktív felhasználók listája
+        /// </summary>
+        public async Task<IActionResult> Online(int? pageNumber)
+        {
+            // Mai nap beállítása
+            var today = DateTime.Today;
+
+            // Felhasználók listájának lekérdezése
+            var onlineToday = _context.Users
+                .Include(u => u.Class)
+                .Include(u => u.Position)
+                .Where(u => u.LastLogin.Date == today)
+                .OrderByDescending(u => u.LastLogin)
+                .AsQueryable();
+
+            // Lista összeállítása
+            await onlineToday.ToListAsync();
+            ViewData["dataLength"] = onlineToday.Count();
+
+            // Felület megjelenításe
+            return View(await PaginatedList<User>.CreateAsync(onlineToday, pageNumber ?? 1));
         }
 
         /// <summary>

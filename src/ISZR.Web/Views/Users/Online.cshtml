@@ -1,0 +1,117 @@
+﻿@model PaginatedList<ISZR.Web.Models.User>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Aktív felhasználók az elmúlt időszakban";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <table class="table table-striped">
+                        <thead class="bg-info">
+                            <tr>
+                                <th>Név</th>
+                                <th class="d-none d-md-table-cell">Felhasználónév</th>
+                                <th class="d-none d-sm-table-cell">Utolsó rendszerhasználat</th>
+                                <th class="d-print-none"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                @if (item.Username != null)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span>@item.DisplayName bv. @item.Rank?.ToLower()</span>
+                                            <br />
+                                            <span class="badge badge-info">@item.Position?.Name</span>
+                                        </td>
+                                        <td class="d-none d-md-table-cell">
+                                            <span>@item.Username</span>
+                                            <br />
+                                            @if (item.IsArchived)
+                                            {
+                                                <span class="badge badge-danger"><i class="icon fas fa-user-times mr-2"></i>Archivált felhasználó</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-success"><i class="icon fas fa-user-check mr-2"></i>Aktív felhasználó</span>
+                                            }
+                                        </td>
+                                        <td class="d-none d-sm-table-cell">
+                                            @Html.DisplayFor(modelItem => item.LastLogin)<br/>
+                                            @{
+                                                TimeSpan timeSinceLastLogin = DateTime.Now - item.LastLogin;
+
+                                                if (timeSinceLastLogin.TotalHours >= 1)
+                                                {
+                                                    int totalHours = (int)timeSinceLastLogin.TotalHours;
+                                                    <span class="badge badge-danger"><i class="icon far fa-clock mr-2"></i>@totalHours órája használta </span>
+                                                }
+                                                else if (timeSinceLastLogin.TotalMinutes >= 1)
+                                                {
+                                                    int totalMinutes = (int)timeSinceLastLogin.TotalMinutes;
+                                                    <span class="badge badge-warning"><i class="icon far fa-clock mr-2"></i>@totalMinutes perce használta </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-success"><i class="icon far fa-clock mr-2"></i>Jelenleg használja a rendszert</span>
+                                                }
+                                            }
+                                        </td>
+                                        <td class="d-print-none">
+                                            <div class="float-right">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fas fa-book mr-2"></i><span class="d-none d-xl-inline">Adminisztratív müveletek</span>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a asp-action="Profile" asp-controller="Search" asp-route-userId="@item.UserId" class="dropdown-item"><i class="fas fa-user-circle mr-2"></i>Felhasználói profil</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a asp-action="Edit" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Felhasználó szerkesztése</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-2 mb-3">
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <div class="float-left ml-1 d-none d-sm-inline">
+                <div class="text-muted font-italic">
+                    Aktuális oldal: <span class="font-weight-bold ml-1 mr-1">@Model?.PageIndex</span>/<span class="ml-1 mr-1">@Model?.TotalPages</span><br />
+                    <span class="mr-1">@ViewData["dataLength"]</span> darab felhasználó
+                </div>
+            </div>
+
+            <div class="float-right d-print-none">
+                <a class="btn btn-default mr-2 @prevDisabled"
+                   asp-action="Index"
+                   asp-route-name="@ViewData["name"]"
+                   asp-route-status="@ViewData["status"]"
+                   asp-route-pageNumber="@(Model?.PageIndex - 1)"><i class="fas fa-backward text-info mr-2"></i>Elöző oldal</a>
+
+                <a class="btn btn-default @nextDisabled"
+                   asp-action="Index"
+                   asp-route-name="@ViewData["name"]"
+                   asp-route-status="@ViewData["status"]"
+                   asp-route-pageNumber="@(Model?.PageIndex + 1)">Következő oldal<i class="fas fa-forward text-info ml-2"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
