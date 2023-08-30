@@ -80,7 +80,8 @@
                                                         <i class="fas fa-book mr-2"></i><span class="d-none d-xl-inline">Adminisztratív müveletek</span>
                                                     </button>
                                                     <div class="dropdown-menu">
-                                                        <a asp-action="Details" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-search mr-2"></i>Megtekintés</a>
+                                                        <a asp-action="Profile" asp-controller="Search" asp-route-userId="@item.UserId" class="dropdown-item"><i class="fas fa-user-circle mr-2"></i>Felhasználói profil</a>
+                                                        <div class="dropdown-divider"></div>
                                                         <a asp-action="Edit" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
                                                     </div>
                                                 </div>
@@ -176,9 +177,9 @@
                                                         <i class="fas fa-book mr-2"></i><span class="d-none d-xl-inline">Adminisztratív müveletek</span>
                                                     </button>
                                                     <div class="dropdown-menu">
-                                                        <a asp-action="Details" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-search mr-2"></i>Megtekintés</a>
-                                                        <a asp-action="Edit" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
+                                                        <a asp-action="Profile" asp-controller="Search" asp-route-userId="@item.UserId" class="dropdown-item"><i class="fas fa-user-circle mr-2"></i>Felhasználói profil</a>
                                                         <div class="dropdown-divider"></div>
+                                                        <a asp-action="Edit" asp-route-id="@item.UserId" class="dropdown-item"><i class="fas fa-edit mr-2"></i>Szerkesztés</a>
                                                         <a class="dropdown-item bg-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal@(item.UserId)"><i class="fas fa-archive mr-2"></i>Archiválás</a>
                                                     </div>
                                                 </div>

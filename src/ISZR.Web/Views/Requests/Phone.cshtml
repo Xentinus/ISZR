@@ -66,7 +66,7 @@
                                                 <div class="alert alert-light alert-dismissible">
                                                     <h5><i class="icon fas fa-info"></i>Információ a felhasználói listáról</h5>
                                                     Csak a rendszerben létező felhasználók részére lehet telefonos PIN kódot igényelni!<br />
-                                                    Amennyiben nem található a kívánt személy, küldjön e-mailt az informatika részére annak hozzáadásáról.
+                                                    Amennyiben nem új felhasználóról van szó és nem található a listában, abban az esetben hozz létre egy <a class="text-dark font-weight-bold text-decoration-none ml-1 mr-1" asp-controller="Reports" asp-action="Create"><i class="fas fa-bullhorn mr-2"></i>Hibabejelentést</a> és azt hozzáadjuk a rendszerhez.
                                                 </div>
                                             </div>
                                         </div>
@@ -95,8 +95,8 @@
                                             <div class="col-12 col-md-6">
                                                 <div class="alert alert-light alert-dismissible">
                                                     <h5><i class="icon fas fa-info"></i>Információ az igényelhető PIN kódokról</h5>
-                                                    Az intézetnek meghatározott mennyiségű PIN kódja van, amelyeket külső telefonáláshoz lehet használni.<br />
-                                                    Ha ezek elfogynak, nem tudunk egy bizonyos ideig kódot biztosítani, kivéve, ha valaki más átadja a kódját (pl. elhagyja az intézetet)
+                                                    Az intézetnek <b>meghatározott mennyiségű PIN kódja van</b>, amelyeket külső telefonáláshoz lehet használni.<br />
+                                                    A rendszer automatikusan megjeleníti a felületet amennyiben lehetséges az igénylés. Ha a kódok elfogynak akkor mindaddig nem lehet igényelni, ameddig fel nem szabadul legalább egy kód.
                                                 </div>
                                             </div>
                                         </div>

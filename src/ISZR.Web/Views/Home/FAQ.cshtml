@@ -40,30 +40,6 @@
                     </div>
                 </div>
             </div>
-            <div class="card card-info card-outline">
-                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseSix">
-                    <div class="card-header bg-info">
-                        <h4 class="card-title w-100">
-                            Mennyi idő míg a jogosultságok beállítása illetve a kamerafelvétel lementése megtörténik?
-                        </h4>
-                    </div>
-                </a>
-                <div id="collapseSix" class="collapse" data-parent="#accordion">
-                    <div class="card-body">
-                        <h4>Parkolási engedély igénylése esetén</h4>
-                        Az igénylés létrehozásakor <b>azonnal hozzáadásra kerül a rendszerhez</b>, így akár azonnal kérhető a parkolási engedély kártya amelyet <b>csak személyes megjelenés</b> esetén nyomtatunk ki!
-                        <h4 class="mt-4">Kamerafelvétel igénylése esetén</h4>
-                        Az aláírt szolgálati jegy <b>e-mailben való megérkezésekor, azonnal megtörténik</b> a kamerafelvétel lementése külső adattárolókra.
-                        <h4 class="mt-4">Minden más igénylés esetén</h4>
-                        Amint megérkezik Szombathelyről a <b>robotzsaru feladat a részünkre</b>, az hozzáadásra kerül a felhasználónak.<br />
-                        Ez alól <b>kivétel az E-mail cím igénylése</b> amelyet nem a helyi informatika végez, tehát ennek átfutási ideje akár több nap is lehet.
-                        <hr />
-                        A hozzáadott jogosultságokat a felhasználó <b>nem látja illetve nem tudja használni azonnal</b>, meg kell várnia a szinkronizálást a BVOP szerverrel ami körülbelül 10 perc.<br/>
-                        Ezt követő ki-be jelentkezés után használható az igényelt jogosultság.<br />
-                        Ez alól kivételt képeznek a <b>Főnix 3 jogosultságok</b> amelyeket <b>a felhasználók azonnal használni tudnak</b>.
-                    </div>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-12">
                     <h4 class="m-2">Robotzsaruzással kapcsolatos kérdések</h4>
@@ -126,17 +102,46 @@
                 </div>
             </div>
             <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseEight">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            Ki módosíthatja a felhasználók adatait, illetve elérhetőségeit?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseEight" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Minden felhasználó <b>csak a saját profilját képes</b> módosítani, ez alól csak az <b>ügyintézők a kivételek,</b> akik képesek bárki más adatait, illetve elérhetőségét módosítani.
+                    </div>
+                </div>
+            </div>
+            <div class="card card-info card-outline">
                 <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseSeven">
                     <div class="card-header bg-info">
                         <h4 class="card-title w-100">
-                            Hogyan lehet módosítani más felhasználók elérhetőségeit?
+                            Hogyan lehet módosítani más felhasználók adatait, illetve elérhetőségeit?
                         </h4>
                     </div>
                 </a>
                 <div id="collapseSeven" class="collapse" data-parent="#accordion">
                     <div class="card-body">
-                        Ügyintézőként lehetőség nyílik rá, hogy más felhasználók elérhetőségeit módosítsa.<br />
+                        Ügyintézőként lehetőség nyílik rá, hogy más felhasználók adatait, illetve elérhetőségeit módosítsa.<br />
                         Nincs más teendő csak a <b>bal oldalt megtalálható keresésnél rákeresni</b> az adott felhasználóra, ott megnyitni a felhasználói profilt ahol a felhasználóról több részletes adat is megjelenik. majd módosítani az elérhetőségeit.
+                    </div>
+                </div>
+            </div>
+            <div class="card card-info card-outline">
+                <a class="d-block w-100 bg-info" data-toggle="collapse" href="#collapseNine">
+                    <div class="card-header bg-info">
+                        <h4 class="card-title w-100">
+                            Nem találom a felhasználót a felhasználók listájában, mi tévő legyek?
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapseNine" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Új felhasználó részére amikor jogosultság igénylés történik, a rendszer <b>automatikusan létrehoz</b> számára egy profilt.<br />
+                        Amennyiben nem új felhasználóról van szó és nem található a listában, abban az esetben hozz létre egy <a class="text-dark font-weight-bold text-decoration-none ml-1 mr-1" asp-controller="Reports" asp-action="Create"><i class="fas fa-bullhorn mr-2"></i>Hibabejelentést</a> és azt hozzáadjuk a rendszerhez.
                     </div>
                 </div>
             </div>
