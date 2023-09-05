@@ -279,14 +279,14 @@ namespace ISZR.Web.Controllers
         /// </summary>
         public async Task<IActionResult> Online(int? pageNumber)
         {
-            // Mai nap beállítása
-            var today = DateTime.Today;
+            // Elmúlt időszak megjelenítése
+            var setHowLongIsList = DateTime.Now.AddDays(-1);
 
             // Felhasználók listájának lekérdezése
             var onlineToday = _context.Users
                 .Include(u => u.Class)
                 .Include(u => u.Position)
-                .Where(u => u.LastLogin.Date == today)
+                .Where(u => u.LastLogin >= setHowLongIsList)
                 .OrderByDescending(u => u.LastLogin)
                 .AsQueryable();
 

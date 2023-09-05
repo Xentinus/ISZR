@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CSharp.RuntimeBinder;
 using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace ISZR.Web.Controllers
 {
@@ -23,10 +24,11 @@ namespace ISZR.Web.Controllers
         /// <summary>
         /// PIN kódok megjelenítése
         /// </summary>
-        public async Task<IActionResult> Index(string code, bool status, int? pageNumber)
+        public async Task<IActionResult> Index(string code, string user, bool status, int? pageNumber)
         {
             // Értékek beállítása
             ViewData["code"] = code;
+            ViewData["user"] = user;
             ViewData["status"] = status;
 
             // PIN kódok listájának lekérdezése
@@ -44,6 +46,12 @@ namespace ISZR.Web.Controllers
             else
             {
                 dataContext = dataContext.Where(r => r.IsArchived);
+            }
+
+            // Név alapú szürés
+            if (!string.IsNullOrEmpty(user))
+            {
+                dataContext = dataContext.Where(r => r.PhoneUser.DisplayName.Contains(user));
             }
 
             // PIN kód alapú szürés

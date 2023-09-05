@@ -215,7 +215,7 @@ namespace ISZR.Web.Controllers
                 GroupId = group.GroupId,
                 Name = group.Name,
                 SelectedPermissionIds = group.GroupPermissions.Select(gp => gp.PermissionId).ToList(),
-                PermissionItems = _context.Permissions
+                PermissionItems = _context.Permissions.Where(p => !p.IsArchived)
                     .Select(p => new SelectListItem { Value = p.PermissionId.ToString(), Text = p.Name })
             };
 
