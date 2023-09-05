@@ -94,7 +94,7 @@ Globális keresőt használva az ügyintézők egy helyen láthatják egy felhas
 ## Parkolási engedélyek és telefonos PIN kódok dinamikus kezelése
 
 <p align="center">
-	<img src=".github/parking.png">
+	<img src=".github/parkingCars.png">
 </p>
 
 Adminisztrátorok egy helyen kezelhetik az intézet összes parkolási engedélyei, illetve telefonos PIN kódjait, nem kell létrehozni különféle excel táblázatokat.
