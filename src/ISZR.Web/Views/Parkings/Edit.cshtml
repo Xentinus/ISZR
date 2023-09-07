@@ -21,13 +21,13 @@
                         </div>
                         <input type="hidden" asp-for="ParkingId" />
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-lg-6">
                                 <div class="form-group">
-                                    <label>Jármű márkája</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a jármű márkáját</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Brand" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-car mr-2"></i>Márka</span>
                                         </div>
                                         <select asp-for="Brand" class="form-control select2bs4" required>
                                             <option>Abarth</option>
@@ -128,36 +128,36 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-lg-6">
                                 <div class="form-group">
-                                    <label>Jármű modellje</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a jármű modelljét</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Modell" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-car-side"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-car-side mr-2"></i>Modell</span>
                                         </div>
                                         <input type="text" asp-for="Modell" class="form-control" placeholder="Modell megnevezése" spellcheck="false" required />
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-lg-6">
                                 <div class="form-group">
-                                    <label>Rendszám</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a jármű rendszámát</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="LicensePlate" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-parking"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-parking mr-2"></i>Rendszám</span>
                                         </div>
                                         <input type="text" asp-for="LicensePlate" class="form-control" placeholder="Jármű rendszáma" spellcheck="false" onkeyup="this.value = this.value.toUpperCase();" required />
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-lg-6">
                                 <div class="form-group">
-                                    <label>Tulajdonos</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Válassza ki a jármű tulajdonosát</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-user mr-2"></i>Tulajdonos</span>
                                         </div>
                                         <select asp-for="OwnerUserId" asp-items="ViewBag.OwnerUserId" class="form-control select2bs4" required>
                                         </select>

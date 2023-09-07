@@ -52,10 +52,10 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <label>Válasszon ki egy felhasználót</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                            <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>Felhasználó</span>
                                                         </div>
                                                         <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4" required>
                                                         </select>
@@ -73,10 +73,10 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label>Teendő a felhasználó jelenlegi jogosultságaival</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <label>Válassza ki mi a teendő a felhasználó jelenlegi jogosultságaival</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-trash-alt"></i></span>
+                                                            <span class="input-group-text bg-danger"><i class="fas fa-trash-alt mr-2"></i>Törlés?</span>
                                                         </div>
                                                         <select id="currentPermissions" name="currentPermissions" class="form-control-lg select2bs4" required>
                                                             <option>Jelenlegi jogosultságok törlése</option>
@@ -105,20 +105,12 @@
                                     </div>
                                     <div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
                                         <div class="row">
-                                            <div class="col-12">
-                                                <div class="alert alert-warning alert-dismissible">
-                                                    <h5><i class="icon fas fa-exclamation-triangle"></i>Jogosultsági csoportok kialakítása folyamatban van</h5>
-                                                    A jogosultsági csoportok listája jelenleg feltöltés alatt áll. Amennyiben nem találod a kívánt jogosultsági csoportot írj e-mail az informatikai csoportnak annak hozzáadásáról!
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label>Új jogosultsági csoport kiválasztása a felhasználó részére</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <label>Válassza ki a felhasználó új jogosultsági csoportját</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                                            <span class="input-group-text bg-info"><i class="fas fa-users mr-2"></i>Jogosultsági csoport</span>
                                                         </div>
                                                         <select id="selectedGroup" name="selectedGroup" class="form-control select2bs4" asp-items="ViewBag.GroupId" required></select>
                                                     </div>

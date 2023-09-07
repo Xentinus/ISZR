@@ -58,7 +58,7 @@
                                                     <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                            <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>Felhasználó</span>
                                                         </div>
                                                         <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4" required>
                                                         </select>
@@ -83,38 +83,44 @@
                                     </div>
                                     <div id="permissions" class="content" role="tabpanel" aria-labelledby="permissions-trigger">
                                         <div class="row">
-                                            <div class="col-12">
-                                                <div class="alert alert-light alert-dismissible">
-                                                    <h5><i class="icon fas fa-info"></i>Információ a jogosultságok kiválasztásához</h5>
-                                                    Amennyiben további információkra van szükséged a megfelelő jogosultság kiválasztásában, a <a class="text-dark font-weight-bold text-decoration-none ml-1 mr-1" asp-controller="Home" asp-action="Permissions"><i class="fas fa-key"></i> Jogosultsági magyarázat</a> menüpontban találsz leírásokat minden jogosultsághoz.
-                                                    <br />
-                                                    Minden <b>országos jogosultság igénylést meg kell indokolni</b> egy szolgálati jeggyel amit a <b>BVOP fog elbírálni</b> és hozzáadni! Ezt a szolgálati jegyet <b>mellékeld a többletjogosultság igénylés mellé</b>!
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-6">
                                                 <div class="form-group">
-                                                    <label>Windows többletjogosultságok a felhasználó számára</label>
+                                                    <label>Válassza ki a kért jogosultságokat</label>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fab fa-windows"></i></span>
+                                                            <span class="input-group-text bg-info"><i class="fab fa-windows mr-2"></i>Windows többletjogosultságok</span>
                                                         </div>
                                                         <select id="selectedWindows" name="windowsPermissions" asp-items="ViewBag.Windows" class="form-control select2bs4stay" multiple="multiple">
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a jogosultságok kiválasztásához</h5>
+                                                    Amennyiben további információkra van szükséged a megfelelő jogosultság kiválasztásában, a <a class="text-dark font-weight-bold text-decoration-none ml-1 mr-1" asp-controller="Home" asp-action="Permissions"><i class="fas fa-key"></i> Jogosultsági magyarázat</a> menüpontban találsz leírásokat minden jogosultsághoz.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
                                                 <div class="form-group">
-                                                    <label>Főnix 3 többletjogosultságok a felhasználó számára</label>
+                                                    <label>Válassza ki a kért jogosultságokat</label>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-dove"></i></span>
+                                                            <span class="input-group-text bg-warning"><i class="fas fa-dove mr-2"></i>Főnix 3 többletjogosultságok</span>
                                                         </div>
                                                         <select id="selectedFonix" name="fonix3Permissions" asp-items="ViewBag.Fonix3" class="form-control select2bs4stay" multiple="multiple">
                                                         </select>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="alert alert-light alert-dismissible">
+                                                    <h5><i class="icon fas fa-info"></i>Információ a <span class="font-weight-bold ml-1 mr-1"><i class="fas fa-dove mr-2"></i>FŐNIX 3</span> jogosultságokkal kapcsolatban</h5>
+                                                    Minden <b>országos jogosultság igénylést meg kell indokolni</b> egy szolgálati jeggyel amit a <b>BVOP fog elbírálni</b> és hozzáadni! Ezt a szolgálati jegyet <b>mellékeld a többletjogosultság igénylés mellé</b>!
+                                                    <br /><br />
+                                                    <b>Amennyiben szerkesztői jogosultságot szeretnél, nem kell kiválasztani a megtekintést is!</b>
                                                 </div>
                                             </div>
                                         </div>

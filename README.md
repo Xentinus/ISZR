@@ -67,14 +67,6 @@ Az igénylés állapotának megváltoztatásával azonnal megjelenik mindenki sz
 Adminisztrátorok részére készült egy teljesen elkülönített felület, ahol bármikor képesek új jogosultságot, osztály vagy bármit létrehozni/módosítani, vagy archiválni.
 Valamint ki lett alakítva egy rendszerállapotot összegző felület, ahol könnyedén megtudhatják, a rendszerrel kapcsolatos fontosabb információkat.
 
-## Felhasználók adatainak karbantartása
-
-<p align="center">
-	<img src=".github/userData.png">
-</p>
-
-Minden felhasználó csak a saját profilját képes módosítani, ez alól csak az ügyintézők a kivételek, akik képesek bárki más adatait, illetve elérhetőségét módosítani.
-
 ## Globális keresés
 
 <p align="center">
@@ -90,6 +82,14 @@ Minden felhasználó csak a saját profilját képes módosítani, ez alól csak
 </p>
 
 Globális keresőt használva az ügyintézők egy helyen láthatják egy felhasználóval kapcsolatos fontosabb adatokat, illetve képesek a felhasználó elérhetőségét is módosítani.
+
+## Felhasználók adatainak karbantartása
+
+<p align="center">
+	<img src=".github/userData.png">
+</p>
+
+Minden felhasználó csak a saját profilját képes módosítani, ez alól csak az ügyintézők a kivételek, akik képesek bárki más adatait, illetve elérhetőségét módosítani.
 
 ## Parkolási engedélyek és telefonos PIN kódok dinamikus kezelése
 

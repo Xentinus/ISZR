@@ -25,11 +25,11 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Jogosultsági csoport megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a jogosultsági csoport nevét</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-font mr-2"></i>Név</span>
                                         </div>
                                         <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultsági csoport megnevezése" spellcheck="true" required />
                                     </div>
@@ -39,11 +39,11 @@
                             {
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label>Jogosultsági csoporthoz tartozó jogosultságok</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                        <label>Válassza ki a csoporthoz tartozó jogosultságokat</label><span class="text-danger font-weight-bold ml-1">*</span>
                                         <span asp-validation-for="SelectedPermissionIds" class="text-danger"></span>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                                <span class="input-group-text bg-warning"><i class="fas fa-key mr-2"></i>Jogosultságok</span>
                                             </div>
                                             <select asp-for="SelectedPermissionIds" asp-items="Model?.PermissionItems" class="form-control select2bs4stay" multiple="multiple" required></select>
                                         </div>

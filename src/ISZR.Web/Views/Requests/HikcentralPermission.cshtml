@@ -46,10 +46,10 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Válasszon ki egy felhasználót</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                        <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>Felhasználó</span>
                                                     </div>
                                                     <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4" required>
                                                     </select>
@@ -76,10 +76,10 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>A felhasználó számára kiválaszott jogosultsági típus</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Válassza ki a kívánt jogosultsági típust</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-shield-alt"></i></span>
+                                                        <span class="input-group-text bg-info"><i class="fas fa-shield-alt mr-2"></i>Jogosultsági csoport</span>
                                                     </div>
                                                     <select id="inputPermissionType" name="permissionType" class="form-control select2bs4" required>
                                                         <option>Felügyelő</option>

@@ -22,10 +22,10 @@
                         <div class="row">
                             <div class="col-xl-4 col-lg-6 col-12">
                                 <div class="form-group">
-                                    <label>Bejelentő</label>
+                                    <label>Nevezze meg a bejelentő nevét</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>Név</span>
                                         </div>
                                         <input name="user" type="search" class="form-control" placeholder="Keresés a bejelentő neve alapján" value="@ViewData["user"]" />
                                     </div>
@@ -33,10 +33,10 @@
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12">
                                 <div class="form-group">
-                                    <label>Leírás</label>
+                                    <label>Nevezze meg a keresendő szöveget a leírásban</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-font mr-2"></i>Leírás</span>
                                         </div>
                                         <input name="text" type="search" class="form-control" placeholder="Megadott szó keresése a leírásban" value="@ViewData["text"]" />
                                     </div>
@@ -44,10 +44,10 @@
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12">
                                 <div class="form-group">
-                                    <label>Státusz</label>
+                                    <label>Válassza ki a státuszt</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-tag mr-2"></i>Státusz</span>
                                         </div>
                                         @{
                                             var statusList = new List<SelectListItem>

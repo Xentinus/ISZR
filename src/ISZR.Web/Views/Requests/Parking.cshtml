@@ -46,10 +46,10 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Felhasználó, aki részére az igénylés zajlik</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Válasszon ki egy felhasználót</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                        <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>Felhasználó</span>
                                                     </div>
                                                     <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4" required>
                                                     </select>
@@ -76,10 +76,10 @@
                                     <div class="row">
                                         <div class="col-12 col-md-3">
                                             <div class="form-group">
-                                                <label>Jármű márkaja</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Válassza ki a jármű márkáját</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                                        <span class="input-group-text bg-info"><i class="fas fa-car mr-2"></i>Márka</span>
                                                     </div>
                                                     <select id="inputBrand" name="brand" class="form-control select2bs4" required>
                                                         <option>Abarth</option>
@@ -182,10 +182,10 @@
                                         </div>
                                         <div class="col-12 col-md-3">
                                             <div class="form-group">
-                                                <label>Jármű modellje</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Nevezze meg a jármű modelljét</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-car-side"></i></span>
+                                                        <span class="input-group-text bg-info"><i class="fas fa-car-side mr-2"></i>Modell</span>
                                                     </div>
                                                     <input id="inputModell" name="modell" type="text" class="form-control" placeholder="Jármű modellje" spellcheck="false" required />
                                                 </div>
@@ -202,10 +202,10 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6">
                                             <div class="form-group">
-                                                <label>Rendszám</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                <label>Nevezze meg a jármű rendszámát</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-parking"></i></span>
+                                                        <span class="input-group-text bg-info"><i class="fas fa-parking mr-2"></i>Rendszám</span>
                                                     </div>
                                                     <input id="inputLicensePlate" name="licensePlate" type="text" class="form-control" placeholder="Jármű rendszáma" spellcheck="false" onkeyup="this.value = this.value.toUpperCase();" required />
                                                 </div>

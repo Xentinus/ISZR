@@ -24,11 +24,11 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Jogosultság megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a jogosultság nevét</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                            <span class="input-group-text bg-success"><i class="fas fa-font mr-2"></i>Név</span>
                                         </div>
                                         <input type="text" asp-for="Name" class="form-control" placeholder="Jogosultság megnevezése" spellcheck="true" required />
                                     </div>
@@ -36,11 +36,11 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Jogosultság leírása</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Írja le a jogosultság leírását</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+                                            <span class="input-group-text bg-success"><i class="fas fa-pencil-alt mr-2"></i>Leírás</span>
                                         </div>
                                         <input type="text" asp-for="Description" class="form-control" placeholder="Jogosultság leírása" spellcheck="true" required />
                                     </div>
@@ -52,11 +52,11 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label>Active Directory jogosultságok megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                        <label>Nevezze meg az Active Directory jogosultságokat</label><span class="text-danger font-weight-bold ml-1">*</span>
                                         <span asp-validation-for="ActiveDirectoryPermissions" class="text-danger"></span>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-database"></i></span>
+                                                <span class="input-group-text bg-success"><i class="fas fa-database mr-2"></i>Active Directory jogosultságok</span>
                                             </div>
                                             <input type="text" asp-for="ActiveDirectoryPermissions" class="form-control" placeholder="Legalább egy darab Active Directory jogosultság megnevezése (pl.: XXXX-TESZT)" spellcheck="false" required />
                                         </div>

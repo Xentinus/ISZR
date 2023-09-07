@@ -24,10 +24,10 @@
                         <div class="row">
                             <div class="col-lg-6 col-12">
                                 <div class="form-group">
-                                    <label>Keresendő szöveg</label>
+                                    <label>Nevezze meg a keresendő szöveget</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-font mr-2"></i>Szöveg</span>
                                         </div>
                                         <input type="search" class="form-control" name="name" placeholder="Keresés a névben vagy a leírásban" value="@ViewData["name"]" />
                                     </div>
@@ -35,10 +35,10 @@
                             </div>
                             <div class="col-lg-6 col-12">
                                 <div class="form-group">
-                                    <label>Típus</label>
+                                    <label>Válassza ki a jogosultság típusát</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-tag mr-2"></i>Típus</span>
                                         </div>
                                         @Html.DropDownList("type", typeList, new { @class = "form-control select2bs4" })
                                     </div>

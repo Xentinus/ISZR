@@ -23,11 +23,11 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>PIN kód</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a telefonos PIN kódot</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="PhoneCode" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-phone mr-2"></i>PIN</span>
                                         </div>
                                         <input type="text" asp-for="PhoneCode" class="form-control" placeholder="PIN kód megnevezése" spellcheck="false" required />
                                     </div>
@@ -35,10 +35,10 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Tulajdonos</label>
+                                    <label>Nevezze meg a kód aktuális felhasználóját</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-user mr-2"></i>Felhasználó</span>
                                         </div>
                                         <select asp-for="PhoneUserId" asp-items="ViewBag.PhoneUserId" class="form-control select2bs4">
                                             <option value="">Nincs</option>

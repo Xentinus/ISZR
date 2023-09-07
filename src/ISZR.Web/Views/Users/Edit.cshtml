@@ -28,23 +28,23 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Felhasználónév</label>
+                                    <label>Nevezze meg a felhasználó felhasználónevét</label>
                                     <span asp-validation-for="Username" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-desktop"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-desktop mr-2"></i>Felhasználónév</span>
                                         </div>
-                                        <input type="text" asp-for="Username" class="form-control" placeholder="Felhasználó Login neve" spellcheck="false" />
+                                        <input type="text" asp-for="Username" class="form-control" placeholder="Felhasználó Login neve (DOMAIN\username)" spellcheck="false" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Utolsó használatának ideje</label>
+                                    <label>Válassza ki a felhasználó utolsó használatának idejét</label>
                                     <span asp-validation-for="LastLogin" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-history"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-history mr-2"></i>Időpont</span>
                                         </div>
                                         <input type="datetime-local" asp-for="LastLogin" class="form-control" />
                                     </div>
@@ -57,24 +57,24 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-xl-4">
                                 <div class="form-group">
-                                    <label>Név</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a felhasználó aláírásokon szereplő nevét</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="DisplayName" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-user mr-2"></i>Név</span>
                                         </div>
                                         <input type="text" asp-for="DisplayName" class="form-control" placeholder="Aláírásokon szereplő név" spellcheck="true" required />
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-3">
+                            <div class="col-12 col-lg-6 col-xl-4">
                                 <div class="form-group">
-                                    <label>Megszólítás</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a felhasználó megszólítását</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-venus-mars mr-2"></i>Megszólítás</span>
                                         </div>
                                         <select asp-for="Genre" class="form-control select2bs4" required>
                                             <option value="Male">Úr</option>
@@ -83,13 +83,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-3">
+                            <div class="col-12 col-lg-6 col-xl-4">
                                 <div class="form-group">
-                                    <label>Rendfokozat</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Válassza ki a felhasználó rendfokozatát</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Rank" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-medal"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-medal mr-2"></i>Rendfokozat</span>
                                         </div>
                                         <select asp-for="Rank" class="form-control select2bs4" required>
                                             <option>Munkavállaló</option>
@@ -120,23 +120,23 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-xl-6">
                                 <div class="form-group">
-                                    <label>Osztály</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Válassza ki a felhasználó osztályát vagy csoportját</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-users mr-2"></i>Osztály/Csoport</span>
                                         </div>
                                         <select asp-for="ClassId" class="form-control select2bs4" asp-items="ViewBag.ClassId" required></select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-xl-6">
                                 <div class="form-group">
-                                    <label>Beosztás</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Válassza ki a felhasználó beosztását</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-people-arrows"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-people-arrows mr-2"></i>Beosztás</span>
                                         </div>
                                         <select asp-for="PositionId" class="form-control select2bs4" asp-items="ViewBag.PositionId" required></select>
                                     </div>
@@ -151,11 +151,11 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Szolgálati hely</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a felhasználó szolgálati helyét</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Location" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-map-marker-alt mr-2"></i>Szolgálati hely</span>
                                         </div>
                                         <input type="text" asp-for="Location" class="form-control" placeholder="Szolgálati hely" spellcheck="true" required />
                                     </div>
@@ -163,11 +163,11 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>E-mail cím</label>
+                                    <label>Nevezze meg a felhasználó e-mail címét</label>
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-envelope mr-2"></i>E-mail</span>
                                         </div>
                                         <input type="email" asp-for="Email" class="form-control" placeholder="Belső e-mail cím (bv.gov.hu)" />
                                     </div>
@@ -175,11 +175,11 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>NTG elérhetőség</label>
+                                    <label>Nevezze meg a felhasználó NTG elérhetőségét</label>
                                     <span asp-validation-for="Phone" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-phone mr-2"></i>NTG</span>
                                         </div>
                                         <input type="text" asp-for="Phone" class="form-control" placeholder="1061234" spellcheck="true" />
                                     </div>
