@@ -52,12 +52,12 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label>Felhasználó, aki részére az igénylés zajlik</label>
+                                                    <label>Válasszon ki egy felhasználót</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                            <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>Felhasználó</span>
                                                         </div>
-                                                        <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4">
+                                                        <select id="selectedUser" asp-for="CreatedForUserId" asp-items="ViewBag.CreatedForUserId" class="form-control select2bs4" required>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -73,10 +73,10 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label>Esemény dátuma</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <label>Nevezze meg a felvétel dátumát</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                                            <span class="input-group-text bg-info"><i class="fas fa-calendar mr-2"></i>Felvétel dátuma</span>
                                                         </div>
                                                         <input id="inputDate" name="inputDate" type="date" min="@DateTime.Now.AddMonths(-1).AddDays(-14).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" required />
                                                     </div>
@@ -92,10 +92,10 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label>Kamerafelvétel lementésének oka</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <label>Nevezze meg a kamerafelvétel lementésének okát</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="far fa-eye"></i></span>
+                                                            <span class="input-group-text bg-info"><i class="far fa-eye mr-2"></i>Felvétel oka</span>
                                                         </div>
                                                         <input id="inputWhy" name="inputWhy" type="text" class="form-control" placeholder="Lementésének oka" required />
                                                     </div>
@@ -120,10 +120,10 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label>Lementeni kívánt címkék megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <label>Nevezze meg a lementeni kívánt címkék nevét</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                                                            <span class="input-group-text bg-info"><i class="fas fa-tags mr-2"></i>Címkék neve</span>
                                                         </div>
                                                         <input id="inputTags" name="inputTags" type="text" class="form-control" placeholder="Címkék megnevezése" required />
                                                     </div>
@@ -139,10 +139,10 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label>Megcímkézett kamerák az adott napon</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                                    <label>Nevezze meg a megcímkézett kamerákat</label><span class="text-danger font-weight-bold ml-1">*</span>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-video"></i></span>
+                                                            <span class="input-group-text bg-info"><i class="fas fa-video mr-2"></i>Megcímkézett kamerák</span>
                                                         </div>
                                                         <select id="selectedCameras" name="selectedCameras" asp-items="ViewBag.Cameras" class="form-control select2bs4stay" multiple="multiple" required>
                                                         </select>

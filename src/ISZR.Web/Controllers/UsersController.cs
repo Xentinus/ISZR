@@ -108,28 +108,6 @@ namespace ISZR.Web.Controllers
         }
 
         /// <summary>
-        /// Adott felhasználó részletei
-        /// </summary>
-        /// <param name="id">Felhasználói azonosító</param>
-        public async Task<IActionResult> Details(int? id)
-        {
-            // Azonosító meglétének ellenőrzése
-            if (id == null || _context.Users == null) return NotFound();
-
-            // Felhasználó megkeresése az adatbázisban
-            var user = await _context.Users
-                .Include(u => u.Class)
-                .Include(u => u.Position)
-                .FirstOrDefaultAsync(m => m.UserId == id);
-
-            // Felhasználó meglétének ellenőrzése
-            if (user == null) return NotFound();
-
-            // Felület megjelenítése a kért felhasználóval
-            return View(user);
-        }
-
-        /// <summary>
         /// Új felhasználó hozzáadásának a felülete
         /// </summary>
         public IActionResult Create()
@@ -157,7 +135,9 @@ namespace ISZR.Web.Controllers
                 User? foundUser = await CheckUsername(user.Username);
 
                 // Amennyiben az adott felhasználónévvel rendelkezik ember, felhasználó átirányítása az adott felhasználó nevű felhasználó részleteire
-                if (foundUser != null) return RedirectToAction(nameof(Details), new { @id = foundUser.UserId });
+                if (foundUser != null) return Forbid();
+
+                user.LastLogin = new DateTime();
 
                 try
                 {

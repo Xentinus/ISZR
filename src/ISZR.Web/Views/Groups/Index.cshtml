@@ -17,21 +17,21 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label>Név</label>
+                                    <label>Nevezze meg a jogosultsági csoport nevét</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-font mr-2"></i>Név</span>
                                         </div>
-                                        <input name="name" type="search" class="form-control" placeholder="Keresés név alapján" value="@ViewData["name"]" />
+                                        <input name="name" type="search" class="form-control" placeholder="Keresés jogosultsági csoport neve alapján" value="@ViewData["name"]" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label>Státusz</label>
+                                    <label>Válassza ki a kívánt státuszt</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-tag mr-2"></i>Státusz</span>
                                         </div>
                                         @{
                                             var statusList = new List<SelectListItem>

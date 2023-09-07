@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Osztály szerkesztése";
+    ViewData["Title"] = "Osztály vagy csoport szerkesztése";
 }
 
 <div class="container-fluid">
@@ -10,7 +10,7 @@
         <div class="col-12">
             <div class="card card-warning">
                 <div class="card-header">
-                    <h3 class="card-title">Osztályhoz tartozó adatok szerkesztése</h3>
+                    <h3 class="card-title">Osztályhoz vagy csoporthoz tartozó adatok szerkesztése</h3>
                 </div>
                 <div class="card-body">
                     <form asp-action="Edit" onsubmit="submitButton.disabled = true; return true;">
@@ -23,22 +23,22 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Osztály megnevezése</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg az osztály vagy csoport nevét</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-users mr-2"></i>Név</span>
                                         </div>
-                                        <input type="text" asp-for="Name" class="form-control" placeholder="Osztály megnevezése" spellcheck="true" />
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Osztály vagy csoport megnevezése" spellcheck="true" required />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Engedélyező személy</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Válassza ki az engedélyező személyt</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-signature"></i></span>
+                                            <span class="input-group-text bg-warning"><i class="fas fa-signature mr-2"></i>Engedélyező</span>
                                         </div>
                                         <select asp-for="AuthorizerId" class="form-control select2bs4" asp-items="ViewBag.AuthorizerId">
                                             <option value="">Nincs</option>
@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="float-right">
                                     <a onclick="history.back()" class="btn btn-secondary"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</a>
-                                    <input id="submitButton" type="submit" value="Osztály szerkesztése" class="btn btn-warning ml-1" disabled />
+                                    <input id="submitButton" type="submit" value="Osztály vagy csoport szerkesztése" class="btn btn-warning ml-1" disabled />
                                 </div>
                             </div>
                         </div>

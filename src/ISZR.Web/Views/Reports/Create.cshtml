@@ -28,25 +28,25 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Cím</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Nevezze meg a hibabejelentés címét</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Title" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-font mr-2"></i>Cím</span>
                                         </div>
-                                        <input type="text" asp-for="Title" class="form-control" placeholder="Rövid megnevezés" spellcheck="true" required />
+                                        <input type="text" asp-for="Title" class="form-control" placeholder="Hibabejelentés címe" spellcheck="true" required />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Részletes leírás</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <label>Írjon leírást a bejelenteni valóról</label><span class="text-danger font-weight-bold ml-1">*</span>
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-pencil-alt mr-2"></i>Leírás</span>
                                         </div>
-                                        <input type="text" asp-for="Description" class="form-control" placeholder="Részletes leírás" spellcheck="true" required />
+                                        <input type="text" asp-for="Description" class="form-control" placeholder="Hibabejelentés leírása" spellcheck="true" required />
                                     </div>
                                 </div>
                             </div>
