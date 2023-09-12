@@ -17,6 +17,7 @@ A web alkalmazás célja, hogy a felhasználók egyszerűen, könnyedén igénye
 - Könnyen áttekinthető és értelmezhető igénylési lap
 - Hivatkozásokkal ellátott igénylési lapok és listák
 - Globális keresés
+- Automatikus e-mail címes értesítés az igénylésben szereplőknek
 - Automatikus elérhetőség figyelés
 - Külön adminisztratív felület rendszer
 - Microsoft SQL Server segítségével minden megjelenített adat dinamikus
@@ -66,6 +67,16 @@ Az igénylés állapotának megváltoztatásával azonnal megjelenik mindenki sz
 
 Adminisztrátorok részére készült egy teljesen elkülönített felület, ahol bármikor képesek új jogosultságot, osztály vagy bármit létrehozni/módosítani, vagy archiválni.
 Valamint ki lett alakítva egy rendszerállapotot összegző felület, ahol könnyedén megtudhatják, a rendszerrel kapcsolatos fontosabb információkat.
+
+## Automatikus e-mail címes értesítés
+
+<p align="center">
+	<img src=".github/email.png">
+</p>
+
+Minden igénylés létrehozásakor a felhasználó, aki számára kérték az igénylést, kap egy e-mail-es értesítést, hogy a számára új igénylést hoztak létre a rendszerben. Az üzenet tartalmazza az ügyintéző nevét és az igénylés típusát.
+
+Illetve amennyiben az adminisztrátorok módosítanak egy igénylés státuszán, arról kap értesítést az igénylés létrehozója, illetve a felhasználó, aki számára kérték is.
 
 ## Globális keresés
 
