@@ -6,6 +6,8 @@ using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using System.Text;
 using System.Resources;
+using ISZR.Web.Services;
+using System.Net.NetworkInformation;
 
 namespace ISZR.Web.Controllers
 {
@@ -16,10 +18,12 @@ namespace ISZR.Web.Controllers
     public class RequestsController : Controller
     {
         private readonly DataContext _context;
+        private readonly EmailService _emailService;
 
-        public RequestsController(DataContext context)
+        public RequestsController(DataContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -192,6 +196,9 @@ namespace ISZR.Web.Controllers
                 }
             }
 
+            // Értesítés küldése (amennyiben van e-mail cím)
+            await _emailService.SendStatusChange(request, status);
+
             // Igénylés megjelenítése
             return View(request);
         }
@@ -267,9 +274,11 @@ namespace ISZR.Web.Controllers
         {
             // Igénylések listájának lekérdezése
             var dataContext = _context.Requests
-                .Where(r => r.Status == "Folyamatban")
+                .Include(r => r.CreatedByUser)
                 .Include(r => r.CreatedForUser)
+                .Include(r => r.CreatedByUser.Position)
                 .Include(r => r.CreatedForUser.Position)
+                .Where(r => r.Status == "Folyamatban")
                 .OrderByDescending(r => r.RequestId)
                 .AsQueryable();
 
@@ -300,6 +309,10 @@ namespace ISZR.Web.Controllers
 
             // Adott azonosítójú kérelem kikeresése
             var request = await _context.Requests
+                .Include(r => r.CreatedByUser)
+                .Include(r => r.CreatedForUser)
+                .Include(r => r.CreatedByUser.Position)
+                .Include(r => r.CreatedForUser.Position)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
 
             // Amennyiben a kért kérelem nem létezik, az oldal megjelenítésének elutasítása
@@ -336,6 +349,9 @@ namespace ISZR.Web.Controllers
                     throw;
                 }
             }
+
+            // Értesítés küldése (amennyiben van e-mail cím)
+            await _emailService.SendStatusChange(request, status);
 
             // Végrehajtásokra váró feladatok frissítése
             return RedirectToAction(nameof(ToDo));
@@ -420,6 +436,9 @@ namespace ISZR.Web.Controllers
                         throw;
                     }
                 }
+
+                // Értesítés küldése (amennyiben van e-mail cím)
+                await _emailService.SendNewRequestNotification(request);
 
                 // Igénylés megjelenítése
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -512,6 +531,9 @@ namespace ISZR.Web.Controllers
                         throw;
                     }
                 }
+
+                // Értesítés küldése (amennyiben van e-mail cím)
+                await _emailService.SendNewRequestNotification(request);
 
                 // Igénylés megnyítása
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -606,6 +628,9 @@ namespace ISZR.Web.Controllers
                     }
                 }
 
+                // Értesítés küldése (amennyiben van e-mail cím)
+                await _emailService.SendNewRequestNotification(request);
+
                 // Igénylés megnyítása
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
             }
@@ -679,6 +704,9 @@ namespace ISZR.Web.Controllers
                         throw;
                     }
                 }
+
+                // Értesítés küldése (amennyiben van e-mail cím)
+                await _emailService.SendNewRequestNotification(request);
 
                 // Igénylés megnyítása
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -790,6 +818,9 @@ namespace ISZR.Web.Controllers
                         throw;
                     }
                 }
+
+                // Értesítés küldése (amennyiben van e-mail cím)
+                await _emailService.SendNewRequestNotification(request);
 
                 // Igénylés megnyítása
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -909,6 +940,9 @@ namespace ISZR.Web.Controllers
                     }
                 }
 
+                // Értesítés küldése (amennyiben van e-mail cím)
+                await _emailService.SendNewRequestNotification(request);
+
                 // Igénylés megnyítása
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
             }
@@ -987,6 +1021,9 @@ namespace ISZR.Web.Controllers
                         throw;
                     }
                 }
+
+                // Értesítés küldése (amennyiben van e-mail cím)
+                await _emailService.SendNewRequestNotification(request);
 
                 // Igénylés megnyítása
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -1076,6 +1113,9 @@ namespace ISZR.Web.Controllers
                         throw;
                     }
                 }
+
+                // Értesítés küldése (amennyiben van e-mail cím)
+                await _emailService.SendNewRequestNotification(request);
 
                 // Igénylés megnyítása
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
@@ -1172,6 +1212,9 @@ namespace ISZR.Web.Controllers
                     }
                 }
 
+                // Értesítés küldése (amennyiben van e-mail cím)
+                await _emailService.SendNewRequestNotification(request);
+
                 // Igénylés megnyítása
                 return RedirectToAction(nameof(Details), new { @id = request.RequestId });
             }
@@ -1208,6 +1251,17 @@ namespace ISZR.Web.Controllers
         {
             return _context.Users.Any(e => e.UserId == id);
         }
+
+        /// <summary>
+        /// Felhasználó megkeresése a rendszerben id által
+        /// </summary>
+        /// <param name="id">Felhasználó azonosítója</param>
+        /// <returns>Felhasználó</returns>
+        private async Task<User?> GetUserById(int? id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        }
+
 
         /// <summary>
         /// Csoport megkeresése a rendszerben csoport azonosító által

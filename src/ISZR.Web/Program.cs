@@ -19,6 +19,9 @@ builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequ
 // Felhasználó utolsó látógatás idejének frissítése
 builder.Services.AddScoped<UpdateUserUptime>();
 
+// E-mailes értesítés betöltése
+builder.Services.AddScoped<EmailService>();
+
 // Autentikáció beállítása Environment alapján
 if (builder.Environment.IsDevelopment())
 {
