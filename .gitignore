@@ -583,4 +583,9 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
+## AppSettings
+./appsettings.Development.json
+./appsettings.json
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,aspnetcore,dotnetcore,windows,linux
+

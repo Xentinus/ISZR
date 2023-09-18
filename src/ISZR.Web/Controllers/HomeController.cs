@@ -173,48 +173,6 @@ namespace ISZR.Web.Controllers
         }
 
         /// <summary>
-        /// Rendszer állapotfelméréséről jelentés
-        /// </summary>
-        [Authorize(Policy = "Administrator")]
-        public IActionResult HealthChecks()
-        {
-            var viewModel = new HealthChecksViewModel { };
-
-            // Adatbázis ellenőrzése
-            viewModel.DatabaseStatus = _databaseStatusService.IsDatabaseOnline();
-
-            // Bejelentkezett felhasználók statisztikája
-            viewModel.LoggedUserToday = _context.Users.Count(u => u.LastLogin.Date == DateTime.Now.Date);
-
-            // Igénylések statisztika
-            viewModel.RequestAll = _context.Requests.Count();
-            viewModel.RequestAllDone = _context.Requests.Count(r => r.Status == "Végrehajtva");
-            viewModel.RequestAllProgress = _context.Requests.Count(r => r.Status == "Folyamatban");
-            viewModel.RequestAllDenied = viewModel.RequestAll - (viewModel.RequestAllDone + viewModel.RequestAllProgress);
-            viewModel.RequestClosedToday = _context.Requests.Count(r => r.ClosedDateTime.Date == DateTime.Now.Date);
-            viewModel.RequestClosedMonth = _context.Requests.Count(r => r.ClosedDateTime.Year == DateTime.Now.Year && r.ClosedDateTime.Month == DateTime.Now.Month);
-            viewModel.RequestOpenToday = _context.Requests.Count(r => r.CreatedDateTime.Date == DateTime.Now.Date);
-            viewModel.RequestOpenMonth = _context.Requests.Count(r => r.CreatedDateTime.Year == DateTime.Now.Year && r.CreatedDateTime.Month == DateTime.Now.Month);
-
-            // Adat statisztika
-            viewModel.ActiveUsers = _context.Users.Count(u => !u.IsArchived);
-            viewModel.ActiveParkings = _context.Parkings.Count(p => !p.IsArchived);
-            viewModel.ActiveGroups = _context.Groups.Count(g => !g.IsArchived);
-            viewModel.ActiveWindowsPermission = _context.Permissions.Count(p => !p.IsArchived && p.Type == "Windows");
-            viewModel.ActiveFonixPermission = _context.Permissions.Count(p => !p.IsArchived && p.Type == "Főnix 3");
-            viewModel.ActivePhones = _context.Phones.Count(p => !p.IsArchived);
-            viewModel.ActiveNotUsedPhone = _context.Phones.Count(p => !p.IsArchived && p.PhoneUserId == null);
-
-            // Százalékok kiszámítása
-            ViewData["donePercent"] = CalculatePercent(viewModel.RequestAllDone, viewModel.RequestAll);
-            ViewData["inProgressPercent"] = CalculatePercent(viewModel.RequestAllProgress, viewModel.RequestAll);
-            ViewData["deniedPercent"] = CalculatePercent(viewModel.RequestAllDenied, viewModel.RequestAll);
-
-            // Felület megjelenítése
-            return View(viewModel);
-        }
-
-        /// <summary>
         /// Az aktuális folyamatban hiba történt, ennek tájékoztatása a felhasználó felé.
         /// </summary>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -254,16 +212,6 @@ namespace ISZR.Web.Controllers
 
             // Megtalált felhasználó visszaadása (amennyiben nem talált, null értéket fog visszaadni)
             return foundUser;
-        }
-
-        /// <summary>
-        /// Százalék kiszámítása
-        /// </summary>
-        /// <param name="count">Megadott érték</param>
-        /// <param name="max">Maximális mennyiség</param>
-        private int? CalculatePercent(int count, int max)
-        {
-            return (int)Math.Round((double)(100 * count) / max);
         }
     }
 }

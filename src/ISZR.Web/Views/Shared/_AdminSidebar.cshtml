@@ -1,6 +1,6 @@
 ﻿<aside class="main-sidebar elevation-4 sidebar-dark-info">
     <!-- ISZR -->
-    <a class="brand-link" asp-controller="Home" asp-action="HealthChecks">
+    <a class="brand-link" asp-controller="Application" asp-action="Index">
         <img src="~/img/ISZR.svg" alt="ISZR Logo" class="brand-image">
         <span class="brand-text">ISZR KARBANTARTÁS</span>
     </a>
@@ -11,7 +11,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header"><b>Rendszerrel kapcsolatos</b></li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")" asp-controller="Home" asp-action="HealthChecks">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Application" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Application" asp-action="Index">
                         <i class="nav-icon fas fa-stethoscope"></i>
                         <p>Állapotfelmérés</p>
                     </a>
@@ -20,12 +20,6 @@
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Reports" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Reports" asp-action="Index" asp-route-status="true">
                         <i class="nav-icon fas fa-bullhorn"></i>
                         <p>Hibabejelentések</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" && ViewContext.RouteData.Values["Action"]?.ToString() == "Online" ? "active" : "")" asp-controller="Users" asp-action="Online">
-                        <i class="nav-icon fas fa-history"></i>
-                        <p>Aktív felhasználók</p>
                     </a>
                 </li>
                 <li class="nav-header"><b>Személyi karbantartások</b></li>
@@ -81,9 +75,22 @@
                 </li>
                 <li class="nav-header"><b>Eszközök</b></li>
                 <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" && ViewContext.RouteData.Values["Action"]?.ToString() == "Online" ? "active" : "")" asp-controller="Users" asp-action="Online">
+                        <i class="nav-icon fas fa-history"></i>
+                        <p>Aktív felhasználók</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Permissions" && ViewContext.RouteData.Values["Action"]?.ToString() == "Convert" ? "active" : "")" asp-controller="Permissions" asp-action="Convert">
                         <i class="nav-icon fas fa-sync-alt"></i>
                         <p>Jogosultság konvertálás</p>
+                    </a>
+                </li>
+                <li class="nav-header"><b>Rendszer karbantartása</b></li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Application" && ViewContext.RouteData.Values["Action"]?.ToString() != "Index" ? "active" : "")" asp-controller="Application" asp-action="Settings">
+                        <i class="nav-icon fas fa-wrench"></i>
+                        <p>Rendszer beállítások</p>
                     </a>
                 </li>
             </ul>
