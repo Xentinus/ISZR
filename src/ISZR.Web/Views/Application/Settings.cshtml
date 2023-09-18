@@ -1,0 +1,191 @@
+﻿@using ISZR.Web.ViewModels;
+
+@model ApplicationSettingsViewModel;
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Rendszer beállítások";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Rendszerhez tartozó adatok beállítása</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Settings" onsubmit="submitButton.disabled = true; return true;">
+                        <div class="row">
+                            <div class="col-12">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="m-2">E-mailes értesítési szolgáltatás</h4>
+                                <p>Ha a szolgáltatás be van kapcsolva és megfelelően beállítva akkor a felhasználók értesítést kapnak, ha a részükre kérnek egy új igénylést vagy a velük kapcsolatos igénylés állapota megváltozott.</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Válassza ki a szolgáltatás állapotát</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-power-off mr-2"></i>Állapot</span>
+                                        </div>
+                                        <select asp-for="SNMP_ENABLE" class="form-control select2bs4" required>
+                                            <option value="false">E-mail szolgáltatás kikapcsolva</option>
+                                            <option value="true">E-mail szolgáltatás bekapcsolva</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Nevezze meg az e-mail szerver elérési útvonalát</label>
+                                    <span asp-validation-for="SNMP_SERVER" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-server mr-2"></i>Szerver</span>
+                                        </div>
+                                        <input type="text" asp-for="SNMP_SERVER" class="form-control" placeholder="E-mail szerver" spellcheck="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-4">
+                                <div class="form-group">
+                                    <label>Nevezze meg a küldő e-mail címét</label>
+                                    <span asp-validation-for="SNMP_MAIL" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-at mr-2"></i>E-mail cím</span>
+                                        </div>
+                                        <input type="email" asp-for="SNMP_MAIL" class="form-control" placeholder="Küldő e-mail címe" spellcheck="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-4">
+                                <div class="form-group">
+                                    <label>Nevezze meg a küldő felhasználónevét</label>
+                                    <span asp-validation-for="SNMP_USERNAME" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>Felhasználónév</span>
+                                        </div>
+                                        <input type="text" asp-for="SNMP_USERNAME" class="form-control" placeholder="Küldő felhasználóneve" spellcheck="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-4">
+                                <div class="form-group">
+                                    <label>Nevezze meg a küldő jelszavát</label>
+                                    <span asp-validation-for="SNMP_PASSWORD" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-lock mr-2"></i>Jelszó</span>
+                                        </div>
+                                        <input type="password" asp-for="SNMP_PASSWORD" class="form-control" placeholder="Küldő jelszava" spellcheck="false" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="m-2">Active-Directory szolgáltatás</h4>
+                                <p>Ha a szolgáltatás be van kapcsolva akkor, ha a felhasználó módosítja a profilját akkor az mentésre kerül az Active-Directory-ban is.</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Válassza ki a szolgáltatás állapotát</label><span class="text-danger font-weight-bold ml-1">*</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-power-off mr-2"></i>Állapot</span>
+                                        </div>
+                                        <select asp-for="LDAP_ENABLE" class="form-control select2bs4" required>
+                                            <option value="false">LDAP szolgáltatás kikapcsolva</option>
+                                            <option value="true">LDAP szolgáltatás bekapcsolva</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Nevezze meg az Active-Directory szerver elérési útvonalát</label>
+                                    <span asp-validation-for="LDAP_SERVER" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-server mr-2"></i>Szerver</span>
+                                        </div>
+                                        <input type="text" asp-for="LDAP_SERVER" class="form-control" placeholder="Active-Directory szerver" spellcheck="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-6">
+                                <div class="form-group">
+                                    <label>Nevezze meg a küldő felhasználónevét</label>
+                                    <span asp-validation-for="LDAP_USERNAME" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>Felhasználónév</span>
+                                        </div>
+                                        <input type="text" asp-for="LDAP_USERNAME" class="form-control" placeholder="Admin felhasználóneve" spellcheck="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-6">
+                                <div class="form-group">
+                                    <label>Nevezze meg a küldő jelszavát</label>
+                                    <span asp-validation-for="LDAP_PASSWORD" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-lock mr-2"></i>Jelszó</span>
+                                        </div>
+                                        <input type="password" asp-for="LDAP_PASSWORD" class="form-control" placeholder="Admin jelszava" spellcheck="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Nevezze meg az LDAP alapértelmezett keresési helyét</label>
+                                    <span asp-validation-for="LDAP_BASE" class="text-danger"></span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info"><i class="fas fa-search mr-2"></i>LDAP</span>
+                                        </div>
+                                        <input type="text" asp-for="LDAP_BASE" class="form-control" placeholder="LDAP alapértelmezett keresési helye" spellcheck="false" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="float-left">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="agreeToTerms" name="agreeToTerms" required />
+                                        <label class="custom-control-label" for="agreeToTerms">
+                                            Minden kötelező mezőt (<span class="text-danger font-weight-bold">*</span>) kitöltöttem, és a megadott adatok helyesek.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <input id="submitButton" name="submitButton" type="submit" value="Beállítások mentése" class="btn btn-info ml-1" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

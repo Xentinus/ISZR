@@ -4,20 +4,21 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyVersion>23.9.12.25</AssemblyVersion>
-    <FileVersion>23.9.12.25</FileVersion>
+    <AssemblyVersion>23.9.18.46</AssemblyVersion>
+    <FileVersion>23.9.18.46</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.21" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.21" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.21" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.21" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.21">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.22">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.DirectoryServices" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>

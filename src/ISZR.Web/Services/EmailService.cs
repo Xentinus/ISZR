@@ -10,14 +10,18 @@ namespace ISZR.Web.Services
     public class EmailService
     {
         private readonly DataContext _context;
-        private readonly string? smtpServer = Environment.GetEnvironmentVariable("SMTP_SERVER");
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly string? smtpServer = "";
         private readonly int smtpPort = 25;
-        private readonly string? smtpUsername = Environment.GetEnvironmentVariable("SMTP_USERNAME");
-        private readonly string? smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+        private readonly string? smtpmail = "";
+        private readonly string? smtpUsername = "";
+        private readonly string? smtpPassword = "";
 
-        public EmailService(DataContext context)
+
+        public EmailService(DataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -27,9 +31,10 @@ namespace ISZR.Web.Services
         /// <param name="status">Új státusz</param>
         public async Task SendStatusChange(Request requestData, string status)
         {
-            if (smtpServer == null || smtpUsername == null || smtpPassword == null) { return; }
+            // SMTP beállítások ellenőrzése
+            if (string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(smtpUsername) || string.IsNullOrEmpty(smtpPassword) || string.IsNullOrEmpty(smtpmail)) { return; }
 
-            // SMTP beállítása
+            // SMTP szerver beállítása
             var smtpClient = new SmtpClient(smtpServer)
             {
                 Port = smtpPort,
@@ -37,8 +42,13 @@ namespace ISZR.Web.Services
                 Credentials = new NetworkCredential(smtpUsername, smtpPassword)
             };
 
+            // Igényléssel kapcsolatos felhasználók adatainak lekérdezése
             User? creator = await GetUserById(requestData.CreatedByUserId);
             User? createdFor = await GetUserById(requestData.CreatedForUserId);
+
+            // Dinamikus elérési útvonal legenerálása
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var requestUrl = $"{httpRequest.Scheme}://{httpRequest.Host}/Requests/Details/{requestData.RequestId}";
 
             // Igénylést készítő értesítése
             if (!string.IsNullOrEmpty(creator.Email) && creator.UserId != createdFor.UserId)
@@ -47,7 +57,7 @@ namespace ISZR.Web.Services
                 {
                     var mailMessage = new MailMessage
                     {
-                        From = new MailAddress("skfb.informatika@bv.gov.hu"),
+                        From = new MailAddress(smtpmail),
                         Subject = $"ISZR #{requestData.RequestId} igénylés állapota megváltozott",
                         IsBodyHtml = true,
                         BodyEncoding = Encoding.UTF8,
@@ -70,7 +80,7 @@ namespace ISZR.Web.Services
                             <p style=""font-size: 14px; color: #555; margin-top: 30px;""><strong>Felhasználó:</strong> {createdFor.DisplayName} bv.{createdFor.Rank.ToLower()}</p>
                             <p style=""font-size: 14px; color: #555;""><strong>Típus:</strong> {requestData.Type}</p>
                             <p style=""font-size: 14px; color: #555;""><strong>Állapot:</strong> {status}</p>
-                            <a href=""http://skfb-iszr/Requests/Details/{requestData.RequestId}"" style=""display: inline-block; background-color: #17a2b8; color: #fff; text-decoration: none; padding: 10px 20px; font-size: 18px; border-radius: 5px; margin-top: 40px;"">Igénylés megtekintése</a>
+                            <a href=""{requestUrl}"" style=""display: inline-block; background-color: #17a2b8; color: #fff; text-decoration: none; padding: 10px 20px; font-size: 18px; border-radius: 5px; margin-top: 40px;"">Igénylés megtekintése</a>
                             <p style=""font-size: 12px; color: #777; margin-top: 30px;"">Ez egy automatikus értesítő. Kérjük, ne válaszoljon erre az e-mailre.</p>
                         </td>
                     </tr>
@@ -107,7 +117,7 @@ namespace ISZR.Web.Services
                 {
                     var mailMessage = new MailMessage
                     {
-                        From = new MailAddress("skfb.informatika@bv.gov.hu"),
+                        From = new MailAddress(smtpmail),
                         Subject = $"ISZR #{requestData.RequestId} igénylés állapota megváltozott",
                         IsBodyHtml = true,
                         BodyEncoding = Encoding.UTF8,
@@ -129,7 +139,7 @@ namespace ISZR.Web.Services
                             <p style=""font-size: 16px; color: #555;"">Az számodra létrehozott #{requestData.RequestId} azonosítójú igénylés státusza megváltozott.</p>
                             <p style=""font-size: 14px; color: #555; margin-top: 30px;""><strong>Típus:</strong> {requestData.Type}</p>
                             <p style=""font-size: 14px; color: #555;""><strong>Állapot:</strong> {status}</p>
-                            <a href=""http://skfb-iszr/Requests/Details/{requestData.RequestId}"" style=""display: inline-block; background-color: #17a2b8; color: #fff; text-decoration: none; padding: 10px 20px; font-size: 18px; border-radius: 5px; margin-top: 40px;"">Igénylés megtekintése</a>
+                            <a href=""{requestUrl}"" style=""display: inline-block; background-color: #17a2b8; color: #fff; text-decoration: none; padding: 10px 20px; font-size: 18px; border-radius: 5px; margin-top: 40px;"">Igénylés megtekintése</a>
                             <p style=""font-size: 12px; color: #777; margin-top: 30px;"">Ez egy automatikus értesítő. Kérjük, ne válaszoljon erre az e-mailre.</p>
                         </td>
                     </tr>
@@ -167,9 +177,10 @@ namespace ISZR.Web.Services
         /// <param name="status">Új státusz</param>
         public async Task SendNewRequestNotification(Request requestData)
         {
-            if (smtpServer == null || smtpUsername == null || smtpPassword == null) { return; }
+            // SMTP beállítások ellenőrzése
+            if (string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(smtpUsername) || string.IsNullOrEmpty(smtpPassword) || string.IsNullOrEmpty(smtpmail)) { return; }
 
-            // SMTP beállítása
+            // SMTP szerver beállítása
             var smtpClient = new SmtpClient(smtpServer)
             {
                 Port = smtpPort,
@@ -177,8 +188,13 @@ namespace ISZR.Web.Services
                 Credentials = new NetworkCredential(smtpUsername, smtpPassword)
             };
 
+            // Igényléssel kapcsolatos felhasználók adatainak lekérdezése
             User? creator = await GetUserById(requestData.CreatedByUserId);
             User? createdFor = await GetUserById(requestData.CreatedForUserId);
+
+            // Dinamikus elérési útvonal legenerálása
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var requestUrl = $"{httpRequest.Scheme}://{httpRequest.Host}/Requests/Details/{requestData.RequestId}";
 
             // Felhasználó értesítése
             if (!string.IsNullOrEmpty(createdFor.Email) && creator.UserId != createdFor.UserId)
@@ -187,7 +203,7 @@ namespace ISZR.Web.Services
                 {
                     var mailMessage = new MailMessage
                     {
-                        From = new MailAddress("skfb.informatika@bv.gov.hu"),
+                        From = new MailAddress(smtpmail),
                         Subject = $"ISZR #{requestData.RequestId} új igénylés érkezett",
                         IsBodyHtml = true,
                         BodyEncoding = Encoding.UTF8,
@@ -209,7 +225,7 @@ namespace ISZR.Web.Services
                             <p style=""font-size: 16px; color: #555;"">Új igénylés lett számodra kérve amely #{requestData.RequestId} azonosítót kapta.</p>
                             <p style=""font-size: 14px; color: #555; margin-top: 30px;""><strong>Ügyintéző:</strong> {creator.DisplayName} bv.{creator.Rank.ToLower()}</p>
                             <p style=""font-size: 14px; color: #555;""><strong>Típus:</strong> {requestData.Type}</p>
-                            <a href=""http://skfb-iszr/Requests/Details/{requestData.RequestId}"" style=""display: inline-block; background-color: #17a2b8; color: #fff; text-decoration: none; padding: 10px 20px; font-size: 18px; border-radius: 5px; margin-top: 40px;"">Igénylés megtekintése</a>
+                            <a href=""{requestUrl}"" style=""display: inline-block; background-color: #17a2b8; color: #fff; text-decoration: none; padding: 10px 20px; font-size: 18px; border-radius: 5px; margin-top: 40px;"">Igénylés megtekintése</a>
                             <p style=""font-size: 12px; color: #777; margin-top: 30px;"">Ez egy automatikus értesítő. Kérjük, ne válaszoljon erre az e-mailre.</p>
                         </td>
                     </tr>

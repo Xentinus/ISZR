@@ -2,9 +2,11 @@ global using ISZR.Web.Data;
 global using ISZR.Web.Middleware;
 global using ISZR.Web.Services;
 global using Microsoft.EntityFrameworkCore;
+using ISZR.Web.ViewModels;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Server.IIS;
+using Microsoft.Extensions.Configuration;
 
 // Alkalmazás felépítése
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,10 @@ builder.Services.AddScoped<UpdateUserUptime>();
 
 // E-mailes értesítés betöltése
 builder.Services.AddScoped<EmailService>();
+
+
+// HTTP Context
+builder.Services.AddHttpContextAccessor();
 
 // Autentikáció beállítása Environment alapján
 if (builder.Environment.IsDevelopment())
