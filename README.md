@@ -17,7 +17,9 @@ A web alkalmazás célja, hogy a felhasználók egyszerűen, könnyedén igénye
 - Könnyen áttekinthető és értelmezhető igénylési lap
 - Hivatkozásokkal ellátott igénylési lapok és listák
 - Globális keresés
+- Rendszer beállítások szolgáltatások beállításához
 - Automatikus e-mail címes értesítés az igénylésben szereplőknek
+- Automatikus adatok frissítése Active Directory szerveren
 - Automatikus elérhetőség figyelés
 - Külön adminisztratív felület rendszer
 - Microsoft SQL Server segítségével minden megjelenített adat dinamikus
@@ -68,6 +70,14 @@ Az igénylés állapotának megváltoztatásával azonnal megjelenik mindenki sz
 Adminisztrátorok részére készült egy teljesen elkülönített felület, ahol bármikor képesek új jogosultságot, osztály vagy bármit létrehozni/módosítani, vagy archiválni.
 Valamint ki lett alakítva egy rendszerállapotot összegző felület, ahol könnyedén megtudhatják, a rendszerrel kapcsolatos fontosabb információkat.
 
+## Rendszer beállítások szolgáltatások üzemeltetéséhez
+
+<p align="center">
+	<img src=".github/config.png">
+</p>
+
+Lehetőség van a felhasználók e-mailes értesítésének valamint felhasználók adatainak frissítésének beállítására.
+
 ## Automatikus e-mail címes értesítés
 
 <p align="center">
@@ -77,6 +87,10 @@ Valamint ki lett alakítva egy rendszerállapotot összegző felület, ahol kön
 Minden igénylés létrehozásakor a felhasználó, aki számára kérték az igénylést, kap egy e-mail-es értesítést, hogy a számára új igénylést hoztak létre a rendszerben. Az üzenet tartalmazza az ügyintéző nevét és az igénylés típusát.
 
 Illetve amennyiben az adminisztrátorok módosítanak egy igénylés státuszán, arról kap értesítést az igénylés létrehozója, illetve a felhasználó, aki számára kérték is.
+
+## Automatikus adatok frissítése Active Directory-ban
+
+Ha a felhasználó módosít a profilján vagy esetleg egy ügyintéző módosít más felhasználó profilján, az adatok frissülnek a Active Directory-ban is.
 
 ## Globális keresés
 
