@@ -120,31 +120,31 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-info"><i class="fas fa-server mr-2"></i>Szerver</span>
                                         </div>
-                                        <input type="text" asp-for="LDAP_SERVER" class="form-control" placeholder="Active-Directory szerver" spellcheck="false" />
+                                        <input type="text" asp-for="LDAP_SERVER" class="form-control" placeholder="Active-Directory szerver (ldap://szerver/)" spellcheck="false" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-xl-6">
                                 <div class="form-group">
-                                    <label>Nevezze meg a küldő felhasználónevét</label>
-                                    <span asp-validation-for="LDAP_USERNAME" class="text-danger"></span>
+                                    <label>Nevezze meg az LDAP BIND felhasználó DN elérését</label>
+                                    <span asp-validation-for="LDAP_BIND_USER" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>Felhasználónév</span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-user mr-2"></i>BIND DN</span>
                                         </div>
-                                        <input type="text" asp-for="LDAP_USERNAME" class="form-control" placeholder="Admin felhasználóneve" spellcheck="false" />
+                                        <input type="text" asp-for="LDAP_BIND_USER" class="form-control" placeholder="Felhasználó BIND-olva" spellcheck="false" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-xl-6">
                                 <div class="form-group">
-                                    <label>Nevezze meg a küldő jelszavát</label>
-                                    <span asp-validation-for="LDAP_PASSWORD" class="text-danger"></span>
+                                    <label>Nevezze meg az LDAP BIND felhasználó jelszavát</label>
+                                    <span asp-validation-for="LDAP_BIND_PASSWORD" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-info"><i class="fas fa-lock mr-2"></i>Jelszó</span>
                                         </div>
-                                        <input type="password" asp-for="LDAP_PASSWORD" class="form-control" placeholder="Admin jelszava" spellcheck="false" />
+                                        <input type="password" asp-for="LDAP_BIND_PASSWORD" class="form-control" placeholder="BIND felhasználó jelszava" spellcheck="false" />
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +154,7 @@
                                     <span asp-validation-for="LDAP_BASE" class="text-danger"></span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fas fa-search mr-2"></i>LDAP</span>
+                                            <span class="input-group-text bg-info"><i class="fas fa-search mr-2"></i>DN</span>
                                         </div>
                                         <input type="text" asp-for="LDAP_BASE" class="form-control" placeholder="LDAP alapértelmezett keresési helye" spellcheck="false" />
                                     </div>

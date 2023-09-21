@@ -77,6 +77,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 // Services
 builder.Services.AddSingleton<IDatabaseStatusService, DatabaseStatusService>();
 builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<LdapService>();
 
 // Alkalmazás elkészítése
 var app = builder.Build();

@@ -17,13 +17,21 @@ namespace ISZR.Web.Controllers
         private readonly IDatabaseStatusService _databaseStatusService;
         private readonly IConfiguration _configuration;
         private readonly IHostEnvironment _environment;
+        private readonly LdapService _ldapService;
 
-        public ApplicationController(DataContext context, IDatabaseStatusService databaseStatusService, IConfiguration configuration, IHostEnvironment environment)
+        private readonly bool smtpEnable;
+        private readonly bool ldapEnable;
+
+        public ApplicationController(DataContext context, IDatabaseStatusService databaseStatusService, IConfiguration configuration, IHostEnvironment environment, LdapService ldapService)
         {
             _context = context;
             _databaseStatusService = databaseStatusService;
             _configuration = configuration;
             _environment = environment;
+            _ldapService = ldapService;
+
+            smtpEnable = configuration.GetValue<bool>("ApplicationSettings:SNMP_ENABLE");
+            ldapEnable = configuration.GetValue<bool>("ApplicationSettings:LDAP_ENABLE");
         }
 
         /// <summary>
@@ -34,21 +42,28 @@ namespace ISZR.Web.Controllers
         {
             var viewModel = new HealthChecksViewModel { };
 
+            // Az elmúlt 24 órában bejelentkezett felhasználók részére
+            var setUserUptime = DateTime.Now.AddDays(-1);
+
+            // Az elmúlt 1 hónap igényléseinek részére
+            var setRequestTime = DateTime.Now.AddMonths(-1);
+
             // Adatbázis ellenőrzése
             viewModel.DatabaseStatus = _databaseStatusService.IsDatabaseOnline();
 
             // Bejelentkezett felhasználók statisztikája
-            viewModel.LoggedUserToday = _context.Users.Count(u => u.LastLogin.Date == DateTime.Now.Date);
+            viewModel.LoggedUserToday = _context.Users.Count(u => u.LastLogin >= setUserUptime);
+
+            // Szolgáltatások állapotai
+            viewModel.EmailServiceStatus = smtpEnable;
+            viewModel.LDAPServiceStatus = ldapEnable;
+            viewModel.LDAPConnectionStatus = _ldapService.IsLdapConnectionSuccessful();
 
             // Igénylések statisztika
-            viewModel.RequestAll = _context.Requests.Count();
-            viewModel.RequestAllDone = _context.Requests.Count(r => r.Status == "Végrehajtva");
-            viewModel.RequestAllProgress = _context.Requests.Count(r => r.Status == "Folyamatban");
+            viewModel.RequestAll = _context.Requests.Count(r => r.CreatedDateTime >= setRequestTime);
+            viewModel.RequestAllDone = _context.Requests.Where(r => r.CreatedDateTime >= setRequestTime).Count(r => r.Status == "Végrehajtva");
+            viewModel.RequestAllProgress = _context.Requests.Where(r => r.CreatedDateTime >= setRequestTime).Count(r => r.Status == "Folyamatban");
             viewModel.RequestAllDenied = viewModel.RequestAll - (viewModel.RequestAllDone + viewModel.RequestAllProgress);
-            viewModel.RequestClosedToday = _context.Requests.Count(r => r.ClosedDateTime.Date == DateTime.Now.Date);
-            viewModel.RequestClosedMonth = _context.Requests.Count(r => r.ClosedDateTime.Year == DateTime.Now.Year && r.ClosedDateTime.Month == DateTime.Now.Month);
-            viewModel.RequestOpenToday = _context.Requests.Count(r => r.CreatedDateTime.Date == DateTime.Now.Date);
-            viewModel.RequestOpenMonth = _context.Requests.Count(r => r.CreatedDateTime.Year == DateTime.Now.Year && r.CreatedDateTime.Month == DateTime.Now.Month);
 
             // Adat statisztika
             viewModel.ActiveUsers = _context.Users.Count(u => !u.IsArchived);
@@ -68,12 +83,21 @@ namespace ISZR.Web.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Appsettings értékeinek betöltése
+        /// </summary>
         public IActionResult Settings()
         {
+            // Értékek beolvasása a JSON fájlból
             var settings = _configuration.GetSection("ApplicationSettings").Get<ApplicationSettingsViewModel>();
             return View(settings);
         }
 
+
+        /// <summary>
+        /// Appsettings fájl értékeinek átírása
+        /// </summary>
+        /// <param name="model">appsettings értékek</param>
         [HttpPost]
         public IActionResult Settings(ApplicationSettingsViewModel model)
         {
@@ -81,9 +105,10 @@ namespace ISZR.Web.Controllers
             {
                 try
                 {
+                    // Fájl elérési útvonalának beállítása environment típus alapján
                     var configFilePath = _environment.IsProduction() ? Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json") : Path.Combine(Directory.GetCurrentDirectory(), "appsettings.Development.json");
 
-                    // Read the existing configuration JSON or create an empty JObject if the file doesn't exist
+                    // Fájl beolvasása
                     JObject configObject;
                     if (System.IO.File.Exists(configFilePath))
                     {
@@ -95,16 +120,16 @@ namespace ISZR.Web.Controllers
                         configObject = new JObject();
                     }
 
-                    // Ensure the "ApplicationSettings" section exists
+                    // Amennyiben nem létezik, annak létrehozása
                     if (configObject["ApplicationSettings"] == null)
                     {
                         configObject["ApplicationSettings"] = new JObject();
                     }
 
-                    // Get the "ApplicationSettings" section
+                    // Beolvasott fájl érintett szekciójának betöltése
                     var appSettingsSection = configObject["ApplicationSettings"];
 
-                    // Update only the changed properties
+                    // Értékek frissítése
                     if (appSettingsSection != null)
                     {
                         appSettingsSection["SNMP_ENABLE"] = model.SNMP_ENABLE;
@@ -114,20 +139,20 @@ namespace ISZR.Web.Controllers
                         appSettingsSection["SNMP_PASSWORD"] = model.SNMP_PASSWORD;
                         appSettingsSection["LDAP_ENABLE"] = model.LDAP_ENABLE;
                         appSettingsSection["LDAP_SERVER"] = model.LDAP_SERVER;
-                        appSettingsSection["LDAP_USERNAME"] = model.LDAP_USERNAME;
-                        appSettingsSection["LDAP_PASSWORD"] = model.LDAP_PASSWORD;
+                        appSettingsSection["LDAP_BIND_USER"] = model.LDAP_BIND_USER;
+                        appSettingsSection["LDAP_BIND_PASSWORD"] = model.LDAP_BIND_PASSWORD;
+                        appSettingsSection["LDAP_BASE"] = model.LDAP_BASE;
                     }
 
-                    // Serialize the modified JObject back to JSON with indentation
+                    // Visszaalakítás JSON formává
                     var updatedConfigJson = configObject.ToString(Formatting.Indented);
 
-                    // Write the updated JSON back to the configuration file
+                    // Elkészült JSON elmentése
                     System.IO.File.WriteAllText(configFilePath, updatedConfigJson);
                 }
                 catch (Exception ex)
                 {
-                    // Handle any exceptions that may occur during the process.
-                    // Log the error, display an error message, or take appropriate action.
+                    // Amennyiben hiba van arról tájékoztatni
                     return View("Error", new ErrorViewModel { Message = ex.Message });
                 }
 
@@ -135,9 +160,13 @@ namespace ISZR.Web.Controllers
                 return RedirectToAction("SettingsComplete");
             }
 
+            // Hibás model esetén újrabetöltés
             return View(model);
         }
 
+        /// <summary>
+        /// Sikeres tájékoztatás
+        /// </summary>
         public IActionResult SettingsComplete()
         {
             return View();

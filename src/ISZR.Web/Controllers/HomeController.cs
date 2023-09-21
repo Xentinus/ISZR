@@ -16,12 +16,12 @@ namespace ISZR.Web.Controllers
     public class HomeController : Controller
     {
         private readonly DataContext _context;
-        private readonly IDatabaseStatusService _databaseStatusService;
+        private readonly LdapService _ldapService;
 
-        public HomeController(DataContext context, IDatabaseStatusService databaseStatusService)
+        public HomeController(DataContext context, LdapService ldapService)
         {
             _context = context;
-            _databaseStatusService = databaseStatusService;
+            _ldapService = ldapService;
         }
 
         /// <summary>
@@ -79,11 +79,14 @@ namespace ISZR.Web.Controllers
 
             // Felhasználó megkeresése az adatbázisban
             var foundUser = await _context.Users
+                .Include(u => u.Class)
+                .Include(u => u.Position)
                 .FirstOrDefaultAsync(u => u.UserId == id);
 
             // Felhasználó meglétének ellenőrzése
             if (foundUser == null) return NotFound();
 
+            // Felhasználó adatainak frissítése az ISZR-ben
             try
             {
                 // Felhasználó adatainak felülírása a megadott értékekkel
@@ -109,6 +112,20 @@ namespace ISZR.Web.Controllers
                 {
                     throw;
                 }
+            }
+
+            // Felhasználó adatainak frissítéte az Active-Directory-ban
+            try
+            {
+                // Felhasználó frissítése az adatbázisban
+                if (!string.IsNullOrEmpty(foundUser.Class.Name) && !string.IsNullOrEmpty(foundUser.Position.Name))
+                {
+                    _ldapService.UpdateUser(foundUser, foundUser.Class.Name, foundUser.Position.Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
             // Felület újra megjelenítése

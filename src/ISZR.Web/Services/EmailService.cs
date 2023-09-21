@@ -1,8 +1,6 @@
 ﻿using ISZR.Web.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
-using System.Net.NetworkInformation;
 using System.Text;
 
 namespace ISZR.Web.Services
@@ -11,17 +9,24 @@ namespace ISZR.Web.Services
     {
         private readonly DataContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly string? smtpServer = "";
+
+        private readonly bool smtpEnable;
+        private readonly string? smtpServer;
         private readonly int smtpPort = 25;
-        private readonly string? smtpmail = "";
-        private readonly string? smtpUsername = "";
-        private readonly string? smtpPassword = "";
+        private readonly string? smtpMail;
+        private readonly string? smtpUsername;
+        private readonly string? smtpPassword;
 
-
-        public EmailService(DataContext context, IHttpContextAccessor httpContextAccessor)
+        public EmailService(DataContext context, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+
+            smtpEnable = configuration.GetValue<bool>("ApplicationSettings:SNMP_ENABLE");
+            smtpServer = configuration.GetValue<string>("ApplicationSettings:SNMP_SERVER");
+            smtpMail = configuration.GetValue<string>("ApplicationSettings:SNMP_MAIL");
+            smtpUsername = configuration.GetValue<string>("ApplicationSettings:SNMP_USERNAME");
+            smtpPassword = configuration.GetValue<string>("ApplicationSettings:SNMP_PASSWORD");
         }
 
         /// <summary>
@@ -31,8 +36,11 @@ namespace ISZR.Web.Services
         /// <param name="status">Új státusz</param>
         public async Task SendStatusChange(Request requestData, string status)
         {
+            // E-mail szolgáltatás bekapcsolásának ellenőrzése
+            if (!smtpEnable) return;
+
             // SMTP beállítások ellenőrzése
-            if (string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(smtpUsername) || string.IsNullOrEmpty(smtpPassword) || string.IsNullOrEmpty(smtpmail)) { return; }
+            if (string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(smtpUsername) || string.IsNullOrEmpty(smtpPassword) || string.IsNullOrEmpty(smtpMail)) { return; }
 
             // SMTP szerver beállítása
             var smtpClient = new SmtpClient(smtpServer)
@@ -57,7 +65,7 @@ namespace ISZR.Web.Services
                 {
                     var mailMessage = new MailMessage
                     {
-                        From = new MailAddress(smtpmail),
+                        From = new MailAddress(smtpMail),
                         Subject = $"ISZR #{requestData.RequestId} igénylés állapota megváltozott",
                         IsBodyHtml = true,
                         BodyEncoding = Encoding.UTF8,
@@ -98,8 +106,6 @@ namespace ISZR.Web.Services
 "
                     };
 
-
-
                     mailMessage.To.Add(creator.Email);
 
                     await smtpClient.SendMailAsync(mailMessage);
@@ -117,7 +123,7 @@ namespace ISZR.Web.Services
                 {
                     var mailMessage = new MailMessage
                     {
-                        From = new MailAddress(smtpmail),
+                        From = new MailAddress(smtpMail),
                         Subject = $"ISZR #{requestData.RequestId} igénylés állapota megváltozott",
                         IsBodyHtml = true,
                         BodyEncoding = Encoding.UTF8,
@@ -157,8 +163,6 @@ namespace ISZR.Web.Services
 "
                     };
 
-
-
                     mailMessage.To.Add(createdFor.Email);
 
                     await smtpClient.SendMailAsync(mailMessage);
@@ -177,8 +181,11 @@ namespace ISZR.Web.Services
         /// <param name="status">Új státusz</param>
         public async Task SendNewRequestNotification(Request requestData)
         {
+            // E-mail szolgáltatás bekapcsolásának ellenőrzése
+            if (!smtpEnable) return;
+
             // SMTP beállítások ellenőrzése
-            if (string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(smtpUsername) || string.IsNullOrEmpty(smtpPassword) || string.IsNullOrEmpty(smtpmail)) { return; }
+            if (string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(smtpUsername) || string.IsNullOrEmpty(smtpPassword) || string.IsNullOrEmpty(smtpMail)) { return; }
 
             // SMTP szerver beállítása
             var smtpClient = new SmtpClient(smtpServer)
@@ -203,7 +210,7 @@ namespace ISZR.Web.Services
                 {
                     var mailMessage = new MailMessage
                     {
-                        From = new MailAddress(smtpmail),
+                        From = new MailAddress(smtpMail),
                         Subject = $"ISZR #{requestData.RequestId} új igénylés érkezett",
                         IsBodyHtml = true,
                         BodyEncoding = Encoding.UTF8,
@@ -242,8 +249,6 @@ namespace ISZR.Web.Services
 </html>
 "
                     };
-
-
 
                     mailMessage.To.Add(createdFor.Email);
 

@@ -16,10 +16,12 @@ namespace ISZR.Web.Controllers
     public class UsersController : Controller
     {
         private readonly DataContext _context;
+        private readonly LdapService _ldapService;
 
-        public UsersController(DataContext context)
+        public UsersController(DataContext context, LdapService ldapService)
         {
             _context = context;
+            _ldapService = ldapService;
         }
 
         /// <summary>
@@ -212,6 +214,7 @@ namespace ISZR.Web.Controllers
                 User? selectedUser = await GetUserById(id);
                 if (selectedUser == null) { return NotFound(); }
 
+                // Felhasználó adatainak frissítése az ISZR-ben
                 try
                 {
                     // Felhasználó értékeinek felülírása
@@ -240,6 +243,20 @@ namespace ISZR.Web.Controllers
                     {
                         throw;
                     }
+                }
+
+                // Felhasználó adatainak frissítéte az Active-Directory-ban
+                try
+                {
+                    // Felhasználó frissítése az adatbázisban
+                    if (!string.IsNullOrEmpty(selectedUser.Class.Name) && !string.IsNullOrEmpty(selectedUser.Position.Name))
+                    {
+                        _ldapService.UpdateUser(selectedUser, selectedUser.Class.Name, selectedUser.Position.Name);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
 
                 // Adminisztrátor átirányítása a felhasználók listájához

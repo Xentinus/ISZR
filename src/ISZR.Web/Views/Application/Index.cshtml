@@ -11,18 +11,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12 col-md-6">
-            <div class="info-box bg-default">
-                <span class="info-box-icon"><i class="fas fa-server"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Kiszolgáló szerver</span>
-                    <div class="info-box-number">
-                        <a class="text-success font-weight-bold" href="@healthcheck"><i class="icon fas fa-signal mr-2"></i>Elérhető</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
             <div class="info-box bg-default">
                 <span class="info-box-icon"><i class="fas fa-database"></i></span>
                 <div class="info-box-content">
@@ -38,6 +27,42 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 col-md-4">
+            <div class="info-box bg-default">
+                <span class="info-box-icon"><i class="fas fa-server"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Active Directory szolgáltatás</span>
+                    @if (Model.LDAPServiceStatus && Model.LDAPConnectionStatus)
+                    {
+                        <a class="info-box-number text-success font-weight-bold" asp-controller="Application" asp-action="Settings"><i class="icon fas fa-signal mr-2"></i>Sikeres csatlakozva</a>
+                    }
+                    else if (Model.LDAPServiceStatus && !Model.LDAPConnectionStatus)
+                    {
+                        <a class="info-box-number text-danger font-weight-bold" asp-controller="Application" asp-action="Settings"><i class="icon fas fa-exclamation-triangle mr-2"></i>Sikertelen csatlakozás</a>
+                    }
+                    else
+                    {
+                        <a class="info-box-number text-danger font-weight-bold" asp-controller="Application" asp-action="Settings"><i class="icon fas fa-power-off mr-2"></i>Kikapcsolva</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="info-box bg-default">
+                <span class="info-box-icon"><i class="fas fa-envelope"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">E-mail értesítési szolgáltatás</span>
+                    @if (Model.EmailServiceStatus)
+                    {
+                        <a class="info-box-number text-success font-weight-bold" asp-controller="Application" asp-action="Settings"><i class="icon fas fa-power-off mr-2"></i>Bekapcsolva</a>
+                    }
+                    else
+                    {
+                        <a class="info-box-number text-danger font-weight-bold" asp-controller="Application" asp-action="Settings"><i class="icon fas fa-power-off mr-2"></i>Kikapcsolva</a>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-12">
@@ -47,9 +72,9 @@
     <div class="row">
         <div class="col-12 col-md-6">
             <div class="info-box bg-default">
-                <span class="info-box-icon"><i class="fas fa-door-open"></i></span>
+                <span class="info-box-icon"><i class="fas fa-building"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Mai napon bejelentkezett felhasználók</span>
+                    <span class="info-box-text">Aktív felhasználók az elmúlt időszakban</span>
                     <div class="info-box-number text-muted">
                         <a asp-controller="Users" asp-action="Online" class="mr-2 text-success font-weight-bold"><i class="icon fas fa-user mr-2"></i>@Model.LoggedUserToday</a>
                         <span class="mr-2 text-muted">/</span>
@@ -114,7 +139,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <h4 class="m-2">Igénylésekkel kapcsolatos statisztikák</h4>
+            <h4 class="m-2">Az elmúlt 1 hónap igényléseinek statisztikái</h4>
         </div>
     </div>
     <div class="row">
@@ -125,7 +150,7 @@
                         <div class="col-12 col-md-4">
                             <div class="progress-group">
                                 <span class="progress-text">Végrehajtva</span>
-                                <span class="float-right"><b>@Model.RequestAllDone</b>/@Model.RequestAll</span>
+                                <span class="float-right">@Model.RequestAllDone darab igénylés (@ViewData["donePercent"]%)</span>
                                 <div class="progress progress-sm">
                                     <div class="progress-bar bg-success" style="width: @ViewData["donePercent"]%"></div>
                                 </div>
@@ -134,7 +159,7 @@
                         <div class="col-12 col-md-4">
                             <div class="progress-group">
                                 <span class="progress-text">Folyamatban lévő</span>
-                                <span class="float-right"><b>@Model.RequestAllProgress</b>/@Model.RequestAll</span>
+                                <span class="float-right">@Model.RequestAllProgress darab igénylés (@ViewData["inProgressPercent"]%)</span>
                                 <div class="progress progress-sm">
                                     <div class="progress-bar bg-warning" style="width: @ViewData["inProgressPercent"]%"></div>
                                 </div>
@@ -143,49 +168,13 @@
                         <div class="col-12 col-md-4">
                             <div class="progress-group">
                                 <span class="progress-text">Elutasítva</span>
-                                <span class="float-right"><b>@Model.RequestAllDenied</b>/@Model.RequestAll</span>
+                                <span class="float-right">@Model.RequestAllDenied darab igénylés (@ViewData["deniedPercent"]%)</span>
                                 <div class="progress progress-sm">
                                     <div class="progress-bar bg-danger" style="width: @ViewData["deniedPercent"]%"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col-6 col-md-3">
-                            <div class="description-block border-right">
-                                <h5 class="description-header">@Model.RequestOpenToday darab</h5>
-                                <span class="description-text">Mai napon létrehozva</span>
-                            </div>
-
-                        </div>
-
-                        <div class="col-6 col-md-3">
-                            <div class="description-block border-right">
-                                <h5 class="description-header">@Model.RequestClosedToday darab</h5>
-                                <span class="description-text">Mai napon lezárva</span>
-                            </div>
-
-                        </div>
-
-                        <div class="col-6 col-md-3">
-                            <div class="description-block border-right">
-                                <h5 class="description-header">@Model.RequestOpenMonth darab</h5>
-                                <span class="description-text">Hónapban létrehozva</span>
-                            </div>
-
-                        </div>
-
-                        <div class="col-6 col-md-3">
-                            <div class="description-block border-right">
-                                <h5 class="description-header">@Model.RequestClosedMonth darab</h5>
-                                <span class="description-text">Hónapban lezárva</span>
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

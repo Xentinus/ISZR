@@ -38,14 +38,14 @@
         public string? LDAP_SERVER { get; set; }
 
         /// <summary>
-        /// Active Directory admin felhasználóneve
+        /// Active Directory BIND felhasználó
         /// </summary>
-        public string? LDAP_USERNAME { get; set; }
+        public string? LDAP_BIND_USER { get; set; }
 
         /// <summary>
-        /// Active Directory admin jelszava
+        /// Active Directory BIND felhasználó jelszava
         /// </summary>
-        public string? LDAP_PASSWORD { get; set; }
+        public string? LDAP_BIND_PASSWORD { get; set; }
 
         /// <summary>
         /// LDAP alapértelmezett helyszíne

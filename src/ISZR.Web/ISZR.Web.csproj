@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyVersion>23.9.18.46</AssemblyVersion>
-    <FileVersion>23.9.18.46</FileVersion>
+    <AssemblyVersion>23.9.21.0</AssemblyVersion>
+    <FileVersion>23.9.21.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +18,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.DirectoryServices" Version="6.0.1" />
+    <PackageReference Include="Novell.Directory.Ldap.NETStandard" Version="3.6.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -33,12 +33,9 @@
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (UserExists(user.UserId))
-                    {
-                        throw;
-                    }
+                    Console.WriteLine(ex.Message);
                 }
             }
 
@@ -47,16 +44,6 @@
 
             // A rendszer továbbléptetése
             await next(context);
-        }
-
-        /// <summary>
-        /// Felhasználói azonosító megkeresése a rendszerben
-        /// </summary>
-        /// <param name="id">Felhasználói azonosító</param>
-        /// <returns>Létezik e a felhasználói azonosító (igaz/hamis)</returns>
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.UserId == id);
         }
     }
 }
