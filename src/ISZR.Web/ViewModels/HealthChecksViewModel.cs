@@ -8,6 +8,17 @@
         public bool DatabaseStatus { get; set; } = false;
 
         /// <summary>
+        /// E-mailes értesítési rendszer állapota
+        /// </summary>
+        public bool EmailServiceStatus { get; set; } = false;
+
+        /// <summary>
+        /// Active-Directory rendszer állapota
+        /// </summary>
+        public bool LDAPServiceStatus { get; set; } = false;
+        public bool LDAPConnectionStatus { get; set; } = false;
+
+        /// <summary>
         /// Bejelentkezett felhasználók statisztikája
         /// </summary>
         public int LoggedUserToday { get; set; } = 0;
@@ -19,10 +30,6 @@
         public int RequestAllDone { get; set; } = 0;
         public int RequestAllProgress { get; set; } = 0;
         public int RequestAllDenied { get; set; } = 0;
-        public int RequestClosedToday { get; set; } = 0;
-        public int RequestClosedMonth { get; set; } = 0;
-        public int RequestOpenToday { get; set; } = 0;
-        public int RequestOpenMonth { get; set; } = 0;
 
         /// <summary>
         /// Adat statisztika
