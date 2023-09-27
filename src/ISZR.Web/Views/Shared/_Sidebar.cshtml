@@ -122,26 +122,40 @@
                         </ul>
                     </li>
                 }
-                <li class="nav-header"><b>Egyebek</b></li>
+                <li class="nav-header"><b>Segítség</b></li>
                 <li class="nav-item">
                     <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Permissions" ? "active" : "")" asp-controller="Home" asp-action="Permissions">
                         <i class="nav-icon fas fa-key"></i>
                         <p>Jogosultsági magyarázat</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "FAQ" ? "active" : "")" asp-controller="Home" asp-action="FAQ">
+                        <i class="nav-icon fas fa-question-circle"></i>
+                        <p>GYIK</p>
+                    </a>
+                </li>
                 @if (User.IsInRole("SKFB-ISZR-Ugyintezo"))
                 {
                     <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Reports" && ViewContext.RouteData.Values["Action"]?.ToString() == "Create" ? "active" : "")" asp-controller="Reports" asp-action="Create">
+                        <a href="#" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Reports" ? "active" : "")">
                             <i class="nav-icon fas fa-bullhorn"></i>
-                            <p>Hibabejelentés</p>
+                            <p>Helpdesk <i class="fas fa-angle-left right"></i></p>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "FAQ" ? "active" : "")" asp-controller="Home" asp-action="FAQ">
-                            <i class="nav-icon fas fa-question-circle"></i>
-                            <p>GYIK</p>
-                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Reports" asp-action="Create">
+                                    <i class="nav-icon fas fa-virus"></i>
+                                    <p>Új bejelentés lérehozása</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Reports" asp-action="Index" asp-route-status="true">
+                                    <i class="nav-icon fas fa-book-medical"></i>
+                                    <p>Meglévő bejelentések</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 }
             </ul>

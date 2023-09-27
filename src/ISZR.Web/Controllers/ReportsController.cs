@@ -138,7 +138,7 @@ namespace ISZR.Web.Controllers
                 await _context.SaveChangesAsync();
 
                 // Felhasználó átnavigálása a felhasználói profilba
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("Index");
             }
 
             // Felület megjelenítése
