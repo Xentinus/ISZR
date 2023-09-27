@@ -1,7 +1,6 @@
 ﻿@model PaginatedList<ISZR.Web.Models.Report>
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Hibabejelentések";
 }
 
@@ -76,36 +75,49 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body p-0">
-                    @foreach (var item in Model)
+                    @if (User.IsInRole("SKFB-ISZR-Admin"))
                     {
-                        <div class="modal fade" id="deleteModal@(item.ReportId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.ReportId)" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-danger">
-                                        <h5 class="modal-title" id="deleteModalLabel@(item.ReportId)"><i class="fas fa-archive mr-2"></i>Státusz módosítás</h5>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div>Biztosan szeretnéd <b>@item.Title</b> című bejelentés állapotát megváltoztatni?</div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
-                                        <form asp-action="Index" asp-route-id="@item.ReportId">
-                                            <input type="hidden" asp-for="@item.ReportId" />
-                                            <button type="submit" class="btn btn-danger"><i class="fas fa-archive mr-2"></i>Megváltoztatás</button>
-                                        </form>
+                        @foreach (var item in Model)
+                        {
+                            <div class="modal fade" id="deleteModal@(item.ReportId)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(item.ReportId)" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-danger">
+                                            <h5 class="modal-title" id="deleteModalLabel@(item.ReportId)"><i class="fas fa-archive mr-2"></i>Státusz módosítás</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>Biztosan szeretnéd <b>@item.Title</b> című bejelentés állapotát megváltoztatni?</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon fas fa-sign-out-alt mr-2"></i>Vissza</button>
+                                            <form asp-action="Index" asp-route-id="@item.ReportId">
+                                                <input type="hidden" asp-for="@item.ReportId" />
+                                                <button type="submit" class="btn btn-danger"><i class="fas fa-archive mr-2"></i>Megváltoztatás</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     }
                     <table class="table table-striped">
                         <thead class="bg-info">
-                            <tr>
-                                <th class="d-none d-md-table-cell">Bejelentő</th>
-                                <th>Bejelentés</th>
-                                <th>Leírás</th>
-                                <th class="d-print-none"></th>
-                            </tr>
+                            @if (User.IsInRole("SKFB-ISZR-Admin"))
+                            {
+                                <tr>
+                                    <th class="d-none d-md-table-cell">Bejelentő</th>
+                                    <th>Bejelentés</th>
+                                    <th>Leírás</th>
+                                    <th class="d-print-none"></th>
+                                </tr>
+                            } else
+                            {
+                                <tr>
+                                    <th class="d-none d-md-table-cell">Bejelentő</th>
+                                    <th>Bejelentés</th>
+                                    <th>Leírás</th>>
+                                </tr>
+                            }
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
@@ -138,19 +150,22 @@
                                     <td>
                                         <span>@item.Description</span>
                                     </td>
-                                    <td class="d-print-none">
-                                        <div class="float-right">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fas fa-book mr-2"></i><span class="d-none d-xl-inline">Adminisztratív müveletek</span>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal@(item.ReportId)"><i class="fas fa-exchange-alt mr-2"></i>Státusz módosítás</a>
+                                    @if (User.IsInRole("SKFB-ISZR-Admin"))
+                                    {
+                                        <td class="d-print-none">
+                                            <div class="float-right">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fas fa-book mr-2"></i><span class="d-none d-xl-inline">Adminisztratív müveletek</span>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal@(item.ReportId)"><i class="fas fa-exchange-alt mr-2"></i>Státusz módosítás</a>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                        </div>
-                                    </td>
+                                            </div>
+                                        </td>
+                                    }
                                 </tr>
                             }
                         </tbody>
